@@ -5993,6 +5993,7 @@ h6 {
 /*--------------------------------------------------------------
 ## Comments
 --------------------------------------------------------------*/
+/* 이용하지 않다.*/
 .comment-one__title,
 .comment-form__title {
     margin: 0;
@@ -6063,14 +6064,14 @@ h6 {
 .comment-one__form {
     position: relative;
     display: block;
-    background-color: #eff5f4;
-    padding: 60px 60px;
+    padding: 0;
 }
 
 .comment-one__form .row {
     --bs-gutter-x: 10px;
 }
 
+/* 이용하지 않다.*/
 .comment-form__input-box input[type="text"],
 .comment-form__input-box input[type="email"] {
     height: 67px;
@@ -6099,7 +6100,7 @@ h6 {
     height: 192px;
     width: 100%;
     padding: 20px 30px 30px;
-    border: none;
+    border: 1px solid #15c8a0;
     border-radius: 0px;
     outline: none;
     background-color: rgb(255, 255, 255);
