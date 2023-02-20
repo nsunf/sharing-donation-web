@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <body>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Insert title here</title>
@@ -56,11 +56,8 @@
     <link rel="stylesheet" href="../../static/css/halpes-responsive.css" />
     <link rel="stylesheet" href="../../static/css/layout1.css" />
 
-    <!-- sharing_board css -->
-    <link
-      rel="stylesheet"
-      href="../sharing-donation-web/src/main/resources/static/css/dist/sol/sharing_board.css"
-    />
+    <!-- admin_sharing_merchandise_control css -->
+    <link rel="stylesheet" href="/src/main/resources/static/css/dist/sol/admin_sharing_merchandise_control.css" />
   </head>
   <body>
     <div class="preloader">
@@ -246,19 +243,78 @@
       <!-- mobile-nav -->
 
       <!-- 여기서 부터 작성  -->
-
-      <!-- 배너 -->
-      <section class="page-header">
-        <div
-          class="page-header__bg"
-          style="
-            background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);
-          "
-        ></div>
-        <!-- /.page-header__bg -->
-        <div class="container">
-          <h2 class="text-center sharing_board_title">나눔상품 상세 페이지</h2>
+      <section>
+        <div class="container my-5">
+            <h1 class="text-center">나눔 상품 관리</h1>
         </div>
+        <div>
+            <div class="hstack">
+          <div class="mx-auto my-5 p-3">
+            <table class="table">
+            <thead>
+              <tr class="border-top ">
+                <th><input type="checkbox" name="" value="" /></th>
+                <th>번호</th>
+                <th>작성자</th>
+                <th>글제목</th>
+                <th>상품명</th>
+                <th>신청일자</th>
+                <th>게시기간</th>
+                <th>진행상황</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th><input type="checkbox" name="" value="" /></th>
+                <td>1</td>
+                <td>솔방울46</td>
+                <td>글제목 입니다.</td>
+                <td>아이폰 xs max</td>
+                <td>2023/02/20</td>
+                <td>2023/02/20~2023/03/20</td>
+                <td><button class="admin_standby_btn">승인대기</button></td>
+              </tr>
+              <tr>
+                <th><input type="checkbox" name="" value="" /></th>
+                <td>1</td>
+                <td>솔방울46</td>
+                <td>글제목 입니다.</td>
+                <td>아이폰 xs max</td>
+                <td>2023/02/20</td>
+                <td>2023/02/20~2023/03/20</td>
+                <td><button class="admin_standby_btn">승인대기</button></td>
+              </tr>
+              <tr>
+                <th><input type="checkbox" name="" value="" /></th>
+                <td>1</td>
+                <td>솔방울46</td>
+                <td>글제목 입니다.</td>
+                <td>아이폰 xs max</td>
+                <td>2023/02/20</td>
+                <td>2023/02/20~2023/03/20</td>
+                <td><button class="admin_approve_btn">승인완료</button></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+        </div>
+        </div>
+         <div class="archive-pages">
+                    <ul>
+                        
+                        <li class="previous"><a href="#" title="previous page"></a></li>
+                        <li class="selected">1</li>
+                        <li><a href="#" title="Pagina 2">2</a></li>
+                        <li><a href="#" title="Pagina 3">3</a></li>
+                        <li><a href="#" title="Pagina 4">4</a></li>
+                        <li><a href="#" title="Pagina 5">5</a></li>
+                        <li class="next"><a href="#" title="next page"></a></li>
+                      </ul>
+                </div>
+            </div>
+        </div>
+    </section>
       </section>
 
       <!-- 여기 까지 작성 -->
