@@ -1,0 +1,27 @@
+.sharing_board_title {
+}
+
+.sharing_btn {
+  background-color: #15c8a0;
+  display: inline-block;
+  vertical-align: middle;
+  border: none;
+  outline: none !important;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+  padding: 18.5px 50px;
+  transition: 500ms;
+}
+.sharing_heart {
+  background-color: #15c8a0;
+  display: inline-block;
+  vertical-align: middle;
+  border: none;
+  outline: none !important;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+  padding: 18.5px 50px;
+  transition: 500ms;
+}
