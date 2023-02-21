@@ -5797,6 +5797,7 @@ h6 {
 /*--------------------------------------------------------------
 ## Comments
 --------------------------------------------------------------*/
+/* 이용하지 않다.*/
 .comment-one__title,
 .comment-form__title {
   margin: 0;
@@ -5865,16 +5866,16 @@ h6 {
 }
 
 .comment-one__form {
-  position: relative;
-  display: block;
-  background-color: #eff5f4;
-  padding: 60px 60px;
+    position: relative;
+    display: block;
+    padding: 0;
 }
 
 .comment-one__form .row {
   --bs-gutter-x: 10px;
 }
 
+/* 이용하지 않다.*/
 .comment-form__input-box input[type="text"],
 .comment-form__input-box input[type="email"] {
   height: 67px;
@@ -5898,17 +5899,17 @@ h6 {
 }
 
 .comment-form__input-box textarea {
-  font-size: 16px;
-  color: var(--thm-gray);
-  height: 192px;
-  width: 100%;
-  padding: 20px 30px 30px;
-  border: none;
-  border-radius: 0px;
-  outline: none;
-  background-color: rgb(255, 255, 255);
-  box-shadow: 0px 0px 30px 0px rgb(0, 0, 0, 0.07);
-  font-weight: 700;
+    font-size: 16px;
+    color: var(--thm-gray);
+    height: 192px;
+    width: 100%;
+    padding: 20px 30px 30px;
+    border: 1px solid #15c8a0;
+    border-radius: 0px;
+    outline: none;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 30px 0px rgb(0, 0, 0, .07);
+    font-weight: 700;
 }
 
 .comment-form__btn {
