@@ -56,8 +56,8 @@
     <link rel="stylesheet" href="../../static/css/halpes-responsive.css" />
     <link rel="stylesheet" href="../../static/css/layout1.css" />
 
-    <!-- admin_sharing_merchandise_control css -->
-    <link rel="stylesheet" href="/src/main/resources/static/css/dist/sol/admin_sharing_merchandise_control.css" />
+    <!-- css -->
+    <link rel="stylesheet" href="../../static/css/dist/sol/admin_like_control.css" />
   </head>
   <body>
     <div class="preloader">
@@ -244,65 +244,64 @@
 
       <!-- 여기서 부터 작성  -->
       <section>
-        <div class="container my-5">
-            <h1 class="text-center">나눔 상품 관리</h1>
+        <div class="my-5">
+            <h1 class="text-center">좋아요 관리</h1>
         </div>
-        <div>
-            <div class="hstack">
-          <div class="mx-auto my-5 p-3">
-            <table class="table">
-            <thead>
-              <tr class="border-top ">
-                <th><input type="checkbox" name="" value="" /></th>
-                <th>번호</th>
-                <th>작성자</th>
-                <th>글제목</th>
-                <th>상품명</th>
-                <th>신청일자</th>
-                <th>게시기간</th>
-                <th>진행상황</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th><input type="checkbox" name="" value="" /></th>
-                <td>1</td>
-                <td>솔방울46</td>
-                <td>글제목 입니다.</td>
-                <td>아이폰 xs max</td>
-                <td>2023/02/20</td>
-                <td>2023/02/20~2023/03/20</td>
-                <td><button class="admin_standby_btn">승인대기</button></td>
-              </tr>
-              <tr>
-                <th><input type="checkbox" name="" value="" /></th>
-                <td>1</td>
-                <td>솔방울46</td>
-                <td>글제목 입니다.</td>
-                <td>아이폰 xs max</td>
-                <td>2023/02/20</td>
-                <td>2023/02/20~2023/03/20</td>
-                <td><button class="admin_standby_btn">승인대기</button></td>
-              </tr>
-              <tr>
-                <th><input type="checkbox" name="" value="" /></th>
-                <td>1</td>
-                <td>솔방울46</td>
-                <td>글제목 입니다.</td>
-                <td>아이폰 xs max</td>
-                <td>2023/02/20</td>
-                <td>2023/02/20~2023/03/20</td>
-                <td><button class="admin_approve_btn">승인완료</button></td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- 검색창 -->
+        <div class="container">
+          <div class="row">
+          <div class="col m-auto hstack ms-3">
+              <select class="form-select select_size" aria-label="Default select example">
+              <option selected>구분</option>
+              <option value="1">나눔</option>
+              <option value="2">기부</option>
+            </select>
+            <form class="input-group ms-auto w-25">
+                        <input type="text" class="form-control" placeholder="검색" />
+                        <button
+                        class="btn"
+                        type="button"
+                        style="background-color: #20c097; color: #fff"
+                        >
+                        검색
+                        </button>
+                      </form>
           </div>
-        </div>
-        </div>
-        </div>
-         <div class="archive-pages">
-                    <ul>
-                        
+          </div>
+            <div class="mx-auto my-3 p-3">
+              <table class="table">
+                <thead>
+                  <tr class="border-top">
+                    <th>글번호</th>
+                    <th>회원이메일</th>
+                    <th>게시글제목</th>
+                    <th>좋아요시간</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>doomee880406@naver.com</td>
+                    <td>게시글제목</td>
+                    <td>2023-02-20 17:30</td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>doomee88@naver.com</td>
+                    <td>게시글제목</td>
+                    <td>2023-02-20 17:30</td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>doomee88@gmail.com</td>
+                    <td>게시글제목</td>
+                    <td>2023-02-20 17:30</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="archive-pages">
+                      <ul>
                         <li class="previous"><a href="#" title="previous page"></a></li>
                         <li class="selected">1</li>
                         <li><a href="#" title="Pagina 2">2</a></li>
@@ -311,12 +310,10 @@
                         <li><a href="#" title="Pagina 5">5</a></li>
                         <li class="next"><a href="#" title="next page"></a></li>
                       </ul>
-                </div>
             </div>
+          </div>
         </div>
-    </section>
       </section>
-
       <!-- 여기 까지 작성 -->
 
       <!--Site Footer One Start-->

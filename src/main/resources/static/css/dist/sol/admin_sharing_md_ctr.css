@@ -1,26 +1,28 @@
-.sharing_btn {
-  background-color: #15c8a0;
-  display: inline-block;
-  vertical-align: middle;
-  border: none;
-  outline: none !important;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 900;
-  padding: 18.5px 50px;
-  transition: 500ms;
+.admin_md_ctr_select {
+  width: 100px;
 }
-.sharing_heart {
-  background-color: #15c8a0;
-  display: inline-block;
+
+.admin_md_ctr_btn {
   vertical-align: middle;
   border: none;
   outline: none !important;
+  color: #191c26;
+  background-color: #fff;
+  font-size: 10px;
+  padding: 10px 18px;
+  box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.25);
+}
+
+.admin_approve_btn {
+  border: none;
+  background-color: #15c8a0;
   color: #fff;
-  font-size: 16px;
-  font-weight: 900;
-  padding: 18.5px 50px;
-  transition: 500ms;
+}
+
+.admin_standby_btn {
+  border: none;
+  background-color: #191c26;
+  color: #fff;
 }
 
 .archive-pages li a:hover {

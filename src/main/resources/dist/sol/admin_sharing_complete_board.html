@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <body>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Insert title here</title>
@@ -56,11 +56,8 @@
     <link rel="stylesheet" href="../../static/css/halpes-responsive.css" />
     <link rel="stylesheet" href="../../static/css/layout1.css" />
 
-    <!-- sharing_board css -->
-    <link
-      rel="stylesheet"
-      href="../sharing-donation-web/src/main/resources/static/css/dist/sol/sharing_board.css"
-    />
+    <!-- css -->
+    <link rel="stylesheet" href="../../static/css/dist/sol/admin_sharing_complete_board.css" />
   </head>
   <body>
     <div class="preloader">
@@ -246,8 +243,71 @@
       <!-- mobile-nav -->
 
       <!-- 여기서 부터 작성  -->
-
-      <section></section>
+      <section>
+        <div class="my-5">
+            <h1 class="text-center">나눔 완료 게시판 관리</h1>
+        </div>
+        <!-- 검색창 -->
+        <div class="container">
+                <div class="w-25 my-auto ms-auto me-3">
+                    <form class="input-group">
+                        <input type="text" class="form-control" placeholder="검색" />
+                        <button
+                        class="btn"
+                        type="button"
+                        style="background-color: #20c097; color: #fff"
+                        >
+                        검색
+                        </button>
+                 </form>
+                </div>
+            <div class="mx-auto my-5 p-3">
+            <table class="table">
+            <thead>
+              <tr class="border-top ">
+                <th>글번호</th>
+                <th>글제목</th>
+                <th>상품명</th>
+                <th>완료일자</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>글제목</td>
+                <td>아이폰 xs</td>
+                <td>2023/02/20</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>글제목</td>
+                <td>아이폰 xs</td>
+                <td>2023/02/20</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>글제목</td>
+                <td>아이폰 xs</td>
+                <td>2023/02/20</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+         <div class="archive-pages">
+                    <ul>
+                        
+                        <li class="previous"><a href="#" title="previous page"></a></li>
+                        <li class="selected">1</li>
+                        <li><a href="#" title="Pagina 2">2</a></li>
+                        <li><a href="#" title="Pagina 3">3</a></li>
+                        <li><a href="#" title="Pagina 4">4</a></li>
+                        <li><a href="#" title="Pagina 5">5</a></li>
+                        <li class="next"><a href="#" title="next page"></a></li>
+                      </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
       <!-- 여기 까지 작성 -->
 

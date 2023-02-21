@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <body>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Insert title here</title>
@@ -56,11 +56,8 @@
     <link rel="stylesheet" href="../../static/css/halpes-responsive.css" />
     <link rel="stylesheet" href="../../static/css/layout1.css" />
 
-    <!-- sharing_board css -->
-    <link
-      rel="stylesheet"
-      href="../../static/css/dist/sol/sharing_complete_board.css"
-    />
+    <!-- admin_sharing_merchandise_control css -->
+    <link rel="stylesheet" href="../../static/css/dist/sol/admin_point_control.css" />
   </head>
   <body>
     <div class="preloader">
@@ -199,6 +196,7 @@
         </div>
       </header>
       <!-- header -->
+
       <div th:fragment="mobileNav" class="mobile-nav__wrapper">
         <div class="mobile-nav__overlay mobile-nav__toggler"></div>
         <!-- /.mobile-nav__overlay -->
@@ -245,295 +243,79 @@
       <!-- mobile-nav -->
 
       <!-- 여기서 부터 작성  -->
-      <!-- 배너 -->
-      <section class="page-header">
-        <div
-          class="page-header__bg"
-          style="
-            background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);
-          "
-        ></div>
-        <!-- /.page-header__bg -->
+      <section>
+        <div class="my-5">
+            <h1 class="text-center">포인트 관리</h1>
+        </div>
+        <!-- 검색창 -->
         <div class="container">
-          <h2 class="text-center sharing_board_title">나눔 완료</h2>
-        </div>
-      </section>
-      <!-- 검색창 -->
-      <section class="news-page pt-5 pb-3 vstack">
-        <div class="m-5">
-          <form class="input-group mb-3 w-25 mx-auto my-4">
-            <input type="text" class="form-control" placeholder="검색" />
-            <button
-              class="btn"
-              type="button"
-              style="background-color: #20c097; color: #fff"
-            >
-              검색
-            </button>
-          </form>
-        </div>
-        <!-- 나눔완료 게시글 -->
-        <div class="container">
-          <div class="row g-5 row-cols-auto">
-            <div class="col-4">
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img src="https://picsum.photos/200/170" alt="" />
-                    <a href="news-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>20 Feb, 2023</p>
-                  </div>
+                <div class="w-25 my-auto ms-auto me-3">
+                    <form class="input-group">
+                        <input type="text" class="form-control" placeholder="검색" />
+                        <button
+                        class="btn"
+                        type="button"
+                        style="background-color: #20c097; color: #fff"
+                        >
+                        검색
+                        </button>
+                 </form>
                 </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="news-details.html">나눔완료 게시글 제목</a>
-                  </h3>
-                  <p class="news-two__text">
-                    게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-                    될 예정입니다...
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img src="https://picsum.photos/200/170" alt="" />
-                    <a href="news-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>20 Feb, 2023</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="news-details.html">나눔완료 게시글 제목</a>
-                  </h3>
-                  <p class="news-two__text">
-                    게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-                    될 예정입니다...
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img src="https://picsum.photos/200/170" alt="" />
-                    <a href="news-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>20 Feb, 2023</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="news-details.html">나눔완료 게시글 제목</a>
-                  </h3>
-                  <p class="news-two__text">
-                    게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-                    될 예정입니다...
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img src="https://picsum.photos/200/170" alt="" />
-                    <a href="news-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>20 Feb, 2023</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="news-details.html">나눔완료 게시글 제목</a>
-                  </h3>
-                  <p class="news-two__text">
-                    게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-                    될 예정입니다...
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img src="https://picsum.photos/200/170" alt="" />
-                    <a href="news-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>20 Feb, 2023</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="news-details.html">나눔완료 게시글 제목</a>
-                  </h3>
-                  <p class="news-two__text">
-                    게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-                    될 예정입니다...
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img src="https://picsum.photos/200/170" alt="" />
-                    <a href="news-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>20 Feb, 2023</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="news-details.html">나눔완료 게시글 제목</a>
-                  </h3>
-                  <p class="news-two__text">
-                    게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-                    될 예정입니다...
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img src="https://picsum.photos/200/170" alt="" />
-                    <a href="news-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>20 Feb, 2023</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="news-details.html">나눔완료 게시글 제목</a>
-                  </h3>
-                  <p class="news-two__text">
-                    게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-                    될 예정입니다...
-                  </p>
-                </div>
-              </div>
-            </div>
+            <div class="mx-auto my-5 p-3">
+            <table class="table">
+            <thead>
+              <tr class="border-top">
+                <th>글번호</th>
+                <th>구분</th>
+                <th>글제목</th>
+                <th>회원이메일</th>
+                <th>포인트내역</th>
+                <th>등록일자</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <th>기부</th>
+                <td>글제목</td>
+                <td>doomee880406@naver.com</td>
+                <td>+2000</td>
+                <td>2023/02/20</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <th>나눔</th>
+                <td>글제목</td>
+                <td>doomee88@naver.com</td>
+                <td>-1500</td>
+                <td>2023/02/20</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <th>기부</th>
+                <td>글제목</td>
+                <td>doomee88@gmail.com</td>
+                <td>+1200</td>
+                <td>2023/02/20</td>
+              </tr>
+            </tbody>
+          </table>
           </div>
-          <div class="archive-pages">
-            <ul>
-              <li class="previous"><a href="#" title="previous page"></a></li>
-              <li class="selected">1</li>
-              <li><a href="#" title="Pagina 2">2</a></li>
-              <li><a href="#" title="Pagina 3">3</a></li>
-              <li><a href="#" title="Pagina 4">4</a></li>
-              <li><a href="#" title="Pagina 5">5</a></li>
-              <li class="next"><a href="#" title="next page"></a></li>
-            </ul>
-          </div>
+         <div class="archive-pages">
+                    <ul>
+                        
+                        <li class="previous"><a href="#" title="previous page"></a></li>
+                        <li class="selected">1</li>
+                        <li><a href="#" title="Pagina 2">2</a></li>
+                        <li><a href="#" title="Pagina 3">3</a></li>
+                        <li><a href="#" title="Pagina 4">4</a></li>
+                        <li><a href="#" title="Pagina 5">5</a></li>
+                        <li class="next"><a href="#" title="next page"></a></li>
+                      </ul>
+                </div>
+            </div>
         </div>
-      </section>
+    </section>
 
       <!-- 여기 까지 작성 -->
 
