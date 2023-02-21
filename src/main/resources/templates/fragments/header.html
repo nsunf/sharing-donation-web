@@ -1,241 +1,70 @@
 <!DOCTYPE html>
-<html
-	xmlns:th="http://www.thymeleaf.org"
->
-<head>
-<meta charset="UTF-8">
-<title>header</title>
-	<body>
-		<header th:fragment="header" class="main-header clearfix">
-			<div class="main-header__logo">
-					<a href="index.html">
-							<img src="/images/logo-1.png" alt="">
-					</a>
-			</div>
-			<div class="main-menu-wrapper">
-					<div class="main-menu-wrapper__top">
-							<div class="main-menu-wrapper__top-inner">
-									<div class="main-menu-wrapper__left">
-											<div class="main-menu-wrapper__left-content">
-													<div class="main-menu-wrapper__left-text">
-															<p>Welcome to the Charity & Donation Theme</p>
-													</div>
-													<div class="main-menu-wrapper__left-email-box">
-															<div class="icon">
-																	<i class="fas fa-envelope"></i>
-															</div>
-															<div class="email">
-																	<a href="mailto:needhelp@company.com">needhelp@company.com</a>
-															</div>
-													</div>
-											</div>
-									</div>
-									<div class="main-menu-wrapper__right">
-											<div class="main-menu-wrapper__right-social">
-													<a href="#"><i class="fab fa-twitter"></i></a>
-													<a href="#"><i class="fab fa-facebook-square"></i></a>
-													<a href="#"><i class="fab fa-dribbble"></i></a>
-													<a href="#"><i class="fab fa-instagram"></i></a>
-											</div>
-									</div>
-							</div>
-					</div>
-					<div class="main-menu-wrapper__bottom">
-							<nav class="main-menu">
-									<div class="main-menu__inner">
-											<a href="#" class="mobile-nav__toggler"><i class="fa fa-bars"></i></a>
-											<ul class="main-menu__list">
-													<li class="dropdown current">
-															<a href="index.html">Home</a>
-															<ul>
-																	<li>
-																			<a href="index.html">Home One</a>
-																	</li>
-																	<li><a href="index2.html">Home Two</a></li>
-																	<li><a href="index3.html">Home Three</a></li>
-																	<li><a href="index3.html">Home Three</a></li>
-																	<li><a href="index3.html">Home Three</a></li>
-																	<li><a href="index3.html">Home Three</a></li>
-																	<li><a href="index3.html">Home Three</a></li>
-																	<li><a href="index3.html">Home Three</a></li>
-																	<li class="dropdown">
-																			<a href="#">Header Styles</a>
-																			<ul>
-																					<li><a href="index.html">Header One</a></li>
-																					<li><a href="index.html">Header Two</a></li>
-																					<li><a href="index.html">Header Three</a></li>
-																			</ul>
-																	</li>
-															</ul>
-													</li>
-													<li class="dropdown">
-															<a href="#">Pages</a>
-															<ul>
-																	<li><a href="about.html">About</a></li>
-																	<li><a href="volunteers.html">Volunteers</a></li>
-																	<li><a href="gallery.html">Gallery</a></li>
-																	<li><a href="become-volunteer.html">Become a Volunteer</a></li>
-															</ul>
-													</li>
-													<li class="dropdown">
-															<a href="#">Donations</a>
-															<ul>
-																	<li><a href="causes.html">Causes</a></li>
-																	<li><a href="causes-details.html">Causes Details</a></li>
-															</ul>
-													</li>
-													<li class="dropdown">
-															<a href="#">Events</a>
-															<ul>
-																	<li><a href="events.html">Events</a></li>
-																	<li><a href="event-details.html">Event Details</a></li>
-															</ul>
-													</li>
-													<li class="dropdown">
-															<a href="#">News</a>
-															<ul>
-																	<li><a href="news.html">News</a></li>
-																	<li><a href="news-details.html">News Details</a></li>
-															</ul>
-													</li>
-													<li><a href="contact.html">Contact</a></li>
-											</ul>
-											<div class="main-menu__right">
-													<a href="#" class="main-menu__search search-toggler icon-magnifying-glass"></a>
-													<a href="#" class="main-menu__cart icon-shopping-cart  "></a>
-													<div class="main-menu__phone-contact">
-															<div class="main-menu__phone-icon">
-																	<span class="icon-chat"></span>
-															</div>
-															<div class="main-menu__phone-number">
-																	<p>Call Anytime</p>
-																	<a href="tel:92 666 888 0000">92 666 888 0000</a>
-															</div>
-													</div>
-													<a href="causes-details.html" class="main-menu__donate-btn"><i class="fa fa-heart"></i>Donate </a>
-											</div>
-									</div>
-							</nav>
-					</div>
-			</div>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>header</title>
+  </head>
+  <body>
+    <header
+      th:fragment="header"
+      class="main-header clearfix"
+      style="height: 64px"
+    >
+      <div
+        class="main-header__logo p-0 h-100 d-flex justify-content-center align-items-center"
+      >
+        <a href="index.html">
+          <img src="/images/logo-1.png" alt="" />
+        </a>
+      </div>
 
-		</header>
-	<!--	
-	<header th:fragment="header" class="main-header clearfix">
+      <div class="main-menu-wrapper h-100 vstack">
+        <div class="main-menu-wrapper__bottom my-auto">
+          <nav class="main-menu">
+            <div class="main-menu__inner">
+              <a href="#" class="mobile-nav__toggler"
+                ><i class="fa fa-bars"></i
+              ></a>
 
-		<div class="main-header__logo">
-				<a href="index.html">
-						<img src="images/logo-1.png" alt="">
-				</a>
-		</div>
+              <ul class="main-menu__list">
+								<!-- 일반 -->
+                <li class="dropdown current">
+                  <a href="index.html">나눔</a>
+                  <ul>
+                    <li><a href="#">전체</a></li>
+                    <li><a href="#">가전</a></li>
+                    <li><a href="#">생활</a></li>
+                    <li><a href="#">유아</a></li>
+                    <li><a href="#">의류</a></li>
+                    <li><a href="#">스포츠</a></li>
+                    <li><a href="#">도서</a></li>
+                    <li><a href="#">취미</a></li>
+                    <li><a href="#">기타</a></li>
+                  </ul>
+                </li>
+                <li><a href="#">기부</a></li>
+                <li><a href="#">나눔 인증 게시판</a></li>
+                <li><a href="#">기부 완료 게시판</a></li>
 
-		<div class="main-menu-wrapper">
-			 //
-				<div class="main-menu-wrapper__top">
-						<div class="main-menu-wrapper__top-inner">
-								<div class="main-menu-wrapper__left">
-										<div class="main-menu-wrapper__left-content">
-												<div class="main-menu-wrapper__left-text">
-														<p>Welcome to the Charity & Donation Theme</p>
-												</div>
-												<div class="main-menu-wrapper__left-email-box">
-														<div class="icon">
-																<i class="fas fa-envelope"></i>
-														</div>
-														<div class="email">
-																<a href="mailto:needhelp@company.com">needhelp@company.com</a>
-														</div>
-												</div>
-										</div>
-								</div>
-								<div class="main-menu-wrapper__right">
-										<div class="main-menu-wrapper__right-social">
-												<a href="#"><i class="fab fa-twitter"></i></a>
-												<a href="#"><i class="fab fa-facebook-square"></i></a>
-												<a href="#"><i class="fab fa-dribbble"></i></a>
-												<a href="#"><i class="fab fa-instagram"></i></a>
-										</div>
-								</div>
-						</div>
-				</div>
-				//
-				<div class="main-menu-wrapper__bottom">
-						<nav class="main-menu">
-								<div class="main-menu__inner">
-										<a href="#" class="mobile-nav__toggler"><i class="fa fa-bars"></i></a>
-										<ul class="main-menu__list">
-												<li class="dropdown current">
-														<a href="index.html">Home</a>
-														<ul>
-																<li>
-																		<a href="index.html">Home One</a>
-																</li>
-																<li><a href="index2.html">Home Two</a></li>
-																<li><a href="index3.html">Home Three</a></li>
-																<li class="dropdown">
-																		<a href="#">Header Styles</a>
-																		<ul>
-																				<li><a href="index.html">Header One</a></li>
-																				<li><a href="index.html">Header Two</a></li>
-																				<li><a href="index.html">Header Three</a></li>
-																		</ul>
-																</li>
-														</ul>
-												</li>
-												<li class="dropdown">
-														<a href="#">Pages</a>
-														<ul>
-																<li><a href="about.html">About</a></li>
-																<li><a href="volunteers.html">Volunteers</a></li>
-																<li><a href="gallery.html">Gallery</a></li>
-																<li><a href="become-volunteer.html">Become a Volunteer</a></li>
-														</ul>
-												</li>
-												<li class="dropdown">
-														<a href="#">Donations</a>
-														<ul>
-																<li><a href="causes.html">Causes</a></li>
-																<li><a href="causes-details.html">Causes Details</a></li>
-														</ul>
-												</li>
-												<li class="dropdown">
-														<a href="#">Events</a>
-														<ul>
-																<li><a href="events.html">Events</a></li>
-																<li><a href="event-details.html">Event Details</a></li>
-														</ul>
-												</li>
-												<li class="dropdown">
-														<a href="#">News</a>
-														<ul>
-																<li><a href="news.html">News</a></li>
-																<li><a href="news-details.html">News Details</a></li>
-														</ul>
-												</li>
-												<li><a href="contact.html">Contact</a></li>
-										</ul>
-										<div class="main-menu__right">
-										//
-												<a href="#" class="main-menu__search search-toggler icon-magnifying-glass"></a>
-												<a href="#" class="main-menu__cart icon-shopping-cart  "></a>
-												<div class="main-menu__phone-contact">
-														<div class="main-menu__phone-icon">
-																<span class="icon-chat"></span>
-														</div>
-														<div class="main-menu__phone-number">
-																<p>Call Anytime</p>
-																<a href="tel:92 666 888 0000">92 666 888 0000</a>
-														</div>
-												</div>
-												//
-												<a href="causes-details.html" class="main-menu__donate-btn"><i class="fa fa-heart"></i>Donate </a>
-										</div>
-								</div>
-						</nav>
-				</div>
-		</div>
+								<!-- 관리자 -->
+                <!-- <li class="text-center current"><a href="#">회원<br/>관리</a></li>
+                <li class="text-center"><a href="#">나눔상품<br/>관리</a></li>
+                <li class="text-center"><a href="#">사연<br/>관리</a></li>
+                <li class="text-center"><a href="#">기부<br/>관리</a></li>
+                <li class="text-center"><a href="#">카테고리<br/>관리</a></li>
+                <li class="text-center"><a href="#">지역<br/>관리</a></li>
+                <li class="text-center"><a href="#">좋아요<br/>관리</a></li>
+                <li class="text-center"><a href="#">기부<br/>포인트</a></li> -->
+              </ul>
 
-	</header>
--->
-</body>
+              <div class="main-menu__right">
+                <a href="">username</a>
+                <a href="causes-details.html" class="logout-btn py-1 px-2">signout</a>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+  </body>
 </html>
