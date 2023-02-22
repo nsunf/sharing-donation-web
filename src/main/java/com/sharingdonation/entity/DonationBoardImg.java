@@ -28,8 +28,9 @@ public class DonationBoardImg {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="donation_board_img_id")
-	private DonationBoardImg donationBoardImg;
+	@JoinColumn(name="donation_board_id")
+	private DonationBoard donationBoard;
+//	private DonationBoardImg donationBoardImg;
 	
 	private String imgName;
 	

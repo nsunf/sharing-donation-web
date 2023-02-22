@@ -6,6 +6,8 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import com.sharingdonation.entity.Donation;
 
 public interface DonationRepository extends JpaRepository<Donation, Long>, 
-	QuerydslPredicateExecutor<Donation>, DonationRepositoryCustom {
+	QuerydslPredicateExecutor<Donation> 
+//	DonationRepositoryCustom 
+	{
 	
 }
