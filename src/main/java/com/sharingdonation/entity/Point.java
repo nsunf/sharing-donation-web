@@ -34,13 +34,11 @@ public class Point {
 	private Member member;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="sharing_id")
-	@Column(nullable = true)
+	@JoinColumn(name="sharing_id", nullable = true)
 	private Sharing sharing;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="donation_id")
-	@Column(nullable = true)
+	@JoinColumn(name="donation_id", nullable = true)
 	private Donation donation;
 	
 	private MoveType moveType;
