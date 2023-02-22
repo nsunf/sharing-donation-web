@@ -9,7 +9,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainController {
 
 	@GetMapping("")
-	public String layout1Test() {
-		return "layout1-test";
+	public String modal() {
+		return "story-modal-test";
 	}
+	
+	@GetMapping("/list")
+	public String list() {
+		return "story-admin-list";
+	}
+	
+	@GetMapping("/detail")
+	public String detail() {
+		return "story-admin-detail";
+	}
+	
+	@GetMapping("/mypage/list")
+	public String mylist() {
+		return "mypage-story-list";
+	}
+	
+	@GetMapping("/mypage/detail")
+	public String mydetail() {
+		return "mypage-story-detail";
+	}
+	
+	@GetMapping("/mypage/")
+	public String mymain() {
+		return "mypage-main";
+	}
+	
+	@GetMapping("/mypage/privacy")
+	public String myprivacy() {
+		return "mypage-privacy";
+	}
+	
+
 }
