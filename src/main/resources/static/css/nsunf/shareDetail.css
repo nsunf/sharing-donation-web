@@ -1,0 +1,159 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--thm-primary);
+
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
+}
+
+.author-name {
+  color: var(--thm-primary);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.sharing-area {
+  font-size: 14px;
+}
+
+.author-energy {
+  font-size: 14px;
+}
+
+.battery {
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 40px;
+  width: 40px;
+}
+
+.battery-0 {
+  background-image: url("../../images/nsunf/charge=0.png");
+}
+
+.battery-25 {
+  background-image: url("../../images/nsunf/charge=25.png");
+}
+
+.battery-50 {
+  background-image: url("../../images/nsunf/charge=50.png");
+}
+
+.battery-75 {
+  background-image: url("../../images/nsunf/charge=75.png");
+}
+
+.battery-100 {
+  background-image: url("../../images/nsunf/charge=100.png");
+}
+
+.like-btn {
+  width: 48px;
+  height: 32px;
+  border: 1px solid rgba(var(--thm-gray-rgb), 0.2);
+  border-radius: 4px;
+  background: white;
+  padding: 0;
+}
+
+.like {
+  /* width: 16px;  */
+  /* height: 16px; */
+
+  width: 100%;
+  height: 100%;
+
+  background-repeat: no-repeat;
+  background-position: center;
+
+  transition: 200ms;
+}
+
+.like-false {
+  background-image: url("../../images/nsunf/like-false.png");
+}
+
+.like-false:hover {
+  background-image: url("../../images/nsunf/like-true.png");
+}
+
+.like-true {
+  background-image: url("../../images/nsunf/like-true.png");
+}
+
+.like-true:hover {
+  background-image: url("../../images/nsunf/like-false.png");
+}
+
+.modal-title-custom {
+  border-bottom: 2px solid var(--thm-primary);
+}
+
+.btn-custom {
+  color: white;
+  color: white;
+}
+
+.btn-custom-close {
+  background: var(--thm-gray);
+}
+
+.btn-custom-close:hover {
+  background: rgba(var(--thm-gray-rgb), 0.8);
+  color: white;
+}
+
+.btn-custom-close:active {
+  color: var(--thm-gray) !important;
+}
+
+.btn-custom-regist {
+  background: var(--thm-primary);
+  color: white;
+}
+
+.btn-custom-regist:hover {
+  background: rgba(var(--thm-primary-rgb), 0.8);
+  color: white;
+}
+
+.btn-custom-regist:active {
+  color: var(--thm-primary) !important;
+}
+
+@media screen and (max-width: 767px) {
+  .image-slider {
+    margin-top: 120px !important;
+  }
+}

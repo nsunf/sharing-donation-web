@@ -1,0 +1,11 @@
+ul {
+  list-style: none;
+}
+
+.region-form {
+  display: flex;
+}
+
+.region-left {
+  float: left;
+}
