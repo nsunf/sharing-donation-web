@@ -1,0 +1,10 @@
+.sharing_board_title::after {
+  display: block;
+  margin: 0 auto;
+  content: "";
+  background-color: #15c8a0;
+  width: 300px;
+  height: 4px;
+  margin-top: 4px;
+  border-bottom: 2px solid #15c8a0;
+}
