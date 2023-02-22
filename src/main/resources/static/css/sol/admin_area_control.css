@@ -1,3 +1,18 @@
+.select_size {
+  width: 100px;
+}
+
+.admin_md_ctr_btn {
+  vertical-align: middle;
+  border: none;
+  outline: none !important;
+  color: #191c26;
+  background-color: #fff;
+  font-size: 10px;
+  padding: 10px 18px;
+  box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.25);
+}
+
 .admin_approve_btn {
   border: none;
   background-color: #15c8a0;

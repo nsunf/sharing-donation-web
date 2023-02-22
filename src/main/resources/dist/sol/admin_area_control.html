@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <body>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Insert title here</title>
@@ -56,11 +56,8 @@
     <link rel="stylesheet" href="../../static/css/halpes-responsive.css" />
     <link rel="stylesheet" href="../../static/css/layout1.css" />
 
-    <!-- sharing_board css -->
-    <link
-      rel="stylesheet"
-      href="../sharing-donation-web/src/main/resources/static/css/dist/sol/sharing_board.css"
-    />
+    <!-- css -->
+    <link rel="stylesheet" href="../../static/css/sol/admin_area_control.css" />
   </head>
   <body>
     <div class="preloader">
@@ -246,9 +243,77 @@
       <!-- mobile-nav -->
 
       <!-- 여기서 부터 작성  -->
-
-      <section></section>
-
+      <section>
+        <div class="my-5">
+            <h1 class="text-center">지역 관리</h1>
+        </div>
+        <!-- 검색창 -->
+        <div class="container">
+          <div class="row">
+          <div class="col m-auto hstack ms-3">
+              <select class="form-select select_size" aria-label="Default select example">
+              <option selected>구분</option>
+              <option value="1">나눔</option>
+              <option value="2">기부</option>
+            </select>
+            <form class="input-group ms-auto w-25">
+                        <input type="text" class="form-control" placeholder="검색" />
+                        <button
+                        class="btn"
+                        type="button"
+                        style="background-color: #15C8A0; color: #fff"
+                        >
+                        검색
+                        </button>
+                      </form>
+          </div>
+          </div>
+            <div class="mx-auto my-3 p-3">
+              <table class="table">
+                <thead>
+                  <tr class="border-top">
+                    <th>글번호</th>
+                    <th>시/도</th>
+                    <th>구/군</th>
+                    <th>등록일자</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>서울특별시</td>
+                    <td>중랑구</td>
+                    <td>2023-02-22 12:41</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>서울특별시</td>
+                    <td>성동구</td>
+                    <td>2023-02-22 12:41</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>서울특별시</td>
+                    <td>광진구</td>
+                    <td>2023-02-22 12:41</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+          <div class="archive-pages">
+                      <ul>
+                        <li class="previous"><a href="#" title="previous page"></a></li>
+                        <li class="selected">1</li>
+                        <li><a href="#" title="Pagina 2">2</a></li>
+                        <li><a href="#" title="Pagina 3">3</a></li>
+                        <li><a href="#" title="Pagina 4">4</a></li>
+                        <li><a href="#" title="Pagina 5">5</a></li>
+                        <li class="next"><a href="#" title="next page"></a></li>
+                      </ul>
+            </div>
+      </section>
       <!-- 여기 까지 작성 -->
 
       <!--Site Footer One Start-->
