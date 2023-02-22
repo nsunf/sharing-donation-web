@@ -249,67 +249,91 @@
         </div>
           <!-- 검색창 -->
         <div class="container">
-            <div class="mx-auto my-5 p-3">
+          <div class="mx-auto my-5 p-3">
             <table class="table">
-            <thead>
-              <tr class="border-top">
-                <th>번호</th>
-                <th>이미지</th>
-                <th>게시기간</th>
-                <th>진행상황</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td><img src="https://picsum.photos/45/35"></td>
-                <td>카테고리명</td>
-                <td>
-                  <button class="admin_approve_btn">수정</button>
-                  <button class="admin_standby_btn">삭제</button>
-                </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td><img src="https://picsum.photos/45/35"></td>
-                <td>카테고리명</td>
-                <td>
-                  <button class="admin_approve_btn">수정</button>
-                  <button class="admin_standby_btn">삭제</button>
-                </td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td><img src="https://picsum.photos/45/35"></td>
-                <td>카테고리명</td>
-                <td>
-                  <button class="admin_approve_btn">수정</button>
-                  <button class="admin_standby_btn">삭제</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+              <thead>
+                <tr class="border-top">
+                  <th>번호</th>
+                  <th>이미지</th>
+                  <th>게시기간</th>
+                  <th>진행상황</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td><img src="https://picsum.photos/45/35"></td>
+                  <td>카테고리명</td>
+                  <td>
+                    <button class="admin_approve_btn">수정</button>
+                    <button class="admin_standby_btn">삭제</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td><img src="https://picsum.photos/45/35"></td>
+                  <td>카테고리명</td>
+                  <td>
+                    <button class="admin_approve_btn">수정</button>
+                    <button class="admin_standby_btn">삭제</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><img src="https://picsum.photos/45/35"></td>
+                  <td>카테고리명</td>
+                  <td>
+                    <button class="admin_approve_btn">수정</button>
+                    <button class="admin_standby_btn">삭제</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
           <div class="hstack">
-              <button class="ms-auto admin_approve_btn">수정</button>
+            <button id="add-cat-btn" class="ms-auto admin_approve_btn" data-bs-toggle="modal" data-bs-target="#cat-popup">수정</button>
+          </div>
+          <div class="archive-pages">
+            <ul> 
+                <li class="previous"><a href="#" title="previous page"></a></li>
+                <li class="selected">1</li>
+                <li><a href="#" title="Pagina 2">2</a></li>
+                <li><a href="#" title="Pagina 3">3</a></li>
+                <li><a href="#" title="Pagina 4">4</a></li>
+                <li><a href="#" title="Pagina 5">5</a></li>
+                <li class="next"><a href="#" title="next page"></a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- 스택 등록 -->
+      <div class="modal fade" id="cat-popup" tabindex="-1" aria-labelledby="cat-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="cat-label">카테고리 등록</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-5">
+              <form name="catForm" class="row row-cols-2" th:action="@{/mypage/stacks/add}" method="post" enctype="multipart/form-data">
+                <input type="hidden" id="cat_id" name="cat_id">
+                <label class="col border rounded-2 p-5" style="cursor: pointer;">
+                  <img id="cat-img-preview" class="ratio ratio-1x1 w-100" style="object-fit: contain;" src="" alt="" onerror="this.src='../../static/images/nsunf/add-btn.png'">
+                  <input id="cat-img-input" type="file" name="catImgFile" accept="image/*" hidden required>
+                </label>
+                <div class="col vstack">
+                  <label for="cat_name" class="form-label mt-auto">이름</label>
+                  <input type="text" class="form-control" id="cat_name" name="cat_name" placeholder="이름을 입력해주세요." required>
+                  <div class="invalid-feedback">
+                    이름을 입력해주세요.
+                  </div>
+                  <button class="btn btn-primary ms-auto mt-4 mb-auto px-3" style="background:var(--thm-primary); border: var(--thm-primary);" type="submit">등록</button>
+                </div>
+              </form>
             </div>
           </div>
-         <div class="archive-pages">
-                    <ul> 
-                        <li class="previous"><a href="#" title="previous page"></a></li>
-                        <li class="selected">1</li>
-                        <li><a href="#" title="Pagina 2">2</a></li>
-                        <li><a href="#" title="Pagina 3">3</a></li>
-                        <li><a href="#" title="Pagina 4">4</a></li>
-                        <li><a href="#" title="Pagina 5">5</a></li>
-                        <li class="next"><a href="#" title="next page"></a></li>
-                    </ul>
-         </div>
         </div>
-        </section>
-            </div>
       </div>
-    </section>
-
       <!-- 여기 까지 작성 -->
 
       <!--Site Footer One Start-->
@@ -375,5 +399,6 @@
     <!-- template js -->
     <script src="../../static/js/halpes.js"></script>
     <script src="../../static/js/layout1.js"></script>
+    <script src="../../static/js/sol/admin_category_ctr.js"></script>
   </body>
 </html>
