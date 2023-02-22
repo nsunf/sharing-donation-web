@@ -31,6 +31,7 @@
 <link rel="stylesheet" href="../../static/css/halpes-responsive.css" />
 <link rel="stylesheet" href="../../static/css/layout1.css"/>
 <link rel="stylesheet" href="../../static/css/longsiru/donated-board-list.css"/>
+<link rel="stylesheet" href="../../static/css/longsiru/donation-list.css"/>
 
 
 </head>
@@ -200,234 +201,320 @@
 
   <!--Page Header Start-->
   <section class="page-header">
-    <div class="page-header__bg"
-        style="background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);"></div>
+    <div
+      class="page-header__bg"
+      style="
+        background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);
+      "
+    ></div>
     <!-- /.page-header__bg -->
-    <div class="container">
-        <h2>Causes</h2>
+    <div class="container" >
+      <h2 class="text-center sharing_board_title">기부 리스트</h2>
     </div>
-</section>
+  </section>
 <!--Page Header End-->
 
-<!--Causes One Start-->
-<section class="causes-one causes-page">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <!--Causes Page Single-->
-                <div class="causes-one__single">
-                    <div class="causes-one__img">
-                        <div class="causes-one__img-box">
-                            <img src="../../static/images/longsiru/mong1.jpg" alt="">
-                            <a href="#">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="causes-one__content">
-                        <h3 class="causes-one__title">
-                            <a href="#">글 제목</a>
-                        </h3>
-                        <p>기부기관/ 개인명</p>
-                    </div>
-                    <div>
-                        <h6>2023.02.06 ~ 2023.03.16</h6>
-                    </div>
 
-                    <div>
-                        <ul>
-                            <li><a href="#">진행중</a></li>
-                            <li class="content-detail-like"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></li>
-                        </ul>
+
+  <!-- 검색창 -->
+  <section class="causes-one causes-page pt-5 pb-3 vstack">
+    <div class="m-5">
+      <form class="input-group mb-3 w-25 mx-auto">
+        <input type="text" class="form-control" placeholder="검색" />
+        <button
+          class="btn"
+          type="button"
+          style="background-color: #20c097; color: #fff"
+        >
+          검색
+        </button>
+      </form>
+    </div>
+    <!-- 기부 리스트 카드 -->
+    <div class="container pt-5">
+      <div class="row g-5 row-cols-auto">
+        <div class="col">
+          <!--Causes Page Single-->
+          <div class="causes-one__single">
+            <div class="causes-one__img">
+              <div class="causes-one__img-box">
+                <img src="/src/main/resources/static/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
+                <a href="causes-details.html">
+                  <i class="fa fa-plus"></i>
+                </a>
+              </div>
+            </div>
+            <div class="causes-one__content">
+              <div class="hstack">
+                <span class="causes-one__title mb-0">
+                  <a class="" href="causes-details.html">기부 주제</a>
+                </span>
+              </div>
+              <p class="causes-one__text mt-2">기부 기관/개인 명</p>
+            </div>
+            <div
+              class="causes-one__progress"
+              style="background-color: #fff; padding: 25px 25px 21px !important;"
+            >
+              <div class="causes-one__goals">
+                <p class="mb-2">2023.02.16~2023.03.16</p>
+              </div>
+              <div class="hstack">
+                <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
+                <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
+              </div>
+            </div>
+            <div class="causes-one__progress">
+                <div class="bar">
+                    <div class="bar-inner count-bar" data-percent="36%">
+                        <div class="count-text">36%</div>
                     </div>
-                    <div class="causes-one__progress">
-                        <div class="bar">
-                            <div class="bar-inner count-bar" data-percent="36%">
-                                <div class="count-text">36%</div>
-                            </div>
-                        </div>
-                        <div class="causes-one__goals">
-                            <p><span>$25,270</span> Raised</p>
-                            <p><span>$30,000</span> Goal</p>
-                        </div>
-                    </div>
+                </div>
+                <div class="causes-one__goals">
+                    <p>0%</p>
+                    <p>100%</p>
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <!--Causes Page Single-->
-                <div class="causes-one__single">
-                    <div class="causes-one__img">
-                        <div class="causes-one__img-box">
-                            <img src="assets/images/resources/causes-page-img-2.jpg" alt="">
-                            <a href="causes-details.html">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                        </div>
-                        <div class="causes-one__category">
-                            <span>Medical</span>
-                        </div>
-                    </div>
-                    <div class="causes-one__content">
-                        <h3 class="causes-one__title">
-                            <a href="causes-details.html">Our donation is hope for poor childrens</a>
-                        </h3>
-                        <p class="causes-one__text">There are not many of passages of lorem ipsum avail isn
-                            alteration donationa in form simply free.</p>
-                    </div>
-                    <div class="causes-one__progress">
-                        <div class="bar">
-                            <div class="bar-inner count-bar" data-percent="36%">
-                                <div class="count-text">36%</div>
-                            </div>
-                        </div>
-                        <div class="causes-one__goals">
-                            <p><span>$25,270</span> Raised</p>
-                            <p><span>$30,000</span> Goal</p>
-                        </div>
-                    </div>
+          </div>
+        </div>
+        <div class="col">
+            <!--Causes Page Single-->
+            <div class="causes-one__single">
+              <div class="causes-one__img">
+                <div class="causes-one__img-box">
+                  <img src="/src/main/resources/static/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
+                  <a href="causes-details.html">
+                    <i class="fa fa-plus"></i>
+                  </a>
                 </div>
+              </div>
+              <div class="causes-one__content">
+                <div class="hstack">
+                  <span class="causes-one__title mb-0">
+                    <a class="" href="causes-details.html">기부 주제</a>
+                  </span>
+                </div>
+                <p class="causes-one__text mt-2">기부 기관/개인 명</p>
+              </div>
+              <div
+                class="causes-one__progress"
+                style="background-color: #fff; padding: 25px 25px 21px !important;"
+              >
+                <div class="causes-one__goals">
+                  <p class="mb-2">2023.02.16~2023.03.16</p>
+                </div>
+                <div class="hstack">
+                  <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
+                  <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
+                </div>
+              </div>
+              <div class="causes-one__progress">
+                  <div class="bar">
+                      <div class="bar-inner count-bar" data-percent="36%">
+                          <div class="count-text">36%</div>
+                      </div>
+                  </div>
+                  <div class="causes-one__goals">
+                      <p>0%</p>
+                      <p>100%</p>
+                  </div>
+              </div>
             </div>
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <!--Causes Page Single-->
-                <div class="causes-one__single">
-                    <div class="causes-one__img">
-                        <div class="causes-one__img-box">
-                            <img src="assets/images/resources/causes-page-img-3.jpg" alt="">
-                            <a href="causes-details.html">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                        </div>
-                        <div class="causes-one__category">
-                            <span>Medical</span>
-                        </div>
-                    </div>
-                    <div class="causes-one__content">
-                        <h3 class="causes-one__title">
-                            <a href="causes-details.html">Education for Poor Children</a>
-                        </h3>
-                        <p class="causes-one__text">There are not many of passages of lorem ipsum avail isn
-                            alteration donationa in form simply free.</p>
-                    </div>
-                    <div class="causes-one__progress">
-                        <div class="bar">
-                            <div class="bar-inner count-bar" data-percent="36%">
-                                <div class="count-text">36%</div>
-                            </div>
-                        </div>
-                        <div class="causes-one__goals">
-                            <p><span>$25,270</span> Raised</p>
-                            <p><span>$30,000</span> Goal</p>
-                        </div>
-                    </div>
+          </div>
+          <div class="col">
+            <!--Causes Page Single-->
+            <div class="causes-one__single">
+              <div class="causes-one__img">
+                <div class="causes-one__img-box">
+                  <img src="/src/main/resources/static/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
+                  <a href="causes-details.html">
+                    <i class="fa fa-plus"></i>
+                  </a>
                 </div>
-            </div>
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <!--Causes Page Single-->
-                <div class="causes-one__single">
-                    <div class="causes-one__img">
-                        <div class="causes-one__img-box">
-                            <img src="assets/images/resources/causes-page-img-4.jpg" alt="">
-                            <a href="causes-details.html">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                        </div>
-                        <div class="causes-one__category">
-                            <span>Medical</span>
-                        </div>
-                    </div>
-                    <div class="causes-one__content">
-                        <h3 class="causes-one__title">
-                            <a href="causes-details.html">Promoting The Rights of Children</a>
-                        </h3>
-                        <p class="causes-one__text">There are not many of passages of lorem ipsum avail isn
-                            alteration donationa in form simply free.</p>
-                    </div>
-                    <div class="causes-one__progress">
-                        <div class="bar">
-                            <div class="bar-inner count-bar" data-percent="36%">
-                                <div class="count-text">36%</div>
-                            </div>
-                        </div>
-                        <div class="causes-one__goals">
-                            <p><span>$25,270</span> Raised</p>
-                            <p><span>$30,000</span> Goal</p>
-                        </div>
-                    </div>
+              </div>
+              <div class="causes-one__content">
+                <div class="hstack">
+                  <span class="causes-one__title mb-0">
+                    <a class="" href="causes-details.html">기부 주제</a>
+                  </span>
                 </div>
-            </div>
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <!--Causes Page Single-->
-                <div class="causes-one__single">
-                    <div class="causes-one__img">
-                        <div class="causes-one__img-box">
-                            <img src="assets/images/resources/causes-page-img-5.jpg" alt="">
-                            <a href="causes-details.html">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                        </div>
-                        <div class="causes-one__category">
-                            <span>Medical</span>
-                        </div>
-                    </div>
-                    <div class="causes-one__content">
-                        <h3 class="causes-one__title">
-                            <a href="causes-details.html">Fundrising for Early Childhood Rise</a>
-                        </h3>
-                        <p class="causes-one__text">There are not many of passages of lorem ipsum avail isn
-                            alteration donationa in form simply free.</p>
-                    </div>
-                    <div class="causes-one__progress">
-                        <div class="bar">
-                            <div class="bar-inner count-bar" data-percent="36%">
-                                <div class="count-text">36%</div>
-                            </div>
-                        </div>
-                        <div class="causes-one__goals">
-                            <p><span>$25,270</span> Raised</p>
-                            <p><span>$30,000</span> Goal</p>
-                        </div>
-                    </div>
+                <p class="causes-one__text mt-2">기부 기관/개인 명</p>
+              </div>
+              <div
+                class="causes-one__progress" 
+                style="background-color: #fff; padding: 25px 25px 21px !important;"
+              >
+                <div class="causes-one__goals">
+                  <p class="mb-2">2023.02.16~2023.03.16</p>
                 </div>
-            </div>
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <!--Causes Page Single-->
-                <div class="causes-one__single">
-                    <div class="causes-one__img">
-                        <div class="causes-one__img-box">
-                            <img src="assets/images/resources/causes-page-img-6.jpg" alt="">
-                            <a href="causes-details.html">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                        </div>
-                        <div class="causes-one__category">
-                            <span>Medical</span>
-                        </div>
-                    </div>
-                    <div class="causes-one__content">
-                        <h3 class="causes-one__title">
-                            <a href="causes-details.html">School Counseling for Children</a>
-                        </h3>
-                        <p class="causes-one__text">There are not many of passages of lorem ipsum avail isn
-                            alteration donationa in form simply free.</p>
-                    </div>
-                    <div class="causes-one__progress">
-                        <div class="bar">
-                            <div class="bar-inner count-bar" data-percent="36%">
-                                <div class="count-text">36%</div>
-                            </div>
-                        </div>
-                        <div class="causes-one__goals">
-                            <p><span>$25,270</span> Raised</p>
-                            <p><span>$30,000</span> Goal</p>
-                        </div>
-                    </div>
+                <div class="hstack">
+                  <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
+                  <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
                 </div>
+              </div>
+              <div class="causes-one__progress">
+                  <div class="bar">
+                      <div class="bar-inner count-bar" data-percent="36%">
+                          <div class="count-text">36%</div>
+                      </div>
+                  </div>
+                  <div class="causes-one__goals">
+                      <p>0%</p>
+                      <p>100%</p>
+                  </div>
+              </div>
             </div>
         </div>
+        <div class="col">
+            <!--Causes Page Single-->
+            <div class="causes-one__single">
+              <div class="causes-one__img">
+                <div class="causes-one__img-box">
+                  <img src="/src/main/resources/static/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
+                  <a href="causes-details.html">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="causes-one__content">
+                <div class="hstack">
+                  <span class="causes-one__title mb-0">
+                    <a class="" href="causes-details.html">기부 주제</a>
+                  </span>
+                </div>
+                <p class="causes-one__text mt-2">기부 기관/개인 명</p>
+              </div>
+              <div
+                class="causes-one__progress"
+                style="background-color: #fff; padding: 25px 25px 21px !important;"
+              >
+                <div class="causes-one__goals">
+                  <p class="mb-2">2023.02.16~2023.03.16</p>
+                </div>
+                <div class="hstack">
+                  <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
+                  <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
+                </div>
+              </div>
+              <div class="causes-one__progress">
+                  <div class="bar">
+                      <div class="bar-inner count-bar" data-percent="36%">
+                          <div class="count-text">36%</div>
+                      </div>
+                  </div>
+                  <div class="causes-one__goals">
+                      <p>0%</p>
+                      <p>100%</p>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <!--Causes Page Single-->
+            <div class="causes-one__single">
+              <div class="causes-one__img">
+                <div class="causes-one__img-box">
+                  <img src="/src/main/resources/static/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
+                  <a href="causes-details.html">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="causes-one__content">
+                <div class="hstack">
+                  <span class="causes-one__title mb-0">
+                    <a class="" href="causes-details.html">기부 주제</a>
+                  </span>
+                </div>
+                <p class="causes-one__text mt-2">기부 기관/개인 명</p>
+              </div>
+              <div
+                class="causes-one__progress"
+                style="background-color: #fff; padding: 25px 25px 21px !important;"
+              >
+                <div class="causes-one__goals">
+                  <p class="mb-2">2023.02.16~2023.03.16</p>
+                </div>
+                <div class="hstack">
+                  <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
+                  <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
+                </div>
+              </div>
+              <div class="causes-one__progress">
+                  <div class="bar">
+                      <div class="bar-inner count-bar" data-percent="36%">
+                          <div class="count-text">36%</div>
+                      </div>
+                  </div>
+                  <div class="causes-one__goals">
+                      <p>0%</p>
+                      <p>100%</p>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <!--Causes Page Single-->
+            <div class="causes-one__single">
+              <div class="causes-one__img">
+                <div class="causes-one__img-box">
+                  <img src="/src/main/resources/static/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
+                  <a href="causes-details.html">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="causes-one__content">
+                <div class="hstack">
+                  <span class="causes-one__title mb-0">
+                    <a class="" href="causes-details.html">기부 주제</a>
+                  </span>
+                </div>
+                <p class="causes-one__text mt-2">기부 기관/개인 명</p>
+              </div>
+              <div
+                class="causes-one__progress"
+                style="background-color: #fff; padding: 25px 25px 21px !important;"
+              >
+                <div class="causes-one__goals">
+                  <p class="mb-2">2023.02.16~2023.03.16</p>
+                </div>
+                <div class="hstack">
+                  <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
+                  <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
+                </div>
+              </div>
+              <div class="causes-one__progress">
+                  <div class="bar">
+                      <div class="bar-inner count-bar" data-percent="36%">
+                          <div class="count-text">36%</div>
+                      </div>
+                  </div>
+                  <div class="causes-one__goals">
+                      <p>0%</p>
+                      <p>100%</p>
+                  </div>
+              </div>
+            </div>
+          </div>
+        
+        
+      </div>
     </div>
-</section>
-<!--Causes One End-->
-
+  </section>
+  <!-- pagenation -->
+  <div class="archive-pages">
+                    <ul>
+                        
+                        <li class="previous"><a href="#" title="previous page"></a></li>
+                        <li class="selected">1</li>
+                        <li><a href="#" title="Pagina 2">2</a></li>
+                        <li><a href="#" title="Pagina 3">3</a></li>
+                        <li><a href="#" title="Pagina 4">4</a></li>
+                        <li><a href="#" title="Pagina 5">5</a></li>
+                        <li class="next"><a href="#" title="next page"></a></li>
+                      </ul>
+                </div>
   <!-- 여기 까지 작성 -->
 
   <!--Site Footer One Start-->

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <body>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Insert title here</title>
@@ -50,14 +50,19 @@
       href="../../static//lib/tiny-slider/tiny-slider.min.css"
     />
     <link rel="stylesheet" href="../../static//lib/reey-font/stylesheet.css" />
+    <link
+      rel="stylesheet"
+      href="../../static/css/longsiru/donated-board-detail.css"
+    />
 
     <!-- template styles -->
     <link rel="stylesheet" href="../../static/css/halpes.css" />
     <link rel="stylesheet" href="../../static/css/halpes-responsive.css" />
     <link rel="stylesheet" href="../../static/css/layout1.css" />
-
-    <!-- admin_sharing_merchandise_control css -->
-    <link rel="stylesheet" href="/src/main/resources/static/css/dist/sol/admin_sharing_merchandise_control.css" />
+    <link
+      rel="stylesheet"
+      href="../../static/css/longsiru/admin-donation-request-detail.css"
+    />
   </head>
   <body>
     <div class="preloader">
@@ -243,79 +248,140 @@
       <!-- mobile-nav -->
 
       <!-- 여기서 부터 작성  -->
-      <section>
-        <div class="container my-5">
-            <h1 class="text-center">나눔 상품 관리</h1>
-        </div>
-        <div>
-            <div class="hstack">
-          <div class="mx-auto my-5 p-3">
-            <table class="table">
-            <thead>
-              <tr class="border-top ">
-                <th><input type="checkbox" name="" value="" /></th>
-                <th>번호</th>
-                <th>작성자</th>
-                <th>글제목</th>
-                <th>상품명</th>
-                <th>신청일자</th>
-                <th>게시기간</th>
-                <th>진행상황</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th><input type="checkbox" name="" value="" /></th>
-                <td>1</td>
-                <td>솔방울46</td>
-                <td>글제목 입니다.</td>
-                <td>아이폰 xs max</td>
-                <td>2023/02/20</td>
-                <td>2023/02/20~2023/03/20</td>
-                <td><button class="admin_standby_btn">승인대기</button></td>
-              </tr>
-              <tr>
-                <th><input type="checkbox" name="" value="" /></th>
-                <td>1</td>
-                <td>솔방울46</td>
-                <td>글제목 입니다.</td>
-                <td>아이폰 xs max</td>
-                <td>2023/02/20</td>
-                <td>2023/02/20~2023/03/20</td>
-                <td><button class="admin_standby_btn">승인대기</button></td>
-              </tr>
-              <tr>
-                <th><input type="checkbox" name="" value="" /></th>
-                <td>1</td>
-                <td>솔방울46</td>
-                <td>글제목 입니다.</td>
-                <td>아이폰 xs max</td>
-                <td>2023/02/20</td>
-                <td>2023/02/20~2023/03/20</td>
-                <td><button class="admin_approve_btn">승인완료</button></td>
-              </tr>
-            </tbody>
-          </table>
+
+      <!--기부 완료 게시판 상세 시작-->
+      <section class="news-details">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12">
+              <div class="news-details__left">
+                <div class="col-12 mx-auto">
+                  <div
+                    class="swiper mySwiper position-relative overflow-hidden"
+                  >
+                    <div class="swiper-wrapper">
+                      <div class="swiper-slide">
+                        <img
+                          src="https://picsum.photos/id/104/1920/1080"
+                          alt=""
+                        />
+                      </div>
+                      <div class="swiper-slide">
+                        <img
+                          src="https://picsum.photos/id/53/1920/1080"
+                          alt=""
+                        />
+                      </div>
+                      <div class="swiper-slide">
+                        <img
+                          src="https://picsum.photos/id/840/1920/1080"
+                          alt=""
+                        />
+                      </div>
+                      <div class="swiper-slide">
+                        <img
+                          src="https://picsum.photos/id/338/1920/1080"
+                          alt=""
+                        />
+                      </div>
+                      <div class="swiper-slide">
+                        <img
+                          src="https://picsum.photos/id/18/1920/1080"
+                          alt=""
+                        />
+                      </div>
+                      <div class="swiper-slide">
+                        <img
+                          src="https://picsum.photos/id/87/1920/1080"
+                          alt=""
+                        />
+                      </div>
+                      <div class="swiper-slide">
+                        <img
+                          src="https://picsum.photos/id/77/1920/1080"
+                          alt=""
+                        />
+                      </div>
+                      <div class="swiper-slide">
+                        <img
+                          src="https://picsum.photos/id/38/1920/1080"
+                          alt=""
+                        />
+                      </div>
+                      <div class="swiper-slide">
+                        <img
+                          src="https://picsum.photos/id/294/1920/1080"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                    <div class="swiper-button-next">&gt;&gt;</div>
+                    <div class="swiper-button-prev">&lt;&lt;</div>
+                  </div>
+                </div>
+
+                <div class="news-details__content">
+                  <div class="content-detail-nav">
+                    <ul class="list-unstyled news-details__meta navleft">
+                      <li><a href="#">나눔포인트목표</a></li>
+                    </ul>
+                    <ul class="list-unstyled news-details__meta navright">
+                      <li>기부기관/개인 명</li>
+                      <li>기관주소</li>
+                      <li>담당자명</li>
+                    </ul>
+                  </div>
+
+                  <h3 class="news-details__title">기부 요청 주제</h3>
+                  <div class="donation-object">
+                    <ul>
+                      <li>기부대상</li>
+                      <li>신/청/일</li>
+                    </ul>
+                  </div>
+                  <p class="news-details__text-one">
+                    Tliq is notm hendr erit a augue insu image pellen tes que id
+                    erat quis sollicitud. Lorem ipsum dolor sit amet,
+                    consectetur adipiscing ullam blandit hendrerit faucibus
+                    suspendisse. There are many variations of passages of Lorem
+                    Ipsum available, but the majority have suffered alteration
+                    in some form, by injected humour, or randomised words which
+                    don't look even slightly believable. If you are going to use
+                    a passage of Lorem Ipsum, you need to be sure there isn't
+                    anything embarrassing hidden in the middle of text.
+                  </p>
+                  <p class="news-details__text-two">
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book. It has survived not only five centuries,
+                    but also the leap into electronic typesetting, remaining
+                    essentially unchanged. It was popularised in the 1960s with
+                    the release of Letraset sheets containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum ley
+                    of type and scrambled it to make a type specimen book.
+                  </p>
+                  <p class="news-details__text-three">
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book. It has survived not only five centuries,
+                    but also the leap into electronic typesetting, remaining
+                    essentially unchanged. It was popularised in the 1960s with
+                    the release of Letraset sheets containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including version.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        </div>
-        </div>
-         <div class="archive-pages">
-                    <ul>
-                        
-                        <li class="previous"><a href="#" title="previous page"></a></li>
-                        <li class="selected">1</li>
-                        <li><a href="#" title="Pagina 2">2</a></li>
-                        <li><a href="#" title="Pagina 3">3</a></li>
-                        <li><a href="#" title="Pagina 4">4</a></li>
-                        <li><a href="#" title="Pagina 5">5</a></li>
-                        <li class="next"><a href="#" title="next page"></a></li>
-                      </ul>
-                </div>
-            </div>
-        </div>
-    </section>
       </section>
+      <!-- 기부 완료 게시판 상세 끝-->
 
       <!-- 여기 까지 작성 -->
 

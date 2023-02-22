@@ -1,0 +1,160 @@
+.admin_md_ctr_select {
+  width: 100px;
+}
+
+.admin_md_ctr_btn {
+  vertical-align: middle;
+  border: none;
+  outline: none !important;
+  color: #191c26;
+  background-color: #fff;
+  font-size: 10px;
+  padding: 10px 18px;
+  box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.25);
+}
+
+.admin_approve_btn {
+  border: none;
+  background-color: #15c8a0;
+  color: #fff;
+}
+
+.admin_standby_btn {
+  border: none;
+  background-color: #191c26;
+  color: #fff;
+}
+
+.archive-pages li a:hover {
+  color: #000;
+}
+.archive-pages li.selected {
+  color: white;
+}
+.archive-pages a,
+.archive-pages a:visited {
+  color: #555;
+}
+.archive-pages li.selected {
+  text-align: center;
+  color: white;
+  padding: 5px;
+  width: 50px;
+  line-height: 40px;
+  background: #15c8a0;
+}
+.archive-pages li.selected:hover {
+  cursor: default;
+  background: #15c8a0;
+}
+.archive-pages li:hover {
+  background: -moz-linear-gradient(
+    top,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(196, 196, 196, 1) 100%
+  );
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0%, rgba(255, 255, 255, 0)),
+    color-stop(100%, rgba(196, 196, 196, 1))
+  );
+  background: -webkit-linear-gradient(
+    top,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(196, 196, 196, 1) 100%
+  );
+  background: -o-linear-gradient(
+    top,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(196, 196, 196, 1) 100%
+  );
+  background: -ms-linear-gradient(
+    top,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(196, 196, 196, 1) 100%
+  );
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(196, 196, 196, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#c4c4c4',GradientType=0 );
+}
+.archive-pages li a {
+  cursor: pointer;
+  line-height: 40px;
+  display: block;
+  padding: 5px;
+  float: left;
+  width: 50px;
+  text-align: center;
+}
+.archive-pages {
+  align-items: center;
+  padding: 5px;
+  margin-top: 30px;
+  font-size: 0.9em;
+}
+.archive-pages ul {
+  margin: 0px;
+  padding: 10px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+.archive-pages li {
+  border: 1px solid silver;
+  float: left;
+}
+.archive-pages .first a,
+.archive-pages .previous a,
+.archive-pages .next a,
+.archive-pages .last a {
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-transition-duration: 300ms;
+  -webkit-transition-property: width, text-indent, letter-spacing;
+  -webkit-transition-timing-function: ease;
+  -moz-transition-duration: 300ms;
+  -moz-transition-property: width, text-indent, letter-spacing;
+  -moz-transition-timing-function: ease;
+  -o-transition-duration: 300ms;
+  -o-transition-property: width, text-indent, letter-spacing;
+  -o-transition-timing-function: ease;
+}
+.archive-pages a {
+  text-decoration: none;
+}
+.archive-pages .next a:after,
+.archive-pages .last a:after {
+  content: " »";
+}
+.archive-pages .first a:before,
+.archive-pages .previous a:before {
+  content: "« ";
+}
+.archive-pages .first a:hover,
+.archive-pages .previous a:hover,
+.archive-pages .next a:hover,
+.archive-pages .last a:hover {
+  width: 100px;
+  text-indent: 0;
+  letter-spacing: 0px;
+}
+.archive-pages .first a {
+  text-indent: +6px;
+  letter-spacing: 10px;
+}
+.archive-pages .previous a {
+  text-indent: +7px;
+  letter-spacing: 10px;
+}
+.archive-pages .next a {
+  letter-spacing: 10px;
+}
+.archive-pages .last a {
+  text-indent: -154px;
+  letter-spacing: 10px;
+}
