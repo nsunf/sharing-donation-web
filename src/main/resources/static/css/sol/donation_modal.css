@@ -1,0 +1,46 @@
+.d_modal_color {
+  color: #15c8a0;
+}
+
+.d_modal_font_color {
+  color: #000;
+}
+
+.d_modal_font_color_font_md {
+  color: #000;
+  font-size: medium;
+}
+
+.d_modal_font_color_font_lg {
+  color: #000;
+  font-size: larger;
+}
+
+.d_modal_back_color {
+  background-color: #15c8a0;
+  color: #fff;
+}
+
+.btn:hover {
+  background-color: #15c8a0;
+  color: #fff;
+}
+
+.d_modal_font_color_font_xxlg {
+  font-size: xx-large;
+  color: #15c8a0;
+}
+
+.d_modal_font_color_font_xlg {
+  font-size: x-large;
+  color: #15c8a0;
+}
+
+.d_modal_border {
+  border-top: solid 1px black;
+  padding-top: 45px;
+}
+
+.d_letter_spacing {
+  letter-spacing: 3px;
+}
