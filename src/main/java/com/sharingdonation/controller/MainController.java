@@ -42,6 +42,10 @@ public class MainController {
 	public String myprivacy() {
 		return "mypage-privacy";
 	}
+	@GetMapping("/mypage/enterpriceprivacy")
+	public String myEnterpricePrivacy() {
+		return "mypage-Enterprice-privacy";
+	}
 	
 
 }
