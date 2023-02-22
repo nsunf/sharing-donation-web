@@ -1,0 +1,68 @@
+.sidebar__nickname {
+  color: var(--thm-primary);
+}
+
+.sidebar__profile p {
+  margin: 0;
+}
+
+.profile__label {
+  color: var(--thm-primary);
+  font-size: 16px;
+}
+
+.profile__value {
+  padding-bottom: 16px;
+  font-size: 18px;
+}
+
+.nav__item {
+  padding: 0;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.nav__item--selected {
+  color: var(--thm-primary);
+}
+
+.nav__item:hover {
+  color: var(--thm-primary);
+}
+
+.status {
+  display: inline-block;
+  padding: 0 24px;
+  border-radius: 16px;
+  color: white;
+  font-size: 14px;
+}
+
+.status-green {
+  background: var(--thm-primary);
+}
+
+.status-yellow {
+  background: var(--bs-yellow);
+}
+
+.status-gray {
+  background: var(--thm-gray);
+}
+
+.page-link {
+  transition: 300ms;
+}
+
+.page-item.active > .page-link {
+  background: var(--thm-primary);
+  border: 1px solid var(--thm-primary);
+}
+
+.page-item:not(.active) > .page-link {
+  color: var(--thm-primary);
+}
+
+.page-item:not(.active):hover > .page-link {
+  filter: brightness(0.9);
+}
