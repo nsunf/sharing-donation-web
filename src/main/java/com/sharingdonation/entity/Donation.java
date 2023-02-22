@@ -13,6 +13,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.sharingdonation.dto.DonationFormDto;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -69,5 +71,16 @@ public class Donation {
 	@ColumnDefault("N")
 	private String delYn;
 	
-	
+	public void updateDonation(DonationFormDto donationFormDto) {
+		this.donationName = donationFormDto.getDonationName();
+		this.donationPerson = donationFormDto.getDonationPerson();
+		this.donationTel = donationFormDto.getDonationTel();
+		this.subject = donationFormDto.getSubject();
+		this.detail = donationFormDto.getDetail();
+		this.price = donationFormDto.getPrice();
+		this.startDate = donationFormDto.getStartDate();
+		this.endDate = donationFormDto.getEndDate();
+		this.address = donationFormDto.getAddress();
+		this.goalPoint = donationFormDto.getGoalPoint();
+	}
 }

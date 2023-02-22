@@ -8,7 +8,7 @@ import com.sharingdonation.dto.ListDonationDto;
 import com.sharingdonation.entity.Donation;
 
 public interface DonationRepositoryCustom {
-	Page<Donation> getDonationPage(DonationSearchDto donationSearchDto, Pageable pageable);
+	Page<Donation> getAdminDonationPage(DonationSearchDto donationSearchDto, Pageable pageable);
 	
 	Page<ListDonationDto> getListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable);
 }
