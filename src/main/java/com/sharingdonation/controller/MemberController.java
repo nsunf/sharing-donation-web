@@ -7,31 +7,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sharingdonation.dto.DonationFormDto;
-import com.sharingdonation.serviece.DonationService;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class DonationController {
-	
-	private final DonationService donationService;
-	
-	@GetMapping(value = "/donation")
-	public String donation(Model model) {
+public class MemberController {
+
+	@GetMapping(value = "/member")
+	public String member(Model model) {
 		model.addAttribute(model);
-		return "donation/donationForm";
+		return "member/memberForm";
 	}
 	
-	@PostMapping(value = "/donation")
-	public String donation() {
+	@PostMapping(value = "/member")
+	public String memer() {
 		return "redirect:/";
 	}
 	
-	@GetMapping(value = "/donation/{donationId}")
+	@GetMapping(value = "/member/{memberId}")
 	public String donationDtl(Model model, @PathVariable("donationId") Long DonationId) {
-		DonationFormDto donationFormDto = donationService.getDonationDtl(DonationId);
-		model.addAttribute("donation", donationFormDto);
-		return "donation/donationDtl";
+		
+//		model.addAttribute("member", memberFormDto);
+		return "member/memberDtl";
 	}
 }

@@ -1,14 +1,23 @@
 package com.sharingdonation.serviece;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+//import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sharingdonation.dto.DonationFormDto;
+import com.sharingdonation.dto.DonationImgDto;
+import com.sharingdonation.dto.DonationSearchDto;
+import com.sharingdonation.dto.ListDonationDto;
 import com.sharingdonation.entity.Donation;
 import com.sharingdonation.entity.DonationImg;
 import com.sharingdonation.repository.DonationImgRepository;
@@ -40,5 +49,50 @@ public class DonationService {
 			donationImgService.saveDonationImg(donationImg, donationImgFileList.get(i));
 		}
 		return donation.getId();
+	}
+	
+	@Transactional(readOnly = true)
+	public DonationFormDto getDonationDtl(Long donationId) {
+		List<DonationImg> donationImgList = donationImgRepository.findByDonationIdOrderByIdAsc(donationId);
+		List<DonationImgDto> donationImgDtoList = new ArrayList<>();
+		
+		for(DonationImg donationImg : donationImgList) {
+			DonationImgDto donationImgDto = DonationImgDto.of(donationImg);
+			donationImgDtoList.add(donationImgDto);
+		}
+		
+		Donation donation = donationRepository.findById(donationId)
+				.orElseThrow(EntityNotFoundException::new);
+		
+		DonationFormDto donationFormDto = DonationFormDto.of(donation);
+		
+		donationFormDto.setDonationImgDtoList(donationImgDtoList);
+		
+		return donationFormDto;
+	}
+	
+	public Long updateDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList) throws Exception {
+		Donation donation = donationRepository.findById(donationFormDto.getId())
+				.orElseThrow(EntityNotFoundException::new);
+				
+		donation.updateDonation(donationFormDto);
+		
+		List<Long> donationImgIds = donationFormDto.getDonateionImgIds();
+		
+		for(int i = 0; i<donationImgFileList.size(); i++) {
+			donationImgService.updateDonationImg(donationImgIds.get(i), donationImgFileList.get(i));
+		}
+		
+		return donation.getId();
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<Donation> getAdminDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+		return donationRepository.getAdminDonationPage(donationSearchDto, pageable);
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<ListDonationDto> getListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+		return donationRepository.getListDonationPage(donationSearchDto, pageable);
 	}
 }

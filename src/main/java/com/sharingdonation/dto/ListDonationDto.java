@@ -11,15 +11,19 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ListDonationDto {
-	private Long id;
 	
-	private String donatinName;
+	public ListDonationDto(Member member) {
+		this.nickName = member.getNickName();
+	}
+	private Long id;
 	
 	private String imgUrl;
 	
 	private String subject;
 	
-//	private Member nickName; // todo member
+	private String nickName; // todo member
+	
+//	private int price;
 	
 	private LocalDate startDate;
 	
@@ -27,11 +31,22 @@ public class ListDonationDto {
 	
 	private Integer goalPoint;
 	
+//	private String confirmYn;
+//	
+//	private String done;
+//	
+//	private String delYn;
+	
+//	private String donationPerson;
+//	
+//	private String donationTel;
+	
 	@QueryProjection
-	public ListDonationDto(Long id, String donationName,  LocalDate startDate, LocalDate endDate, Integer goalPoint) { // Member nickName,
+	public ListDonationDto(Long id, String subject, String nickName, LocalDate startDate, LocalDate endDate, Integer goalPoint) { 
+		// Member nickName, , String confirmYn, String done, String delYn
 		this.id = id;
-		this.donatinName = donationName;
-//		this.nickName = nickName;
+		this.subject = subject;
+		this.nickName = nickName;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.goalPoint = goalPoint;
