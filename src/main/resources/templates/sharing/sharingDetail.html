@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout1}"
+>
+<head>
+<meta charset="UTF-8">
+<title>나눔 상품 상세</title>
+<link rel="stylesheet" href="/css/nsunf/shareDetail.css">
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+	
+		<section class="image-slider container mt-5">
+    <div class="row">
+      <div class="col-12 col-md-10 col-xl-8 mx-auto">
+        <div class="swiper mySwiper position-relative overflow-hidden">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="https://picsum.photos/id/104/1920/1080" alt=""></div>
+            <div class="swiper-slide"><img src="https://picsum.photos/id/53/1920/1080" alt=""></div>
+            <div class="swiper-slide"><img src="https://picsum.photos/id/840/1920/1080" alt=""></div>
+            <div class="swiper-slide"><img src="https://picsum.photos/id/338/1920/1080" alt=""></div>
+            <div class="swiper-slide"><img src="https://picsum.photos/id/18/1920/1080" alt=""></div>
+            <div class="swiper-slide"><img src="https://picsum.photos/id/87/1920/1080" alt=""></div>
+            <div class="swiper-slide"><img src="https://picsum.photos/id/77/1920/1080" alt=""></div>
+            <div class="swiper-slide"><img src="https://picsum.photos/id/38/1920/1080" alt=""></div>
+            <div class="swiper-slide"><img src="https://picsum.photos/id/294/1920/1080" alt=""></div>
+          </div>
+          <div class="swiper-button-next">&gt;&gt;</div>
+          <div class="swiper-button-prev">&lt;&lt;</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-10 col-xl-8 mx-auto">
+        <div class="hstack py-3 px-4" style="background: #eff5f4;">
+          <div>
+            <h3 class="author-name">닉네임</h3>
+            <span class="sharing-area">지역명</span>
+          </div>
+          <div class="ms-auto hstack">
+            <div class="author-energy">에너지 <span>83%</span></div>
+            <!-- class 이름으로 아이콘 이미지 지정 -->
+            <div class="battery battery-75 ms-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-10 col-md-8 col-xl-6 mx-auto">
+        <h3 style="font-size: 18px; font-weight: bold;">나눔 물품명</h3>
+        <div style="font-size: 13px;">물품 카테고리 | 19시간 전</div>
+        <div class="hstack">
+          <div class="vstack fw-lighter" style="font-size: 12px; line-height: initial;">
+            <span class="m-0">게시기간</span>
+            <span class="me-auto">yyyy-mm-dd ~ yyyy-mm-dd</span>
+          </div>
+          <div class="ms-auto">
+            <button class="like-btn d-flex justify-content-center align-items-center">
+              <div class="like like-false"></div>
+            </button>
+          </div>
+        </div>
+
+        <hr class="w-100"/>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-10 col-md-8 col-xl-6 mx-auto" style="font-size: 14px; line-height: 200%;">
+        Nulla tincidunt at ut nec elit neque bibendum interdum ut. Volutpat magna quis ullamcorper sed accumsan egestas. Lectus ipsum commodo sodales adipiscing. 
+        Proin sed tincidunt quam ligula senectus. Pellentesque id quis ante nibh. Amet molestie ut lacus volutpat nisi sed elementum. Risus at non nunc pellentesque nulla cras congue. 
+
+        Lobortis tortor praesent lectus in donec vulputate imperdiet est consectetur. 
+        A scelerisque aliquam ac pharetra. Diam pellentesque non in duis ut id.
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-12 col-md-10 col-xl-8 d-flex mx-auto">
+        <div class="ms-auto">
+          <a class="causes-details__share-btn thm-btn py-2 px-4" href="#">수정</a>
+          <button class="causes-details__share-btn thm-btn py-2 px-3 ms-3" data-bs-toggle="modal" data-bs-target="#registModal">사연 등록</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="registModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title modal-title-custom fs-5" id="exampleModalLabel">나눔 글제목</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div>나눔 상품 명</div>
+          <textarea name="" id="" class="form-control" cols="30" rows="10"></textarea>
+          <div class="hstack">
+            <span class="ms-auto">0/1000byte</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-custom btn-custom-close" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-custom btn-custom-regist">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+	</th:block>
+	<th:block layout:fragment="script-bottom">
+		<!-- Initialize Swiper -->
+		<script>
+			var swiper = new Swiper(".mySwiper", {
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+				},
+			});
+		</script>
+	</th:block>
+</body>
+</html>
