@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>header</title>
+  </head>
+  <body>
+    <div th:fragment="mypageSide"class="row row-cols-2 row-cols-lg-1 border rounded-3 w-100 py-4 mt-4 mt-md-0 align-items-center">
+      <div class="col px-3 px-md-5">
+        <h3 class="sidebar__nickname text-center py-2">닉네임</h3>
+        <div class="sidebar__profile">
+          <p class="profile__label">이름</p>
+          <p class="profile__value">김김김</p>
+          <p class="profile__label">가입날짜</p>
+          <p class="profile__value">yyyy-mm-dd</p>
+        </div>
+      </div>
+      <hr class="d-none d-lg-block"/>
+      <div class="col list-group px-3 px-md-5" style="list-style: none;">
+        <a class="nav__item" href="">개인정보수정</a>
+        <a class="nav__item" href="">나눔등록내역</a>
+        <a class="nav__item" href="">나눔받은내역</a>
+        <a class="nav__item" href="">사연내역</a>
+        <a class="nav__item nav__item--selected" href="">기부신청내역</a>
+      </div>
+    </div>
+  </body>
+</html>
