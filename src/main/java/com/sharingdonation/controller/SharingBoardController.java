@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sharingdonation.dto.SharingBoardDto;
-import com.sharingdonation.serviece.SharingBoardService;
+import com.sharingdonation.service.SharingBoardService;
 
 import lombok.RequiredArgsConstructor;
 

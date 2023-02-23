@@ -1,5 +1,12 @@
 package com.sharingdonation.dto;
 
-public class SharingDto {
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+public class SharingDto {
+	private Long id;
+
+	private String name;
 }
