@@ -35,9 +35,11 @@ public class Story {
 	@JoinColumn(name="member_id")
 	private Member member;
 	
+	@Column(nullable = false, columnDefinition = "varchar(1000)")
 	private String content;
 	
 	private LocalDateTime regTime;
 	
+	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String chooseYn;
 }

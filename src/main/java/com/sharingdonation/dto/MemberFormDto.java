@@ -1,5 +1,7 @@
 package com.sharingdonation.dto;
 
+import java.time.LocalDate;
+
 import javax.validation.constraints.NotBlank;
 
 import lombok.Getter;
@@ -11,6 +13,7 @@ public class MemberFormDto {
 	@NotBlank(message = "이름은 필수 입력 값입니다.")
 	private String name;
 	
+	@NotBlank(message = "이메일은 필수 입력 값입니다.")
 	private String email;
 	
 	private String password;
@@ -22,7 +25,7 @@ public class MemberFormDto {
 	@NotBlank(message = "닉/사업자명은 필수 입력 값입니다.")
 	private String nickName;
 	
-	private String birth;
+	private LocalDate birth;
 	
 	private String comNum;
 	

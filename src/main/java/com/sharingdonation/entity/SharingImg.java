@@ -29,12 +29,16 @@ public class SharingImg {
 	@JoinColumn(name="shring_id")
 	private Sharing sharing;
 	
+	@Column(nullable = false, columnDefinition = "varchar(100)")
 	private String imgName;
 	
+	@Column(nullable = false, columnDefinition = "varchar(100)")
 	private String oriImgName;
 	
+	@Column(nullable = false, columnDefinition = "varchar(100)")
 	private String imgUrl;
 	
+	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String repimgYn;
 	
 	

@@ -40,8 +40,10 @@ public class Sharing {
 	@JoinColumn(name="area_id")
 	private Area area;
 	
+	@Column(nullable = false, columnDefinition = "varchar(100)")
 	private String name;
 	
+	@Column(nullable = false, columnDefinition = "text")
 	private String detail;
 	
 	private LocalDate startDate;
@@ -58,10 +60,13 @@ public class Sharing {
 	
 	private String modifyBy;
 	
+	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String confirmYn;
 	
+	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String done;
 	
+	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String delYn;
 	
 }
