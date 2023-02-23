@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="donateion_board")
+@Table(name="donation_board")
 @Getter
 @Setter
 @ToString
@@ -28,7 +28,7 @@ public class DonationBoard {
 	private Long id;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="donateion_id")
+	@JoinColumn(name="donation_id")
 	private Donation donation;
 	
 	@Column(nullable = false, columnDefinition = "varchar(100)")
