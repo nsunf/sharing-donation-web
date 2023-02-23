@@ -32,11 +32,15 @@ public class DonationBoardImg {
 	private DonationBoard donationBoard;
 //	private DonationBoardImg donationBoardImg;
 	
+	@Column(nullable = false, length = 100)
 	private String imgName;
 	
+	@Column(nullable = false, length = 100)
 	private String oriImgName;
 	
+	@Column(nullable = false, length = 100)
 	private String imgUrl;
 	
+	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String repimgYn;
 }

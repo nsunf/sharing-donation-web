@@ -19,7 +19,7 @@ public class DonationController {
 	
 	@GetMapping(value = "/donation")
 	public String donation(Model model) {
-		model.addAttribute(model);
+//		model.addAttribute(model);
 		return "donation/donationForm";
 	}
 	
@@ -30,8 +30,8 @@ public class DonationController {
 	
 	@GetMapping(value = "/donation/{donationId}")
 	public String donationDtl(Model model, @PathVariable("donationId") Long DonationId) {
-		DonationFormDto donationFormDto = donationService.getDonationDtl(DonationId);
-		model.addAttribute("donation", donationFormDto);
+//		DonationFormDto donationFormDto = donationService.getDonationDtl(DonationId);
+//		model.addAttribute("donation", donationFormDto);
 		return "donation/donationDtl";
 	}
 }

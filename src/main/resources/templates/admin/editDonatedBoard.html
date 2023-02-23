@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout1}"
+>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link
+	rel="stylesheet"
+	href="/css/longsiru/donation-request-form.css"
+/>
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+
+		<section class="banner d-flex justify-content-center align-items-center">
+        <h2 class="banner__title">기부 완료 게시판 등록/수정</h2>
+      </section>
+
+      <section class="my-5">
+        <form
+          class="container"
+          action=""
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <div class="row">
+            <div class="col-8 mx-auto">
+              <label class="input-label w-100" for="">
+                <span class="d-block ms-2 mb-1">기부 요청 주제</span>
+                <input
+                  class="input-box w-100 p-3"
+                  type="text"
+                  placeholder="기부 요청 주제"
+                />
+              </label>
+
+              <ul class="request-institution">
+                <li>
+                  <label class="input-label w-100" for="">
+                    <span class="d-block ms-2 mb-1">기부 요청 기관명</span>
+                    <input
+                      class="input-box w-100 p-3"
+                      type="text"
+                      placeholder="기부 요청 기관명"
+                    />
+                  </label>
+                </li>
+                <li class="request-institution reright">
+                  <label class="input-label w-100" for="">
+                    <span class="d-block ms-2 mb-1">기부 요청 담당자명</span>
+                    <input
+                      class="input-box w-100 p-3"
+                      type="text"
+                      placeholder="기부 요청 담당자명"
+                    />
+                  </label>
+                </li>
+              </ul>
+
+              <label class="input-label w-100" for="">
+                <span class="d-block ms-2 mb-1">기관 지역</span>
+                <input
+                  class="input-box w-100 p-3"
+                  type="text"
+                  placeholder="기부 지역"
+                />
+              </label>
+
+              <label class="input-label w-100" for="">
+                <span class="d-block ms-2 mb-1">기부반는 대상</span>
+                <input
+                  class="input-box w-100 p-3"
+                  type="text"
+                  placeholder="기부받는 대상"
+                />
+              </label>
+
+              <label class="input-label w-100" for="">
+                <span class="d-block ms-2 mb-1">기부 만료일</span>
+                <input
+                  class="input-box w-100 p-3"
+                  type="text"
+                  placeholder="기부 만료일"
+                />
+              </label>
+
+              <label class="input-label w-100" for="">
+                <span class="d-block ms-2 mb-1">기부 완료 상세설명</span>
+                <textarea
+                  class="input-box w-100 p-3"
+                  type="text"
+                  placeholder="나눔 물품 상세 설명"
+                ></textarea>
+              </label>
+
+              <label class="input-label w-100">
+                <span class="d-block ms-2 mb-1">이미지 등록</span>
+                <input class="img-input w-100" type="file" accept="image/*" multiple/>
+              </label>
+            </div>
+          </div>
+
+          <div class="row mt-5">
+            <div class="col-8 mx-auto">
+              미리보기
+              <div class="img-preview-list row row-cols-4 g-4">
+              
+<!--                 <div class="col">
+                  <img
+                    class="preview-img"
+                    src="https://picsum.photos/id/237/720/480"
+                    alt=""
+                  />
+                </div>
+ -->                
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-8 mx-auto hstack">
+              <button class="custom-btn custom-btn-del ms-auto">삭제</button
+              ><!-- 관리자만-->
+              <button class="custom-btn ms-3">수정</button>
+              <button class="custom-btn ms-3">제출</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+		<script src="/js/imgInputPreview.js"></script>
+	</th:block>
+</body>
+</html>

@@ -31,9 +31,12 @@ public class SharingBoard {
 	@JoinColumn(name = "sharing_id")
 	private Sharing sharing; //나눔상품
 	
-	private String subject; //나눔 완료 게시글 제목
+	@Column(nullable = false, columnDefinition = "varchar(100)")
+	private String subject;
 	
-	private String content; //게시글 내용
+	@Column(nullable = false, columnDefinition = "text")
+	private String content;
 	
-	private LocalDateTime regTime; //작성  날짜  
+	@Column(nullable = false)
+	private LocalDateTime regTime;
 }

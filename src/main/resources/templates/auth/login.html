@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout1}"
+>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/ukzi/login.css" />
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+	
+	<section class="login-content auto-min-height">
+    <div class="img-banner"></div>
+    <div class="login-form">
+        <form>
+            <div><h1 class="h1">로그인</h1></div>
+            <div class="atag">
+                <a href="/" class="text-1">홈으로</a>
+                <a class="slash">/</a> 
+                <a class="text-2">로그인</a>
+            </div>
+
+            <div><a class="text-3">로그인</a></div>
+            <div>이메일</div>
+            <input type="text" name="email" class="text-field" placeholder="아이디를 입력해주세요.">
+            <div>비밀번호</div>
+            <input type="text" name="password" class="text-field" placeholder="비밀번호를 입력해주세요.">
+            <input type="submit" value="로그인" class="submit-btn">
+        </form>
+        
+        <div class="links">
+            <a href="#">비밀번호를 잊어버리셨나요?</a>
+        </div>
+    </div>
+  </section>
+
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+		<script src="/js/setAutoHeight.js"></script>
+	</th:block>
+</body>
+</html>

@@ -40,28 +40,36 @@ public class Sharing {
 	@JoinColumn(name="area_id")
 	private Area area; //지역
 	
-	private String name; //나눔물품명
+	@Column(nullable = false, columnDefinition = "varchar(100)")
+	private String name;
 	
-	private String detail; //물품 상세설명
+	@Column(nullable = false, columnDefinition = "text")
+	private String detail;
 	
 	private LocalDate startDate; //게시 시작일
 	
 	private LocalDate endDate; //게시 마감일
 	
-	private int point; //기부포인트
+	@Column(nullable = false, columnDefinition = "int(11) default 0")
+	private int point;
 	
-	private LocalDateTime regTime; //게시글 등록날짜
+	@Column(nullable = false)
+	private LocalDateTime regTime;
 	
 	private LocalDateTime upDateTime; //게시글 수정날짜
 	
-	private String createBy; //등록자
+	@Column(nullable = false)
+	private String createBy;
 	
 	private String modifyBy; //수정자
 	
-	private String confirmYn; //승인여부
+	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
+	private String confirmYn;
 	
-	private String done; //완료여부
+	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
+	private String done;
 	
-	private String delYn; //삭제여부
+	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
+	private String delYn;
 	
 }

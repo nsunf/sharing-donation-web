@@ -24,11 +24,15 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@Column(nullable = false, columnDefinition = "varchar(100)")
 	private String categoryName;
 	
+	@Column(nullable = false, columnDefinition = "varchar(100)")
 	private String imgName;
 	
+	@Column(nullable = false, columnDefinition = "varchar(100)")
 	private String imgUrl;
 	
+	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String delYn;
 }
