@@ -17,30 +17,35 @@
 		</section>
 
 		<section class="my-5">
-			<form class="container" action="" method="post" enctype="multipart/form-data">
+			<form class="container" th:action="@{/sharing/create}" method="post" th:object="${sharingFormDto}" enctype="multipart/form-data">
+				<input type="hidden" th:field="*{id}">
 				<div class="row">
 				 <div class="col-8 mx-auto">
 				 <label class="input-label">나눔 지역</label>
-				 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-						<option selected>지역을 선택해주세요.</option>
-						<option value="1">One</option>
-						<option value="2">Two</option>
-						<option value="3">Three</option>
+				 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" th:field="*{areaId}">
+						<option value="" selected>지역을 선택해주세요.</option>
+						<option th:each="categoryDto: ${categoryDtoList}">[[${categoryDto.categoryName}]]</option>
+						<option value="1">강남구</option>
+						<option value="2">서초구</option>
+						<option value="3">마포구</option>
 					</select>
+					<p class="text-danger fw-normal" th:if="${#fields.hasErrors('areaId')}" th:errors="*{areaId}"></p>
 
 					<label class="input-label w-100" for="">
 						<span class="d-block ms-2 mb-1">나눔 물품명</span>
-						<input class="input-box w-100 p-3" type="text" placeholder="나눔 물품명">
+						<input class="input-box w-100 p-3" type="text" th:field="*{name}" placeholder="나눔 물품명">
+						<p class="text-danger fw-normal" th:errors="*{name}"></p>
 					</label>
 
 					<label class="input-label w-100" for="">
 						<span class="d-block ms-2 mb-1">나눔 상세 설명</span>
-						<textarea class="input-box w-100 p-3" type="text" placeholder="나눔 물품 상세 설명"></textarea>
+						<textarea class="input-box w-100 p-3" type="text" th:field="*{content}" placeholder="나눔 물품 상세 설명"></textarea>
+						<p class="text-danger fw-normal" th:errors="*{content}"></p>
 					</label>
 
 					<label class="input-label w-100">
 						<span class="d-block ms-2 mb-1">물품 사진 등록</span>
-						<input class="img-input w-100" type="file" accept="image/*" multiple>
+						<input class="img-input w-100" type="file" name="sharingImgFileList" accept="image/*" multiple>
 					</label>
 				 </div>
 				</div>
@@ -59,7 +64,7 @@
 					<div class="col-8 mx-auto hstack">
 						<button class="custom-btn custom-btn-del ms-auto">삭제</button>
 						<button class="custom-btn ms-3">수정</button>
-						<button class="custom-btn ms-3">요청 제출</button>
+						<button class="custom-btn ms-3" type="submit">요청 제출</button>
 					</div>
 				</div>
 			</form>
