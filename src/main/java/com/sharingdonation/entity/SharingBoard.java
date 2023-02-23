@@ -31,8 +31,10 @@ public class SharingBoard {
 	@JoinColumn(name = "sharing_id")
 	private Sharing sharing;
 	
+	@Column(nullable = false, columnDefinition = "varchar(100)")
 	private String subject;
 	
+	@Column(nullable = false, columnDefinition = "text")
 	private String content;
 	
 	private LocalDateTime regTime;
