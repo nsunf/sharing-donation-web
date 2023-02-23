@@ -25,7 +25,7 @@ import lombok.ToString;
 public class Sharing {
 	@Id
 	@Column(name="sharing_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -24,7 +24,7 @@ import lombok.Setter;
 public class SharingHeart {
 	@Id
 	@Column(name="sharing_heart_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
