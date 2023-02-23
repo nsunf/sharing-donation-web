@@ -28,7 +28,7 @@ import lombok.Setter;
 public class Point {
 	@Id
 	@Column(name="point_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -24,7 +24,7 @@ import lombok.Setter;
 public class DonationBoardComment {
 	@Id
 	@Column(name="donation_board_comment")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
