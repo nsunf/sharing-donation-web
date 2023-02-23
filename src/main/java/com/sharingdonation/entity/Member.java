@@ -65,11 +65,14 @@ public class Member {
 		Member member = new Member();
 		member.setName(memberFormDto.getName());
 		member.setAddress(memberFormDto.getAddress());
-		member.setEmail(memberFormDto.getEmail());
 		member.setBirth(memberFormDto.getBirth());
+		member.setCellphone(memberFormDto.getCellphone());
+		member.setEmail(memberFormDto.getEmail());
 		
 		String password = passwordEncoder.encode(memberFormDto.getPassword());
 		member.setPassword(password);
+		
+		member.setNickName(memberFormDto.getNickName());
 		
 		member.setRole(Role.USER);
 		return member;
