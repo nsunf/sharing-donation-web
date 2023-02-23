@@ -23,11 +23,8 @@
 				 <div class="col-8 mx-auto">
 				 <label class="input-label">나눔 지역</label>
 				 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" th:field="*{areaId}">
-						<option value="" selected>지역을 선택해주세요.</option>
-						<option th:each="categoryDto: ${categoryDtoList}">[[${categoryDto.categoryName}]]</option>
-						<option value="1">강남구</option>
-						<option value="2">서초구</option>
-						<option value="3">마포구</option>
+						<option value=" " selected>지역을 선택해주세요.</option>
+						<option th:each="areaDto: ${areaDtoList}" th:value="${areaDto.id}">[[${areaDto.gugun}]]</option>
 					</select>
 					<p class="text-danger fw-normal" th:if="${#fields.hasErrors('areaId')}" th:errors="*{areaId}"></p>
 
