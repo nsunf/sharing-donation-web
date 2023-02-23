@@ -26,42 +26,42 @@ public class Sharing {
 	@Id
 	@Column(name="sharing_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Long id; //식별 아이디
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="category_id")
-	private Category category;
+	private Category category; //품목 카테고리
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="member_id")
-	private Member member;
+	private Member member; //회원
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="area_id")
-	private Area area;
+	private Area area; //지역
 	
-	private String name;
+	private String name; //나눔물품명
 	
-	private String detail;
+	private String detail; //물품 상세설명
 	
-	private LocalDate startDate;
+	private LocalDate startDate; //게시 시작일
 	
-	private LocalDate endDate;
+	private LocalDate endDate; //게시 마감일
 	
-	private int point;
+	private int point; //기부포인트
 	
-	private LocalDateTime regTime;
+	private LocalDateTime regTime; //게시글 등록날짜
 	
-	private LocalDateTime upDateTime;
+	private LocalDateTime upDateTime; //게시글 수정날짜
 	
-	private String createBy;
+	private String createBy; //등록자
 	
-	private String modifyBy;
+	private String modifyBy; //수정자
 	
-	private String confirmYn;
+	private String confirmYn; //승인여부
 	
-	private String done;
+	private String done; //완료여부
 	
-	private String delYn;
+	private String delYn; //삭제여부
 	
 }

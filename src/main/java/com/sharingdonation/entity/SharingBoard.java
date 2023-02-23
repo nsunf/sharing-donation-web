@@ -25,15 +25,15 @@ public class SharingBoard {
 	@Id
 	@Column(name="sharing_board_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Long id; //식별아이디
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sharing_id")
-	private Sharing sharing;
+	private Sharing sharing; //나눔상품
 	
-	private String subject;
+	private String subject; //나눔 완료 게시글 제목
 	
-	private String content;
+	private String content; //게시글 내용
 	
-	private LocalDateTime regTime;
+	private LocalDateTime regTime; //작성  날짜  
 }
