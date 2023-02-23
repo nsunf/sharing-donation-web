@@ -22,8 +22,10 @@ public class Area {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@Column(nullable= false, columnDefinition = "varchar(50)")
 	private String sido;
 	
+	@Column(nullable = false, columnDefinition = "varchar(50)")
 	private String gugun;
 	
 }

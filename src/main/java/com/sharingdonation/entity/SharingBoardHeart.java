@@ -31,7 +31,9 @@ public class SharingBoardHeart {
 	@JoinColumn(name="shring_board_id")
 	private SharingBoard sharingBoard;
 	
-	private Long memberId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="member_id")
+	private Member member;
 	
 	private LocalDateTime regTime;
 }

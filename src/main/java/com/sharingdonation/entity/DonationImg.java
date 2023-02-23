@@ -36,8 +36,7 @@ public class DonationImg {
 	@Column(nullable = false, length=100)
 	private String imgUrl;
 	
-	@Column(nullable = false, columnDefinition ="char", length=1)
-	@ColumnDefault("N")
+	@Column(nullable = false, columnDefinition ="char(1) default 'N'")
 	private String repimgYn;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
