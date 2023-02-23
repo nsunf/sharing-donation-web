@@ -16,10 +16,17 @@
 			<h2 class="banner__title">나눔 상품 등록</h2>
 		</section>
 
-		<section class="mt-5">
+		<section class="my-5">
 			<form class="container" action="" method="post" enctype="multipart/form-data">
 				<div class="row">
 				 <div class="col-8 mx-auto">
+				 <label class="input-label">나눔 지역</label>
+				 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+						<option selected>지역을 선택해주세요.</option>
+						<option value="1">One</option>
+						<option value="2">Two</option>
+						<option value="3">Three</option>
+					</select>
 
 					<label class="input-label w-100" for="">
 						<span class="d-block ms-2 mb-1">나눔 물품명</span>
@@ -27,42 +34,24 @@
 					</label>
 
 					<label class="input-label w-100" for="">
-						<span class="d-block ms-2 mb-1">나눔 물품명</span>
+						<span class="d-block ms-2 mb-1">나눔 상세 설명</span>
 						<textarea class="input-box w-100 p-3" type="text" placeholder="나눔 물품 상세 설명"></textarea>
 					</label>
 
 					<label class="input-label w-100">
 						<span class="d-block ms-2 mb-1">물품 사진 등록</span>
-						<input class="img-input w-100" type="file">
+						<input class="img-input w-100" type="file" accept="image/*" multiple>
 					</label>
 				 </div>
 				</div>
 
 				<div class="row mt-5">
 					<div class="col-8 mx-auto">미리보기
-						<div class="row row-cols-4 g-4">
-							<div class="col">
+						<div class="img-preview-list row row-cols-4 g-4">
+<!-- 							<div class="col">
 								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
 							</div>
-							<div class="col">
-								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
-							</div>
-							<div class="col">
-								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
-							</div>
-							<div class="col">
-								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
-							</div>
-							<div class="col">
-								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
-							</div>
-							<div class="col">
-								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
-							</div>
-							<div class="col">
-								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
-							</div>
-						</div>
+ -->						</div>
 					</div>
 				</div>
 
@@ -79,6 +68,7 @@
 	</th:block>
 
 	<th:block layout:fragment="script-bottom">
+	<script src="/js/imgInputPreview.js"></script>
 	</th:block>
 </body>
 </html>
