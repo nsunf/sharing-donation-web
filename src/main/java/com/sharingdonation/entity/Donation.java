@@ -54,6 +54,7 @@ public class Donation {
 	@Column(nullable = false, columnDefinition = "text")
 	private String detail;
 	
+	@Column(nullable = false, columnDefinition = "int(11) default 0")
 	private int price;
 	
 	private LocalDate startDate;
@@ -69,8 +70,10 @@ public class Donation {
 	@Column(nullable = false, columnDefinition ="varchar(100)")
 	private String addressDetail;
 	
+	@Column(nullable = false, columnDefinition = "int(11) default 0")
 	private int goalPoint;
 	
+	@Column(nullable = false)
 	private LocalDateTime regTime;
 	
 	@Column(nullable = false, columnDefinition ="char(1) default 'N'")

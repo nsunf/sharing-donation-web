@@ -50,12 +50,15 @@ public class Sharing {
 	
 	private LocalDate endDate;
 	
+	@Column(nullable = false, columnDefinition = "int(11) default 0")
 	private int point;
 	
+	@Column(nullable = false)
 	private LocalDateTime regTime;
 	
 	private LocalDateTime upDateTime;
 	
+	@Column(nullable = false)
 	private String createBy;
 	
 	private String modifyBy;

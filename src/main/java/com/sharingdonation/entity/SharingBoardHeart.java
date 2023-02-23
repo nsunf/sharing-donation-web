@@ -35,5 +35,6 @@ public class SharingBoardHeart {
 	@JoinColumn(name="member_id")
 	private Member member;
 	
+	@Column(nullable = false)
 	private LocalDateTime regTime;
 }

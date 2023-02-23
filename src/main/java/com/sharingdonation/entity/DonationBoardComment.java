@@ -17,30 +17,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="story")
+@Table(name="donation_board_comment")
 @Getter
 @Setter
 @ToString
-public class Story {
+public class DonationBoardComment {
 	@Id
-	@Column(name="story_id")
+	@Column(name="donation_board_comment")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="sharing_id")
-	private Sharing sharing;
-
+	@JoinColumn(name="doantion_board_id")
+	private DonationBoard donationBoard;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="member_id")
 	private Member member;
 	
-	@Column(nullable = false, columnDefinition = "varchar(1000)")
-	private String content;
+	@Column(nullable = false)
+	private String comment;
 	
 	@Column(nullable = false)
 	private LocalDateTime regTime;
-	
-	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
-	private String chooseYn;
 }

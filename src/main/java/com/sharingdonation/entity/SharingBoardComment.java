@@ -35,8 +35,9 @@ public class SharingBoardComment {
 	@JoinColumn(name="member_id")
 	private Member member;
 	
-	@Column(nullable = false, columnDefinition = "varchar(1000)")
+	@Column(nullable = false)
 	private String comment;
 	
+	@Column(nullable = false)
 	private LocalDateTime regTime;
 }
