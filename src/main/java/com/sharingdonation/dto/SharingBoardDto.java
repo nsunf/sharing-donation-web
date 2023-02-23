@@ -1,10 +1,6 @@
 package com.sharingdonation.dto;
 
-import java.time.LocalDate;
-
-import org.modelmapper.ModelMapper;
-
-import com.sharingdonation.entity.SharingBoard;
+import java.time.LocalDateTime;
 
 import lombok.*;
 
@@ -12,21 +8,16 @@ import lombok.*;
 @Setter
 public class SharingBoardDto {
 	
-	private String story_id; //나눔 받은 자의 아이디
+	private Long id; //식별 아이디
 	
-	private String member_id; //나눔 하는 자의 아이디
+	private LocalDateTime reg_time; //글 등록 날짜
 	
-	private String director; //담당자, 글 등록한 관리자. -> member의 admin인디.. 이게 맞는지...?
+	private String nick_name; //글 작성자 (관리자)
 	
-	private LocalDate completeDate; //나눔완료 날짜
+	private String subject; //글제목
 	
-	private static ModelMapper modelMapper = new ModelMapper();
+	private String content; //상세내용
 	
-	public SharingBoard completeShare() {
-		return modelMapper.map(this, SharingBoard.class);
-	}
-	 
-	
-	
+	private Integer sharing_board_comment_id; //댓글 식별 아이디
 	
 }
