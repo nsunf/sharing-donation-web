@@ -35,5 +35,6 @@ public class SharingHeart {
 	@JoinColumn(name="sharing_id")
 	private Sharing sharing;
 	
+	@Column(nullable = false)
 	private LocalDateTime regTime;
 }

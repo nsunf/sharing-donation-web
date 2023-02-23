@@ -47,10 +47,12 @@ public class Point {
 	@Enumerated(EnumType.STRING)
 	private MoveType moveType;
 	
+	@Column(nullable = false, columnDefinition = "int(11) default 0")
 	private int point;
 	
 	@Column(columnDefinition = "varchar(100)")
 	private String comment;
 	
+	@Column(nullable = false)
 	private LocalDateTime regTime;
 }

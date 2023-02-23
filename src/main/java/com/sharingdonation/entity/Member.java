@@ -65,13 +65,14 @@ public class Member {
 	@Column(nullable = false, columnDefinition = "varchar(15)")
 	private String fax;
 	
-	@Column(nullable = false, columnDefinition = "int(1) default 0")
+	@Column(nullable = false, columnDefinition = "int(11) default 0")
 	private int point;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, columnDefinition = "varchar(5)")
 	private Role role;
 	
+	@Column(nullable = false)
 	private LocalDateTime regTime;
 	
 	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
