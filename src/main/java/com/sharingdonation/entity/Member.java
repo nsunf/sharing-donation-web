@@ -45,8 +45,14 @@ public class Member {
 	@Column(nullable = false, columnDefinition = "varchar(15)")
 	private String cellphone;
 	
-	@Column(nullable = false, columnDefinition = "varchar(200)")
+	@Column(nullable = false, columnDefinition ="char(5)")
+	private String zipCode;
+	
+	@Column(nullable = false, columnDefinition ="varchar(100)")
 	private String address;
+	
+	@Column(nullable = false, columnDefinition ="varchar(100)")
+	private String addressDetail;
 	
 	@Column(nullable = false, columnDefinition = "varchar(50)")
 	private String nickName;

@@ -60,7 +60,14 @@ public class Donation {
 	
 	private LocalDate endDate;
 	
+	@Column(nullable = false, columnDefinition ="char(5)")
+	private String zipCode;
+	
+	@Column(nullable = false, columnDefinition ="varchar(100)")
 	private String address;
+	
+	@Column(nullable = false, columnDefinition ="varchar(100)")
+	private String addressDetail;
 	
 	private int goalPoint;
 	
