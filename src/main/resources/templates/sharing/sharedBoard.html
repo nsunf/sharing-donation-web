@@ -1,26 +1,17 @@
 <!DOCTYPE html>
-<html
-	xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{layouts/layout1}"
->
+	layout:decorate="~{layouts/layout1}">
 <head>
 <meta charset="UTF-8">
 <title>나눔 완료 게시판</title>
-<link
-	rel="stylesheet"
-	href="/css/sol/sharing_board.css"
-/>
+<link rel="stylesheet" href="/css/sol/sharing_board.css" />
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
 		<section class="page-header">
-			<div
-				class="page-header__bg"
-				style="
-					background-image: url('https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3270&q=80');
-				"
-			></div>
+			<div class="page-header__bg"
+				style="background-image: url('https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=3270&amp;q=80');"></div>
 			<!-- /.page-header__bg -->
 			<div class="container">
 				<h2 class="text-center sharing_board_title">나눔 완료</h2>
@@ -31,25 +22,28 @@
 			<div class="m-5">
 				<form class="input-group mb-3 w-25 mx-auto my-4">
 					<input type="text" class="form-control" placeholder="검색" />
-					<button
-						class="btn"
-						type="button"
-						style="background-color: #15c8a0; color: #fff"
-					>
-						검색
+					<button class="btn" type="button"
+						style="background-color: #15c8a0; color: #fff">검색
 					</button>
 				</form>
+			</div>
+			<div class="row hstack">
+				<div class="col-2 mb-5 ms-auto">
+					<a class="btn" href="/sharing/create"
+						style="background: var(- -thm-primary); color: white;">게시글 등록</a>
+				</div>
 			</div>
 			<!-- 나눔완료 게시글 -->
 			<div class="container">
 				<div class="row g-5 row-cols-auto">
-					<div class="col-4">
+				<!-- th:each="" -->
+					<th:block>
+						<div class="col-4">
 						<div class="news-two__single">
 							<div class="news-two__img-box">
 								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
+									<img src="https://picsum.photos/200/170" alt="사진" /> <a
+										href="news-details.html"> <i class="fa fa-plus"></i>
 									</a>
 								</div>
 								<div class="news-two__date">
@@ -58,233 +52,17 @@
 							</div>
 							<div class="news-two__content">
 								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
+									<li><i class="far fa-user-circle"></i> Admin</li>
 									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
+									<li><i
+											class="far fa-comments"></i> 10 Comments</li>
 								</ul>
 								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
+								<!--   -->
+									<a href="#">나눔완료 게시글 제목</a>
 								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
+								<p class="news-two__text">게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에
+									생략 될 예정입니다...</p>
 							</div>
 						</div>
 					</div>
@@ -304,7 +82,6 @@
 			</div>
 		</section>
 	</th:block>
-
 	<th:block layout:fragment="script-bottom">
 	</th:block>
 </body>
