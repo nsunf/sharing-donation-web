@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sharingdonation.dto.SharingFormDto;
-import com.sharingdonation.serviece.AreaService;
-import com.sharingdonation.serviece.CategoryService;
-import com.sharingdonation.serviece.SharingService;
+import com.sharingdonation.service.AreaService;
+import com.sharingdonation.service.CategoryService;
+import com.sharingdonation.service.SharingService;
 
 import lombok.RequiredArgsConstructor;
 
