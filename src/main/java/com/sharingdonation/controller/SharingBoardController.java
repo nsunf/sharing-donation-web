@@ -14,16 +14,22 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/shared_board")
+@RequestMapping("/sharing_board")
 public class SharingBoardController {
 	
 	private final SharingBoardService sharingBoardService;
 	
 	//게시판 화면 띄워줌
 	@GetMapping("")
-	public String shared_board(Model model) {
+	public String sharedBoard(Model model) {
 		List<SharingBoardDto> sharingBoardList = sharingBoardService.getCompletePost();
 		model.addAttribute("sharingBoardList",sharingBoardList);
 		return "sharing/sharedBoard";
+	}
+	
+	//게시글 등록
+	@GetMapping("/add_Post")
+	public String sharedAddPost() {
+		return "sharing/sharedDetail";
 	}
 }
