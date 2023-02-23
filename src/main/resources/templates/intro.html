@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout1}"
+>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/nsunf/intro.css"/>
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+	
+		<section class="auto-min-height">
+			<div class="intro-body container-fluid vstack">
+				<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 pb-5 pb-md-0 mt-auto mb-5 gy-5">
+					<div class="col hstack ms-auto">
+						<a class="btn btn-custom rounded-0 w-100 py-2 mx-auto" href="">로그인</a>
+					</div>
+					<div class="col me-auto hstack">
+						<a class="btn btn-custom rounded-0 w-50 py-2" href=""><span>개인</span>회원가입</a>
+						<a class="btn btn-custom btn-custom-secondary rounded-0 w-50 py-2" href=""><span>기업</span>회원가입</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+		<script src="/js/nsunf/intro.js"></script>
+	</th:block>
+</body>
+</html>

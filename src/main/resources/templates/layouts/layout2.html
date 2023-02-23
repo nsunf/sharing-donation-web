@@ -34,6 +34,7 @@
 <link rel="stylesheet" href="/css/halpes.css" />
 <link rel="stylesheet" href="/css/halpes-responsive.css" />
 <link rel="stylesheet" href="/css/layout1.css"/>
+<link rel="stylesheet" href="/css/mypageSide.css"/>
 <link rel="stylesheet" href="/css/header.css"/>
 
 </head>
@@ -45,15 +46,15 @@
 
 	<div class="page-wrapper">
 		<div th:replace="fragments/header::header"></div>
-    <section class="container mt-5">
+    <section class="container pt-5 auto-min-height">
       <div class="row mt-5">
         <div class="col-10 col-lg-3 mx-auto">
 		      <div th:replace="fragments/mypageSide::mypageSide"></div>
         </div>
-      </div>
-      <div class="col-1 d-none d-lg-block"></div>
-      <div class="col-8 mt-4 mt-lg-0 mx-auto">
-		    <div layout:fragment="layout-content"></div>
+				<div class="col-1 d-none d-lg-block"></div>
+				<div class="col-8 mt-4 mt-lg-0 ">
+					<div layout:fragment="layout-content"></div>
+				</div>
       </div>
     </section>
 
@@ -83,5 +84,7 @@
 	<!-- template js -->
 	<script src="/js/halpes.js"></script>
 	<script src="/js/layout1.js"></script>
+	<script src="/js/setAutoHeight.js"></script>
+	<script layout:fragment="script-bottom"></script>
 </body>
 </html>
