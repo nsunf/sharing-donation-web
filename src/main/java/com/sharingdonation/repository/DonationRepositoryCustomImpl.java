@@ -42,7 +42,7 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 	}
 
 	@Override
-	public Page<Donation> getAdminDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+	public Page<Donation> getAdminListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
 		List<Donation> content = queryFactory
 					.selectFrom(QDonation.donation)
 					.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))

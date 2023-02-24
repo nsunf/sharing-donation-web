@@ -87,8 +87,8 @@ public class DonationService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<Donation> getAdminDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
-		return donationRepository.getAdminDonationPage(donationSearchDto, pageable);
+	public Page<Donation> getAdminListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+		return donationRepository.getAdminListDonationPage(donationSearchDto, pageable);
 	}
 	
 	@Transactional(readOnly = true)
