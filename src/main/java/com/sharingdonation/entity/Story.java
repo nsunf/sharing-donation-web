@@ -24,7 +24,7 @@ import lombok.Setter;
 public class Story {
 	@Id
 	@Column(name="story_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -27,7 +27,6 @@ public class SharingService {
 			Sharing sharing = new Sharing();
 			sharing.setName("나눔 상품명--" + i);
 		}
-		
 	}
 	
 	public void saveSharing(SharingFormDto sharingFormDto, List<MultipartFile> sharingImgFileList) throws Exception {
