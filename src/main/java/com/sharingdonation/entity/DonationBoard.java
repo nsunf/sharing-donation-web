@@ -24,7 +24,7 @@ import lombok.Setter;
 public class DonationBoard {
 	@Id
 	@Column(name="donation_board_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@OneToOne(fetch = FetchType.LAZY)
