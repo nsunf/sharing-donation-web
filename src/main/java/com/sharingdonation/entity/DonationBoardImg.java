@@ -43,4 +43,11 @@ public class DonationBoardImg {
 	
 	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String repimgYn;
+
+	public void updateDonationBoardImg(String imgName, String oriImgName, String imgUrl) {
+		this.imgName = imgName;
+		this.oriImgName = oriImgName;
+		this.imgUrl = imgUrl;
+		
+	}
 }
