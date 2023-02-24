@@ -1,4 +1,4 @@
-package com.sharingdonation.serviece;
+package com.sharingdonation.service;
 
 import java.util.List;
 
@@ -27,7 +27,6 @@ public class SharingService {
 			Sharing sharing = new Sharing();
 			sharing.setName("나눔 상품명--" + i);
 		}
-		
 	}
 	
 	public void saveSharing(SharingFormDto sharingFormDto, List<MultipartFile> sharingImgFileList) throws Exception {

@@ -1,4 +1,4 @@
-package com.sharingdonation.serviece;
+package com.sharingdonation.service;
 
 import javax.persistence.EntityNotFoundException;
 

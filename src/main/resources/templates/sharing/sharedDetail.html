@@ -7,305 +7,199 @@
 <head>
 <meta charset="UTF-8">
 <title>나눔 완료 상세</title>
-<link
-	rel="stylesheet"
-	href="/css/sol/sharing_complete_board.css"
-/>
+<link rel="stylesheet" href="/css/longsiru/donated-board-detail.css" />
+<link rel="stylesheet" href="/css/longsiru/admin-donation-request-detail.css" />
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
-		<!-- 배너 -->
-		<section class="page-header">
-			<div
-				class="page-header__bg"
-				style="
-					background-image: url('https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3270&q=80');
-				"
-			></div>
-			<!-- /.page-header__bg -->
+		<!--기부 완료 게시판 상세 시작-->
+		<section class="news-details">
 			<div class="container">
-				<h2 class="text-center sharing_board_title">나눔 완료</h2>
+					<div class="row">
+							<div class="col-xl-12 col-lg-12">
+									<div class="news-details__left">
+											<div class="col-12 mx-auto">
+													<div
+														class="swiper mySwiper position-relative overflow-hidden"
+													>
+														<div class="swiper-wrapper">
+															<div class="swiper-slide">
+																<img
+																	src="https://picsum.photos/id/104/1920/1080"
+																	alt=""
+																/>
+															</div>
+															<div class="swiper-slide">
+																<img
+																	src="https://picsum.photos/id/53/1920/1080"
+																	alt=""
+																/>
+															</div>
+															<div class="swiper-slide">
+																<img
+																	src="https://picsum.photos/id/840/1920/1080"
+																	alt=""
+																/>
+															</div>
+															<div class="swiper-slide">
+																<img
+																	src="https://picsum.photos/id/338/1920/1080"
+																	alt=""
+																/>
+															</div>
+															<div class="swiper-slide">
+																<img
+																	src="https://picsum.photos/id/18/1920/1080"
+																	alt=""
+																/>
+															</div>
+															<div class="swiper-slide">
+																<img
+																	src="https://picsum.photos/id/87/1920/1080"
+																	alt=""
+																/>
+															</div>
+															<div class="swiper-slide">
+																<img
+																	src="https://picsum.photos/id/77/1920/1080"
+																	alt=""
+																/>
+															</div>
+															<div class="swiper-slide">
+																<img
+																	src="https://picsum.photos/id/38/1920/1080"
+																	alt=""
+																/>
+															</div>
+															<div class="swiper-slide">
+																<img
+																	src="https://picsum.photos/id/294/1920/1080"
+																	alt=""
+																/>
+															</div>
+														</div>
+														<div class="swiper-button-next">&gt;&gt;</div>
+														<div class="swiper-button-prev">&lt;&lt;</div>
+													</div>
+												</div>
+				
+											
+											<div class="news-details__content">
+													<div class="content-detail-nav">
+															<ul class="list-unstyled news-details__meta navleft">
+																	<li><a href="#">2023-02-20</a></li>
+																	<li class="content-detail-like"><a href="#" ><img src="/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;">12</a>
+																	</li>
+															</ul>
+															<ul class="list-unstyled news-details__meta navright">
+
+																			<li>나눔한 사람: NickName</li>
+																			<li>나눔 받은 사람: NickName</li>
+																			<li>담당자명</li>
+															</ul>
+													</div>
+												 
+													
+													<h3 class="news-details__title">나눔 완료 글제목</h3>
+													<p class="news-details__text-one">Tliq is notm hendr erit a augue insu image pellen tes que id erat quis sollicitud. Lorem ipsum dolor sit amet, consectetur adipiscing ullam blandit hendrerit faucibus suspendisse. There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
+													<p class="news-details__text-two">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum ley of type and scrambled it to make a type specimen book.</p>
+													<p class="news-details__text-three">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including version.</p>
+											</div>
+											
+											<!--댓글 보기 시작-->
+											<div class="comment-one">
+													<h3 class="comment-one__title">댓글 보기</h3>
+													
+													<ul id="comments-list" class="comments-list">
+														
+															<li>
+																	<div class="comment-main-level">
+																			<!-- Contenedor-->
+																			<div class="comment-box">
+																					<div class="comment-head">
+																							<h6 class="comment-name">NickName</a></h6>
+																							<div class="comment-time">2013-02-20 08:00am</div>
+																					</div>
+																					<div class="comment-content">
+																							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
+																					</div>
+																					<div class="comment-down">
+																							<button class="comment-bnt">삭제</button>
+																					 </div>
+																			</div>
+																	</div>
+															</li>
+															<li>
+																	<div class="comment-main-level">
+																			<!-- Contenedor-->
+																			<div class="comment-box">
+																					<div class="comment-head">
+																							<h6 class="comment-name">NickName</a></h6>
+																							<div class="comment-time">2013-02-20 08:00am</div>
+																					</div>
+																					<div class="comment-content">
+																							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
+																					</div>
+																					<div class="comment-down">
+																						 <button class="comment-bnt">삭제</button>
+																					</div>
+																			</div>
+																	</div>
+															</li>
+															<li>
+																	<div class="comment-main-level">
+																			<!-- Contenedor-->
+																			<div class="comment-box">
+																					<div class="comment-head">
+																							<h6 class="comment-name">NickName</a></h6>
+																							<div class="comment-time">2013-02-20 08:00am</div>
+																					</div>
+																					<div class="comment-content">
+																							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
+																					</div>
+																					<div class="comment-down">
+																						 <button class="comment-bnt">삭제</button>
+																					</div>
+																			</div>
+																	</div>
+															</li>
+												 
+													</ul>
+											
+											</div>
+
+											<!--댓글 작성 시작-->
+											<div class="comment-form">
+													<h3 class="comment-form__title">댓글 작성</h3>
+													<form action="assets/inc/sendemail.php" class="comment-one__form contact-form-validated">
+															
+																			<div class="comment-form__input-box">
+																					<textarea name="message" placeholder="create your comments"></textarea>
+																			</div>
+																
+															<button type="submit" class="thm-btn comment-form__btn">제 출<i class="fas fa-arrow-circle-right" style="padding-left: 10px;"></i></button>
+													</form>
+												 
+											</div>
+									</div>
+							</div>
+						 
+					</div>
 			</div>
 		</section>
-		<!-- 검색창 -->
-		<section class="news-page pt-5 pb-3 vstack">
-			<div class="m-5">
-				<form class="input-group mb-3 w-25 mx-auto my-4">
-					<input type="text" class="form-control" placeholder="검색" />
-					<button
-						class="btn"
-						type="button"
-						style="background-color: #15c8a0; color: #fff"
-					>
-						검색
-					</button>
-				</form>
-			</div>
-			<!-- 나눔완료 게시글 -->
-			<div class="container">
-				<div class="row g-5 row-cols-auto">
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<div class="news-two__single">
-							<div class="news-two__img-box">
-								<div class="news-two__img">
-									<img src="https://picsum.photos/200/170" alt="" />
-									<a href="news-details.html">
-										<i class="fa fa-plus"></i>
-									</a>
-								</div>
-								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
-								</div>
-							</div>
-							<div class="news-two__content">
-								<ul class="list-unstyled news-two__meta">
-									<li>
-										<a href="#"><i class="far fa-user-circle"></i> Admin</a>
-									</li>
-									<li><span>/</span></li>
-									<li>
-										<a href="#"
-											><i class="far fa-comments"></i> 10 Comments</a
-										>
-									</li>
-								</ul>
-								<h3>
-									<a href="news-details.html">나눔완료 게시글 제목</a>
-								</h3>
-								<p class="news-two__text">
-									게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에 생략
-									될 예정입니다...
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="archive-pages">
-					<ul>
-						<li class="previous"><a href="#" title="previous page"></a></li>
-						<li class="selected">1</li>
-						<li><a href="#" title="Pagina 2">2</a></li>
-						<li><a href="#" title="Pagina 3">3</a></li>
-						<li><a href="#" title="Pagina 4">4</a></li>
-						<li><a href="#" title="Pagina 5">5</a></li>
-						<li class="next"><a href="#" title="next page"></a></li>
-					</ul>
-				</div>
-			</div>
-		</section>
+		<!-- 기부 완료 게시판 상세 끝-->
 	</th:block>
 
 	<th:block layout:fragment="script-bottom">
+	<!-- Initialize Swiper -->
+	<script>
+			var swiper = new Swiper(".mySwiper", {
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+				},
+			});
+  </script>
 	</th:block>
 </body>
 </html>

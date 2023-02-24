@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sharingdonation.dto.SharingFormDto;
-import com.sharingdonation.serviece.CategoryService;
-import com.sharingdonation.serviece.SharingService;
+import com.sharingdonation.service.AreaService;
+import com.sharingdonation.service.CategoryService;
+import com.sharingdonation.service.SharingService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class SharingController {
 	
 	private final SharingService sharingService;
-	private final CategoryService categoryService;
+	private final AreaService areaService;
 	
 	@GetMapping("")
 	public String sharingList() {
@@ -34,7 +35,7 @@ public class SharingController {
 	@GetMapping("/create")
 	public String createSharingForm(Model model) {
 		model.addAttribute("sharingFormDto", new SharingFormDto());
-		model.addAttribute("categoryDtoList", categoryService.getCategoryList());
+		model.addAttribute("areaDtoList", areaService.getAreaList());
 		return "sharing/editSharing";
 	}
 	

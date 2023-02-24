@@ -22,7 +22,7 @@ import lombok.Setter;
 public class SharingBoardImg {
 	@Id
 	@Column(name="sharing_board_img_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
