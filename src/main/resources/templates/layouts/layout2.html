@@ -43,13 +43,17 @@
 			<img class="preloader__image" width="60" src="/images/loader.png" alt="" />
 	</div>
 	<!-- /.preloader -->
+	
+<div class="page-wrapper">
 
-	<div class="page-wrapper">
 		<div th:replace="fragments/header::header"></div>
+		
     <section class="container pt-5 auto-min-height">
       <div class="row mt-5">
-        <div class="col-10 col-lg-3 mx-auto">
-		      <div th:replace="fragments/mypageSide::mypageSide"></div>
+        <div class="col-10 col-lg-3 mx-auto"> 
+        
+		      <div th:replace="fragments/mypageSide::mypageSide(${mypage.name},${mypage.reg_time})"></div> 
+		      
         </div>
 				<div class="col-1 d-none d-lg-block"></div>
 				<div class="col-8 mt-4 mt-lg-0 ">
@@ -57,7 +61,7 @@
 				</div>
       </div>
     </section>
-
+   
 
 		<div th:replace="fragments/mobileNav::mobileNav"></div>
 		<div th:replace="fragments/footer::footer"></div>
