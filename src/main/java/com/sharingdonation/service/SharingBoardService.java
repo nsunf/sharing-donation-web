@@ -24,17 +24,27 @@ public class SharingBoardService {
 
 	// 나눔완료 게시글 리스트 가져오기
 	@Transactional(readOnly = true)
-	public List<SharingBoardDto> getCompletePost(){
+	public List<SharingBoardDto> getCompletePostList() {
 		List<SharingBoard> sharingBoardList = sharingBoardRepository.findAll();
 		List<SharingBoardDto> sharingBoardDtoList = new ArrayList<>();
-	
-		for(SharingBoard sharingBoard : sharingBoardList) {
-			SharingBoardDto sharingBoardDto = new SharingBoardDto();
+
+		for (SharingBoard sharingBoard : sharingBoardList) {
+			SharingBoardDto sharingBoardDto = SharingBoardDto.of(sharingBoard);
+
 			sharingBoardDtoList.add(sharingBoardDto);
 		}
-		
+
 		return sharingBoardDtoList;
 	}
-	
-	
+
+	// 나눔완료 게시글 가져오기
+	@Transactional
+	public SharingBoardDto getCompletePost(Long id) {
+
+		SharingBoard sharingBoard = sharingBoardRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		SharingBoardDto sharingBoardDto = SharingBoardDto.of(sharingBoard);
+		
+		return sharingBoardDto;
+	}
+
 }

@@ -56,10 +56,9 @@
 									<li><i
 											class="far fa-comments"></i> 10 Comments</li>
 								</ul>
-								<h3 th:text="${sharedPost.subject}">
-									<a th:href="'/sharing_board/'+${sharedPost.sharing_board_id}">나눔완료 게시글 제목</a>
-								</h3>
-								<p th:text="${sharedPost.content}" class="news-two__text"></p>
+									<a th:href="'/sharing_board/view/'+${sharedPost.id}"><h3 th:text="${sharedPost.subject}"></h3></a>
+								<p th:text="${sharedPost.content}" class="news-two__text">
+								</p>
 							</div>
 						</div>
 					</div>

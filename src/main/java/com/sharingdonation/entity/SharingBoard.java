@@ -39,4 +39,5 @@ public class SharingBoard {
 	
 	@Column(nullable = false)
 	private LocalDateTime reg_time;
+	
 }

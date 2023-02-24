@@ -1,6 +1,7 @@
 package com.sharingdonation.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.modelmapper.ModelMapper;
 
@@ -14,9 +15,9 @@ public class SharingBoardDto {
 	
 	private Long id; //식별 아이디
 	
-	private LocalDateTime reg_time; //글 등록 날짜
+	private String reg_time; //글 등록 날짜
 	
-	private String nick_name; //글 작성자 (관리자)
+	//private String 
 	
 	private String subject; //글제목
 	
@@ -26,12 +27,15 @@ public class SharingBoardDto {
 	
 	private static ModelMapper modelMapper = new ModelMapper();
 	
+	//dto를 엔티티로 바꿈
 	public SharingBoard sharedPost() {
 		return modelMapper.map(this, SharingBoard.class);
 	}
-	
+	//엔티티를 dto로 바꿈
 	public static SharingBoardDto of(SharingBoard sharingBoard) {
-		return modelMapper.map(sharingBoard, SharingBoardDto.class);
+		SharingBoardDto sharingBoardDto = modelMapper.map(sharingBoard, SharingBoardDto.class);
+		sharingBoardDto.setReg_time(sharingBoard.getReg_time().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		return sharingBoardDto;
 	}
 	
 }
