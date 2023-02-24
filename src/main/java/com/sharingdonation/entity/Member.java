@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.sharingdonation.entity.BaseEntity;
 import com.sharingdonation.constant.Role;
 import com.sharingdonation.dto.MemberFormDto;
 
@@ -26,7 +27,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Member {
+public class Member extends BaseEntity {
 	
 	@Id
 	@Column(name="member_id")
