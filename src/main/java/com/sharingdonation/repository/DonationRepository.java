@@ -7,7 +7,7 @@ import com.sharingdonation.entity.Donation;
 
 public interface DonationRepository extends JpaRepository<Donation, Long>, 
 	QuerydslPredicateExecutor<Donation> 
-//	DonationRepositoryCustom 
+	, DonationRepositoryCustom 
 	{
 	
 }

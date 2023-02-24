@@ -3,17 +3,27 @@ package com.sharingdonation.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.sharingdonation.entity.Member;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class DonationDto {
+	
+	public DonationDto(Member member) {
+		this.memberId = member.getId();
+		this.nickName = member.getNickName();
+		
+	}
 	private Long id;
 	
 	private String donationName;
 	
-	private int memberId;
+	private Long memberId;
+	
+	private String nickName;
 	
 	private String donationPerson;
 	
