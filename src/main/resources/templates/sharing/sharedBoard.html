@@ -36,8 +36,7 @@
 			<!-- 나눔완료 게시글 -->
 			<div class="container">
 				<div class="row g-5 row-cols-auto">
-				<!-- th:each="" -->
-					<th:block>
+					<th:block th:each="sharedPost, status: ${sharingBoardList}">
 						<div class="col-4">
 						<div class="news-two__single">
 							<div class="news-two__img-box">
@@ -47,7 +46,7 @@
 									</a>
 								</div>
 								<div class="news-two__date">
-									<p>20 Feb, 2023</p>
+									<p th:text="${sharedPost.reg_time}"></p>
 								</div>
 							</div>
 							<div class="news-two__content">
@@ -57,12 +56,10 @@
 									<li><i
 											class="far fa-comments"></i> 10 Comments</li>
 								</ul>
-								<h3>
-								<!--   -->
-									<a href="#">나눔완료 게시글 제목</a>
+								<h3 th:text="${sharedPost.subject}">
+									<a th:href="'/sharing_board/'+${sharedPost.sharing_board_id}">나눔완료 게시글 제목</a>
 								</h3>
-								<p class="news-two__text">게시글 상세 내용 입니다. 상세 내용이 쭉 나오다가 중간에
-									생략 될 예정입니다...</p>
+								<p th:text="${sharedPost.content}" class="news-two__text"></p>
 							</div>
 						</div>
 					</div>

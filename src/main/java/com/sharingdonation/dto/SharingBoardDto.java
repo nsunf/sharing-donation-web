@@ -2,6 +2,10 @@ package com.sharingdonation.dto;
 
 import java.time.LocalDateTime;
 
+import org.modelmapper.ModelMapper;
+
+import com.sharingdonation.entity.SharingBoard;
+
 import lombok.*;
 
 @Getter
@@ -19,5 +23,15 @@ public class SharingBoardDto {
 	private String content; //상세내용
 	
 	private Integer sharing_board_comment_id; //댓글 식별 아이디
+	
+	private static ModelMapper modelMapper = new ModelMapper();
+	
+	public SharingBoard sharedPost() {
+		return modelMapper.map(this, SharingBoard.class);
+	}
+	
+	public static SharingBoardDto of(SharingBoard sharingBoard) {
+		return modelMapper.map(sharingBoard, SharingBoardDto.class);
+	}
 	
 }

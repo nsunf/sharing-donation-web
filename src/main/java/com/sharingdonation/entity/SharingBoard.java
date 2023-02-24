@@ -38,5 +38,5 @@ public class SharingBoard {
 	private String content;
 	
 	@Column(nullable = false)
-	private LocalDateTime regTime;
+	private LocalDateTime reg_time;
 }

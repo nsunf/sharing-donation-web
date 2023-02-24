@@ -21,7 +21,7 @@ public class SharingBoardController {
 	
 	//게시판 화면 띄워줌
 	@GetMapping("")
-	public String sharedBoard(Model model) {
+	public String sharingBoard(Model model) {
 		List<SharingBoardDto> sharingBoardList = sharingBoardService.getCompletePost();
 		model.addAttribute("sharingBoardList",sharingBoardList);
 		return "sharing/sharedBoard";
