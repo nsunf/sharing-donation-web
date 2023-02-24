@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.MyPagePrivacyDto;
+import com.sharingdonation.entity.Member;
 import com.sharingdonation.repository.MyPageRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,16 @@ public class MyPageService {
 		return myPageRepository.getMyPageMain(memberId);
 	}
 	
-	@Transactional
+	@Transactional(readOnly = true)
 	public MyPagePrivacyDto getMyPagePrivacy(Long memberId) {
 		return myPageRepository.getMyPagePrivacy(memberId);
+	}
+	
+	
+	@Transactional
+	public Long myPrivacyUpdate(MyPagePrivacyDto myPagePrivacyDto,Long memberId) {
+
+		return myPageRepository.updateMyPrivacy(myPagePrivacyDto,memberId);
 	}
 	
 	

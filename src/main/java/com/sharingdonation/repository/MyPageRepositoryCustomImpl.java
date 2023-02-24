@@ -8,9 +8,11 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.sharingdonation.constant.MoveType;
 import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.MyPagePrivacyDto;
+import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.QMember;
 import com.sharingdonation.entity.QPoint;
 import com.sharingdonation.entity.QSharing;
@@ -55,12 +57,11 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 								 .where(story.member.id.eq(memberId))
 								 , "share_story"),
 						 member.name,
-						 member.regTime
-						 
+						 member.regTime						 
 						 ))
 				 .from(member)
 				 .where(member.id.eq(memberId))
-				 .fetchFirst();
+				 .fetchOne();
 		 
 		return result;
 		
@@ -85,9 +86,29 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 				member.regTime))
 				.from(member)
 				.where(member.id.eq(memberId))
-				.fetchFirst();
+				.fetchOne();
 		return result;
 	}
+
+	
+	
+	@Override
+	public Long updateMyPrivacy(MyPagePrivacyDto myPagePrivacyDto, Long memberId) {
+		QMember member2 = QMember.member;
+		
+		long update = queryFactory
+				.update(member2)
+				.set(member2.nickName, myPagePrivacyDto.getNickName())
+				.set(member2.zipCode, myPagePrivacyDto.getZipCode())
+				.set(member2.address, myPagePrivacyDto.getAddress())
+				.set(member2.addressDetail, myPagePrivacyDto.getAddressDetail())
+				.where(member2.id.eq(memberId))
+				.execute();
+		
+		return update;
+	}
+	
+	
 	
 	
 

@@ -1,6 +1,8 @@
 package com.sharingdonation.dto;
 
-import java.sql.Date;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,32 +17,32 @@ public class MyPagePrivacyDto {
 	
 	private String email;
 	
-	private Date birth;
+	private LocalDate birth;
 	
-	private String nicName;
+	private String nickName;
 	
-	private String zip_code;
+	private String zipCode;
 	
 	private String address;
 	
-	private String address_detail;
+	private String addressDetail;
 	
-	private Date reg_time;
+	private LocalDateTime regTime;
 
+	//디폴트 생성자
+	public MyPagePrivacyDto() {}
 
-	public MyPagePrivacyDto(Long id, String name, String email,Date birth, String nicName, String zip_code, String address, String address_detail, Date reg_time) {
+	public MyPagePrivacyDto(Long id, String name, String email,LocalDate birth, String nickName, String zipCode, String address, String addressDetail, LocalDateTime regTime) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.birth = birth;
-		this.nicName = nicName;
-		this.zip_code = zip_code;
+		this.nickName = nickName;
+		this.zipCode = zipCode;
 		this.address = address;
-		this.address_detail = address_detail;
-		this.reg_time = reg_time;
+		this.addressDetail = addressDetail;
+		this.regTime = regTime;
 				
-				
-		
 	}
 	
 	

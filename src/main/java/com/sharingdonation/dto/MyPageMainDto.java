@@ -1,6 +1,7 @@
 package com.sharingdonation.dto;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,9 @@ public class MyPageMainDto {
 	
 	private Date reg_time;
 	
+	
+	//디폴트 생성자 
+	public MyPageMainDto() {}
 
 	public MyPageMainDto(Long id, int point, Long share_reg, Long share_take, Long share_apply, Long share_story, String name, Date reg_time) {
 		this.id = id;

@@ -21,6 +21,7 @@
 //import com.sharingdonation.entity.QDonation;
 //import com.sharingdonation.entity.QDonationHeart;
 //import com.sharingdonation.entity.QDonationImg;
+//import com.sharingdonation.entity.QMember;
 //
 //public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 //
