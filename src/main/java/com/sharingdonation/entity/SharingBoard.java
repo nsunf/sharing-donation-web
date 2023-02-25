@@ -29,7 +29,7 @@ public class SharingBoard {
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sharing_id")
-	private Sharing sharing;
+	private Sharing sharing; //나눔상품
 	
 	@Column(nullable = false, columnDefinition = "varchar(100)")
 	private String subject;
@@ -39,4 +39,5 @@ public class SharingBoard {
 	
 	@Column(nullable = false)
 	private LocalDateTime regTime;
+	
 }
