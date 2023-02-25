@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="donateion_board_img")
+@Table(name="donation_board_img")
 @Getter
 @Setter
 @ToString

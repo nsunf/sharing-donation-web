@@ -86,13 +86,13 @@ public class DonationService {
 		return donation.getId();
 	}
 	
-//	@Transactional(readOnly = true)
-//	public Page<Donation> getAdminDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
-//		return donationRepository.getAdminDonationPage(donationSearchDto, pageable);
-//	}
-//	
-//	@Transactional(readOnly = true)
-//	public Page<ListDonationDto> getListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
-//		return donationRepository.getListDonationPage(donationSearchDto, pageable);
-//	}
+	@Transactional(readOnly = true)
+	public Page<Donation> getAdminListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+		return donationRepository.getAdminListDonationPage(donationSearchDto, pageable);
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<ListDonationDto> getListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+		return donationRepository.getListDonationPage(donationSearchDto, pageable);
+	}
 }
