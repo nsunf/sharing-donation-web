@@ -20,8 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sharingdonation.dto.DonationBoardDto;
 import com.sharingdonation.dto.DonationBoardFormDto;
 import com.sharingdonation.dto.DonationFormDto;
-import com.sharingdonation.serviece.DonationBoardImgService;
-import com.sharingdonation.serviece.DonationBoardService;
+import com.sharingdonation.service.DonationBoardImgService;
+import com.sharingdonation.service.DonationBoardService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +35,7 @@ public class DonationBoardController {
 	
 	@GetMapping(value = "/donatedBoard/edit")
 	public String addDonatedBoard(Model model) { 
+		model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
 		model.addAttribute("donationBoardFormDto", new DonationBoardFormDto());
 		return "admin/editDonatedBoard"; 
 	}
@@ -43,9 +44,12 @@ public class DonationBoardController {
 	//add donationBoard
 	@PostMapping(value = "/donatedBoard/edit")
 	public String donatedBoardCreate(@Valid DonationBoardFormDto donationBoardFormDto, BindingResult bindingResult, 
-			Model model, @RequestParam("donationBoardImgFile") List<MultipartFile> donationBoardImgFileList) {
-				
+			Model model, List<MultipartFile> donationBoardImgFileList) {
+				System.out.println("++++++++++");
 		if(bindingResult.hasErrors()) {
+			bindingResult.getAllErrors().stream().forEach(e -> {
+				System.out.println(e);
+			});
 			return "admin/editDonatedBoard";
 		}
 		
@@ -58,11 +62,12 @@ public class DonationBoardController {
 			donationBoardService.SaveDonationBoard(donationBoardFormDto, donationBoardImgFileList);
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			model.addAttribute("errorMessage", "An error occurred while adding a gamer.");
 			return "admin/editDonatedBoard";
 		}
 		
-		return "redirect:/donatedList";
+		return "redirect:/donatedBoard";
 		
 	}
 	

@@ -32,7 +32,7 @@ public class DonationBoardImgService {
 		
 		if(!StringUtils.isEmpty(oriImgName)) {
 			imgName = fileService.uploadFile(donationBoardImgLocation, oriImgName, donationBoardImgFile.getBytes());
-			imgUrl = "/donatedimages/donatedBoard" + imgName;
+			imgUrl = "/donatedimages/donatedBoard/" + imgName;
 		}
 		
 		donationBoardImg.updateDonationBoardImg(imgName, oriImgName, imgUrl);

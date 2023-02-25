@@ -20,6 +20,8 @@ import lombok.Setter;
 public class DonationBoardFormDto {
 	private String id;
 	
+	private Long donationId;
+	
 	@NotBlank(message = "Must enter the post subject.")
 	private String subject;
 	
@@ -35,12 +37,12 @@ public class DonationBoardFormDto {
 	private static ModelMapper modelMapper = new ModelMapper();
 	 
 	public DonationBoard createDonationBoard() {
+		this.regTime = LocalDateTime.now();
 		return modelMapper.map(this, DonationBoard.class);
 	}
 	
 	public static DonationBoardFormDto of(DonationBoard donationBorad) {
 		return modelMapper.map(donationBorad, DonationBoardFormDto.class);
-		
 	}
 	
 

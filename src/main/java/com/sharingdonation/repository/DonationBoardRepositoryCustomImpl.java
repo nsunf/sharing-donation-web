@@ -47,7 +47,7 @@ private JPAQueryFactory queryFactory;
 		List<DonationBoardDto> content = queryFactory.select(
 				new QDonationBoardDto(
 						donationBoard.id,
-						donation.id,
+						donationBoard.donation.id,
 						donationBoard.subject,
 						donationBoard.content,
 						donationBoard.regTime,

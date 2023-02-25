@@ -37,8 +37,9 @@
         		</div>
         	</div>
         	
-        	<th:block th:each="donationBoard, status: ${donationBoards.getContent()}">
+        	
             <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="100ms">
+            <th:block th:each="donationBoard, status: ${donationBoards.getContent()}">
               <!--News Two Single-->
               <div class="news-two__single">
                 <div class="news-two__img-box">
@@ -72,8 +73,9 @@
                   <p class="news-two__text">[[${donationBoard.content}]]</p>
                 </div>
               </div>
+              </th:block>
             </div>
-         </th:block>
+         
           
           </div>
         </div>
