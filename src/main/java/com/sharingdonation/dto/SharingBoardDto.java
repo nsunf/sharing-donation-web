@@ -34,7 +34,7 @@ public class SharingBoardDto {
 	//엔티티를 dto로 바꿈
 	public static SharingBoardDto of(SharingBoard sharingBoard) {
 		SharingBoardDto sharingBoardDto = modelMapper.map(sharingBoard, SharingBoardDto.class);
-		sharingBoardDto.setReg_time(sharingBoard.getReg_time().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		sharingBoardDto.setReg_time(sharingBoard.getRegTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		return sharingBoardDto;
 	}
 	
