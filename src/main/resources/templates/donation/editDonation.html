@@ -25,6 +25,7 @@
           action=""
           method="post"
           enctype="multipart/form-data"
+          th:object="${donationFormDto}"
         >
           <div class="row">
             <div class="col-8 mx-auto">
@@ -34,6 +35,7 @@
                   class="input-box w-100 p-3"
                   type="text"
                   placeholder="기부 요청 주제"
+                  th:field="*{subject}"
                 />
               </label>
 
@@ -45,6 +47,8 @@
                       class="input-box w-100 p-3"
                       type="text"
                       placeholder="기부 요청 기관명"
+                      th:field="*{donationName}"
+                      
                     />
                   </label>
                 </li>
@@ -55,6 +59,7 @@
                       class="input-box w-100 p-3"
                       type="text"
                       placeholder="기부 요청 담당자명"
+                      th:field="*{donationPerson}"
                     />
                   </label>
                 </li>
@@ -67,7 +72,9 @@
                     <input
                       class="input-box w-100 p-3"
                       type="text"
-                      placeholder="주소"
+                      placeholder="우편번호"
+                      readonly="readOnly"
+                      th:field="*{zipCode}"
                     />
                   </label>
                 </li>
@@ -81,51 +88,24 @@
                 </li>
               </ul>
 
-              <ul class="request-institution">
-                <li>
-                  <label class="input-label w-100" for="">
-                    <span class="d-block ms-2 mb-1"></span>
-                    <input
-                      class="input-box w-100 p-3"
-                      type="text"
-                      placeholder="도로명주소"
-                    />
-                  </label>
-                </li>
-                <li class="request-institution reright">
-                  <label class="input-label w-100" for="">
-                    <span class="d-block ms-2 mb-1"></span>
-                    <input
-                      class="input-box w-100 p-3"
-                      type="text"
-                      placeholder="지번주소"
-                    />
-                  </label>
-                </li>
-              </ul>
-
-              <ul class="request-institution">
-                <li>
-                  <label class="input-label w-100" for="">
-                    <span class="d-block ms-2 mb-1"></span>
-                    <input
-                      class="input-box w-100 p-3"
-                      type="text"
-                      placeholder="상세주소"
-                    />
-                  </label>
-                </li>
-                <li class="request-institution reright">
-                  <label class="input-label w-100" for="">
-                    <span class="d-block ms-2 mb-1"></span>
-                    <input
-                      class="input-box w-100 p-3"
-                      type="text"
-                      placeholder="참고항목"
-                    />
-                  </label>
-                </li>
-              </ul>
+              <label class="input-label w-100" for="">
+                <span class="d-block ms-2 mb-1"></span>
+                <input
+                  class="input-box w-100 p-3"
+                  type="text"
+                  placeholder="도로명주소"
+                  th:field="*{address}"
+                />
+              </label>
+              <label class="input-label w-100" for="">
+                <span class="d-block ms-2 mb-1"></span>
+                <input
+                  class="input-box w-100 p-3"
+                  type="text"
+                  placeholder="상세주소"
+                  th:field="*{addressDetail}"
+                />
+              </label>
 
               <ul class="request-institution">
                 <li>
@@ -145,6 +125,7 @@
                       class="input-box w-100 p-3"
                       type="text"
                       placeholder="목표 나눔 포인트"
+                      th:field="*{goalPoint}"
                     />
                   </label>
                 </li>
@@ -156,13 +137,16 @@
                   class="input-box w-100 p-3"
                   type="text"
                   placeholder="나눔 물품 상세 설명"
+                  th:field="*{detail}"
                 ></textarea>
               </label>
-
+		<!-- 	<th:block th:if="${#lists.isEmpty(donationFormDto.donationImgDtoList)}">
               <label class="input-label w-100">
                 <span class="d-block ms-2 mb-1">이미지 등록</span>
-                <input class="img-input w-100" type="file" accept="image/*" multiple/>
+                <input type="hidden" name="donationImgIds">
+                <input class="img-input w-100" type="file" accept="image/*" id="donationImgFile" name="donationImgFile" multiple/>
               </label>
+              </th:block> -->
             </div>
           </div>
 
@@ -171,14 +155,14 @@
               미리보기
               <div class="img-preview-list row row-cols-4 g-4">
               
-<!--                 <div class="col">
+                <div class="col">
                   <img
                     class="preview-img"
                     src="https://picsum.photos/id/237/720/480"
                     alt=""
                   />
                 </div>
- -->
+ 
               </div>
             </div>
           </div>

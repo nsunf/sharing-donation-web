@@ -1,5 +1,7 @@
 package com.sharingdonation.repository;
 
+import java.time.LocalDate;
+//import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -23,6 +25,7 @@ import com.sharingdonation.entity.QDonation;
 import com.sharingdonation.entity.QDonationHeart;
 import com.sharingdonation.entity.QDonationImg;
 import com.sharingdonation.entity.QMember;
+import com.sharingdonation.entity.QPoint;
 
 public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 
@@ -63,6 +66,7 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 		QDonationImg donationImg = QDonationImg.donationImg;
 		QMember member = QMember.member;
 		QDonationHeart subDonationHeart = QDonationHeart.donationHeart;
+		QPoint subPoint = QPoint.point1;
 		
 		List<ListDonationDto> content = queryFactory
 				.select(
@@ -75,14 +79,18 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 						donationImg.imgUrl, 
 						member.nickName,
 //						JPAExpressions.select(subDonationHeart.count()).from(subDonationHeart).where(donationImg.donation.eq(subDonationHeart.donation)).as("heartCount")
-						ExpressionUtils.as(JPAExpressions.select(subDonationHeart.count()).from(subDonationHeart).where(donationImg.donation.eq(subDonationHeart.donation)), "heartCount")
-						) // todo 좋아요 추가해야
-			)
+						ExpressionUtils.as(JPAExpressions.select(subDonationHeart.count()).from(subDonationHeart).where(donationImg.donation.eq(subDonationHeart.donation)), "heartCount"),
+						ExpressionUtils.as(JPAExpressions.select(subPoint.point.sum().coalesce(0)).from(subPoint).where(donationImg.donation.eq(subPoint.donation)), "pointSum")
+						)
+				)
 				.from(donationImg)
 				.join(donationImg.donation, donation)
-//				.join(donation.member, member)
+				.join(donation.member, member)
 				.where(donationImg.repimgYn.eq("Y"))
-				.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
+				.where(donation.donationName.like("%" + donationSearchDto.getSearchQuery() + "%")
+						, donation.subject.like("%" + donationSearchDto.getSearchQuery() + "%"))
+//				.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
+				.where(donation.endDate.gt(LocalDate.now()))
 				.orderBy(donation.id.desc())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
@@ -125,10 +133,13 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 		
 		long total = queryFactory
 				.select(Wildcard.count)
-				.from(donation)
-//				.join(donationImg.donation, donation)
-//				.where(donationImg.repimgYn.eq("Y"))
-				.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
+				.from(donationImg)
+				.join(donationImg.donation, donation)
+				.where(donationImg.repimgYn.eq("Y"))
+//				.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
+				.where(donation.donationName.like("%" + donationSearchDto.getSearchQuery() + "%")
+						, donation.subject.like("%" + donationSearchDto.getSearchQuery() + "%"))
+				.where(donation.endDate.gt(LocalDate.now()))
 				.fetchOne();
 		
 		return new PageImpl<>(content, pageable, total);
