@@ -23,7 +23,7 @@
     ></div>
     <!-- /.page-header__bg -->
     <div class="container" >
-      <h2 class="text-center sharing_board_title">기부 리스트</h2>
+      <h2 class="text-center sharing_board_title">기부 리스트1</h2>
     </div>
   </section>
 <!--Page Header End-->
@@ -33,11 +33,11 @@
   <!-- 검색창 -->
   <section class="causes-one causes-page pt-5 pb-3 vstack">
     <div class="m-5">
-      <form class="input-group mb-3 w-25 mx-auto">
-        <input type="text" class="form-control" placeholder="검색" />
+      <form th:action="@{/donation}" class="input-group mb-3 w-25 mx-auto">
+        <input type="text" class="form-control" placeholder="검색" th:field="${donationSearchDto.searchQuery}" />
         <button
           class="btn"
-          type="button"
+          type="submit"
           style="background-color: #20c097; color: #fff"
         >
           검색
@@ -47,6 +47,7 @@
     <!-- 기부 리스트 카드 -->
     <div class="container pt-5">
       <div class="row g-5 row-cols-auto">
+      	<th:block th:each="donation, status: ${donationList.getContent()}">
         <div class="col">
           <!--Causes Page Single-->
           <div class="causes-one__single">
@@ -61,27 +62,27 @@
             <div class="causes-one__content">
               <div class="hstack">
                 <span class="causes-one__title mb-0">
-                  <a class="" href="causes-details.html">기부 주제</a>
+                  <a class="" href="causes-details.html">[[${donation.subject}]]</a>
                 </span>
               </div>
-              <p class="causes-one__text mt-2">기부 기관/개인 명</p>
+              <p class="causes-one__text mt-2">[[${donation.nickName}]]</p>
             </div>
             <div
               class="causes-one__progress"
               style="background-color: #fff; padding: 25px 25px 21px !important;"
             >
               <div class="causes-one__goals">
-                <p class="mb-2">2023.02.16~2023.03.16</p>
+                <p class="mb-2">[[${donation.startDate}]]~[[${donation.endDate}]]</p>
               </div>
               <div class="hstack">
                 <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
-                <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
+                <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> [[${donation.heartCount}]]</a></div>
               </div>
             </div>
             <div class="causes-one__progress">
                 <div class="bar">
-                    <div class="bar-inner count-bar" data-percent="36%">
-                        <div class="count-text">36%</div>
+                    <div class="bar-inner count-bar" th:data-percent="${donation.pointPer}">
+                        <div class="count-text">[[${pointPer}]]%</div>
                     </div>
                 </div>
                 <div class="causes-one__goals">
@@ -91,226 +92,7 @@
             </div>
           </div>
         </div>
-        <div class="col">
-            <!--Causes Page Single-->
-            <div class="causes-one__single">
-              <div class="causes-one__img">
-                <div class="causes-one__img-box">
-                  <img src="/src/main/resources/static/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
-                  <a href="causes-details.html">
-                    <i class="fa fa-plus"></i>
-                  </a>
-                </div>
-              </div>
-              <div class="causes-one__content">
-                <div class="hstack">
-                  <span class="causes-one__title mb-0">
-                    <a class="" href="causes-details.html">기부 주제</a>
-                  </span>
-                </div>
-                <p class="causes-one__text mt-2">기부 기관/개인 명</p>
-              </div>
-              <div
-                class="causes-one__progress"
-                style="background-color: #fff; padding: 25px 25px 21px !important;"
-              >
-                <div class="causes-one__goals">
-                  <p class="mb-2">2023.02.16~2023.03.16</p>
-                </div>
-                <div class="hstack">
-                  <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
-                  <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
-                </div>
-              </div>
-              <div class="causes-one__progress">
-                  <div class="bar">
-                      <div class="bar-inner count-bar" data-percent="36%">
-                          <div class="count-text">36%</div>
-                      </div>
-                  </div>
-                  <div class="causes-one__goals">
-                      <p>0%</p>
-                      <p>100%</p>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <!--Causes Page Single-->
-            <div class="causes-one__single">
-              <div class="causes-one__img">
-                <div class="causes-one__img-box">
-                  <img src="/src/main/resources/static/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
-                  <a href="causes-details.html">
-                    <i class="fa fa-plus"></i>
-                  </a>
-                </div>
-              </div>
-              <div class="causes-one__content">
-                <div class="hstack">
-                  <span class="causes-one__title mb-0">
-                    <a class="" href="causes-details.html">기부 주제</a>
-                  </span>
-                </div>
-                <p class="causes-one__text mt-2">기부 기관/개인 명</p>
-              </div>
-              <div
-                class="causes-one__progress" 
-                style="background-color: #fff; padding: 25px 25px 21px !important;"
-              >
-                <div class="causes-one__goals">
-                  <p class="mb-2">2023.02.16~2023.03.16</p>
-                </div>
-                <div class="hstack">
-                  <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
-                  <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
-                </div>
-              </div>
-              <div class="causes-one__progress">
-                  <div class="bar">
-                      <div class="bar-inner count-bar" data-percent="36%">
-                          <div class="count-text">36%</div>
-                      </div>
-                  </div>
-                  <div class="causes-one__goals">
-                      <p>0%</p>
-                      <p>100%</p>
-                  </div>
-              </div>
-            </div>
-        </div>
-        <div class="col">
-            <!--Causes Page Single-->
-            <div class="causes-one__single">
-              <div class="causes-one__img">
-                <div class="causes-one__img-box">
-                  <img src="/src/main/resources/static/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
-                  <a href="causes-details.html">
-                    <i class="fa fa-plus"></i>
-                  </a>
-                </div>
-              </div>
-              <div class="causes-one__content">
-                <div class="hstack">
-                  <span class="causes-one__title mb-0">
-                    <a class="" href="causes-details.html">기부 주제</a>
-                  </span>
-                </div>
-                <p class="causes-one__text mt-2">기부 기관/개인 명</p>
-              </div>
-              <div
-                class="causes-one__progress"
-                style="background-color: #fff; padding: 25px 25px 21px !important;"
-              >
-                <div class="causes-one__goals">
-                  <p class="mb-2">2023.02.16~2023.03.16</p>
-                </div>
-                <div class="hstack">
-                  <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
-                  <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
-                </div>
-              </div>
-              <div class="causes-one__progress">
-                  <div class="bar">
-                      <div class="bar-inner count-bar" data-percent="36%">
-                          <div class="count-text">36%</div>
-                      </div>
-                  </div>
-                  <div class="causes-one__goals">
-                      <p>0%</p>
-                      <p>100%</p>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <!--Causes Page Single-->
-            <div class="causes-one__single">
-              <div class="causes-one__img">
-                <div class="causes-one__img-box">
-                  <img src="/src/main/resources/static/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
-                  <a href="causes-details.html">
-                    <i class="fa fa-plus"></i>
-                  </a>
-                </div>
-              </div>
-              <div class="causes-one__content">
-                <div class="hstack">
-                  <span class="causes-one__title mb-0">
-                    <a class="" href="causes-details.html">기부 주제</a>
-                  </span>
-                </div>
-                <p class="causes-one__text mt-2">기부 기관/개인 명</p>
-              </div>
-              <div
-                class="causes-one__progress"
-                style="background-color: #fff; padding: 25px 25px 21px !important;"
-              >
-                <div class="causes-one__goals">
-                  <p class="mb-2">2023.02.16~2023.03.16</p>
-                </div>
-                <div class="hstack">
-                  <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
-                  <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
-                </div>
-              </div>
-              <div class="causes-one__progress">
-                  <div class="bar">
-                      <div class="bar-inner count-bar" data-percent="36%">
-                          <div class="count-text">36%</div>
-                      </div>
-                  </div>
-                  <div class="causes-one__goals">
-                      <p>0%</p>
-                      <p>100%</p>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <!--Causes Page Single-->
-            <div class="causes-one__single">
-              <div class="causes-one__img">
-                <div class="causes-one__img-box">
-                  <img src="/src/main/resources/static/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
-                  <a href="causes-details.html">
-                    <i class="fa fa-plus"></i>
-                  </a>
-                </div>
-              </div>
-              <div class="causes-one__content">
-                <div class="hstack">
-                  <span class="causes-one__title mb-0">
-                    <a class="" href="causes-details.html">기부 주제</a>
-                  </span>
-                </div>
-                <p class="causes-one__text mt-2">기부 기관/개인 명</p>
-              </div>
-              <div
-                class="causes-one__progress"
-                style="background-color: #fff; padding: 25px 25px 21px !important;"
-              >
-                <div class="causes-one__goals">
-                  <p class="mb-2">2023.02.16~2023.03.16</p>
-                </div>
-                <div class="hstack">
-                  <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
-                  <div class="content-detail-like like-right ms-auto"><a href="#" ><img src="../../static/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> 12</a></div>
-                </div>
-              </div>
-              <div class="causes-one__progress">
-                  <div class="bar">
-                      <div class="bar-inner count-bar" data-percent="36%">
-                          <div class="count-text">36%</div>
-                      </div>
-                  </div>
-                  <div class="causes-one__goals">
-                      <p>0%</p>
-                      <p>100%</p>
-                  </div>
-              </div>
-            </div>
-          </div>
+        </th:block>
         
         
       </div>
@@ -318,21 +100,28 @@
   </section>
   <!-- pagenation -->
   <div class="archive-pages">
-		<ul>
-				
-				<li class="previous"><a href="#" title="previous page"></a></li>
-				<li class="selected">1</li>
-				<li><a href="#" title="Pagina 2">2</a></li>
-				<li><a href="#" title="Pagina 3">3</a></li>
-				<li><a href="#" title="Pagina 4">4</a></li>
-				<li><a href="#" title="Pagina 5">5</a></li>
-				<li class="next"><a href="#" title="next page"></a></li>
-			</ul>
-	</div>
+	<ul th:with="start=${(donationList.number/maxPage)*maxPage + 1}
+			,end=(${(donationList.totalPages == 0) ? 1 : (start + (maxPage - 1) < donationList.totalPages ? start + (maxPage - 1) : donationList.totalPages)})">	
+		<!-- class="previous" --> 
+		<li th:classappend="${donationList.first}? 'disabled'">
+			<!-- <a th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${donationList.number-1}}" title="previous page"></a> -->
+			<a th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${start}}" title="previous page"><<</a>
+		</li>
+		<li
+		th:each="page: ${#numbers.sequence(start, end)}"
+		th:classappend="${donationList.number+1 eq page}?'selected':''">
+			<a th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${page}}">[[${page}]]</a>
+		</li>
+		<!-- class="next" -->
+		<li  th:classappend="${donationList.last}?'disabled'">
+			<!-- <a th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${donationList.number+1}}" title="next page"></a> -->
+			<a th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${end}}" title="next page">>></a>
+		</li>
+	</ul>
+</div>
+</th:block>
 
-	</th:block>
-
-	<th:block layout:fragment="script-bottom">
-	</th:block>
+<th:block layout:fragment="script-bottom">
+</th:block>
 </body>
 </html>
