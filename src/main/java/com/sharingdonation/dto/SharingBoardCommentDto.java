@@ -25,14 +25,14 @@ public class SharingBoardCommentDto {
 	private static ModelMapper modelMapper = new ModelMapper();
 	
 	//dto를 엔티티로 바꿈
-	public SharingBoardComment writeAcomment() {
+	public SharingBoardComment writeComment() {
 		return modelMapper.map(this, SharingBoardComment.class);
 	}
 	
 	//엔티티를 dto로 바꿈
 	public static SharingBoardCommentDto of(SharingBoardComment sharingBoardComment) {
 		SharingBoardCommentDto sharingBoardCommentDto = modelMapper.map(sharingBoardComment, SharingBoardCommentDto.class);
-		sharingBoardCommentDto.setRegTime(sharingBoardComment.getRegTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm aa")));
+		sharingBoardCommentDto.setRegTime(sharingBoardComment.getRegTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm a")));
 		return sharingBoardCommentDto;
 	}
 	

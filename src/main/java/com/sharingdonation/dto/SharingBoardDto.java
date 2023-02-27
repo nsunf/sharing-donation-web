@@ -23,6 +23,8 @@ public class SharingBoardDto {
 	private String subject; //글제목
 	
 	private String content; //상세내용
+	
+	private Long commentCount; //댓글 갯수
 
 	private static ModelMapper modelMapper = new ModelMapper();
 	

@@ -53,8 +53,8 @@
 								<ul class="list-unstyled news-two__meta">
 									<li><i class="far fa-user-circle"></i> Admin</li>
 									<li><span>/</span></li>
-									<li><i
-											class="far fa-comments"></i> 10 Comments</li>
+									<li><i th:text="${sharedPost.commentCount}"
+											class="far fa-comments"></i></li>
 								</ul>
 									<a th:href="'/sharing_board/view/'+${sharedPost.id}"><h3 th:text="${sharedPost.subject}"></h3></a>
 								<p th:text="${sharedPost.content}" class="news-two__text">
