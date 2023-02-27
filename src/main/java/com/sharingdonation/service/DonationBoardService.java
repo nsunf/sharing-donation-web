@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sharingdonation.dto.DonationBoardDto;
 import com.sharingdonation.dto.DonationBoardFormDto;
+import com.sharingdonation.dto.DonationBoardImgDto;
 import com.sharingdonation.dto.DonationBoardSelectDto;
 import com.sharingdonation.entity.Donation;
 import com.sharingdonation.entity.DonationBoard;
@@ -84,6 +85,33 @@ public class DonationBoardService {
 	@Transactional(readOnly = true)
 	public Page<DonationBoardDto> getDonationBoardDtoPage(Pageable pageable){
 		return donationBoardRepository.getDonationBoardPage(pageable);
+	}
+
+
+ 
+	//get donation board detail
+	@Transactional(readOnly = true)
+	public DonationBoardFormDto getdonationBoardDetail(Long donationBoardId) {
+		List<DonationBoardImg> donationBoardImgList = donationBoardImgRepository.findByDonationBoardIdOrderByIdAsc(donationBoardId);
+		List<DonationBoardImgDto> donationBoardImgDtoList = new ArrayList<>();
+		
+		for(DonationBoardImg donationBoardImg : donationBoardImgList) {
+			DonationBoardImgDto donationBoardImgDto = DonationBoardImgDto.of(donationBoardImg);
+			donationBoardImgDtoList.add(donationBoardImgDto);
+		}
+		
+		//2. donation board테이블에 있는 데이터를 가져온다.
+				DonationBoard donationBoard = donationBoardRepository.findById(donationBoardId)
+											 .orElseThrow(EntityNotFoundException::new);
+				
+				//엔티티 객체 -> dto객체로 변환
+				DonationBoardFormDto donationBoardFormDto = DonationBoardFormDto.of(donationBoard);
+				
+				//이미지 정보를 넣어준다.
+				donationBoardFormDto.setDonationBoardImgDtoList(donationBoardImgDtoList);
+				
+				return donationBoardFormDto;
+		
 	}
 	
 	//donation board detail
