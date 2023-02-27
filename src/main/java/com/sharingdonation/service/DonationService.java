@@ -33,7 +33,7 @@ public class DonationService {
 	private final DonationImgService donationImgService;
 	private final DonationImgRepository donationImgRepository;
 	
-	public Long SaveDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList) throws Exception {
+	public Long saveDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList) throws Exception {
 		Donation donation = donationFormDto.createDonation();
 		donationRepository.save(donation);
 		
@@ -86,13 +86,24 @@ public class DonationService {
 		return donation.getId();
 	}
 	
-//	@Transactional(readOnly = true)
-//	public Page<Donation> getAdminDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
-//		return donationRepository.getAdminDonationPage(donationSearchDto, pageable);
-//	}
-//	
-//	@Transactional(readOnly = true)
-//	public Page<ListDonationDto> getListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
-//		return donationRepository.getListDonationPage(donationSearchDto, pageable);
-//	}
+	@Transactional(readOnly = true)
+	public Page<Donation> getAdminListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+		return donationRepository.getAdminListDonationPage(donationSearchDto, pageable);
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<ListDonationDto> getListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+		Page<ListDonationDto> donationList = donationRepository.getListDonationPage(donationSearchDto, pageable);
+		for(ListDonationDto donation : donationList) {
+			int pointPer = 0 ;
+			
+			if(donation.getPointSum() != 0 ) {
+				pointPer = (int)(donation.getPointSum() / donation.getGoalPoint());
+			}
+			donation.setPointPer(pointPer);
+			
+			System.out.println(donation.getId() + ":"+ donation.getPointSum() +":"+ donation.getGoalPoint() +":"+ donation.getPointPer());
+		}
+		return donationList;
+	}
 }

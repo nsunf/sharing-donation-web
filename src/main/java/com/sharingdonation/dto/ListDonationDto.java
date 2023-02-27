@@ -12,12 +12,11 @@ import lombok.Setter;
 @Setter
 public class ListDonationDto {
 	
-	public ListDonationDto(Member member) {
-		this.nickName = member.getNickName();
-	}
-	private Long id;
+//	public ListDonationDto(Member member) {
+//		this.nickName = member.getNickName();
+//	}
 	
-	private String imgUrl;
+	private Long id;
 	
 	private String subject;
 	
@@ -29,8 +28,15 @@ public class ListDonationDto {
 	
 	private LocalDate endDate;
 	
-	private Integer goalPoint;
+	private int goalPoint;
 	
+	private String imgUrl;
+	
+	private Long heartCount;
+	
+	private Integer pointSum;
+	
+	private int pointPer;
 //	private String confirmYn;
 //	
 //	private String done;
@@ -42,13 +48,24 @@ public class ListDonationDto {
 //	private String donationTel;
 	
 	@QueryProjection
-	public ListDonationDto(Long id, String subject, String nickName, LocalDate startDate, LocalDate endDate, Integer goalPoint) { 
-		// Member nickName, , String confirmYn, String done, String delYn
+	public ListDonationDto(Long id, String subject, LocalDate startDate
+			, LocalDate endDate, int goalPoint, String imgUrl
+			, String nickName
+			, Long heartCount
+			, Integer pointSum
+//			, Integer pointPer
+			) { 
+		// Member nickName, , String confirmYn, String done, String delYn  String nickName,
+		// , Long heartCount
 		this.id = id;
 		this.subject = subject;
-		this.nickName = nickName;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.goalPoint = goalPoint;
+		this.imgUrl = imgUrl;
+		this.nickName = nickName;
+		this.heartCount = heartCount;
+		this.pointSum = pointSum;
+//		this.pointPer = pointPer;
 	}
 }

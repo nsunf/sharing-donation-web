@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/sol/admin_sharing_md_ctr.css" />
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+		<section>
+			<form th:action="@{'/admin/sharing_md_ctr'+${items.number}}" role="form" method="get" th:object="${items}">
+				<div class="my-5">
+					<h1 class="text-center">나눔 상품 관리</h1>
+				</div>
+				<!-- 검색창 -->
+				<div class="container">
+					<div class="row hstack">
+						<div class="col-md-2 m-auto">
+							<select class="form-select admin_md_ctr_select"
+								aria-label="Default select example">
+								<option selected></option>
+								<option value="N">승인대기</option>
+								<option value="Y">승인완료</option>
+							</select>
+						</div>
+						<div class="col-md-8 my-auto">
+							<div class="input-group mx-auto">
+								<input type="text" class="form-control" placeholder="검색" />
+								<button class="btn" type="button"
+									style="background-color: #15C8A0; color: #fff">
+									검색</button>
+							</div>
+						</div>
+						<div class="col-md-2 hstack">
+							<div class="mx-auto">
+								<button class="admin_md_ctr_btn mb-2">승인</button>
+								<button class="admin_md_ctr_btn mb-2">삭제</button>
+							</div>
+						</div>
+					</div>
+					<div class="mx-auto my-5 p-3">
+						<table class="table">
+							<thead>
+								<tr class="border-top">
+									<th><input type="checkbox" name="" value="" /></th>
+									<th scope="col">번호</th>
+									<th scope="col">작성자</th>
+									<th scope="col">글제목</th>
+									<th scope="col">상품명</th>
+									<th scope="col">신청일자</th>
+									<th scope="col">게시기간</th>
+									<th scope="col">진행상황</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th><input type="checkbox" name="" value="" /></th>
+									<td>1</td>
+									<td>솔방울46</td>
+									<td>글제목</td>
+									<td>아이폰 xs</td>
+									<td>2023/02/20</td>
+									<td>2023/02/20~2023/03/20</td>
+									<td><button class="admin_standby_btn">승인대기</button></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="archive-pages">
+						<ul>
+							<li class="previous"><a href="#" title="previous page"></a></li>
+							<li class="selected">1</li>
+							<li><a href="#" title="Pagina 2">2</a></li>
+							<li><a href="#" title="Pagina 3">3</a></li>
+							<li><a href="#" title="Pagina 4">4</a></li>
+							<li><a href="#" title="Pagina 5">5</a></li>
+							<li class="next"><a href="#" title="next page"></a></li>
+						</ul>
+					</div>
+				</div>
+			</form>
+		</section>
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+	</th:block>
+</body>
+</html>

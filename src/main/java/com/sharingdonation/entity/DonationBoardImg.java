@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="donateion_board_img")
+@Table(name="donation_board_img")
 @Getter
 @Setter
 @ToString
@@ -43,4 +43,11 @@ public class DonationBoardImg {
 	
 	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String repimgYn;
+
+	public void updateDonationBoardImg(String imgName, String oriImgName, String imgUrl) {
+		this.imgName = imgName;
+		this.oriImgName = oriImgName;
+		this.imgUrl = imgUrl;
+		
+	}
 }

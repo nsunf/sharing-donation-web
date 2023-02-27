@@ -34,13 +34,17 @@ public class DonationFormDto {
 	@NotBlank(message = "기부 상세설명은 필수 입력 값입니다.")
 	private String detail;
 	
+	private String zipCode;
+	
+	private String address;
+	
+	private String addressDetail;
+	
 	private int price;
 	
 	private LocalDate startDate;
 	
 	private LocalDate endDate;
-	
-	private String address;
 	
 	@NotNull(message = "목표포인트는 필수 입력 값입니다.")
 	private int goalPoint;
