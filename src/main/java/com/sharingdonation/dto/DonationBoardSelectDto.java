@@ -31,6 +31,8 @@ public class DonationBoardSelectDto {
 	private static ModelMapper modelMapper = new ModelMapper();
 	
 	public static DonationBoardSelectDto of(Donation donation) {
-		return modelMapper.map(donation, DonationBoardSelectDto.class);
+		DonationBoardSelectDto result = modelMapper.map(donation, DonationBoardSelectDto.class);
+		result.setNickName(donation.getMember().getNickName()); //不能自动mapping（因为donation里面没有nickname，是在member里面），所以要自动放进来。
+		return result;
 	}
 }

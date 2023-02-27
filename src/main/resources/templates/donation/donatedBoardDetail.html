@@ -113,9 +113,9 @@
                       </li>
                     </ul>
                     <ul class="list-unstyled news-details__meta navright">
-                      <li>nickname</li>
-                      <li>기관 지역</li>
-                      <li>담당자명</li>
+                      <li th:text="${donationBoard.donationBoardSelectDto.nickName}"></li>
+                      <li th:text="${donationBoard.donationBoardSelectDto.address}"></li>
+                      <li th:text="${donationBoard.donationBoardSelectDto.donationPerson}"></li>
                     </ul>
                   </div>
 
@@ -201,12 +201,14 @@
                   >
                     <div class="comment-form__input-box">
                       <textarea
-                        name="message"
+                      	id="comment"
+                        name="commemt"
                         placeholder="create your comments"
                       ></textarea>
                     </div>
 
-                    <button type="submit" class="thm-btn comment-form__btn">
+                    <button type="submit" class="thm-btn comment-form__btn" 
+                    >
                       제 출<i
                         class="fas fa-arrow-circle-right"
                         style="padding-left: 10px"
@@ -231,6 +233,8 @@
           prevEl: ".swiper-button-prev",
         },
       });
+      
+     
     </script>
 	</th:block>
 </body>
