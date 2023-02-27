@@ -6,10 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sharingdonation.dto.SharingBoardCommentDto;
 import com.sharingdonation.dto.SharingBoardDto;
-import com.sharingdonation.repository.SharingBoardRepository;
 import com.sharingdonation.service.SharingBoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,14 +35,27 @@ public class SharingBoardController {
 	@GetMapping(value = "/view/{shared_post_id}")
 	public String ViewSharedPost(Model model, @PathVariable("shared_post_id") Long id) {
 		SharingBoardDto sharingBoardDto = sharingBoardService.getCompletePost(id);
+		//List<SharingBoardCommentDto> sharingBoardCommentDtoList = sharingBoardService.getBoardCommentList();
 		model.addAttribute("sharingBoardDto",sharingBoardDto);
+		//model.addAttribute("sharingBoardCommentDtoList",sharingBoardCommentDtoList);
 		return "sharing/sharedDetail";
 	}
-	
-	//게시글 등록
-	@GetMapping("/add_post")
-	public String sharedAddPost() {
-		return "sharing/sharedDetail";
+	/*
+	//댓글 작성
+	@PostMapping("/view/{shared_post_id}/comment")
+	public SharingBoardCommentDto {
+		
+		
 	}
-	
+	*/
+
+	/*
+	//댓글 리스트 보기
+	@PostMapping(value = "/view/{shared_post_id}")
+   public String ViewSharedComment (Model model, @PathVariable("shared_post_id") Long id) {
+		List<SharingBoardCommentDto> sharingBoardCommentDtoList = sharingBoardService.getBoardCommentList(id);
+		model.addAttribute("sharingBoardCommentDtoList",sharingBoardCommentDtoList);
+	   return "sharing/sharedDetail";
+   }
+*/
 }

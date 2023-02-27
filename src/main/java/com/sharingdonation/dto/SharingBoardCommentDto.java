@@ -10,12 +10,13 @@ import lombok.*;
 
 @Getter
 @Setter
+@ToString
 public class SharingBoardCommentDto {
 	private Long id; //식별아이디
 	
 	private String sharing_board_id; //게시글 식별아이디
 	
-	private String coments_member; //댓글 작성한 사람
+	private String comment_member; //댓글 작성한 사람
 	
 	private String regTime; //댓글 등록 날짜
 	

@@ -111,18 +111,20 @@
 															<li>
 																	<div class="comment-main-level">
 																			<!-- Contenedor-->
+																		<th:block th:each="sharedComment, status: ${sharingBoardCommentDtoList}">
 																			<div class="comment-box">
 																					<div class="comment-head">
-																							<h6 class="comment-name">NickName</a></h6>
-																							<div class="comment-time">2013-02-20 08:00am</div>
+																							<h6 class="comment-name" id="commemt_writer">NickName</a></h6>
+																							<div th:text="${sharedComment.regTime}" class="comment-time">댓글등록시간</div>
 																					</div>
-																					<div class="comment-content">
+																					<div th:next="${sharedComment.comment}" class="comment-content">
 																							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
 																					</div>
 																					<div class="comment-down">
 																							<button class="comment-bnt">삭제</button>
 																					 </div>
 																			</div>
+																		</th:block>
 																	</div>
 															</li>
 													</ul>
@@ -132,7 +134,7 @@
 											<!--댓글 작성 시작-->
 											<div class="comment-form">
 													<h3 class="comment-form__title">댓글 작성</h3>
-													<form action="assets/inc/sendemail.php" class="comment-one__form contact-form-validated">
+													<form action="/sharing_board/view/'+${sharedPost.id}" method="post" class="comment-one__form contact-form-validated">
 															
 																			<div class="comment-form__input-box">
 																					<textarea name="message" placeholder="create your comments"></textarea>
