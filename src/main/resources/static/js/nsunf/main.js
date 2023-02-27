@@ -21,11 +21,11 @@ outlineEls.forEach((outline, i) => {
   })
 
   outline.addEventListener("click", () => {
-    alert("outline clicked");
+	  location.href="/sharing/area/" + outline.dataset.gu;
   })
 
   textEl.addEventListener("click", () => {
-    alert("text clicked");
+	  location.href="/sharing/area/" + textEl.textContent;
   })
 });
 

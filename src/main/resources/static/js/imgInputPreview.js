@@ -10,6 +10,14 @@ function imgCard(src) {
 
 imgInput.addEventListener("change", e => {
 	const files = imgInput.files;
+	previewList.innerHTML = "";
+	
+	if (files.length > 10) {
+		alert("최대 10개의 이미지를 첨부할 수 있습니다.");
+		imgInput.value = null;
+		return;
+	}
+
 	
 	for (let i = 0; i < files.length; i++) {
 		const reader = new FileReader();

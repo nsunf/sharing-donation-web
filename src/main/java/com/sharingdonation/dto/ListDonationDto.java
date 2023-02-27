@@ -33,6 +33,10 @@ public class ListDonationDto {
 	private String imgUrl;
 	
 	private Long heartCount;
+	
+	private Integer pointSum;
+	
+	private int pointPer;
 //	private String confirmYn;
 //	
 //	private String done;
@@ -48,6 +52,8 @@ public class ListDonationDto {
 			, LocalDate endDate, int goalPoint, String imgUrl
 			, String nickName
 			, Long heartCount
+			, Integer pointSum
+//			, Integer pointPer
 			) { 
 		// Member nickName, , String confirmYn, String done, String delYn  String nickName,
 		// , Long heartCount
@@ -59,5 +65,7 @@ public class ListDonationDto {
 		this.imgUrl = imgUrl;
 		this.nickName = nickName;
 		this.heartCount = heartCount;
+		this.pointSum = pointSum;
+//		this.pointPer = pointPer;
 	}
 }
