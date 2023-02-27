@@ -50,6 +50,7 @@ public class DonationBoardService {
 	
 	
 	
+	
 	//create donation board
 	public Long SaveDonationBoard(DonationBoardFormDto donationBoardFormDto, List<MultipartFile> donationBoardImgFileList) throws Exception{
 		DonationBoard donationBoard = donationBoardFormDto.createDonationBoard();
@@ -99,6 +100,9 @@ public class DonationBoardService {
 			DonationBoardImgDto donationBoardImgDto = DonationBoardImgDto.of(donationBoardImg);
 			donationBoardImgDtoList.add(donationBoardImgDto);
 		}
+		
+		
+		
 		
 		//2. donation board테이블에 있는 데이터를 가져온다.
 				DonationBoard donationBoard = donationBoardRepository.findById(donationBoardId)
