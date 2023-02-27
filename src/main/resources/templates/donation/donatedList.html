@@ -31,21 +31,28 @@
                 </button>
               </form>
             </div>
+            <div class="row hstack">
+        		<div class="col-2 mb-5 ms-auto">
+							<a class="btn" href="/donatedBoard/edit" style="background: var(--thm-primary); color: white;">기부 완료 게시판 등록</a>
+        		</div>
+        	</div>
+        	
+        	
             <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="100ms">
+            <th:block th:each="donationBoard, status: ${donationBoards.getContent()}">
               <!--News Two Single-->
               <div class="news-two__single">
                 <div class="news-two__img-box">
                   <div class="news-two__img">
                     <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
+                    th:src="${donationBoard.imgUrl}" th:alt="${donationBoard.subject}"
                     />
                     <a href="#">
                       <i class="fa fa-plus"></i>
                     </a>
                   </div>
                   <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
+                    <p>[[${donationBoard.regTime}]]</p>
                   </div>
                 </div>
                 <div class="news-two__content">
@@ -61,192 +68,15 @@
                     </li>
                   </ul>
                   <h3>
-                    <a href="donated-board-detail.html">글제목</a>
+                    <a href="/donatedBoard/detail">[[${donationBoard.subject}]]</a>
                   </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
+                  <p class="news-two__text">[[${donationBoard.content}]]</p>
                 </div>
               </div>
+              </th:block>
             </div>
-            <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="200ms">
-              <!--News Two Single-->
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
-                    />
-                    <a href="#">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="donated-board-detail.html">글제목</a>
-                  </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="300ms">
-              <!--News Two Single-->
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
-                    />
-                    <a href="#">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="donated-board-detail.html">글제목</a>
-                  </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="400ms">
-              <!--News Two Single-->
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
-                    />
-                    <a href="#">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="donated-board-detail.html">글제목</a>
-                  </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="500ms">
-              <!--News Two Single-->
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
-                    />
-                    <a href="#">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="donated-board-detail.html">글제목</a>
-                  </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="600ms">
-              <!--News Two Single-->
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
-                    />
-                    <a href="#">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="donated-board-detail.html">글제목</a>
-                  </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
-                </div>
-              </div>
-            </div>
+         
+          
           </div>
         </div>
       </section>
