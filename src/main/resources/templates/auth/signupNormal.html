@@ -16,6 +16,7 @@
     <div class="img-banner"></div>
     <div class="login-form">
         <br>
+        <form class="row g-3" role="form" action="/members/new" method="post" th:object="${memberFormDto}">
             <div><h1 class="h1">개인 회원 가입</h1></div>
             <div class="atag">
                 <a href="/" class="text-1">홈으로</a>
@@ -29,12 +30,12 @@
             <div>주소</div>
             <input type="text" class="ad-field" id="sample4_postcode" placeholder="우편번호">
             <input type="button" class="ad-btn" style="background-color: #8D9391;" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-            <input type="text" class="ad-field" id="sample4_roadAddress" placeholder="도로명주소">
-            <input type="text" class="ad-field" id="sample4_jibunAddress" placeholder="지번주소">
+            <input type="text" class="text-field" id="sample4_roadAddress" placeholder="도로명주소">
+            <!-- <input type="text" class="ad-field" id="sample4_jibunAddress" placeholder="지번주소"> -->
             <span id="guide"  style="color:#999;display:none"></span>
         </br>
-            <input type="text" class="ad-field" id="sample4_detailAddress" placeholder="상세주소">
-            <input type="text" class="ad-field" id="sample4_extraAddress" placeholder="참고항목">
+            <input type="text" class="text-field" id="sample4_detailAddress" placeholder="상세주소">
+            <!-- <input type="text" class="ad-field" id="sample4_extraAddress" placeholder="참고항목"> -->
             <div>생년월일</div>
             <input type="text" name="name" class="text-field" placeholder="생년월일을 입력해주세요.">
             <div>휴대폰</div>
