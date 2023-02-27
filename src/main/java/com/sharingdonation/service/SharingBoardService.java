@@ -71,15 +71,6 @@ public class SharingBoardService {
 		
 		return sharingBoardCommentDto;
 	}
-
-	/*
-	// 댓글 작성
-	public SharingBoardCommentDto writeComment(Long sharing_board_id, Long comment_member, SharingBoardCommentDto sharingBoardCommentDto) {
-		SharingBoardComment sharingBoardComment = new SharingBoardComment();
-		sharingBoardComment.setComment(sharingBoardCommentDto.getComment());
-	
-	}
-	*/
 	
 	// 나눔완료 게시글 여러 댓글들 보여줌
 	@Transactional

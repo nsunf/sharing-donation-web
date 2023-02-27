@@ -35,27 +35,11 @@ public class SharingBoardController {
 	@GetMapping(value = "/view/{shared_post_id}")
 	public String ViewSharedPost(Model model, @PathVariable("shared_post_id") Long id) {
 		SharingBoardDto sharingBoardDto = sharingBoardService.getCompletePost(id);
-		//List<SharingBoardCommentDto> sharingBoardCommentDtoList = sharingBoardService.getBoardCommentList();
+		List<SharingBoardCommentDto> sharingBoardCommentDtoList = sharingBoardService.getBoardCommentList();
 		model.addAttribute("sharingBoardDto",sharingBoardDto);
-		//model.addAttribute("sharingBoardCommentDtoList",sharingBoardCommentDtoList);
+		model.addAttribute("sharingBoardCommentDtoList",sharingBoardCommentDtoList);
 		return "sharing/sharedDetail";
 	}
-	/*
-	//댓글 작성
-	@PostMapping("/view/{shared_post_id}/comment")
-	public SharingBoardCommentDto {
-		
-		
-	}
-	*/
-
-	/*
-	//댓글 리스트 보기
-	@PostMapping(value = "/view/{shared_post_id}")
-   public String ViewSharedComment (Model model, @PathVariable("shared_post_id") Long id) {
-		List<SharingBoardCommentDto> sharingBoardCommentDtoList = sharingBoardService.getBoardCommentList(id);
-		model.addAttribute("sharingBoardCommentDtoList",sharingBoardCommentDtoList);
-	   return "sharing/sharedDetail";
-   }
-*/
+	
+	
 }
