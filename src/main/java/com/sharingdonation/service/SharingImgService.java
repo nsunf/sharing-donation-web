@@ -34,7 +34,7 @@ public class SharingImgService {
 		
 		if (!StringUtils.isEmpty(oriImgName)) {
 			imgName = fileService.uploadFile(sharingImgLocation, oriImgName, sharingImgFile.getBytes());
-			imgUrl = "/imgs/sharing/" + imgName;
+			imgUrl = "/images/sharing/" + imgName;
 		}
 		
 		sharingImg.setOriImgName(oriImgName);
@@ -53,7 +53,7 @@ public class SharingImgService {
 			
 			String oriImgName = sharingImgFile.getOriginalFilename();
 			String imgName = fileService.uploadFile(sharingImgLocation, oriImgName, sharingImgFile.getBytes());
-			String imgUrl = "/imgs/sharing/" + imgName;
+			String imgUrl = "/images/sharing/" + imgName;
 			
 			savedItemImg.setOriImgName(oriImgName);
 			savedItemImg.setImgName(imgName);

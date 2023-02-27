@@ -154,12 +154,6 @@ public class SharingController {
 	}
 	
 	
-	// MainController로 이동 필요
-	@GetMapping("/main")
-	public String main() {
-		return "main";
-	}
-	
 	// MypageController로 이동 필요
 	@GetMapping(value = {"/mypage", "/mypage/{page}"})
 	public String mypageSharingList(@PathVariable("page") Optional<Integer> page , Model model) {
