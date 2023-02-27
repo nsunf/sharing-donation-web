@@ -6,6 +6,14 @@
     margin: 50px 0;
 }
 
+.read-more {
+	text-overflow: ellipsis;
+ 	white-space: normal;
+  	display: -webkit-box;
+  	-webkit-line-clamp:3;
+  	-webkit-box-orient: vertical;
+  	overflow: hidden;
+}
 
 
 

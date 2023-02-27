@@ -1,5 +1,6 @@
 package com.sharingdonation.controller;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sharingdonation.dto.DonationBoardDto;
 import com.sharingdonation.dto.DonationBoardFormDto;
+import com.sharingdonation.dto.DonationBoardImgDto;
 import com.sharingdonation.dto.DonationFormDto;
 import com.sharingdonation.service.DonationBoardImgService;
 import com.sharingdonation.service.DonationBoardService;
@@ -74,6 +76,7 @@ public class DonationBoardController {
 	//show donated board list page
 	@GetMapping(value = "/donatedBoard")
 	public String donatedBoard(Optional<Integer> page, Model model) { 
+		
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
 		Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(pageable);
 		
@@ -85,18 +88,18 @@ public class DonationBoardController {
 	
 	
 	//show donated board detail page
-	@GetMapping(value = "/donatedBoard/detail") //{denationBoardId}
-	public String donatedBoardDetail() { //Model model, @PathVariable("donationBoardId") Long donationBoardId
-		/* 
-		DonationBoardFormDto donationBoardFormDto = donationBoardService.getdonationBoardDetail(donationBoardId);
-		List<DonationBoardImageDto> donationBoardImageDtos = donationBoardFormDto.getDonationBoardImageDtoList();
+	@GetMapping(value = "/donatedBoard/{denationBoardId}") //{denationBoardId}
+	public String donatedBoardDetail(Model model, @PathVariable("donationBoardId") Long donationBoardId) { //Model model, @PathVariable("donationBoardId") Long donationBoardId
 		
-		for(DonationBoardImageDto p : donationBoardImageDtos) {
-			System.out.println("ccc:" + p.getDonationBoardImageUrl());
+		DonationBoardFormDto donationBoardFormDto = donationBoardService.getdonationBoardDetail(donationBoardId);
+		List<DonationBoardImgDto> donationBoardImgDtos = donationBoardFormDto.getDonationBoardImgDtoList();
+		
+		for(DonationBoardImgDto p : donationBoardImgDtos) {
+			System.out.println("ccc:" + p.getImgUrl());
 		}
 		model.addAttribute("donationBoard",donationBoardFormDto);
 		//model.addAttribute("commentFormDto", new CommentFormDto());
-		*/
+		
 		
 		return "donation/donatedBoardDetail";
 		

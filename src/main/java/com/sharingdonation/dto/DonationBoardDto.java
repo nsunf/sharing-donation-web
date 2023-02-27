@@ -1,7 +1,9 @@
 package com.sharingdonation.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 
 
@@ -20,7 +22,7 @@ public class DonationBoardDto {
 	
 	private String content;
 	
-	private LocalDateTime regTime;
+	private String regTime;
 	
 	private String imgUrl;
 	
@@ -30,7 +32,7 @@ public class DonationBoardDto {
 		this.donationId = donationId;
 		this.subject = subject;
 		this.content = content;
-		this.regTime = regTime;
+		this.regTime = regTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		this.imgUrl = imgUrl;
 		
 	}
