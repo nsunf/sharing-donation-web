@@ -10,6 +10,7 @@ function imgCard(src) {
 
 imgInput.addEventListener("change", e => {
 	const files = imgInput.files;
+	previewList.innerHTML = "";
 	
 	for (let i = 0; i < files.length; i++) {
 		const reader = new FileReader();

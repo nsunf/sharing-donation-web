@@ -3,9 +3,8 @@ package com.sharingdonation.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sharingdonation.dto.AreaDto;
 import com.sharingdonation.entity.Area;
@@ -42,6 +41,7 @@ public class AreaService {
 	}
 
 	public List<AreaDto> getAreaList() {
+		System.out.println("haha");
 		return areaRepo.findAll().stream().map(AreaDto::of).toList();
 	}
 }

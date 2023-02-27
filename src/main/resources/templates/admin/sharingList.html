@@ -6,8 +6,16 @@
 >
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/css/sol/admin_sharing_md_ctr.css" />
+<style>
+	td {
+		font-size: 13px;
+		font-weight: normal;
+	}
+</style>
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
@@ -18,39 +26,32 @@
         </div>
           <!-- 검색창 -->
         <div class="container">
-            <div class="row hstack">
-                <div class="col-md-2 m-auto">
-                    <select class="form-select admin_md_ctr_select" aria-label="Default select example">
-                        <option selected>필터</option>
-                        <option value="1">필터1</option>
-                        <option value="2">필터2</option>
-                        <option value="3">필터3</option>
-                    </select>
-                </div>
-                <div class="col-md-8 my-auto">
-                    <form class="input-group mx-auto">
-                        <input type="text" class="form-control" placeholder="검색" />
-                        <button
-                        class="btn"
-                        type="button"
-                        style="background-color: #15C8A0; color: #fff"
-                        >
-                        검색
-                        </button>
-                 </form>
-                </div>
+            <form class="row hstack" th:action="@{/sharing/admin}">
+								<div class="col-md-2 m-auto">
+										<select class="form-select admin_md_ctr_select" name="filter" aria-label="Default select example">
+												<option value="title" th:selected="${filter == 'title'} ? 'selected' : null">글제목</option>
+												<option value="content" th:selected="${filter == 'content'} ? 'selected' : null">글내용</option>
+												<option value="author" th:selected="${filter == 'author'} ? 'selected' : null">작성자</option>
+										</select>
+								</div>
+								<div class="col-md-8 my-auto">
+										<div class="input-group mx-auto">
+												<input type="text" class="form-control" name="search" th:value="${search}" placeholder="검색" />
+												<button class="btn" type="submit" style="background-color: #15C8A0; color: #fff">검색</button>
+										</div>
+								</div>
                 <div class="col-md-2 hstack">
                     <div class="mx-auto">
-                        <button class="admin_md_ctr_btn mb-2">승인</button>
-                        <button class="admin_md_ctr_btn mb-2">삭제</button>
+<!--                         <button id="approve-btn" class="admin_md_ctr_btn mb-2" type="button">승인</button>
+ -->                        <button id="delete-btn" class="admin_md_ctr_btn mb-2" type="button">삭제</button>
                     </div>
                 </div>
-            </div>
+            </form>
             <div class="mx-auto my-5 p-3">
             <table class="table">
             <thead>
               <tr class="border-top">
-                <th><input type="checkbox" name="" value="" /></th>
+                <th><input class="select-all-btn" type="checkbox" /></th>
                 <th>번호</th>
                 <th>작성자</th>
                 <th>글제목</th>
@@ -62,32 +63,40 @@
             </thead>
             <tbody>
               <tr th:each="sharingDto, status : ${sharingDtoList}">
-                <th><input type="checkbox" name="selected" th:value="${sharingDto.id}" /></th>
+                <th><input type="checkbox" class="sharing" name="sharing" th:value="${sharingDto.id}" /></th>
                 <td>[[${status.index + 1}]]</td>
                 <td>[[${sharingDto.authorName}]]</td>
                 <td>[[${sharingDto.name}]]</td>
                 <td>[[${sharingDto.categoryName}]]</td>
                 <td>[[${sharingDto.regTime}]]</td>
                 <td th:if="${sharingDto.startDate != null}">[[${sharingDto.startDate + '~' + sharingDto.endDate}]]</td>
-                <td th:else="${sharingDto.startDate == null}">---</td>
+                <td th:unless="${sharingDto.startDate != null}">---</td>
                 <td>
-                	<button class="text-white border-0 status ms-auto mt-auto" th:classappend="${sharingDto.status == '완료'} ? 'status-gray' : (${sharingDto.status == '진행중'} ? 'status-green' : 'status-yellow')">[[${sharingDto.status}]]</button>
+                	<a th:href="@{/sharing/admin/edit/{id}(id=${sharingDto.id})}">
+                		<button class="text-white border-0 status ms-auto mt-auto" th:classappend="${sharingDto.status == '완료'} ? 'status-gray' : (${sharingDto.status == '진행중'} ? 'status-green' : 'status-yellow')">[[${sharingDto.status}]]</button>
+									</a>
                 </td>
               </tr>
             </tbody>
           </table>
           </div>
-         <div class="archive-pages">
-                    <ul> 
-                        <li class="previous"><a href="#" title="previous page"></a></li>
-                        <li class="selected">1</li>
-                        <li><a href="#" title="Pagina 2">2</a></li>
-                        <li><a href="#" title="Pagina 3">3</a></li>
-                        <li><a href="#" title="Pagina 4">4</a></li>
-                        <li><a href="#" title="Pagina 5">5</a></li>
-                        <li class="next"><a href="#" title="next page"></a></li>
-                    </ul>
-         </div>
+         <div>
+						<nav aria-label="Page navigation example" class="hstack mt-5" th:with="start=${(sharingDtoList.number/maxPage)*maxPage + 1}, end=(${(sharingDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < sharingDtoList.totalPages ? start + (maxPage - 1) : sharingDtoList.totalPages)})">
+							<ul class="pagination mx-auto">
+								<li class="page-item">
+									<a class="page-link page-prev" th:onclick="'paging(' + ${sharingDtoList.number-1} + ')'" aria-label="Previous" th:classappend="${sharingDtoList.number eq 0}?'disabled':''"> <span aria-hidden="true">&laquo;</span></a>
+								</li>
+								<li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${sharingDtoList.number eq page-1}?'active':''">
+   									<a class="page-link page-num" th:inline="text" th:onclick="'paging(' + ${page-1} + ')'">[[${page}]]</a>
+								</li>
+								<li class="page-item">
+									<a class="page-link page-next" th:onclick="'paging(' + ${sharingDtoList.number+1} + ')'" aria-label="Next" th:classappend="${sharingDtoList.number+1 ge sharingDtoList.totalPages}?'disabled':''">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</li>
+							</ul>
+						</nav>
+ 					</div>
         </div>
 		</section>
 
@@ -95,6 +104,8 @@
 
 	<th:block layout:fragment="script-bottom">
 		<script src="/js/setAutoHeight.js"></script>
+		<script src="/js/pagination.js"></script>
+		<script src="/js/nsunf/adminSharingList.js"></script>
 	</th:block>
 </body>
 </html>

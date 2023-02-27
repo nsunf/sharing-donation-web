@@ -15,33 +15,33 @@
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
-		<th:block>
-		<section class="page-header">
+			<section class="page-header">
         <div
           class="page-header__bg"
-          style="
-            background-image: url('https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3270&q=80');
-          "
+          style="background-image: url('https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3270&q=80');"
         ></div>
         <!-- /.page-header__bg -->
         <div class="container">
+        	<p class="text-white">[[${areaName}]]</p>
           <h2 class="text-center sharing_board_title">나눔리스트</h2>
         </div>
       </section>
+
       <!-- 검색창 -->
       <section class="causes-one causes-page pt-5 pb-3 vstack">
         <div class="m-5">
-          <form class="input-group mb-3 w-25 mx-auto">
-            <input type="text" class="form-control" placeholder="검색" />
+          <form class="input-group mb-3 w-25 mx-auto" th:action="@{/sharing}">
+            <input type="text" class="form-control" placeholder="검색" name="search" />
             <button
               class="btn"
-              type="button"
+              type="submit"
               style="background-color: #15C8A0; color: #fff"
             >
               검색
             </button>
           </form>
         </div>
+
         <!-- 나눔상품 게시글 -->
         <div class="container pt-5">
         	<div class="row hstack">
@@ -49,332 +49,74 @@
 							<a class="btn" href="/sharing/create" style="background: var(--thm-primary); color: white;">나눔 등록</a>
         		</div>
         	</div>
+
           <div class="row g-5 row-cols-auto">
-            <div class="col">
+
+            <div class="col-4" th:each="sharingDto : ${sharingDtoList}">
               <!--Causes Page Single-->
               <div class="causes-one__single">
+
                 <div class="causes-one__img">
                   <div class="causes-one__img-box">
-                    <img src="https://picsum.photos/200/180" alt="" />
-                    <a href="causes-details.html">
+                    <img style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" th:src="@{${sharingDto.imgUrl}}" alt="sharing-img" />
+                    <a th:href="@{/sharing/{id}(id=${sharingDto.id})}">
                       <i class="fa fa-plus"></i>
                     </a>
                   </div>
                 </div>
+
                 <div class="causes-one__content">
                   <div class="hstack">
                     <span class="causes-one__title mb-0">
-                      <a class="" href="causes-details.html">나눔물품명</a>
+                      <a class="" href="causes-details.html"></a>
                     </span>
-                    <span class="ms-auto">지역</span>
+                    <span class="ms-auto">[[${sharingDto.areaName}]]</span>
                   </div>
-                  <p class="causes-one__text mt-2">닉네임</p>
+                  <p class="causes-one__text mt-2">[[${sharingDto.authorName}]]</p>
                 </div>
-                <div
-                  class="causes-one__progress"
-                  style="background-color: #fff"
-                >
+
+                <div class="causes-one__progress pt-0" style="background-color: #fff">
                   <div class="causes-one__goals">
-                    <p class="mb-2">2023.02.16~2023.03.16</p>
+                    <p class="mb-2" th:text="${sharingDto.startDate} + '~' + ${sharingDto.endDate}"></p>
                   </div>
                   <div class="hstack">
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn me-auto rounded-pill"
-                    >
-                      진행중
+                    <button type="button" class="status border-0 me-auto rounded-pill" th:classappend="${sharingDto.status == '완료'} ? 'status-gray' : (${sharingDto.status == '진행중'} ? 'status-green' : 'status-yellow')">
+                      [[${sharingDto.status}]]
                     </button>
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn ms-auto rounded-pill"
-                    >
-                      좋아요
+                    <button type="button" class="status thm-btn ms-auto rounded-pill">
+                      좋아요 [[${sharingDto.heartCount}]]
                     </button>
                   </div>
                 </div>
+
               </div>
             </div>
-            <div class="col">
-              <!--Causes Page Single-->
-              <div class="causes-one__single">
-                <div class="causes-one__img">
-                  <div class="causes-one__img-box">
-                    <img src="https://picsum.photos/200/180" alt="" />
-                    <a href="causes-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                </div>
-                <div class="causes-one__content">
-                  <div class="hstack">
-                    <span class="causes-one__title mb-0">
-                      <a class="" href="causes-details.html">나눔물품명</a>
-                    </span>
-                    <span class="ms-auto">지역</span>
-                  </div>
-                  <p class="causes-one__text mt-2">닉네임</p>
-                </div>
-                <div
-                  class="causes-one__progress"
-                  style="background-color: #fff"
-                >
-                  <div class="causes-one__goals">
-                    <p class="mb-2">2023.02.16~2023.03.16</p>
-                  </div>
-                  <div class="hstack">
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn me-auto rounded-pill"
-                    >
-                      진행중
-                    </button>
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn ms-auto rounded-pill"
-                    >
-                      좋아요
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <!--Causes Page Single-->
-              <div class="causes-one__single">
-                <div class="causes-one__img">
-                  <div class="causes-one__img-box">
-                    <img src="https://picsum.photos/200/180" alt="" />
-                    <a href="causes-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                </div>
-                <div class="causes-one__content">
-                  <div class="hstack">
-                    <span class="causes-one__title mb-0">
-                      <a class="" href="causes-details.html">나눔물품명</a>
-                    </span>
-                    <span class="ms-auto">지역</span>
-                  </div>
-                  <p class="causes-one__text mt-2">닉네임</p>
-                </div>
-                <div
-                  class="causes-one__progress"
-                  style="background-color: #fff"
-                >
-                  <div class="causes-one__goals">
-                    <p class="mb-2">2023.02.16~2023.03.16</p>
-                  </div>
-                  <div class="hstack">
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn me-auto rounded-pill"
-                    >
-                      진행중
-                    </button>
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn ms-auto rounded-pill"
-                    >
-                      좋아요
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <!--Causes Page Single-->
-              <div class="causes-one__single">
-                <div class="causes-one__img">
-                  <div class="causes-one__img-box">
-                    <img src="https://picsum.photos/200/180" alt="" />
-                    <a href="causes-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                </div>
-                <div class="causes-one__content">
-                  <div class="hstack">
-                    <span class="causes-one__title mb-0">
-                      <a class="" href="causes-details.html">나눔물품명</a>
-                    </span>
-                    <span class="ms-auto">지역</span>
-                  </div>
-                  <p class="causes-one__text mt-2">닉네임</p>
-                </div>
-                <div
-                  class="causes-one__progress"
-                  style="background-color: #fff"
-                >
-                  <div class="causes-one__goals">
-                    <p class="mb-2">2023.02.16~2023.03.16</p>
-                  </div>
-                  <div class="hstack">
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn me-auto rounded-pill"
-                    >
-                      진행중
-                    </button>
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn ms-auto rounded-pill"
-                    >
-                      좋아요
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <!--Causes Page Single-->
-              <div class="causes-one__single">
-                <div class="causes-one__img">
-                  <div class="causes-one__img-box">
-                    <img src="https://picsum.photos/200/180" alt="" />
-                    <a href="causes-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                </div>
-                <div class="causes-one__content">
-                  <div class="hstack">
-                    <span class="causes-one__title mb-0">
-                      <a class="" href="causes-details.html">나눔물품명</a>
-                    </span>
-                    <span class="ms-auto">지역</span>
-                  </div>
-                  <p class="causes-one__text mt-2">닉네임</p>
-                </div>
-                <div
-                  class="causes-one__progress"
-                  style="background-color: #fff"
-                >
-                  <div class="causes-one__goals">
-                    <p class="mb-2">2023.02.16~2023.03.16</p>
-                  </div>
-                  <div class="hstack">
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn rounded-pill"
-                    >
-                      진행중
-                    </button>
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn rounded-pill"
-                    >
-                      좋아요
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <!--Causes Page Single-->
-              <div class="causes-one__single">
-                <div class="causes-one__img">
-                  <div class="causes-one__img-box">
-                    <img src="https://picsum.photos/200/180" alt="" />
-                    <a href="causes-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                </div>
-                <div class="causes-one__content">
-                  <div class="hstack">
-                    <span class="causes-one__title mb-0">
-                      <a class="" href="causes-details.html">나눔물품명</a>
-                    </span>
-                    <span class="ms-auto">지역</span>
-                  </div>
-                  <p class="causes-one__text mt-2">닉네임</p>
-                </div>
-                <div
-                  class="causes-one__progress"
-                  style="background-color: #fff"
-                >
-                  <div class="causes-one__goals">
-                    <p class="mb-2">2023.02.16~2023.03.16</p>
-                  </div>
-                  <div class="hstack">
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn me-auto rounded-pill"
-                    >
-                      진행중
-                    </button>
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn ms-auto rounded-pill"
-                    >
-                      좋아요
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <!--Causes Page Single-->
-              <div class="causes-one__single">
-                <div class="causes-one__img">
-                  <div class="causes-one__img-box">
-                    <img src="https://picsum.photos/200/180" alt="" />
-                    <a href="causes-details.html">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                </div>
-                <div class="causes-one__content">
-                  <div class="hstack">
-                    <span class="causes-one__title mb-0">
-                      <a class="" href="causes-details.html">나눔물품명</a>
-                    </span>
-                    <span class="ms-auto">지역</span>
-                  </div>
-                  <p class="causes-one__text mt-2">닉네임</p>
-                </div>
-                <div
-                  class="causes-one__progress"
-                  style="background-color: #fff"
-                >
-                  <div class="causes-one__goals">
-                    <p class="mb-2">2023.02.16~2023.03.16</p>
-                  </div>
-                  <div class="hstack">
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn me-auto rounded-pill"
-                    >
-                      진행중
-                    </button>
-                    <button
-                      type="button"
-                      class="btn pt-1 pb-1 thm-btn ms-auto rounded-pill"
-                    >
-                      좋아요
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
           </div>
+          
         </div>
-        </div>
-        <div class="archive-pages">
-                    <ul>
-                        <li class="previous"><a href="#" title="previous page"></a></li>
-                        <li class="selected">1</li>
-                        <li><a href="#" title="Pagina 2">2</a></li>
-                        <li><a href="#" title="Pagina 3">3</a></li>
-                        <li><a href="#" title="Pagina 4">4</a></li>
-                        <li><a href="#" title="Pagina 5">5</a></li>
-                        <li class="next"><a href="#" title="next page"></a></li>
-                      </ul>
-                    </div>
-      </div>
+        <div class="">
+					<nav aria-label="Page navigation example" class="hstack mt-5" th:with="start=${(sharingDtoList.number/maxPage)*maxPage + 1}, end=(${(sharingDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < sharingDtoList.totalPages ? start + (maxPage - 1) : sharingDtoList.totalPages)})">
+						<ul class="pagination mx-auto">
+							<li class="page-item">
+								<a class="page-link page-prev" th:onclick="'paging(' + ${sharingDtoList.number-1} + ')'" aria-label="Previous" th:classappend="${sharingDtoList.number eq 0}?'disabled':''"> <span aria-hidden="true">&laquo;</span></a>
+							</li>
+							<li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${sharingDtoList.number eq page-1}?'active':''">
+									 <a class="page-link page-num" th:inline="text" th:onclick="'paging(' + ${page-1} + ')'">[[${page}]]</a>
+							</li>
+							<li class="page-item">
+								<a class="page-link page-next" th:onclick="'paging(' + ${sharingDtoList.number+1} + ')'" aria-label="Next" th:classappend="${sharingDtoList.number+1 ge sharingDtoList.totalPages}?'disabled':''">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+
       </section>
-		</th:block>
+	</th:block>
+	<th:block layout:fragment="script-bottom">
+		<script src="/js/pagination.js"></script>
 	</th:block>
 </body>
 </html>
