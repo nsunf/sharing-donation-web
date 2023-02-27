@@ -16,6 +16,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.springframework.data.annotation.CreatedDate;
 
 import com.sharingdonation.dto.DonationFormDto;
 
@@ -23,12 +26,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+@DynamicInsert
 @Entity
 @Table(name="donation")
 @Getter
 @Setter
 @ToString
-public class Donation {
+public class Donation extends BaseTimeEntity{
 	@Id
 	@Column(name="donation_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,8 +77,9 @@ public class Donation {
 	@Column(nullable = false, columnDefinition = "int(11) default 0")
 	private int goalPoint;
 	
-	@Column(nullable = false)
-	private LocalDateTime regTime;
+//	@CreationTimestamp
+//	@Column(nullable = false, updatable = false)
+//	private LocalDateTime regTime;
 	
 	@Column(nullable = false, columnDefinition ="char(1) default 'N'")
 //	@NotNull

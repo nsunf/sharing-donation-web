@@ -29,7 +29,7 @@
               <ul class="main-menu__list">
 								<!-- 일반 -->
                 <li class="dropdown current">
-                  <a href="index.html">나눔</a>
+                  <a href="/sharing/main">나눔</a>
                   <ul>
                     <li><a href="#">전체</a></li>
                     <li><a href="#">가전</a></li>
@@ -42,7 +42,7 @@
                     <li><a href="#">기타</a></li>
                   </ul>
                 </li>
-                <li><a href="#">기부</a></li>
+                <li><a href="/donation">기부</a></li>
                 <li><a href="#">나눔 인증 게시판</a></li>
                 <li><a href="/donatedBoard">기부 완료 게시판</a></li>
 
@@ -58,8 +58,16 @@
               </ul>
 
               <div class="main-menu__right">
+                
+                <th sec:authorize="isAnonymous()" >
+                <a href="/auth/login" class="logout-btn py-1 px-2" >login</a>
+                </th>
+                <th sec:authorize="isAuthenticated()" >
                 <a href="/auth/signupNormal">username</a>
-                <a href="causes-details.html" class="logout-btn py-1 px-2">signout</a>
+                <a href="/auth/logout" class="logout-btn py-1 px-2" >signout</a>
+                </th>
+                
+                
               </div>
             </div>
           </nav>

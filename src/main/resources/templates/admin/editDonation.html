@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout1}"
+>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/nsunf/editShare.css">
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+
+		<section class="my-5 auto-min-height">
+			<h2 class="text-center border-bottom pb-4">나눔 상품 신청 관리</h2>
+			<form class="container" action="" method="post" enctype="multipart/form-data">
+				<div class="row">
+				 <div class="col-8 mx-auto">
+				 
+				 	<div class="hstack">
+						<label class="input-label w-100" for="">
+							<span class="d-block ms-2 mb-1">등록자</span>
+							<input class="input-box w-100 p-3" type="text" value="등록자" readonly>
+						</label>
+
+						<label class="input-label w-100" for="">
+							<span class="d-block ms-2 mb-1">등록 날짜</span>
+							<input class="input-box w-100 p-3" type="date" value="2022-02-20" readonly>
+						</label>
+				 	</div>
+
+				 	<div class="hstack">
+						<label class="input-label w-100" for="">
+							<span class="d-block ms-2 mb-1">상태</span>
+							<div class="btn text-white" style="background: var(--thm-primary);">승인대기</div>
+							<div class="btn text-white" style="background: var(--thm-gray);">승인완료</div>
+							<div class="btn text-white" style="background: var(--thm-gray);">취소</div>
+<!-- 							<input class="input-box w-100 p-3" type="text" value="등록자" readonly>
+ -->						</label>
+
+						<label class="input-label w-100" for="">
+							<span class="d-block ms-2 mb-1">포인트</span>
+							<input class="input-box w-100 p-3" type="number" placeholder="0" >
+						</label>
+				 	</div>
+
+
+				 <label class="input-label">나눔 지역</label>
+				 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+						<option selected>지역을 선택해주세요.</option>
+						<option value="1">One</option>
+						<option value="2">Two</option>
+						<option value="3">Three</option>
+					</select>
+
+					<label class="input-label w-100" for="">
+						<span class="d-block ms-2 mb-1">나눔 물품명</span>
+						<input class="input-box w-100 p-3" type="text" placeholder="나눔 물품명">
+					</label>
+
+					<label class="input-label w-100" for="">
+						<span class="d-block ms-2 mb-1">나눔 상세 설명</span>
+						<textarea class="input-box w-100 p-3" type="text" placeholder="나눔 물품 상세 설명"></textarea>
+					</label>
+
+					<label class="input-label w-100">
+						<span class="d-block ms-2 mb-1">물품 사진 등록</span>
+						<input class="img-input w-100" type="file" accept="image/*" multiple>
+					</label>
+				 </div>
+				</div>
+
+				<div class="row mt-5">
+					<div class="col-8 mx-auto">미리보기
+						<div class="img-preview-list row row-cols-4 g-4">
+
+ 							<div class="col">
+								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
+							</div>
+ 							<div class="col">
+								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
+							</div>
+ 							<div class="col">
+								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
+							</div>
+ 							<div class="col">
+								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
+							</div>
+
+ 						</div>
+					</div>
+				</div>
+
+				<div class="row mt-4">
+					<div class="col-8 mx-auto hstack">
+						<button class="custom-btn custom-btn-del ms-auto">취소</button>
+						<button class="custom-btn ms-3">수정</button>
+						<button class="custom-btn ms-3">승인</button>
+					</div>
+				</div>
+			</form>
+		</section>
+
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+		<script src="/js/imgInputPreview.js"></script>
+		<script src="/js/setAutoHeight.js"></script>
+	</th:block>
+</body>
+</html>

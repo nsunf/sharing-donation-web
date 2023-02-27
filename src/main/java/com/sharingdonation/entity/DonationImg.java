@@ -27,13 +27,13 @@ public class DonationImg {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false, length=100)
+	@Column(nullable = false, length=200)
 	private String imgName;
 	
-	@Column(nullable = false, length=100)
+	@Column(nullable = false, length=200)
 	private String oriImgName;
 	
-	@Column(nullable = false, length=100)
+	@Column(nullable = false, length=200)
 	private String imgUrl;
 	
 	@Column(nullable = false, columnDefinition ="char(1) default 'N'")
