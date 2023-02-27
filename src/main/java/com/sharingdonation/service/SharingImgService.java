@@ -1,13 +1,16 @@
 package com.sharingdonation.service;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
+import com.sharingdonation.dto.SharingImgDto;
 import com.sharingdonation.entity.SharingImg;
 import com.sharingdonation.repository.SharingImgRepository;
 
@@ -31,7 +34,7 @@ public class SharingImgService {
 		
 		if (!StringUtils.isEmpty(oriImgName)) {
 			imgName = fileService.uploadFile(sharingImgLocation, oriImgName, sharingImgFile.getBytes());
-			imgUrl = "/images/item/" + imgName;
+			imgUrl = "/imgs/sharing/" + imgName;
 		}
 		
 		sharingImg.setOriImgName(oriImgName);
@@ -40,7 +43,7 @@ public class SharingImgService {
 		sharingImgRepo.save(sharingImg);
 	}
 	
-	public void updateItemImg(Long sharingImgId, MultipartFile sharingImgFile) throws Exception {
+	public void updateImg(Long sharingImgId, MultipartFile sharingImgFile) throws Exception {
 		if (!sharingImgFile.isEmpty()) {
 			SharingImg savedItemImg = sharingImgRepo.findById(sharingImgId).orElseThrow(EntityNotFoundException::new);
 			
@@ -50,11 +53,30 @@ public class SharingImgService {
 			
 			String oriImgName = sharingImgFile.getOriginalFilename();
 			String imgName = fileService.uploadFile(sharingImgLocation, oriImgName, sharingImgFile.getBytes());
-			String imgUrl = "/images/item/" + imgName;
+			String imgUrl = "/imgs/sharing/" + imgName;
 			
 			savedItemImg.setOriImgName(oriImgName);
 			savedItemImg.setImgName(imgName);
 			savedItemImg.setImgUrl(imgUrl);
 		}
+	}
+	
+	public void deleteImgsBySharingId(Long sharingId) {
+		sharingImgRepo.deleteAllBySharingId(sharingId);
+	}
+	
+	public SharingImgDto getSharingImgDto(Long sharingId) {
+		List<SharingImgDto> sharingImgDtoList = sharingImgRepo.findBySharingId(sharingId).stream().map(SharingImgDto::of).toList();
+		List<SharingImgDto> filteredDtoList  = sharingImgDtoList.stream().filter(s -> s.getRepImgYn().equals("Y")).toList();
+		if (filteredDtoList.size() == 0)
+			return sharingImgDtoList.get(0);
+		else 
+			return filteredDtoList.get(0);
+	}
+	
+	public List<SharingImgDto> getSharingImgDtoList(Long sharingId) {
+		List<SharingImgDto> sharingImgDtoList = sharingImgRepo.findBySharingId(sharingId).stream().map(SharingImgDto::of).toList();
+		System.out.println("---> " + sharingImgDtoList.size());
+		return sharingImgDtoList;
 	}
 }
