@@ -22,6 +22,12 @@ public class DonationBoardSelectDto {
 	
 	private LocalDate endDate;
 	
+	private String nickName;
+	
+	private String donationPerson;
+	
+	private String address;
+	
 	private static ModelMapper modelMapper = new ModelMapper();
 	
 	public static DonationBoardSelectDto of(Donation donation) {
