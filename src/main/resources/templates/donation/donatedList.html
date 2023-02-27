@@ -68,7 +68,7 @@
                     </li>
                   </ul>
                   <h3 class="read-more">
-                    <a href="/donatedBoard/detail">[[${donationBoard.subject}]]</a>
+                    <a th:href="'/donatedBoard/' +${donationBoard.id}">[[${donationBoard.subject}]]</a>
                   </h3>
                   <p class="news-two__text read-more">[[${donationBoard.content}]]</p>
                 </div>

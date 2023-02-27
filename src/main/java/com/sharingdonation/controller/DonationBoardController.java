@@ -88,15 +88,20 @@ public class DonationBoardController {
 	
 	
 	//show donated board detail page
-	@GetMapping(value = "/donatedBoard/{denationBoardId}") //{denationBoardId}
+	@GetMapping(value = "/donatedBoard/{donationBoardId}") //{donationBoardId}
 	public String donatedBoardDetail(Model model, @PathVariable("donationBoardId") Long donationBoardId) { //Model model, @PathVariable("donationBoardId") Long donationBoardId
 		
 		DonationBoardFormDto donationBoardFormDto = donationBoardService.getdonationBoardDetail(donationBoardId);
+		System.out.println("donatedBoardDetail donationBoardFormDto");
+		
 		List<DonationBoardImgDto> donationBoardImgDtos = donationBoardFormDto.getDonationBoardImgDtoList();
 		
 		for(DonationBoardImgDto p : donationBoardImgDtos) {
 			System.out.println("ccc:" + p.getImgUrl());
 		}
+
+		System.err.println(donationBoardFormDto.getDonationBoardSelectDto().getId());
+//		model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
 		model.addAttribute("donationBoard",donationBoardFormDto);
 		//model.addAttribute("commentFormDto", new CommentFormDto());
 		
