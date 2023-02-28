@@ -58,14 +58,10 @@
                 <div class="news-two__content">
                   <ul class="list-unstyled news-two__meta">
                     <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
+                      <a href="#"><i class="far fa-user-circle"></i>Admin</a>
                     </li>
                     <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
+                    <li><i th:text="${donationBoard.commentCount}" class="far fa-comments"></i></li>
                   </ul>
                   <h3 class="read-more">
                     <a th:href="'/donatedBoard/' +${donationBoard.id}">[[${donationBoard.subject}]]</a>

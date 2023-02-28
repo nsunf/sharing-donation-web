@@ -1,6 +1,6 @@
 package com.sharingdonation.controller;
 
-import java.time.format.DateTimeFormatter;
+//import java.time.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sharingdonation.dto.DonationBoardCommentDto;
@@ -24,6 +27,8 @@ import com.sharingdonation.dto.DonationBoardFormDto;
 import com.sharingdonation.dto.DonationBoardImgDto;
 import com.sharingdonation.dto.DonationFormDto;
 import com.sharingdonation.dto.SharingBoardCommentDto;
+import com.sharingdonation.repository.MemberRepository;
+import com.sharingdonation.service.DonationBoardHeartService;
 import com.sharingdonation.service.DonationBoardImgService;
 import com.sharingdonation.service.DonationBoardService;
 
@@ -35,6 +40,10 @@ public class DonationBoardController {
 	
 	private final DonationBoardService donationBoardService;
 	private final DonationBoardImgService donationBoardImgService;
+	
+	private final DonationBoardHeartService donationBoardHeartService;
+	private final MemberRepository memberRepository;
+	
 	//show the donated board create page
 	
 	@GetMapping(value = "/donatedBoard/edit")
@@ -100,14 +109,23 @@ public class DonationBoardController {
 		
 		List<DonationBoardImgDto> donationBoardImgDtos = donationBoardFormDto.getDonationBoardImgDtoList();
 		
-		for(DonationBoardImgDto p : donationBoardImgDtos) {
-			System.out.println("ccc:" + p.getImgUrl());
-		}
+//		for(DonationBoardImgDto p : donationBoardImgDtos) {
+//			System.out.println("ccc:" + p.getImgUrl());
+//		}
 
-		System.err.println(donationBoardFormDto.getDonationBoardSelectDto().getId());
+//		System.err.println(donationBoardFormDto.getDonationBoardSelectDto().getId());
 //		model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
 		model.addAttribute("donationBoardCommentDtoList",donationBoardCommentDtoList);
+		
+//		donationBoardFormDto.get
+//		for(DonationBoardFormDto f : donationBoardFormDto ) {
+//			
+//		}
 		model.addAttribute("donationBoard",donationBoardFormDto);
+		model.addAttribute("donationBoardHeartDto", donationBoardHeartService.getDonationBoardHeartCount(donationBoardId));
+		model.addAttribute("donationBoardHeartCount", donationBoardHeartService.getDonationBoardHeartCount(donationBoardId));
+//		model.addAttribute("localDateTime",LocalDateTime.now());
+//		model.addAttribute("df",DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		//model.addAttribute("commentFormDto", new CommentFormDto());
 		
 		
@@ -121,7 +139,15 @@ public class DonationBoardController {
 													//가짜 데이터 member_id 넣었음
 			donationBoardService.insertComment(1L, id, comment);
 			
-			return "redirect:/donatedBoard/{donationBoardId}/"+id;
+			return "redirect:/donatedBoard/" + id;
+		}
+		
+	//좋어요
+		@GetMapping("/heart/{id}")
+		public  @ResponseBody ResponseEntity<?> toggleDonationBoardHeart(@PathVariable Long id){
+			donationBoardHeartService.toggleDonationBoardHeart(id);
+			Long donationBoardheartCount = donationBoardHeartService.getDonationBoardHeartCount(id);
+			return new ResponseEntity<Long>(donationBoardheartCount, HttpStatus.OK);
 		}
 	
 }

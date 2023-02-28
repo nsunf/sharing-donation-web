@@ -100,16 +100,13 @@
                 <div class="news-details__content">
                   <div class="content-detail-nav">
                     <ul class="list-unstyled news-details__meta navleft">
-                      <li><a href="#">[[${donationBoard.regTime}]]</a></li>
+                      <li th:text="${#temporals.format(donationBoard.regTime, 'yyyy-MM-dd')}"></li>
                       <li class="content-detail-like">
-                        <a href="#"
-                          ><img
-                            src="/img/longsiru/like-icon.png"
-                            alt=""
-                            style="width: 30px; height: 30px"
-                          />
-                          12</a
-                        >
+                      <button class="like-btn d-flex justify-content-center align-items-center">
+             			 <div class="like" th:classappend="${donationBoardHeartDto == null} ? 'like-false' : 'like-true'" th:onclick="'toggleDonationBoardHeart(' + ${donationBoardId} + ');'"></div>
+             			 <span class="like-count px-1" style="font-size: 12px; color:var(--thm-primary);" th:text="${donationBoard.heartCount}"></span>
+           			  </button>
+                        
                       </li>
                     </ul>
                     <ul class="list-unstyled news-details__meta navright">
@@ -139,7 +136,7 @@
 								<th:block th:each="donatedComment, status: ${donationBoardCommentDtoList}">
 									<div class="comment-box">
 										<div class="comment-head">
-											<h6 th:text="${donatedComment.commentMember}" class="comment-name" id="commemt_writer"></a></h6>
+											<h6 th:text="${donatedComment.commentMember}" class="comment-name" id="comment_writer"></a></h6>
 											<div th:text="${donatedComment.regTime}" class="comment-time">댓글등록시간</div>
 										</div>
 										<div th:text="${donatedComment.comment}" class="comment-content">
@@ -157,8 +154,7 @@
                 <!--댓글 작성 시작-->
                 <div class="comment-form">
 					<h3 class="comment-form__title">댓글 작성</h3>
-					<form th:action="@{/donatedBoard/{donationBoardId}/comment}" method="post"  enctype="multipart/form-data" 
-          th:object="${donationBoardCommentDto}">
+					<form th:action="@{/donatedBoard/}+${donationBoardId}+ @{/comment}" method="post">
 								<div class="comment-form__input-box" style="line-height:initial;">
 								<textarea name="comment" placeholder="create your comments"></textarea>
 								</div>
@@ -185,8 +181,8 @@
         },
       });
       
-     
     </script>
+    <script src="/js/longsiru/donationBoardDetail.js"></script>
 	</th:block>
 </body>
 </html>

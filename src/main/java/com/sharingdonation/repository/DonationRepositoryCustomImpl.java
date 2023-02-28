@@ -1,3 +1,4 @@
+
 package com.sharingdonation.repository;
 
 import java.time.LocalDate;
@@ -17,8 +18,10 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sharingdonation.dto.DonationDto;
 import com.sharingdonation.dto.DonationSearchDto;
 import com.sharingdonation.dto.ListDonationDto;
+import com.sharingdonation.dto.QDonationDto;
 import com.sharingdonation.dto.QListDonationDto;
 import com.sharingdonation.entity.Donation;
 import com.sharingdonation.entity.QDonation;
@@ -36,20 +39,47 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 	}
 	
 	private BooleanExpression searchByLike(String searchBy, String searchQuery) {
-		if(StringUtils.equals("", searchBy) ) {
+		if(StringUtils.equals("d", searchBy) ) {
 			return QDonation.donation.donationName.like("%" + searchQuery + "%");
-		} else if(StringUtils.equals("",searchBy)) {
+		} else if(StringUtils.equals("d",searchBy)) {
 			return QDonation.donation.subject.like("%" + searchQuery + "%");
 		}
 		return null;
 	}
 
 	@Override
-	public Page<Donation> getAdminListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
-		List<Donation> content = queryFactory
-					.selectFrom(QDonation.donation)
+	public Page<DonationDto> getAdminListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+		QDonation donation = QDonation.donation;
+		QDonationImg donationImg = QDonationImg.donationImg;
+		QMember member = QMember.member;
+		QDonationHeart subDonationHeart = QDonationHeart.donationHeart;
+		QPoint subPoint = QPoint.point1;
+		
+		List<DonationDto> content = queryFactory
+					.select(
+							new QDonationDto (
+							donation.id,
+							donation.subject,
+							donation.donationName,
+							donation.startDate,
+							donation.endDate,
+							donation.goalPoint,
+							donationImg.imgUrl, 
+							member.nickName,
+							donation.confirmYn,
+							donation.delYn,
+							donation.done,
+							donation.regTime,
+//							JPAExpressions.select(subDonationHeart.count()).from(subDonationHeart).where(donationImg.donation.eq(subDonationHeart.donation)).as("heartCount")
+							ExpressionUtils.as(JPAExpressions.select(subDonationHeart.count()).from(subDonationHeart).where(donationImg.donation.eq(subDonationHeart.donation)), "heartCount"),
+							ExpressionUtils.as(JPAExpressions.select(subPoint.point.sum().coalesce(0)).from(subPoint).where(donationImg.donation.eq(subPoint.donation)), "pointSum")
+							)
+					)
+					.from(donation)
+					.join(donationImg).on(donation.eq(donationImg.donation))
+					.join(donation.member, member)
 					.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
-					.orderBy(QDonation.donation.id.desc())
+					.orderBy(donation.id.desc())
 					.offset(pageable.getOffset())
 					.limit(pageable.getPageSize())
 					.fetch();
@@ -105,6 +135,7 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 //			.limit(pageable.getPageSize())
 //			.fetch();
 		
+
 //					.select(
 //						new QListDonationDto(
 ////							Projections.constructor(ListDonationDto.class,
