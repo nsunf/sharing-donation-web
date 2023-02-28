@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class MainController {
 
-	@GetMapping("")
-	public String layout1Test() {
-		return "layout1-test";
+	@GetMapping(value={"/", "/sharing"})
+	public String main() {
+		return "main";
 	}
 }

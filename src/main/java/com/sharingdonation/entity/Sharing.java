@@ -30,15 +30,15 @@ public class Sharing {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="category_id")
-	private Category category;
+	private Category category; //품목 카테고리
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="member_id")
-	private Member member;
+	private Member member; //회원
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="area_id")
-	private Area area;
+	private Area area; //지역
 	
 	@Column(nullable = false, columnDefinition = "varchar(100)")
 	private String name;
@@ -46,9 +46,9 @@ public class Sharing {
 	@Column(nullable = false, columnDefinition = "text")
 	private String detail;
 	
-	private LocalDate startDate;
+	private LocalDate startDate; //게시 시작일
 	
-	private LocalDate endDate;
+	private LocalDate endDate; //게시 마감일
 	
 	@Column(nullable = false, columnDefinition = "int(11) default 0")
 	private int point;
@@ -56,12 +56,12 @@ public class Sharing {
 	@Column(nullable = false)
 	private LocalDateTime regTime;
 	
-	private LocalDateTime upDateTime;
+	private LocalDateTime upDateTime; //게시글 수정날짜
 	
 	@Column(nullable = false)
 	private String createBy;
 	
-	private String modifyBy;
+	private String modifyBy; //수정자
 	
 	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String confirmYn;

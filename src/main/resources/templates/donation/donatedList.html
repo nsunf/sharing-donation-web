@@ -31,21 +31,28 @@
                 </button>
               </form>
             </div>
+            <div class="row hstack">
+        		<div class="col-2 mb-5 ms-auto">
+							<a class="btn" href="/donatedBoard/edit" style="background: var(--thm-primary); color: white;">기부 완료 게시판 등록</a>
+        		</div>
+        	</div>
+        	
+        	<th:block th:each="donationBoard, status: ${donationBoards.getContent()}">
             <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="100ms">
+            
               <!--News Two Single-->
               <div class="news-two__single">
                 <div class="news-two__img-box">
                   <div class="news-two__img">
                     <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
+                    th:src="${donationBoard.imgUrl}" th:alt="${donationBoard.subject}"
                     />
                     <a href="#">
                       <i class="fa fa-plus"></i>
                     </a>
                   </div>
                   <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
+                    <p>[[${donationBoard.regTime}]]</p>
                   </div>
                 </div>
                 <div class="news-two__content">
@@ -60,205 +67,28 @@
                       >
                     </li>
                   </ul>
-                  <h3>
-                    <a href="donated-board-detail.html">글제목</a>
+                  <h3 class="read-more">
+                    <a th:href="'/donatedBoard/' +${donationBoard.id}">[[${donationBoard.subject}]]</a>
                   </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
+                  <p class="news-two__text read-more">[[${donationBoard.content}]]</p>
                 </div>
               </div>
+              
             </div>
-            <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="200ms">
-              <!--News Two Single-->
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
-                    />
-                    <a href="#">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="donated-board-detail.html">글제목</a>
-                  </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="300ms">
-              <!--News Two Single-->
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
-                    />
-                    <a href="#">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="donated-board-detail.html">글제목</a>
-                  </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="400ms">
-              <!--News Two Single-->
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
-                    />
-                    <a href="#">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="donated-board-detail.html">글제목</a>
-                  </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="500ms">
-              <!--News Two Single-->
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
-                    />
-                    <a href="#">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="donated-board-detail.html">글제목</a>
-                  </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="600ms">
-              <!--News Two Single-->
-              <div class="news-two__single">
-                <div class="news-two__img-box">
-                  <div class="news-two__img">
-                    <img
-                      src="/images/longsiru/mong1.jpg"
-                      alt=""
-                    />
-                    <a href="#">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                  </div>
-                  <div class="news-two__date">
-                    <p>16 Feb, 2021</p>
-                  </div>
-                </div>
-                <div class="news-two__content">
-                  <ul class="list-unstyled news-two__meta">
-                    <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
-                  </ul>
-                  <h3>
-                    <a href="donated-board-detail.html">글제목</a>
-                  </h3>
-                  <p class="news-two__text">상세 상세 상세 상세</p>
-                </div>
-              </div>
-            </div>
+         </th:block>
+          
           </div>
         </div>
       </section>
-      <div class="archive-pages">
+      <div class="archive-pages" th:with="start=${(donationBoards.number/maxPage) * maxPage + 1}
+      , end=(${(donationBoards.totalPages== 0) ? 1 : (start + (maxPage - 1) < donationBoards.totalPages ? start + (maxPage -1) : donationBoards.totalPages)})">
         <ul>
-          <li class="previous"><a href="#" title="previous page"></a></li>
-          <li class="selected">1</li>
-          <li><a href="#" title="Pagina 2">2</a></li>
-          <li><a href="#" title="Pagina 3">3</a></li>
-          <li><a href="#" title="Pagina 4">4</a></li>
-          <li><a href="#" title="Pagina 5">5</a></li>
-          <li class="next"><a href="#" title="next page"></a></li>
+          <li class="previous" th:classappend="${donationBoards.first}? 'disabled'"><a href="#" title="previous page" th:onclick="'javascript:page(' + ${donationBoards.number - 1} + ')'"></a></li>
+          
+          <li th:each="page: ${#numbers.sequence(start, end)}" 
+          th:classappend="${donationBoards.number eq page-1} ? 'active':''"><a th:inline="text" th:onclick="'javascript:page(' + ${page - 1} + ')'">[[${page}]]</a></li>
+          
+          <li class="next" th:classappend="${donationBoards.last}? 'disabled'"><a href="#" title="next page" th:onclick="'javascript:page(' + ${donationBoards.number + 1} + ')'"></a></li>
         </ul>
       </div>
       <!--기부 완료 게시판 페이지 끝-->
@@ -266,6 +96,23 @@
 	</th:block>
 
 	<th:block layout:fragment="script-bottom">
+	<script th:inline="javascript">
+		$(document).ready(function() {
+			$("#searchBtn").on("click", function(e) {
+				e.preventDefault();
+				page(0);
+			});
+		});
+		function page(page) {
+			var searchDateType = $("#searchDateType").val();
+			var searchSellStatus = $("#searchSellStatus").val();
+			var searchBy = $("#searchBy").val();
+			var searchQuery = $("#searchQuery").val();
+			location.href = "/admin/items/" + page + "?searchDateType="
+					+ searchDateType + "&searchSellStatus=" + searchSellStatus
+					+ "&searchBy=" + searchBy + "&searchQuery=" + searchQuery;
+		}
+	</script>
 	</th:block>
 </body>
 </html>

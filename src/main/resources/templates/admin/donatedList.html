@@ -41,23 +41,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>글제목</td>
-                <td>세이브더칠드런</td>
-                <td>2023/02/22</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>글제목</td>
-                <td>준수와아이들</td>
-                <td>2023/02/22</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>글제목</td>
-                <td>평화교회</td>
-                <td>2023/02/22</td>
+              <tr th:each="donation, status: ${donationList.getContent()}">
+                <td th:text="${donation.id}"></td>
+                <td th:text="${donation.subject}"></td>
+                <td th:text="${donation.donationName}"></td>
+                <td th:text="${donation.regTime}"></td>
               </tr>
             </tbody>
           </table>

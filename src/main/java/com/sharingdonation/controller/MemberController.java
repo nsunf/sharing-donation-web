@@ -1,34 +1,75 @@
 package com.sharingdonation.controller;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.sharingdonation.dto.DonationFormDto;
+//import com.myshop.controller.SessionManager;
+import com.sharingdonation.dto.MemberFormDto;
 
 import lombok.RequiredArgsConstructor;
 
+import com.sharingdonation.entity.Member;
+import com.sharingdonation.service.MemberService;
+
+
+
+@RequestMapping("/auth")
 @Controller
 @RequiredArgsConstructor
-public class MemberController {
 
-	@GetMapping(value = "/member")
-	public String member(Model model) {
-		model.addAttribute(model);
-		return "member/memberForm";
-	}
+public class MemberController {
+	private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 	
-	@PostMapping(value = "/member")
-	public String memer() {
-		return "redirect:/";
-	}
+    @GetMapping(value = "/new")
+    public String memberForm(Model model){
+        model.addAttribute("memberFormDto", new MemberFormDto());
+        return "auth/signupCorp";
+    }
 	
-	@GetMapping(value = "/member/{memberId}")
-	public String donationDtl(Model model, @PathVariable("donationId") Long DonationId) {
+	@PostMapping(value = "/new")
+	public String newMember(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
+		if(bindingResult.hasErrors()){
+            return "auth/signupCorp";
+        }
 		
-//		model.addAttribute("member", memberFormDto);
-		return "member/memberDtl";
-	}
+		try {
+            Member member = Member.createMember(memberFormDto, passwordEncoder);
+            memberService.saveMember(member);
+        } catch (IllegalStateException e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "auth/signupCorp";
+        }
+
+        return "redirect:/";
+	} 
+	
+    @GetMapping(value = "/login")
+    public String loginMember(HttpServletResponse response, HttpSession session){
+    	return "auth/login";
+    }
+
+    private final SessionManager sessionManager;
+    
+    @GetMapping(value = "/login/error")
+    public String loginError(Model model){
+        model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요");
+        return "auth/login";
+    }
+	
+//	@GetMapping(value = "/member/{memberId}")
+//	public String donationDtl(Model model, @PathVariable("donationId") Long DonationId) {
+//		return "auth/memberDtl";
+//	}
 }
