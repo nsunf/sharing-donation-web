@@ -236,4 +236,9 @@ public class SharingController {
 		Long heartCount = sharingHeartService.getSharingHeartCount(id);
 		return new ResponseEntity<Long>(heartCount, HttpStatus.OK);
 	}
+	
+	@GetMapping("/test")
+	public String test() {
+		return "dist/longsiru/donated-board-create";
+	}
 }
