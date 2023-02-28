@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class MainController {
 
-	@GetMapping("/sharing")
+	@GetMapping(value={"/", "/sharing"})
 	public String main() {
 		return "main";
 	}

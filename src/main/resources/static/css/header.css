@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+.logo-img {
+	object-fit: contain;
+	box-sizing: border-box;
+	padding: 8px 16px;
+}
 
 .main-menu__list > li {
   padding: 0 !important;
