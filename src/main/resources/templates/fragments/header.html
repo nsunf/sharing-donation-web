@@ -42,6 +42,7 @@
                     <li><a href="#">기타</a></li>
                   </ul>
                 </li>
+
                 <li><a th:href="@{/donation}">기부</a></li>
                 <li><a th:href="@{/sharing_board}">나눔 인증 게시판</a></li>
                 <li><a th:href="@{/donatedBoard}">기부 완료 게시판</a></li>
@@ -58,8 +59,14 @@
               </ul>
 
               <div class="main-menu__right">
+                
+                <th sec:authorize="isAnonymous()" >
+                <a href="/auth/login" class="logout-btn py-1 px-2" >sign in</a>
+                </th>
+                <th sec:authorize="isAuthenticated()" >
                 <a href="/auth/signupNormal">username</a>
-                <a href="causes-details.html" class="logout-btn py-1 px-2">logout</a>
+                <a href="/auth/logout" class="logout-btn py-1 px-2" >sign out</a>
+                </th>
               </div>
             </div>
           </nav>

@@ -23,7 +23,7 @@
     ></div>
     <!-- /.page-header__bg -->
     <div class="container" >
-      <h2 class="text-center sharing_board_title">기부 리스트1</h2>
+      <h2 class="text-center sharing_board_title">기부 리스트</h2>
     </div>
   </section>
 <!--Page Header End-->
@@ -46,6 +46,11 @@
     </div>
     <!-- 기부 리스트 카드 -->
     <div class="container pt-5">
+   		<div class="row hstack">
+        	<div class="col-2 mb-5 ms-auto">
+				<a class="btn" href="/donation/new" style="background: var(--thm-primary); color: white;">기부 등록</a>
+        	</div>
+        </div>
       <div class="row g-5 row-cols-auto">
       	<th:block th:each="donation, status: ${donationList.getContent()}">
         <div class="col">
@@ -81,8 +86,8 @@
             </div>
             <div class="causes-one__progress">
                 <div class="bar">
-                    <div class="bar-inner count-bar" th:data-percent="${donation.pointPer}">
-                        <div class="count-text">[[${pointPer}]]%</div>
+                    <div class="bar-inner count-bar" th:data-percent="@{${donation.pointPer} +'%'}">
+                        <div class="count-text">[[${donation.pointPer}]]%</div>
                     </div>
                 </div>
                 <div class="causes-one__goals">

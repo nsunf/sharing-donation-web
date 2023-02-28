@@ -15,7 +15,7 @@
 	<section class="login-content auto-min-height">
     <div class="img-banner"></div>
     <div class="login-form">
-        <form>
+        <form action="/auth/login" method="post" >
             <div><h1 class="h1">로그인</h1></div>
             <div class="atag">
                 <a href="/" class="text-1">홈으로</a>
@@ -25,10 +25,11 @@
 
             <div><a class="text-3">로그인</a></div>
             <div>이메일</div>
-            <input type="text" name="email" class="text-field" placeholder="아이디를 입력해주세요.">
+            <input type="text" name="email" id="email" class="text-field" placeholder="아이디를 입력해주세요.">
             <div>비밀번호</div>
-            <input type="text" name="password" class="text-field" placeholder="비밀번호를 입력해주세요.">
+            <input type="text" name="password" id="password" class="text-field" placeholder="비밀번호를 입력해주세요.">
             <input type="submit" value="로그인" class="submit-btn">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         </form>
         
         <div class="links">
