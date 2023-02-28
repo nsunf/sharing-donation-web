@@ -15,7 +15,7 @@ import com.sharingdonation.service.CategoryService;
 
 import lombok.RequiredArgsConstructor;
 
-@WebFilter
+@WebFilter("/sharing/area/*")
 @RequiredArgsConstructor
 public class LayoutFilter implements Filter {
 	private final CategoryService categoryService;
@@ -26,6 +26,7 @@ public class LayoutFilter implements Filter {
 		List<CategoryDto> categoryDtoList = categoryService.getCategoryDtoLIst();
 		
 		request.setAttribute("categoryDtoList", categoryDtoList);
+		System.err.println("+++ Filter +++");
 
 		chain.doFilter(request, response);
 		
