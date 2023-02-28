@@ -129,18 +129,45 @@ public class DonationBoardService {
 		
 	}
 	
+	
+	
+	//댓글 작성
+			public Long insertComment(Long memberId, Long donationBoardId, String comment){
+				Member donatedCommentMember = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
+				DonationBoard donatedCommentPost = donationBoardRepository.findById(donationBoardId).orElseThrow(EntityNotFoundException::new);
+				
+				DonationBoardComment donationBoardComment = new DonationBoardComment();
+				donationBoardComment.setDonationBoard(donatedCommentPost);
+				donationBoardComment.setMember(donatedCommentMember);
+				donationBoardComment.setRegTime(LocalDateTime.now());
+				donationBoardComment.setComment(comment);
+				
+				donationBoardCommentRepository.save(donationBoardComment);
+				
+				return donationBoardComment.getId();
+			}
+	
+			
+			
 	// 나눔완료 게시글 여러 댓글들 보여줌
 		@Transactional
 		public List<DonationBoardCommentDto> getBoardCommentList(Long id) {
+			System.out.println("확인 : start  "+id);
 			List<DonationBoardComment> donationBoardCommentList = donationBoardCommentRepository.findByDonationBoardId(id);
+			System.out.println("확인 : start1" + donationBoardCommentList);
 			List<DonationBoardCommentDto> donationBoardCommentDtoList = new ArrayList<>();
+			System.out.println("확인 : start2"+ donationBoardCommentDtoList);
+			
 			
 			for (DonationBoardComment donationBoardComment : donationBoardCommentList) {
 				DonationBoardCommentDto donationBoardCommentDto = DonationBoardCommentDto.of(donationBoardComment);
+				System.out.println("확인 : start3");
 				
-				String sharedWriteCommentMember = donationBoardComment.getMember().getNickName();
-				donationBoardCommentDto.setCommentMember(sharedWriteCommentMember);
-				System.out.println("확인 : "+donationBoardCommentDto.getComment());
+				String donatedWriteCommentMember = donationBoardComment.getMember().getNickName();
+				System.out.println("확인 : start4"+donationBoardComment.getMember().getNickName());
+				
+				donationBoardCommentDto.setCommentMember(donatedWriteCommentMember);
+				System.out.println("확인 : start5"+donationBoardCommentDto.getComment());
 				
 				
 				donationBoardCommentDtoList.add(donationBoardCommentDto);
@@ -149,19 +176,5 @@ public class DonationBoardService {
 			return donationBoardCommentDtoList;
 		}
 		
-		//댓글 작성
-		public Long insertComment(Long memberId, Long donationBoardId, String comment){
-			Member donatedCommentMember = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);;
-			DonationBoard donatedCommentPost = donationBoardRepository.findById(donationBoardId).orElseThrow(EntityNotFoundException::new);;
-			
-			DonationBoardComment donationBoardComment = new DonationBoardComment();
-			donationBoardComment.setMember(donatedCommentMember);
-			donationBoardComment.setDonationBoard(donatedCommentPost);
-			donationBoardComment.setComment(comment);
-			donationBoardComment.setRegTime(LocalDateTime.now());
-			
-			donationBoardCommentRepository.save(donationBoardComment);
-			
-			return donationBoardComment.getId();
-		}
+		
 }

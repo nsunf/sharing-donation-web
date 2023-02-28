@@ -121,7 +121,7 @@ public class DonationBoardController {
 													//가짜 데이터 member_id 넣었음
 			donationBoardService.insertComment(1L, id, comment);
 			
-			return "redirect:/donatedBoard/{donationBoardId}/"+id;
+			return "redirect:/donatedBoard/" + id;
 		}
 	
 }

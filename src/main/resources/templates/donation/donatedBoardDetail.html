@@ -139,7 +139,7 @@
 								<th:block th:each="donatedComment, status: ${donationBoardCommentDtoList}">
 									<div class="comment-box">
 										<div class="comment-head">
-											<h6 th:text="${donatedComment.commentMember}" class="comment-name" id="commemt_writer"></a></h6>
+											<h6 th:text="${donatedComment.commentMember}" class="comment-name" id="comment_writer"></a></h6>
 											<div th:text="${donatedComment.regTime}" class="comment-time">댓글등록시간</div>
 										</div>
 										<div th:text="${donatedComment.comment}" class="comment-content">
@@ -157,8 +157,7 @@
                 <!--댓글 작성 시작-->
                 <div class="comment-form">
 					<h3 class="comment-form__title">댓글 작성</h3>
-					<form th:action="@{/donatedBoard/{donationBoardId}/comment}" method="post"  enctype="multipart/form-data" 
-          th:object="${donationBoardCommentDto}">
+					<form th:action="@{/donatedboard/}+${donationBoardId}+ @{/comment}" method="post">
 								<div class="comment-form__input-box" style="line-height:initial;">
 								<textarea name="comment" placeholder="create your comments"></textarea>
 								</div>
