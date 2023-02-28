@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .failureUrl("/auth/login/error")
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
                 .logoutSuccessUrl("/")
         ;
 

@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sharingdonation.dto.DonationBoardCommentDto;
 import com.sharingdonation.dto.DonationBoardDto;
 import com.sharingdonation.dto.DonationBoardFormDto;
 import com.sharingdonation.dto.DonationBoardImgDto;
 import com.sharingdonation.dto.DonationFormDto;
+import com.sharingdonation.dto.SharingBoardCommentDto;
 import com.sharingdonation.service.DonationBoardImgService;
 import com.sharingdonation.service.DonationBoardService;
 
@@ -88,15 +90,23 @@ public class DonationBoardController {
 	
 	
 	//show donated board detail page
-	@GetMapping(value = "/donatedBoard/{denationBoardId}") //{denationBoardId}
+	@GetMapping(value = "/donatedBoard/{donationBoardId}") //{donationBoardId}
 	public String donatedBoardDetail(Model model, @PathVariable("donationBoardId") Long donationBoardId) { //Model model, @PathVariable("donationBoardId") Long donationBoardId
 		
 		DonationBoardFormDto donationBoardFormDto = donationBoardService.getdonationBoardDetail(donationBoardId);
+		System.out.println("donatedBoardDetail donationBoardFormDto");
+		
+		List<DonationBoardCommentDto> donationBoardCommentDtoList = donationBoardService.getBoardCommentList(donationBoardId);
+		
 		List<DonationBoardImgDto> donationBoardImgDtos = donationBoardFormDto.getDonationBoardImgDtoList();
 		
 		for(DonationBoardImgDto p : donationBoardImgDtos) {
 			System.out.println("ccc:" + p.getImgUrl());
 		}
+
+		System.err.println(donationBoardFormDto.getDonationBoardSelectDto().getId());
+//		model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
+		model.addAttribute("donationBoardCommentDtoList",donationBoardCommentDtoList);
 		model.addAttribute("donationBoard",donationBoardFormDto);
 		//model.addAttribute("commentFormDto", new CommentFormDto());
 		
@@ -104,5 +114,14 @@ public class DonationBoardController {
 		return "donation/donatedBoardDetail";
 		
 	}
+	
+	//댓글 등록
+		@PostMapping(value="/donatedBoard/{donationBoardId}/comment")
+		public String insertComment(@PathVariable("donationBoardId") Long id, @RequestParam String comment, Model model) {
+													//가짜 데이터 member_id 넣었음
+			donationBoardService.insertComment(1L, id, comment);
+			
+			return "redirect:/donatedBoard/" + id;
+		}
 	
 }

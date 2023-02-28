@@ -104,7 +104,7 @@
                       <li class="content-detail-like">
                         <a href="#"
                           ><img
-                            src="/images/longsiru/like-icon.png"
+                            src="/img/longsiru/like-icon.png"
                             alt=""
                             style="width: 30px; height: 30px"
                           />
@@ -113,9 +113,9 @@
                       </li>
                     </ul>
                     <ul class="list-unstyled news-details__meta navright">
-                      <li>nickname</li>
-                      <li>기관 지역</li>
-                      <li>담당자명</li>
+                      <li th:text="${donationBoard.donationBoardSelectDto.nickName}"></li>
+                      <li th:text="${donationBoard.donationBoardSelectDto.address}"></li>
+                      <li th:text="${donationBoard.donationBoardSelectDto.donationPerson}"></li>
                     </ul>
                   </div>
 
@@ -127,93 +127,45 @@
                   </p>
                 </div>
 
-                <!--댓글 보기 시작-->
-                <div class="comment-one">
-                  <h3 class="comment-one__title">댓글 보기</h3>
-
-                  <ul id="comments-list" class="comments-list">
-                    <li>
-                      <div class="comment-main-level">
-                        <!-- Contenedor-->
-                        <div class="comment-box">
-                          <div class="comment-head">
-                            <h6 class="comment-name">NickName</h6>
-                            <div class="comment-time">2013-02-20 08:00am</div>
-                          </div>
-                          <div class="comment-content">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Velit omnis animi et iure laudantium vitae,
-                            praesentium optio, sapiente distinctio illo?
-                          </div>
-                          <div class="comment-down">
-                            <button class="comment-bnt">삭제</button>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="comment-main-level">
-                        <!-- Contenedor-->
-                        <div class="comment-box">
-                          <div class="comment-head">
-                            <h6 class="comment-name">NickName</h6>
-                            <div class="comment-time">2013-02-20 08:00am</div>
-                          </div>
-                          <div class="comment-content">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Velit omnis animi et iure laudantium vitae,
-                            praesentium optio, sapiente distinctio illo?
-                          </div>
-                          <div class="comment-down">
-                            <button class="comment-bnt">삭제</button>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="comment-main-level">
-                        <!-- Contenedor-->
-                        <div class="comment-box">
-                          <div class="comment-head">
-                            <h6 class="comment-name">NickName</h6>
-                            <div class="comment-time">2013-02-20 08:00am</div>
-                          </div>
-                          <div class="comment-content">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Velit omnis animi et iure laudantium vitae,
-                            praesentium optio, sapiente distinctio illo?
-                          </div>
-                          <div class="comment-down">
-                            <button class="comment-bnt">삭제</button>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+               <!--댓글 보기 시작-->
+				<div class="comment-one">
+					<h3 class="comment-one__title">댓글 보기</h3>
+													
+					<ul id="comments-list" class="comments-list">
+														
+						<li>
+							<div class="comment-main-level">
+								<!-- Contenedor-->
+								<th:block th:each="donatedComment, status: ${donationBoardCommentDtoList}">
+									<div class="comment-box">
+										<div class="comment-head">
+											<h6 th:text="${donatedComment.commentMember}" class="comment-name" id="comment_writer"></a></h6>
+											<div th:text="${donatedComment.regTime}" class="comment-time">댓글등록시간</div>
+										</div>
+										<div th:text="${donatedComment.comment}" class="comment-content">
+										</div>
+										<div class="comment-down">
+											<button class="comment-bnt">삭제</button>
+										</div>
+									 </div>
+								</th:block>
+							</div>
+						</li>
+					</ul>
+				</div>
 
                 <!--댓글 작성 시작-->
                 <div class="comment-form">
-                  <h3 class="comment-form__title">댓글 작성</h3>
-                  <form
-                    action="assets/inc/sendemail.php"
-                    class="comment-one__form contact-form-validated"
-                  >
-                    <div class="comment-form__input-box">
-                      <textarea
-                        name="message"
-                        placeholder="create your comments"
-                      ></textarea>
-                    </div>
-
-                    <button type="submit" class="thm-btn comment-form__btn">
-                      제 출<i
-                        class="fas fa-arrow-circle-right"
-                        style="padding-left: 10px"
-                      ></i>
-                    </button>
-                  </form>
-                </div>
+					<h3 class="comment-form__title">댓글 작성</h3>
+					<form th:action="@{/donatedboard/}+${donationBoardId}+ @{/comment}" method="post">
+								<div class="comment-form__input-box" style="line-height:initial;">
+								<textarea name="comment" placeholder="create your comments"></textarea>
+								</div>
+																
+							<button type="submit" class="thm-btn comment-form__btn">제 출<i class="fas fa-arrow-circle-right" style="padding-left: 10px;"></i></button>
+					</form>
+												 
+				</div>
               </div>
             </div>
           </div>
@@ -231,6 +183,8 @@
           prevEl: ".swiper-button-prev",
         },
       });
+      
+     
     </script>
 	</th:block>
 </body>

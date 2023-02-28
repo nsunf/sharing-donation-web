@@ -7,14 +7,14 @@
   <body>
     <header
       th:fragment="header"
-      class="main-header clearfix"
-      style="height: 64px"
+      class="main-header clearfix hstack"
+      style="height: 80px; z-index: 20;"
     >
       <div
-        class="main-header__logo p-0 h-100 d-flex justify-content-center align-items-center"
+        class="main-header__logo p-0 h-100"
       >
-        <a th:href="@{/sharing}">
-          <img src="/img/logo-1.png" alt="" />
+        <a class="d-block h-100 w-100" th:href="@{/sharing}">
+          <img class="logo-img" src="/img/logo-1.png" alt="" style="" />
         </a>
       </div>
 
@@ -22,29 +22,24 @@
         <div class="main-menu-wrapper__bottom my-auto">
           <nav class="main-menu">
             <div class="main-menu__inner">
-              <a href="#" class="mobile-nav__toggler"
-                ><i class="fa fa-bars"></i
-              ></a>
+              <a href="#" class="mobile-nav__toggler">
+              	<i class="fa fa-bars"></i>
+              </a>
 
               <ul class="main-menu__list">
 								<!-- 일반 -->
-                <li class="dropdown current">
+                <li class="dropdown" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing')} ? 'current' : null">
                   <a th:href="@{/sharing}">나눔</a>
-                  <ul>
-                    <li><a href="#">전체</a></li>
-                    <li><a href="#">가전</a></li>
-                    <li><a href="#">생활</a></li>
-                    <li><a href="#">유아</a></li>
-                    <li><a href="#">의류</a></li>
-                    <li><a href="#">스포츠</a></li>
-                    <li><a href="#">도서</a></li>
-                    <li><a href="#">취미</a></li>
-                    <li><a href="#">기타</a></li>
+                   <ul class="d-xl-none">
+                    <li><a th:href="@{${#httpServletRequest.requestURL}(cat='전체')}">전체</a></li>
+                    <li th:each="categoryDto : ${categoryDtoList}" th:classappend="${#strings.equals(param.cat, categoryDto.categoryName)} ? 'text-primary' : 'test'">
+                    	<a th:href="@{${#httpServletRequest.requestURL}(cat=${categoryDto.categoryName})}">[[${categoryDto.categoryName}]]</a>
+                    </li>
                   </ul>
                 </li>
-                <li><a th:href="@{/donation}">기부</a></li>
-                <li><a th:href="@{/sharing_board}">나눔 인증 게시판</a></li>
-                <li><a th:href="@{/donatedBoard}">기부 완료 게시판</a></li>
+                <li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/donation')} ? 'current' : null"><a th:href="@{/donation}">기부</a></li>
+                <li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing_board')} ? 'current' : null"><a th:href="@{/sharing_board}">나눔 인증 게시판</a></li>
+                <li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/donatedBoard')} ? 'current' : null"><a th:href="@{/donatedBoard}">기부 완료 게시판</a></li>
 
 								<!-- 관리자 -->
                 <!-- <li class="text-center current"><a href="#">회원<br/>관리</a></li>
@@ -58,12 +53,39 @@
               </ul>
 
               <div class="main-menu__right">
+                
+                <th sec:authorize="isAnonymous()" >
+                <a href="/auth/login" class="logout-btn py-1 px-2" >sign in</a>
+                </th>
+                <th sec:authorize="isAuthenticated()" >
                 <a href="/auth/signupNormal">username</a>
-                <a href="causes-details.html" class="logout-btn py-1 px-2">logout</a>
+                <a href="/auth/logout" class="logout-btn py-1 px-2" >sign out</a>
+                </th>
               </div>
             </div>
           </nav>
         </div>
+        
+        <div class="main-menu-wrapper__bottom my-auto" th:if="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing/area/')}">
+          <nav class="main-menu">
+            <div class="main-menu__inner">
+              <ul class="main-menu__list">
+                <li th:classappend="${#strings.equals(param.cat, '전체') || param.cat == null} ? 'current' : null"><a th:href="@{${#httpServletRequest.requestURL}(cat='전체')}" class="fs-6 fw-normal">전체</a></li>
+                <li th:each="categoryDto : ${categoryDtoList}">
+                	<a 
+                		th:href="@{${#httpServletRequest.requestURL}(cat=${categoryDto.categoryName})}" 
+                		class="fs-6 fw-normal"
+                		th:classappend="${#strings.equals(param.cat, categoryDto.categoryName)} ? 'current' : null"
+                	>
+                		[[${categoryDto.categoryName}]]
+                	</a>
+                </li>
+              </ul>
+            </div>
+           </nav>
+        </div>
+        
+
       </div>
     </header>
   </body>
