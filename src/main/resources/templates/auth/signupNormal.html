@@ -54,11 +54,11 @@
             <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect Data</p>
             </div>
             <div>비밀번호
-            <input type="text" name="password" th:field="*{password}" class="text-field" placeholder="비밀번호를 입력해주세요.">
+            <input type="password" name="password" th:field="*{password}" class="text-field" placeholder="비밀번호를 입력해주세요.">
             <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect Data</p>
             </div>
             <div>비밀번호 확인</div>
-            <input type="text" name="" class="text-field" placeholder="비밀번호를 한번 더 입력해주세요.">
+            <input type="password" name="" class="text-field" placeholder="비밀번호를 한번 더 입력해주세요.">
             <div><label th:for="nick_name">닉네임</label>
             <input type="text" name="nick_name" th:field="*{nickName}" class="text-field" placeholder="닉네임을 입력해주세요.">
             <p th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}" class="fieldError">Incorrect Data</p>
@@ -83,7 +83,7 @@
 		$(document).ready(function(){
         	var errorMessage = "[[${errorMessage}]]";
         	if(errorMessage != null){
-            	alert(errorMessage);
+            	//alert(errorMessage);
         	}
     	});
 				//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
