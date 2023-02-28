@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<title>Insert title here</title>
+</head>
+<body>
+<script>
+	if (confirm("더미 데이터를 입력하시겠습니까?") ) {
+		var token = document.querySelector("meta[name='_csrf']").getAttribute("content");
+		var header = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+		fetch("/test/dummyData", {
+			method: "POST",
+			headers: {
+					'header': header,
+					'X-Requested-With': "XMLHttpRequest",
+					"Content-Type": "application/json",
+					'X-CSRF-Token': token
+			}
+		}).then(res => {
+			console.log(res);
+			alert("hello");
+		})
+	} else {
+		
+	}
+</script>
+</body>
+</html>

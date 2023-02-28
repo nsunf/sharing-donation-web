@@ -38,13 +38,6 @@ public class SharingService {
 	private final AreaRepository areaRepo;
 	private final MemberRepository memberRepo;
 
-	public void insertDummySharings() {
-		for (int i = 0; i < 10; i++) {
-			Sharing sharing = new Sharing();
-			sharing.setName("나눔 상품명--" + i);
-		}
-	}
-	
 	public SharingDto getSharingDto(Long sharingId) {
 		Sharing sharing = sharingRepo.findById(sharingId).orElseThrow(EntityNotFoundException::new);
 		
@@ -64,7 +57,7 @@ public class SharingService {
 			SharingDto sharingDto = SharingDto.valueOf(s);
 			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(s.getId());
 			
-			sharingDto.setImgUrl(sharingImgDto.getImgUrl());
+			sharingDto.setImgUrl(sharingImgDto == null ? null : sharingImgDto.getImgUrl());
 			sharingDto.setHeartCount(sharingHeartService.getSharingHeartCount(s.getId()));
 			
 			return sharingDto;
@@ -135,7 +128,7 @@ public class SharingService {
 		
 		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
 			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(s.getId());
-			SharingDto sharingDto = SharingDto.valueOf(s, sharingImgDto.getImgUrl());
+			SharingDto sharingDto = SharingDto.valueOf(s, sharingImgDto == null ? null : sharingImgDto.getImgUrl());
 			return sharingDto;
 		});
 		
