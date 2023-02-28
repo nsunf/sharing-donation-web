@@ -8,13 +8,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.dsl.Wildcard;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharingdonation.dto.DonationBoardDto;
 import com.sharingdonation.dto.QDonationBoardDto;
 import com.sharingdonation.entity.DonationBoard;
-import com.sharingdonation.entity.QDonation;
+//import com.sharingdonation.entity.QDonation;
 import com.sharingdonation.entity.QDonationBoard;
+import com.sharingdonation.entity.QDonationBoardComment;
+import com.sharingdonation.entity.QDonationBoardHeart;
 import com.sharingdonation.entity.QDonationBoardImg;
 
 public class DonationBoardRepositoryCustomImpl implements DonationBoardRepositoryCustom{
@@ -42,16 +48,22 @@ private JPAQueryFactory queryFactory;
 	public Page<DonationBoardDto> getDonationBoardPage(Pageable pageable) {
 		QDonationBoard donationBoard = QDonationBoard.donationBoard;
 		QDonationBoardImg donationBoardImg = QDonationBoardImg.donationBoardImg;
-		QDonation donation = QDonation.donation;
+//		QDonation donation = QDonation.donation;
+		QDonationBoardComment donationBoardComment = QDonationBoardComment.donationBoardComment;
+		QDonationBoardHeart donationBoardHeart = QDonationBoardHeart.donationBoardHeart;
 		
-		List<DonationBoardDto> content = queryFactory.select(
-				new QDonationBoardDto(
-						donationBoard.id,
-						donationBoard.donation.id,
-						donationBoard.subject,
-						donationBoard.content,
-						donationBoard.regTime,
-						donationBoardImg.imgUrl
+		StringExpression formattedDatetime = Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m-%d')", donationBoard.regTime);  //query에서 일자바
+		List<DonationBoardDto> content = queryFactory
+				.select(
+						new QDonationBoardDto(
+							donationBoard.id,
+							donationBoard.donation.id,
+							donationBoard.subject,
+							donationBoard.content,
+							formattedDatetime,
+							donationBoardImg.imgUrl, 
+							ExpressionUtils.as(JPAExpressions.select(donationBoardComment.count()).from(donationBoardComment).where(donationBoardImg.donationBoard.eq(donationBoardComment.donationBoard)), "commentCount"),
+							ExpressionUtils.as(JPAExpressions.select(donationBoardHeart.count()).from(donationBoardHeart).where(donationBoardImg.donationBoard.eq(donationBoardHeart.donationBoard)), "donationBoardheartCount")
 						)
 				)
 				.from(donationBoardImg)
