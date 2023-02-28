@@ -47,7 +47,7 @@
 							<th>진행상황</th>
 						</tr>
 					</thead>
-					<tbody th:with="pages=(${(page == 0) ? 1 : page})">
+					<tbody th:with="pages=(${(page == 0) ? 1 : page}),   rowNumber=(${totalCount - ((pages * rowPerPage)})">
 						<tr th:each="donationDto, status : ${donationDtoList}">
 							<th><input type="checkbox" name="donation" th:value="${donationDto.id}" /></th>
 							<td th:text=""></td>
