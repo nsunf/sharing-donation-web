@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="shring_board_comment")
+@Table(name="sharing_board_comment")
 @Getter
 @Setter
 @ToString
@@ -28,7 +28,7 @@ public class SharingBoardComment {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="shring_board_id")
+	@JoinColumn(name="sharing_board_id")
 	private SharingBoard sharingBoard;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

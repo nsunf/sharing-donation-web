@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+//import com.myshop.controller.SessionManager;
 import com.sharingdonation.dto.MemberFormDto;
 
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,8 @@ public class MemberController {
     	return "auth/login";
     }
 
+    private final SessionManager sessionManager;
+    
     @GetMapping(value = "/login/error")
     public String loginError(Model model){
         model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요");

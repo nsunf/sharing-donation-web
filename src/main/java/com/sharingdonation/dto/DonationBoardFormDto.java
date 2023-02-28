@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 
 import org.modelmapper.ModelMapper;
 
+import com.sharingdonation.entity.Donation;
 import com.sharingdonation.entity.DonationBoard;
 
 import lombok.Getter;
@@ -30,9 +31,12 @@ public class DonationBoardFormDto {
 	
 	private LocalDateTime regTime;
 	
+	private DonationBoardSelectDto donationBoardSelectDto;
+	
 	
 	private List<DonationBoardImgDto> donationBoardImgDtoList = new ArrayList<>();
 	private List<Long> donationBoardImgIds = new ArrayList<>();
+	
 	
 	private static ModelMapper modelMapper = new ModelMapper();
 	 
@@ -41,8 +45,11 @@ public class DonationBoardFormDto {
 		return modelMapper.map(this, DonationBoard.class);
 	}
 	
-	public static DonationBoardFormDto of(DonationBoard donationBorad) {
-		return modelMapper.map(donationBorad, DonationBoardFormDto.class);
+	public static DonationBoardFormDto of(DonationBoard donationBoard) {
+		DonationBoardFormDto result = modelMapper.map(donationBoard, DonationBoardFormDto.class);
+		Donation donation = donationBoard.getDonation();
+		result.setDonationBoardSelectDto(DonationBoardSelectDto.of(donation));
+		return result;
 	}
 	
 
