@@ -37,5 +37,6 @@ public class DonationBoard {
 	@Column(nullable = false, columnDefinition = "text")
 	private String content;
 	
+	@Column(nullable = false)
 	private LocalDateTime regTime;
 }

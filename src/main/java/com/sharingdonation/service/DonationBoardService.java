@@ -26,6 +26,7 @@ import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.SharingBoard;
 import com.sharingdonation.entity.SharingBoardComment;
 import com.sharingdonation.repository.DonationBoardCommentRepository;
+import com.sharingdonation.repository.DonationBoardHeartRepository;
 import com.sharingdonation.repository.DonationBoardImgRepository;
 import com.sharingdonation.repository.DonationBoardRepository;
 import com.sharingdonation.repository.DonationRepository;
@@ -43,6 +44,7 @@ public class DonationBoardService {
 	private final DonationRepository donationRepository;
 	private final DonationBoardCommentRepository donationBoardCommentRepository;
 	private final MemberRepository memberRepository;
+	private final DonationBoardHeartRepository donationBoardHeartRepository;
 	
 	
 	//donation data
@@ -109,21 +111,26 @@ public class DonationBoardService {
 		
 		for(DonationBoardImg donationBoardImg : donationBoardImgList) {
 			DonationBoardImgDto donationBoardImgDto = DonationBoardImgDto.of(donationBoardImg);
+			
 			donationBoardImgDtoList.add(donationBoardImgDto);
 		}
 		
-		
+				Long heartCount =  donationBoardHeartRepository.countByDonationBoardId(donationBoardId);
 		
 		
 		//2. donation board테이블에 있는 데이터를 가져온다.
 				DonationBoard donationBoard = donationBoardRepository.findById(donationBoardId)
 											 .orElseThrow(EntityNotFoundException::new);
+//				System.out.println("DonationBoardFormDto donationBoard");
 				
 				//엔티티 객체 -> dto객체로 변환
 				DonationBoardFormDto donationBoardFormDto = DonationBoardFormDto.of(donationBoard);
+//				System.out.println(" DonationBoardFormDto donationBoardFormDto");
 				
 				//이미지 정보를 넣어준다.
+				donationBoardFormDto.setHeartCount(heartCount);
 				donationBoardFormDto.setDonationBoardImgDtoList(donationBoardImgDtoList);
+				
 				
 				return donationBoardFormDto;
 		
@@ -161,13 +168,13 @@ public class DonationBoardService {
 			
 			for (DonationBoardComment donationBoardComment : donationBoardCommentList) {
 				DonationBoardCommentDto donationBoardCommentDto = DonationBoardCommentDto.of(donationBoardComment);
-				System.out.println("확인 : start3");
+//				System.out.println("확인 : start3");
 				
 				String donatedWriteCommentMember = donationBoardComment.getMember().getNickName();
-				System.out.println("확인 : start4"+donationBoardComment.getMember().getNickName());
+//				System.out.println("확인 : start4"+donationBoardComment.getMember().getNickName());
 				
 				donationBoardCommentDto.setCommentMember(donatedWriteCommentMember);
-				System.out.println("확인 : start5"+donationBoardCommentDto.getComment());
+//				System.out.println("확인 : start5"+donationBoardCommentDto.getComment());
 				
 				
 				donationBoardCommentDtoList.add(donationBoardCommentDto);
