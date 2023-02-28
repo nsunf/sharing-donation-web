@@ -95,7 +95,7 @@ public class DonationController {
 	}
 	
 	//list페이
-	@GetMapping(value = "/donation")
+	@GetMapping(value = "/admin/donation")
 	public String adminDonationList(DonationSearchDto donationSearchDto, Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 6);
 		Page<Donation> donationList = donationService.getAdminListDonationPage(donationSearchDto, pageable);
