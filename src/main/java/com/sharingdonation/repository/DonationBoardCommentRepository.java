@@ -10,7 +10,7 @@ import com.sharingdonation.entity.DonationBoardComment;
 
 public interface DonationBoardCommentRepository extends JpaRepository<DonationBoardComment, Long>{
 
-List<DonationBoardComment> findByDonationBoardId(Long id);
+	List<DonationBoardComment> findByDonationBoardId(Long id);
 	
 	Long countByDonationBoardId(Long id);
 
