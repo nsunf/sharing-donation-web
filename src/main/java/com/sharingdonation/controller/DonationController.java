@@ -108,6 +108,6 @@ public class DonationController {
 		model.addAttribute("donationSearchDto", donationSearchDto);
 		model.addAttribute("maxPage", 5);
 		System.out.println("donation_list_check");
-		return "donation/donationList";
+		return "admin/donationReqList";
 	}
 }
