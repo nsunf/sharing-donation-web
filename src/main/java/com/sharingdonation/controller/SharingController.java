@@ -83,13 +83,16 @@ public class SharingController {
 //	}
 
 	@GetMapping("/area/{areaName}")
-	public String sharingListByArea(@PathVariable String areaName, @RequestParam Optional<Integer> page, @RequestParam Optional<String> search, Model model) {
+	public String sharingListByArea(@PathVariable String areaName, @RequestParam Optional<Integer> page, @RequestParam Optional<String> search, @RequestParam Optional<String> cat, Model model) {
 		Pageable pageable = PageRequest.of(page.orElse(0), 9);
+		String _cat = cat.orElse(null);
 		
+		String catName = (_cat != null && _cat.equals("전체")) ? null : cat.orElse(null);
 		
-
-		model.addAttribute("sharingDtoList", sharingService.getSharingDtoList(search.orElse(null), areaName, pageable));
+		model.addAttribute("sharingDtoList", sharingService.getSharingDtoList(search.orElse(null), areaName, catName, pageable));
 		model.addAttribute("area", areaName);
+		model.addAttribute("search", search.orElse(null));
+		model.addAttribute("cat", cat.orElse(null));
 		model.addAttribute("page", pageable.getPageNumber());
 		model.addAttribute("maxPage", 5);
 

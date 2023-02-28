@@ -22,7 +22,7 @@
         ></div>
         <!-- /.page-header__bg -->
         <div class="container">
-        	<p class="text-white"><span>[[${areaName}]]</span>&gt;<span>cat</span></p>
+        	<p class="text-white"><span>[[${areaName}]]</span>&gt;<span th:text="${cat != null} ? ${cat} : '전체'">전체</span></p>
           <h2 class="text-center sharing_board_title">나눔리스트</h2>
         </div>
       </section>
@@ -30,7 +30,8 @@
       <!-- 검색창 -->
       <section class="causes-one causes-page pt-5 pb-3 vstack">
         <div class="m-5">
-          <form class="input-group mb-3 w-25 mx-auto" th:action="@{/sharing}">
+          <form class="input-group mb-3 w-25 mx-auto" th:action="@{/sharing/area/{area}(area=${area})}">
+          	<input type="hidden" name="cat" th:value="${cat}"/>
             <input type="text" class="form-control" placeholder="검색" name="search" />
             <button
               class="btn"

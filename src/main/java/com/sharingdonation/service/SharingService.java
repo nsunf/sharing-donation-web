@@ -51,12 +51,13 @@ public class SharingService {
 		return SharingDto.valueOf(sharing);
 	}
 
-	public Page<SharingDto> getSharingDtoList(String search, String areaName,  Pageable pageable) {
+	public Page<SharingDto> getSharingDtoList(String search, String areaName, String catName, Pageable pageable) {
 		Page<Sharing> sharingList = null;
-		if (search != null) {
-			sharingList = sharingRepo.findAllByDetailContainsAndDelYnAndAreaGugunOrderByRegTimeDesc(search, "N", areaName, pageable);
+		String _search = search == null ? "" : search;
+		if (catName == null) {
+			sharingList = sharingRepo.findAllByDetailContainsAndConfirmYnAndDelYnAndAreaGugunOrderByRegTimeDesc(_search, "Y", "N", areaName, pageable);
 		} else {
-			sharingList = sharingRepo.findAllByConfirmYnAndDelYnAndAreaGugunOrderByRegTimeDesc("Y", "N", areaName, pageable);
+			sharingList = sharingRepo.findAllByDetailContainsAndConfirmYnAndDelYnAndAreaGugunAndCategoryCategoryNameOrderByRegTimeDesc(_search, "Y", "N", areaName, catName, pageable);
 		}
 		
 		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
