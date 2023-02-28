@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ import com.sharingdonation.dto.DonationBoardFormDto;
 import com.sharingdonation.dto.DonationBoardImgDto;
 import com.sharingdonation.dto.DonationFormDto;
 import com.sharingdonation.dto.SharingBoardCommentDto;
+import com.sharingdonation.entity.DonationBoardComment;
 import com.sharingdonation.repository.MemberRepository;
 import com.sharingdonation.service.DonationBoardHeartService;
 import com.sharingdonation.service.DonationBoardImgService;
@@ -40,7 +42,6 @@ public class DonationBoardController {
 	
 	private final DonationBoardService donationBoardService;
 	private final DonationBoardImgService donationBoardImgService;
-	
 	private final DonationBoardHeartService donationBoardHeartService;
 	private final MemberRepository memberRepository;
 	
@@ -143,11 +144,28 @@ public class DonationBoardController {
 		}
 		
 	//좋어요
-		@GetMapping("/heart/{id}")
+		@GetMapping("/donatedBoard/heart/{id}")
 		public  @ResponseBody ResponseEntity<?> toggleDonationBoardHeart(@PathVariable Long id){
 			donationBoardHeartService.toggleDonationBoardHeart(id);
 			Long donationBoardheartCount = donationBoardHeartService.getDonationBoardHeartCount(id);
 			return new ResponseEntity<Long>(donationBoardheartCount, HttpStatus.OK);
 		}
+		
+		
+		
+	//delete
+		@DeleteMapping(value= "/donationBoard/{donationBoardId}/delete")
+		public @ResponseBody ResponseEntity<?> deleteDonationBoard(@PathVariable("donationBoardId") Long donationBoardId, Model model) {
+			System.out.println("/donationBoard/{donationBoardId}/delete");
+			try {
+				donationBoardImgService.deleteDonationBoardImg(donationBoardId);
+				donationBoardService.deleteDonationBoard(donationBoardId);
+				donationBoardHeartService.deleteDonationBoardHeart(donationBoardId);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return new ResponseEntity<Long>(donationBoardId,HttpStatus.OK);
+		}
+		
 	
 }

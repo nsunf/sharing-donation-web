@@ -182,6 +182,21 @@ public class DonationBoardService {
 			}
 			return donationBoardCommentDtoList;
 		}
+
+
+
+		//delete
+		public void deleteDonationBoard(Long donationBoardId) {
+			DonationBoard donationBoard = donationBoardRepository.findById(donationBoardId)
+					.orElseThrow(EntityNotFoundException::new);
+			
+			donationBoardRepository.delete(donationBoard);
+			
+			DonationBoardComment donationBoardComment = donationBoardCommentRepository.findById(donationBoardId)
+					.orElseThrow(EntityNotFoundException::new);
+			
+			donationBoardCommentRepository.delete(donationBoardComment);
+		}
 		
 		
 }
