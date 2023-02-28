@@ -61,10 +61,10 @@ public class Member extends BaseEntity {
 	
 	private LocalDate birth;
 	
-	@Column(nullable = false, columnDefinition = "varchar(20)")
+	@Column(columnDefinition = "varchar(20)")
 	private String comNum;
 	
-	@Column(nullable = false, columnDefinition = "varchar(15)")
+	@Column(columnDefinition = "varchar(15)")
 	private String fax;
 	
 	@Column(nullable = false, columnDefinition = "int(11) default 0")
