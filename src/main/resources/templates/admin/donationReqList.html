@@ -47,17 +47,7 @@
 							<th>진행상황</th>
 						</tr>
 					</thead>
-					<tbody th:with="pages=(${(page == 0) ? 1 : page})">
-						<tr th:each="donationDto, status : ${donationDtoList}">
-							<th><input type="checkbox" name="donation" th:value="${donationDto.id}" /></th>
-							<td th:text=""></td>
-							<td>[[${donationDto.nickName}]]</td>
-							<td>[[${donationDto.subject}]]</td>
-							<td>[[${donationDto.donationName}]]</td>
-							<td>[[${donationDto.regTime}]]</td>
-							<td>[[${donationDto.startDate}]]~[[${donationDto.endDate}]]</td>
-							<td><button class="admin_standby_btn">승인대기</button></td>
-						</tr>
+					<tbod>
 						<!-- <tr>
 							<th><input type="checkbox" name="" value="" /></th>
 							<td>1</td>
