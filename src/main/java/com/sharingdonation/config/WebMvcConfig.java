@@ -41,7 +41,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public FilterRegistrationBean<?> filterBean() {
 		FilterRegistrationBean<?> registrationBean = new FilterRegistrationBean<LayoutFilter>(new LayoutFilter(categoryService));
 		
-		registrationBean.addUrlPatterns("/*");
+		registrationBean.addUrlPatterns("/sharing/area/*");
 		
 		return registrationBean;
 	}
