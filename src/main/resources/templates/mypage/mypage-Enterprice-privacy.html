@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/layout1}">
+	layout:decorate="~{layouts/layout2}">
 <head>
 <meta charset="UTF-8">
 <link
@@ -69,6 +69,61 @@
             }
         }).open();
     }
+    
+    
+    
+    
+    
+    
+    function enterpricePrivacyUpdate() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        var url = "/mypage/enterpriceprivacy/" + [[${mypage.id}]];
+        var paramData = {
+            name : $("#name").val(),
+            cellphone : $("#cellphone").val(),
+            fax : $("#fax").val(),
+            zipCode : $("#sample4_postcode").val(),
+            address : $("#sample4_roadAddress").val(),
+            addressDetail :$("#sample4_detailAddress").val()
+        };
+
+        var param = JSON.stringify(paramData);
+
+        $.ajax({
+            url      : url,
+            type     : "POST",
+            contentType : "application/json",
+            data     : param,
+            beforeSend : function(xhr){
+                /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                xhr.setRequestHeader(header, token);
+            },
+            dataType : "json",
+            cache   : false,
+            success  : function(result, status){
+ 
+                alert("기업 정보 수정이 완료 되었습니다.");
+                /*
+                location.href="/mypage/privacy/" + [[${mypage.id}]];
+                */
+               
+                $("#sample4_postcode").val() = result.zipCode;
+                $("#sample4_roadAddress").val() = result.address;
+                $("#sample4_detailAddress").val() = result.addressDetail;
+                
+            },
+            error : function(jqXHR, status, error){
+                if(jqXHR.status == '401'){
+                    alert('로그인 후 이용해주세요');
+                    location.href='/';
+                } else{
+                    alert(jqXHR.responseText);
+                }
+            }
+        });
+	}	
 </script>
 
 
@@ -83,37 +138,17 @@
 
 				<div style="display: flex; margin-top: 70px;">
 
-					<div>
-						<div style="border: 1px solid black; width: 280px; height: 630px;">
-							<div
-								style="border-bottom: 1px solid black; width: 100%; height: 315px;">
-								<h2 style="text-align: center; margin-top: 20px;">기업명</h2>
-								<ul style="list-style: none;">
-									<li style="margin-top: 20px; margin-bottom: 20px;">대표이름</li>
-									<li style="margin-bottom: 20px;">김김김</li>
-									<li style="margin-bottom: 20px;">가입날짜</li>
-									<li style="margin-bottom: 20px;">YYYY년 MM월 DD일</li>
-								</ul>
-							</div>
-							<ul style="list-style: none;">
-								<li style="margin-top: 40px; margin-bottom: 20px;">기업정보수정</li>
-								<li style="margin-bottom: 20px;">기부신청내역</li>
-								<li style="margin-bottom: 20px;"></li>
-								<li style="margin-bottom: 20px;"></li>
-							</ul>
-						</div>
-					</div>
-
 
 
 					<div style="margin: 0 auto;">
 
+					<input type="hidden" id="id" th:value="${mypage.id}">
 
 						<!-- 상세 내용 div -->
 						<div
 							style="width: 780px; height: 556px; margin: 0 auto; padding: 0;">
 							<table class="privacy-tbl"
-								style="border: 1px solid black; width: 100%; height: 100%; margin: 0;">
+								style="width: 100%; height: 100%; margin: 0;">
 								<thead></thead>
 								<tbody>
 									<tr style="height: 80px;">
@@ -124,7 +159,7 @@
 											 </div>
 											<div class="form-floating mb-3" style="width: 180px;">
 												<input type="text" class="ad-field"
-													id="floatingEmptyPlaintextInput" placeholder="" value="Enterprice"
+													id="floatingEmptyPlaintextInput" placeholder="" th:value="${mypage.nickName}"
 													style="margin-top: 5px; width: 370px; outline: none;" readonly>
 											</div>
 										</div>
@@ -135,7 +170,7 @@
 											 </div>
 											<div class="form-floating mb-3" style="width: 180px;">
 												<input type="email" class="ad-field"
-													id="floatingEmptyPlaintextInput" placeholder="" value="Enterprice@share.com"
+													id="floatingEmptyPlaintextInput" placeholder="" th:value="${mypage.email}"
 													style="margin-top: 5px; width: 370px; outline: none;" readonly>
 											</div>
 											</div>
@@ -145,11 +180,11 @@
 										<td style="display:flex; margin-top: 10px; width: 100%;">
 										<div style="margin-left: 18px;">
 											<div>
-												 <label for="floatingEmptyPlaintextInput" style="color: #20C097;">대표자 성명</label>
+												 <label for="name" style="color: #20C097;">대표자 성명</label>
 											 </div>
 											<div class="form-floating mb-3" style="width: 180px;">
 												<input type="text" class="ad-field privacyinput"
-													id="floatingEmptyPlaintextInput" placeholder="" value="김김김"
+													id="name" placeholder="" th:value="${mypage.name}"
 													style="margin-top: 5px; width: 370px;">
 											</div>
 										</div>
@@ -160,7 +195,7 @@
 											 </div>
 											<div class="form-floating mb-3" style="width: 180px;">
 												<input type="text" class="ad-field"
-													id="floatingEmptyPlaintextInput" placeholder="" value="김김김"
+													id="floatingEmptyPlaintextInput" placeholder="" th:value="${mypage.comNum}"
 													style="margin-top: 5px; width: 370px; outline: none;" readonly>
 											</div>
 											</div>
@@ -175,7 +210,7 @@
 											 </div>
 											<div class="form-floating mb-3" style="width: 180px;">
 												<input type="text" class="ad-field privacyinput"
-													id="floatingEmptyPlaintextInput" placeholder="" value="김김김"
+													id="cellphone" placeholder="" th:value="${mypage.cellphone}"
 													style="margin-top: 5px; width: 370px;">
 											</div>
 										</div>
@@ -186,7 +221,7 @@
 											 </div>
 											<div class="form-floating mb-3" style="width: 180px;">
 												<input type="text" class="ad-field privacyinput"
-													id="floatingEmptyPlaintextInput" placeholder="" value="김김김"
+													id="fax" placeholder="" th:value="${mypage.fax}"
 													style="margin-top: 5px; width: 370px;">
 											</div>
 											</div>
@@ -199,21 +234,21 @@
 											 <div>
 												 <label for="floatingEmptyPlaintextInput" style="color: #20C097;">주소</label>
 											 </div>
-          										  <input type="text" class="ad-field privacyinput" id="sample4_postcode" placeholder="우편번호" style="width: 175px;">
+          										  <input type="text" class="ad-field privacyinput" id="sample4_postcode" placeholder="우편번호" style="width: 175px;" th:value="${mypage.zipCode}">
 										            <input type="button" class="ad-btn privacyinput" style="background-color: #8D9391;" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-										            <input type="text" class="ad-field privacyinput" id="sample4_roadAddress" placeholder="도로명주소">
-										            <input type="text" class="ad-field privacyinput" id="sample4_jibunAddress" placeholder="지번주소">
+										            <input type="text" class="ad-field privacyinput" id="sample4_roadAddress" placeholder="도로명주소" th:value="${mypage.address}">
+										            <input type="hidden" class="ad-field privacyinput" id="sample4_jibunAddress" placeholder="지번주소">
 										            <span id="guide"  style="color:#999;display:none"></span>
 										        </br>
-										            <input type="text" class="ad-field privacyinput" id="sample4_detailAddress" placeholder="상세주소">
-										            <input type="text" class="ad-field privacyinput" id="sample4_extraAddress" placeholder="참고항목">
+										            <input type="text" class="ad-field privacyinput" id="sample4_detailAddress" placeholder="상세주소"  th:value="${mypage.addressDetail}">
+										            <input type="hidden" class="ad-field privacyinput" id="sample4_extraAddress" placeholder="참고항목">
 										</td>
 										
 
 									</tr>
 									<tr>
 										<td colspan="1" style="text-align: center;">
-										<input type="submit" value="저장" class="submit-btn">
+										<button type="button" value="저장" class="submit-btn" onclick="enterpricePrivacyUpdate()">저장</button>
 										</td>
 									</tr>
 								</tbody>

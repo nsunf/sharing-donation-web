@@ -3,6 +3,8 @@ package com.sharingdonation.dto;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
+import com.sharingdonation.constant.Role;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,13 +26,16 @@ public class MyPageMainDto {
 	
 	private String name;
 	
-	private Date reg_time;
+	private LocalDateTime regTime;
 	
+	private String nickName;
+	
+	private Role role;
 	
 	//디폴트 생성자 
 	public MyPageMainDto() {}
 
-	public MyPageMainDto(Long id, int point, Long share_reg, Long share_take, Long share_apply, Long share_story, String name, Date reg_time) {
+	public MyPageMainDto(Long id,String nickName,int point, Long share_reg, Long share_take, Long share_apply, Long share_story, String name, LocalDateTime regTime, Role role) {
 		this.id = id;
 		this.point = point;
 		this.share_reg = share_reg;
@@ -38,7 +43,9 @@ public class MyPageMainDto {
 		this.share_apply = share_apply;
 		this.share_story = share_story;
 		this.name = name;
-		this.reg_time = reg_time;
+		this.regTime = regTime;
+		this.nickName = nickName;
+		this.role = role;
 	}
 	
 }
