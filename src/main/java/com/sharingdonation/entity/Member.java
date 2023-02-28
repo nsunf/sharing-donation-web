@@ -2,6 +2,7 @@ package com.sharingdonation.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -84,7 +85,9 @@ public class Member extends BaseEntity {
 		Member member = new Member();
 		member.setName(memberFormDto.getName());
 		member.setAddress(memberFormDto.getAddress());
-		member.setBirth(memberFormDto.getBirth());
+		member.setAddressDetail(memberFormDto.getAddressDetail());
+		LocalDate date = LocalDate.parse(memberFormDto.getBirth(), DateTimeFormatter.ISO_DATE);
+		member.setBirth(date);
 		member.setCellphone(memberFormDto.getCellphone());
 		member.setEmail(memberFormDto.getEmail());
 		
