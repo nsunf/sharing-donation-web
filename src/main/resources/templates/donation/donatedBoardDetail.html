@@ -168,7 +168,7 @@
               				</button>
               				
               				<button id="submit" class="thm-btn comment-form__btn" style="margin-left:5px;" type="submit" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-               						<a th:href="'/donatedBoard/edit/' + ${donationBoard.id}">수 정</a> <span></span>
+               						<a th:href="'/admin/donatedBoard/' + ${donationBoardId} + '/modify'">수 정</a> <span></span>
               				</button>
               			
               				<button id="" class="thm-btn comment-form__btn" style="margin-left:5px;" type="submit">

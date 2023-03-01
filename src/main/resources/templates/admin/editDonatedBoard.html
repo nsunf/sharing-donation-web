@@ -38,7 +38,8 @@
                   placeholder="기부 요청 주제"
                 />
               </label>
-
+              
+			<!--등록할때 -->
              <div>
                 <label class="input-label w-100" for="">
                   <span class="d-block ms-2 mb-1">기부 선택</span>
@@ -53,6 +54,10 @@
                   th:text="${donation.subject + ' - ' + donation.donationName}"></option>
                 </select>
               </div>
+              
+              
+              <!-- 수정할때 -->
+              
               
 
               <label class="input-label w-100" for="">
