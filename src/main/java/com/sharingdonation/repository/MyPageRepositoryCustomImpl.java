@@ -20,6 +20,7 @@ import com.sharingdonation.constant.MoveType;
 import com.sharingdonation.dto.MyPageEnterPricePrivacyDto;
 import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.MyPagePrivacyDto;
+import com.sharingdonation.dto.MyPageStoryDetailDto;
 import com.sharingdonation.dto.MyPageStoryListDto;
 import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.QMember;
@@ -27,6 +28,8 @@ import com.sharingdonation.entity.QPoint;
 import com.sharingdonation.entity.QSharing;
 import com.sharingdonation.entity.QSharingImg;
 import com.sharingdonation.entity.QStory;
+
+import groovy.time.BaseDuration.From;
 
 
 public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
@@ -172,63 +175,75 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 		QStory story = QStory.story;
 		QSharingImg sharingImg = QSharingImg.sharingImg;
 		
-		
-		
-		List<MyPageStoryListDto> result = queryFactory
+		List<MyPageStoryListDto> content = queryFactory
 				 .select(Projections.fields(MyPageStoryListDto.class,
-						 story.member.id,
+						 story.id,
 						 story.member.name,
-						 sharingImg.imgUrl,
-						 story.member.regTime,
+						// sharingImg.imgUrl,
+						 ExpressionUtils.as(JPAExpressions.select(sharingImg.imgUrl)
+								 .from(sharingImg)
+								 .where(story.member.id.eq(memberId).and(sharingImg.sharing.id.eq(story.sharing.id)))
+								 , "imgUrl"),
 						 story.member.role,
 						 story.member.nickName,
-						 story.sharing.id,
 						 story.sharing.name,
 						 story.sharing.regTime,
 						 story.content
-						 
-
-//						 ExpressionUtils.as(JPAExpressions.select(sharingImg.imgUrl)
-//								 .from(sharingImg)
-//								 .where(sharingImg.sharing.id.eq(sharing.id).and(sharing.delYn.eq("N").and(sharing.member.id.eq(memberId))))
-//								 ,"imgUrl"),
-//						 member.regTime,
-//						 member.role,
-//						 member.nickName,
-//						 ExpressionUtils.as(JPAExpressions.select(sharing.id)
-//								 .from(sharing)
-//								 .where(sharing.member.id.eq(memberId))
-//								 , "sharingId"),
-//						 ExpressionUtils.as(JPAExpressions.select(sharing.name)
-//								 .from(sharing)
-//								 .where(sharing.member.id.eq(memberId))
-//								 , "sharProductName"),
-//						 ExpressionUtils.as(JPAExpressions.select(sharing.shareRegTime)
-//								 .from(sharing)
-//								 .where(sharing.member.id.eq(memberId))
-//								 , "shareRegTime"),
-//						 ExpressionUtils.as(JPAExpressions.select(story.content)
-//								 .from(story)
-//								 .where(story.member.id.eq(memberId).and(story.sharing.id.eq(sharing.id)))
-//								 , "detail")
 						 ))
-						 
-				 .from(story, sharingImg)
-				 //.join(story.sharing, sharingImg.sharing)
-				 .where(story.member.id.eq(memberId).and(sharingImg.sharing.id.eq(story.sharing.id)))
-				 .orderBy(story.id.desc())
+				 .from(story)
+				 .where(story.member.id.eq(memberId))
+				 .orderBy(story.id.asc())
 	             .offset(pageable.getOffset())
 	             .limit(pageable.getPageSize())
 				 .fetch();
 		
 		long total = queryFactory
 				.select(Wildcard.count)
-				.from(sharingImg)
-				.join(sharingImg.sharing, sharing)
-				.where(sharingImg.repimgYn.eq("Y"))
+				.from(story)
+				.join(story.sharing, sharing)
+				.where(story.sharing.member.id.eq(memberId))
 				.fetchOne();
 		 
-		return new PageImpl<>(result, pageable, total);
+		return new PageImpl<>(content, pageable, total);
+	}
+
+	@Override
+	public MyPageStoryDetailDto getMyPageStoryDetail(Long memberId, Long storyId) {
+	 QStory story = QStory.story;
+	 QSharingImg sharingImg = QSharingImg.sharingImg;
+	 
+	 MyPageStoryDetailDto content = queryFactory
+			 .select(Projections.fields(MyPageStoryDetailDto.class,
+					 story.id,
+					 ExpressionUtils.as(JPAExpressions.select(sharingImg.imgUrl)
+							 .from(sharingImg)
+							 .where(story.member.id.eq(memberId).and(sharingImg.sharing.id.eq(story.sharing.id)))
+							 , "imgUrl"),
+					 story.sharing.name,
+					 story.sharing.area.gugun,
+					 story.member.nickName,
+					 story.sharing.detail,
+					 story.content
+					 ))
+			 .from(story)
+			 .where(story.id.eq(storyId).and(story.id.eq(story.sharing.id)
+					 .and(story.sharing.delYn.eq("N").and(story.delYn.eq("N")))))
+			 .fetchOne();
+
+		return content;
+	}
+
+	@Override
+	public Long updateMyPageStoryDetail(MyPageStoryDetailDto myPageStoryDetailDto, Long memberId, Long storyId) {
+		QStory story = QStory.story;
+		
+		long update = queryFactory
+				.update(story)
+				.set(story.content,myPageStoryDetailDto.getContent())
+				.where(story.id.eq(storyId).and(story.member.id.eq(memberId)))
+				.execute();
+		return update;
+	
 	}
 	
 	

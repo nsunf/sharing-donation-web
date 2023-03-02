@@ -43,4 +43,7 @@ public class Story {
 	
 	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String chooseYn;
+	
+	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
+	private String delYn;
 }
