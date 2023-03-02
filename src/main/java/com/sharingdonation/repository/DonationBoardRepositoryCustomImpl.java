@@ -15,6 +15,7 @@ import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharingdonation.dto.DonationBoardDto;
+import com.sharingdonation.dto.DonationBoardSearchDto;
 import com.sharingdonation.dto.QDonationBoardDto;
 import com.sharingdonation.entity.DonationBoard;
 //import com.sharingdonation.entity.QDonation;
@@ -31,8 +32,11 @@ private JPAQueryFactory queryFactory;
 	public DonationBoardRepositoryCustomImpl(EntityManager em) {
 		this.queryFactory = new JPAQueryFactory(em);
 	}
+	
+	
+	
 	@Override
-	public Page<DonationBoard> getAdminDonationBoardPage(Pageable pageable) {
+	public Page<DonationBoard> getAdminDonationBoardPage(DonationBoardSearchDto donationBoardSearchDto, Pageable pageable) {
 		List<DonationBoard> content = queryFactory
 				.selectFrom(QDonationBoard.donationBoard)
 				.orderBy(QDonationBoard.donationBoard.id.desc())
@@ -45,7 +49,7 @@ private JPAQueryFactory queryFactory;
 	}
 
 	@Override
-	public Page<DonationBoardDto> getDonationBoardPage(Pageable pageable) {
+	public Page<DonationBoardDto> getDonationBoardPage(DonationBoardSearchDto donationBoardSearchDto, Pageable pageable) {
 		QDonationBoard donationBoard = QDonationBoard.donationBoard;
 		QDonationBoardImg donationBoardImg = QDonationBoardImg.donationBoardImg;
 //		QDonation donation = QDonation.donation;
@@ -63,12 +67,17 @@ private JPAQueryFactory queryFactory;
 							formattedDatetime,
 							donationBoardImg.imgUrl, 
 							ExpressionUtils.as(JPAExpressions.select(donationBoardComment.count()).from(donationBoardComment).where(donationBoardImg.donationBoard.eq(donationBoardComment.donationBoard)), "commentCount"),
-							ExpressionUtils.as(JPAExpressions.select(donationBoardHeart.count()).from(donationBoardHeart).where(donationBoardImg.donationBoard.eq(donationBoardHeart.donationBoard)), "donationBoardheartCount")
+							ExpressionUtils.as(JPAExpressions.select(donationBoardHeart.count()).from(donationBoardHeart).where(donationBoardImg.donationBoard.eq(donationBoardHeart.donationBoard)), "donationBoardheartCount"),
+							donationBoard.donation.donationPerson,
+							donationBoard.donation.startDate,
+							donationBoard.donation.endDate
+							
 						)
 				)
 				.from(donationBoardImg)
 				.join(donationBoardImg.donationBoard, donationBoard)
 				.where(donationBoardImg.repimgYn.eq("Y"))
+				.where(donationBoard.subject.like("%" + donationBoardSearchDto.getSearchQuery() + "%"))
 				.orderBy(donationBoard.id.desc())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
@@ -78,6 +87,7 @@ private JPAQueryFactory queryFactory;
 				.from(donationBoardImg)
 				.join(donationBoardImg.donationBoard, donationBoard)
 				.where(donationBoardImg.repimgYn.eq("Y"))
+				.where(donationBoard.subject.like("%" + donationBoardSearchDto.getSearchQuery() + "%"))
 				.fetchOne();
 		return new PageImpl<>(content, pageable, total);
 	}

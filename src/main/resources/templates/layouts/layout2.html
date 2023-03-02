@@ -51,23 +51,15 @@
     <section class="container pt-5 auto-min-height">
       <div class="row mt-5">
         <div class="col-10 col-lg-3 mx-auto" > 
-
-				<div th:if="${#strings.equals(mypage.role, T(com.sharingdonation.constant.Role).USER)}">
-					<th:block th:replace="fragments/mypageSide::mypageSide(${mypage.name},${mypage.regTime},${mypage.id},${mypage.nickName})"></th:block> 
-				</div>
-				<div th:if="${#strings.equals(mypage.role, T(com.sharingdonation.constant.Role).COM)}" >
-					<div th:replace="fragments/mypageEnterpriceSide::mypageEnterpriceSide(${mypage.name},${mypage.regTime},${mypage.id},${mypage.nickName})"></div> 
-				</div>
-
-<!--         <th:block th:switch=${mypage.role}>
-					<div th:case="${T(com.sharingdonation.constant.Role).USER}" >
-						<th:block th:replace="fragments/mypageSide::mypageSide(${mypage.name},${mypage.regTime},${mypage.id},${mypage.nickName})"></th:block> 
-					</div>
-					<div th:case="${T(com.sharingdonation.constant.Role).COM}" >
-						<div th:replace="fragments/mypageEnterpriceSide::mypageEnterpriceSide(${mypage.name},${mypage.regTime},${mypage.id},${mypage.nickName})"></div> 
-					</div>
-				</th:block>
- -->
+        
+        <th:block th:switch=${mypage.role}>
+						<div th:if="${#strings.equals(mypage.role, T(com.sharingdonation.constant.Role).USER)}">
+							<th:block th:replace="fragments/mypageSide::mypageSide(${mypage.name},${mypage.regTime},${mypage.id},${mypage.nickName})"></th:block> 
+						</div>
+						<div th:if="${#strings.equals(mypage.role, T(com.sharingdonation.constant.Role).COM)}">
+							<div th:replace="fragments/mypageEnterpriceSide::mypageEnterpriceSide(${mypage.name},${mypage.regTime},${mypage.id},${mypage.nickName})"></div> 
+						</div>
+				 </th:block>
         </div>
 				<div class="col-1 d-none d-lg-block"></div>
 				<div class="col-8 mt-4 mt-lg-0 ">
