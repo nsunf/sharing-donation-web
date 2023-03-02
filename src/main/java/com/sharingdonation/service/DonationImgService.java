@@ -47,6 +47,8 @@ public class DonationImgService {
 			DonationImg savedDonationImg = donationImgRepository.findById(donationImgId)
 					.orElseThrow(EntityNotFoundException::new);
 			
+			
+			//기존 이미지 파일 삭제
 			if(!StringUtils.isEmpty(savedDonationImg.getImgName())) {
 				fileService.deleteFile(donationImgLocation + "/" + savedDonationImg.getImgName());
 			}

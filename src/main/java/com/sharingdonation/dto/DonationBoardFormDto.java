@@ -21,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DonationBoardFormDto{
-	private String id;
+	private Long id;
 	
 	private Long donationId;
 	

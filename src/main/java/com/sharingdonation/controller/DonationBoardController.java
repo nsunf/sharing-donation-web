@@ -51,7 +51,7 @@ public class DonationBoardController {
 	
 	//show the donated board create page
 	
-	@GetMapping(value = "/donatedBoard/edit")
+	@GetMapping(value = "/admin/donatedBoard/edit")
 	public String addDonatedBoard(Model model) { 
 		model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
 		model.addAttribute("donationBoardFormDto", new DonationBoardFormDto());
@@ -60,7 +60,7 @@ public class DonationBoardController {
 	
 	
 	//add donationBoard
-	@PostMapping(value = "/donatedBoard/edit")
+	@PostMapping(value = "/admin/donatedBoard/edit")
 	public String donatedBoardCreate(@Valid DonationBoardFormDto donationBoardFormDto, BindingResult bindingResult, 
 			Model model, List<MultipartFile> donationBoardImgFileList) {
 				System.out.println("++++++++++");
@@ -97,7 +97,7 @@ public class DonationBoardController {
 			Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(pageable);
 		
 			model.addAttribute("donationBoards",donationBoards);
-			model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
+			//model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
 			model.addAttribute("maxPage", 5);
 			return "admin/donatedList";
 			
@@ -171,15 +171,15 @@ public class DonationBoardController {
 		
 	
 	//doantionBoard modify view
-		@GetMapping(value = "/admin/donatedBoard/{donationBoardId}/modify")
+		@GetMapping(value = "/admin/donatedBoard/{donationBoardId}")
 		public String donatedBoardDetail(@PathVariable("donationBoardId") Long donationBoardId, Model model) {
 			try {
-				DonationBoardFormDto donationBoardFormDto = donationBoardService.getdonationBoardDetail(donationBoardId);
+				DonationBoardFormDto donationBoardFormDto = donationBoardService.getdonationBoardDetail(donationBoardId);   //get detail
 				model.addAttribute(donationBoardFormDto);
+				model.addAttribute("donations", donationBoardService.getDonationBorardSelect());  //get select list
 			} catch (EntityNotFoundException e) {
-				model.addAttribute("errorMessage","This gamer that dose not exist." );
+				model.addAttribute("errorMessage","This danatioBoard that dose not exist." );
 				model.addAttribute("donationBoardFormDto", new DonationBoardFormDto());
-				model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
 				return "admin/editDonatedBoard";
 			}
 			
@@ -189,34 +189,41 @@ public class DonationBoardController {
 		
 		
 		//doantionBoard modify
-		@PostMapping(value = "/admin/donatedBoard/{donationBoardId}/")
+		@PostMapping(value = "/admin/donatedBoard/{donationBoardId}")
 		public String updateDonationBoard(@Valid DonationBoardFormDto donationBoardformDto, BindingResult bindingResult,
 				Model model, @RequestParam("donationBoardImgFile") List<MultipartFile> donationBoardImgFileList) {
+			
+			
+			System.out.println("i updateDonationBoard )");
 			if(bindingResult.hasErrors()) {
+				System.out.println("i updateDonationBoard ndingResult.hasErrors()");
 				return "admin/editDonatedBoard";
 			}
 			
 			
 			if(donationBoardImgFileList.get(0).isEmpty() && donationBoardformDto.getId() == null) {
-				model.addAttribute("errorMessage", "Must enter danation board image.");
+				System.out.println("i updateDonationBoard onationBoardImgFileList.get(0).isEmpty() && donationBo");
+				model.addAttribute("errorMessage", "Must enter first danation board image.");
 				return "admin/editDonatedBoard";
 			}
 			
 			try {
+				System.out.println("Controller donationBoardformDto.getId()  === " + donationBoardformDto.getId() );
 				donationBoardService.donationBoardUpdate(donationBoardformDto, donationBoardImgFileList);
 			} catch (Exception e) {
 				e.printStackTrace();
+				System.out.println("i updateDonationBoard Exception");
 				model.addAttribute("errorMessage", "An error occurred while modifying.");
 				return "admin/editDonatedBoard";
 			}
-			
-			
-			return "redirect:/";
+			return "redirect:/admin/donatedBoard";
 			
 		}
 		
+		
+		
 	//delete
-		@DeleteMapping(value= "/donationBoard/{donationBoardId}/delete")
+		@DeleteMapping(value= "/admin/donatedBoard/{donationBoardId}/delete")
 		public @ResponseBody ResponseEntity<?> deleteDonationBoard(@PathVariable("donationBoardId") Long donationBoardId, Model model) {
 			System.out.println("/donationBoard/{donationBoardId}/delete");
 			try {

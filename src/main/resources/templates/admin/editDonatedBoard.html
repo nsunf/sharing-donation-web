@@ -15,19 +15,26 @@
 <body>
 	<th:block layout:fragment="layout-content">
 
-		<section class="banner d-flex justify-content-center align-items-center">
-        <h2 class="banner__title">기부 완료 게시판 등록/수정</h2>
+	 <div th:if="${#strings.isEmpty(donationBoardFormDto.id)}">
+	  <section class="banner d-flex justify-content-center align-items-center">
+        <h2 class="banner__title">기부 완료 게시판 등록</h2>
       </section>
+     </div>
+     <div th:if="${not #strings.isEmpty(donationBoardFormDto.id)}">
+	  <section class="banner d-flex justify-content-center align-items-center">
+        <h2 class="banner__title">기부 완료 게시판 수정</h2>
+      </section>
+     </div>
 
       <section class="my-5">
         <form
           class="container"
-          th:action="@{/donatedBoard/edit}"
+          th:action="@{/admin/donatedBoard/edit}"
           method="post"
           enctype="multipart/form-data" 
           th:object="${donationBoardFormDto}"
         >
-<!--         <input type="hidden" th:field="*{id}" /> -->
+		<input type="hidden" th:field="*{id}" />
           <div class="row">
             <div class="col-8 mx-auto">
               <label class="input-label w-100" for="">
@@ -38,7 +45,7 @@
                   placeholder="기부 요청 주제"
                 />
               </label>
-              
+
 			<!--등록할때 -->
              <div>
                 <label class="input-label w-100" for="">
@@ -49,15 +56,11 @@
                   style="width: 100%; height: 60px; border: 1px solid #15c8a0"
                 >
                   <option value="">기부를 선택 해주세요</option>
-                  <option th:each="donation : ${donations}" 
+                 <option th:each="donation : ${donations}" 
                   th:value="${donation.id}" 
                   th:text="${donation.subject + ' - ' + donation.donationName}"></option>
                 </select>
               </div>
-              
-              
-              <!-- 수정할때 -->
-              
               
 
               <label class="input-label w-100" for="">
@@ -68,19 +71,30 @@
                 ></textarea>
               </label>
               
+              <div th:if="${#strings.isEmpty(donationBoardFormDto.id)}"> 
               <label class="input-label w-100">
 				<span class="d-block ms-2 mb-1">이미지 등록</span>
 				<input class="img-input w-100" type="file" name="donationBoardImgFileList" accept="image/*" multiple>
 			  </label>
+			  </div>
 			  
-			<!-- <div  th:if="${#lists.isEmpty(donationBoardFormDto.donationBoardImgDtoList)}">
+			  <!-- 수정할때 -->
+			   <div th:if="${not #strings.isEmpty(donationBoardFormDto.id)}"> 
+         		<label class="input-label w-100">
+					<span class="d-block ms-2 mb-1">이미지 등록</span>
+					<input type="hidden" name="donationBoardImgIds" th:value="${donationBoardFormDto.donationBoardImgDtoList[0].id}"> 
+				    <input class="img-input w-100" type="file" name="donationBoardImgFile" accept="image/*" multiple>
+			    </label>
+        	  </div>
+			  
+			<div  th:if="${#lists.isEmpty(donationBoardFormDto.donationBoardImgDtoList)}">
               <div th:each="num: ${#numbers.sequence(1, 10)}">
              	 <label class="input-label w-100" for="formFile" th:text="기부완료이미지 + ${num}">
                 	<span class="d-block ms-2 mb-1">이미지 등록</span>
                     <input class="img-input w-100" type="file" accept="image/*" multiple/>
                 </label>
               </div>
-           </div> -->
+           </div>
             </div>
           </div>
 
@@ -89,24 +103,33 @@
               미리보기
               <div class="img-preview-list row row-cols-4 g-4">
               
-<!--                 <div class="col">
+                 <div class="col">
                   <img
                     class="preview-img"
                     src="https://picsum.photos/id/237/720/480"
                     alt=""
                   />
-                </div>
- -->                
+                </div>                
               </div>
             </div>
           </div>
 
-          <div class="row mt-4">
+		<div th:if="${#strings.isEmpty(donationBoardFormDto.id)}">
+          <div class="row mt-4 ">
             <div class="col-8 mx-auto hstack">
-              <button class="custom-btn ms-3">수정</button>
               <button type="submit" class="custom-btn ms-3">제출</button>
             </div>
-          </div>
+         </div>
+        </div>
+        
+        <div th:if="${not #strings.isEmpty(donationBoardFormDto.id)}"> 
+         <div class="row mt-4 ">
+            <div class="col-8 mx-auto hstack">
+              <button th:formaction="@{'/admin/donatedBoard/' + ${donationBoardFormDto.id} }" type="submit" class="custom-btn ms-3">수정</button>
+            </div>
+         </div>
+        </div>
+         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         </form>
       </section>
 

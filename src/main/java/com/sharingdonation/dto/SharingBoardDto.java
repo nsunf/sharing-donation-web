@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.modelmapper.ModelMapper;
 
+import com.sharingdonation.entity.Sharing;
 import com.sharingdonation.entity.SharingBoard;
 
 import lombok.*;
