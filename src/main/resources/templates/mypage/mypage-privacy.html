@@ -105,9 +105,10 @@
             success  : function(result, status){
  
                 alert("개인정보 수정이 완료 되었습니다.");
-                /*
+                
                 location.href="/mypage/privacy/" + [[${mypage.id}]];
-                */
+                
+                
                 $("#nickName").val() = result.nickName;
                 $("#sample4_postcode").val() = result.zipCode;
                 $("#sample4_roadAddress").val() = result.address;

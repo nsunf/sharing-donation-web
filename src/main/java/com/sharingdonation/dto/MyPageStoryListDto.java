@@ -17,8 +17,6 @@ public class MyPageStoryListDto {
 	
 	private String imgUrl;
 	
-	private LocalDateTime regTime;
-	
 	private Role role;
 	
 	private String nickName;
@@ -27,16 +25,16 @@ public class MyPageStoryListDto {
 	
 	private String sharProductName;
 	
-	private LocalDateTime shareRegTime;
+	private LocalDateTime regTime;
 	
-	private String detail;
+	private String content;
 	
 	
 	
 	public MyPageStoryListDto() {};
 	
 	public MyPageStoryListDto(Long id, String name, String imgUrl,LocalDateTime regTime,Role role,
-			String nickName,Long sharingId,String sharProductName,LocalDateTime shareRegTime,String detail) {
+			String nickName,Long sharingId,String sharProductName,String content) {
 		this.id = id;
 		this.name = name;
 		this.imgUrl = imgUrl;
@@ -45,8 +43,7 @@ public class MyPageStoryListDto {
 		this.nickName = nickName;
 		this.sharingId = sharingId;
 		this.sharProductName = sharProductName;
-		this.shareRegTime = shareRegTime;
-		this.detail = detail;
+		this.content = content;
 
 	};
 	

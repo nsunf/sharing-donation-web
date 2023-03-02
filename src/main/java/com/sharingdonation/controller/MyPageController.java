@@ -3,6 +3,7 @@ package com.sharingdonation.controller;
 
 import java.io.Console;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -110,23 +111,28 @@ public class MyPageController {
 	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 	        }
 		  try {
-			  
+			 
 			  Long result = myPageService.myEnterpricePrivacyUpdate(myPageEnterPricePrivacyDto,memberId);
+			  
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		 return new ResponseEntity<Long>(memberId, HttpStatus.OK);
 	}
 	
-	@GetMapping("/mypage/story/{memberId}")
-	public String myPageStory(@PathVariable("memberId") Long memberId, Model model) {
-		Pageable pageable = PageRequest.of(0,3);	
+	
+	
+	
+	
+	@GetMapping({"/mypage/story/{memberId}", "/mypage/story/{memberId}/{page}"})
+	public String myPageStory(@PathVariable("memberId") Long memberId, @PathVariable("page") Optional<Integer> page, Model model) {
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
 		
 		Page<MyPageStoryListDto> myPageStoryListDto = myPageService.getMyPageStoryList(memberId, pageable);
 		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(memberId);
 		
 		System.out.println(myPageStoryListDto);
-		
+		model.addAttribute("page", pageable.getPageNumber()); //현재 페이지
 		model.addAttribute("mypage",myPageMainDto);
 		model.addAttribute("myPageStoryListDto",myPageStoryListDto);
 		model.addAttribute("maxPage",5);
