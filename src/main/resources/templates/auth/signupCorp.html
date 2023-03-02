@@ -33,7 +33,9 @@
             <input type="text" name="name" th:field="*{name}" class="text-field" placeholder="대표자 성명을 입력해주세요.">
             <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">Incorrect Data</p>
             <div>사업자 등록 번호</div>
-            <input type="text" name="comNum" th:field="*{comNum}" class="text-field" placeholder="사업자등록번호를 입력해주세요.">
+            <input type="text" name="comNum" th:field="*{comNum}" id="b_no" class="co-field b_no" placeholder="사업자등록번호를 '-'빼고 입력해주세요.">
+            <button id="check" class="check co-btn" type="button" style="background-color: #8D9391;">확인</button>
+            <p id="demo1"></p>
             <p th:if="${#fields.hasErrors('comNum')}" th:errors="*{comNum}" class="fieldError">Incorrect Data</p>
             <div>주소</div>
             <input type="text" name="zipCode" th:field="*{zipCode}" class="ad-field" id="sample4_postcode" placeholder="우편번호">
@@ -138,6 +140,52 @@
 								}
 						}).open();
 				}
+				
+				
+                $(function() {
+                   $('.check')
+                         .off()
+                         .on(
+                               "click",
+                               function() {
+
+                                  var b_no_check = $('.b_no')
+                                        .val();
+                                  const settings = {
+                                  		  "async": true,
+                                  		  "crossDomain": true,
+                                  		  "url": "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=x2ZDUu2T3irB3X0aDTNNe51Bc1G4af0vN2LDQ07szT9rGHPz%2B9pd19cYHZijSdmxeDZVVk5O3dLdB0jhBsAG0Q%3D%3D",
+                                  		  "method": "POST",
+                                  		  "headers": {
+                                  		    "accept": "application/json",
+                                  		    "Authorization": "x2ZDUu2T3irB3X0aDTNNe51Bc1G4af0vN2LDQ07szT9rGHPz+9pd19cYHZijSdmxeDZVVk5O3dLdB0jhBsAG0Q==",
+                                  		    "Content-Type": "application/json"
+                                  		  },
+                                          "processData" : false,
+                                          "data" : "{  \"b_no\": [    \""
+                                                + b_no_check
+                                                + "\"  ]}"
+                                       };
+                                  //번호를 입력한 값ㅇ
+                                  $
+                                        .ajax(settings)
+                                        .done(
+                                              function(
+                                                    response) {
+                                                 console
+                                                       .log(response);
+                                                 var bsstcd = response.data[0].b_stt_cd
+                                                 if (bsstcd === "") {
+                                                    alert('옳지 않은 사업자 등록 번호입니다.')
+                                                    document
+                                                          .getElementById("b_no").value = '';
+                                                 } else {
+                                                    alert('올바른 사업자 등록 번호입니다.')
+                                                 }
+                                              });
+
+                               });
+                });
 		</script>
 	</th:block>
 </body>
