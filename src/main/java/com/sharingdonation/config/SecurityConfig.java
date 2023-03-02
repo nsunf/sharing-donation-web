@@ -13,12 +13,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.sharingdonation.config.CustomAuthenticationEntryPoint;
 import com.sharingdonation.service.MemberService;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
 	@Autowired
     MemberService memberService;
+	
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
