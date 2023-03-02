@@ -39,6 +39,11 @@ public class MemberService implements UserDetailsService {
         validateDuplicateMember(member);
         return memberRepository.save(member);
     }
+    
+    public Member saveCorp(Member member){
+        validateDuplicateMember(member);
+        return memberRepository.save(member);
+    }
 
     private void validateDuplicateMember(Member member){
         Member findMember = memberRepository.findByEmail(member.getEmail());
