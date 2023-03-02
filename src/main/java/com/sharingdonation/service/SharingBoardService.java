@@ -79,7 +79,9 @@ public class SharingBoardService {
 	// 나눔완료 게시글 여러 댓글들 보여줌
 	@Transactional(readOnly = true)
 	public List<SharingBoardCommentDto> getBoardCommentList(Long id) {
+		System.out.println("확인 : start");
 		List<SharingBoardComment> sharingBoardCommentList = sharingBoardCommentRepository.findBySharingBoardId(id);
+		System.out.println("확인 : start1" + sharingBoardCommentList);
 		List<SharingBoardCommentDto> sharingBoardCommentDtoList = new ArrayList<>();
 
 		for (SharingBoardComment sharingBoardComment : sharingBoardCommentList) {

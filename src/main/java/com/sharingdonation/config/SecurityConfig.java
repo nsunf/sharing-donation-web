@@ -15,7 +15,9 @@ import com.sharingdonation.service.MemberService;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig{
+	
+	 
 
 	@Autowired
     MemberService memberService;
@@ -35,7 +37,8 @@ public class SecurityConfig {
 
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**", "/img/**", "/assets/**").permitAll()
-                .mvcMatchers("/", "/auth/**", "/images/**", "/lib/**", "/program/**", "/sharing/**", "/donation/**", "/sharing_board/**", "/donatedBoard/**").permitAll()
+                .mvcMatchers("/", "/auth/**", "/images/**", "/lib/**", "/mypage/**", "/program/**", "/sharing/**", "/donation/**", "/sharing_board/**", "/donatedBoard/**").permitAll()
+                .mvcMatchers("/test/**").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         ;

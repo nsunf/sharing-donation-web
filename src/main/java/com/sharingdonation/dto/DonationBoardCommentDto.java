@@ -23,9 +23,9 @@ public class DonationBoardCommentDto {
 	
 	private String commentMember;
 	
-	private String comment;
-	
 	private String regTime;
+	
+	private String comment;
 	
 	private static ModelMapper modelMapper = new ModelMapper();
 	

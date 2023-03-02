@@ -38,9 +38,14 @@
 </style>
 </head>
 <body>
+
+
 	<th:block layout:fragment="layout-content">
+	
 		<section>
 
+		<form>
+	<input type="hidden" id="memberId" th:value="${mypage.id}"> 
 			<!-- 상세 내용 div -->
 				<div style="width: 780px; height: 800px;  margin: 0 auto;">
 					<div style="display: flex;">
@@ -49,21 +54,21 @@
 							<div class="card text-bg-primary mb-3" style="width: 380px; height: 184px; background-color: #F0F5F4; border-style: none;">
 								<div style="padding: 15px 0 0 15px;  background-color: #15C8A0; font-size: 20px;">포인트</div>
 								<div class="card-body" style=" background-color: #15C8A0;">
-									<p class="card-text" style="text-align: right; padding-top: 70px; font-size: 30px;">12,000</p>
+									<p class="card-text" style="text-align: right; padding-top: 70px; font-size: 30px;">[[${mypage.point}]]</p>
 								</div>
 							</div>
 							
 							<div class="card text-bg-primary mb-3" style="width: 380px; height: 184px; background-color: #F0F5F4; border-style: none;">
 								<div style="padding: 15px 0 0 15px;  background-color: #F0F5F4; font-size: 20px; color: black;">나눔 등록</div>
 								<div class="card-body" style=" background-color: #F0F5F4;">
-									<p class="card-text" style="text-align: right; padding-top: 70px; font-size: 30px;color: black;">12건</p>
+									<p class="card-text" style="text-align: right; padding-top: 70px; font-size: 30px;color: black;">[[${mypage.share_reg}]]건</p>
 								</div>
 							</div>
 							
 							<div class="card text-bg-primary mb-3" style="width: 380px; height: 184px; background-color: #F0F5F4; border-style: none;">
 								<div style="padding: 15px 0 0 15px;  background-color: #15C8A0; font-size: 20px;">기부신청</div>
 								<div class="card-body" style=" background-color: #15C8A0;">
-									<p class="card-text" style="text-align: right; padding-top: 70px; font-size: 30px;">14건</p>
+									<p class="card-text" style="text-align: right; padding-top: 70px; font-size: 30px;">[[${mypage.share_apply}]]건</p>
 								</div>
 							</div>
 						</div>
@@ -71,31 +76,34 @@
 							
 						<div style="display: flex;" class="flex-column">
 							
-							<div class="card text-bg-primary mb-3" style="width: 380px; height: 184px; background-color: #F0F5F4; border-style: none;">
-								<div style="padding: 15px 0 0 15px;  background-color: #F0F5F4; font-size: 20px; color: black;">에너지</div>
-								<div class="card-body" style=" background-color: #F0F5F4;">
-									<p class="card-text" style="text-align: right; padding-top: 15px;"><div class="battery battery-50 ms-auto"></div></p>
+
+							<!--  
+								<div class="card text-bg-primary mb-3" style="width: 380px; height: 184px; background-color: #F0F5F4; border-style: none;">
+									<div style="padding: 15px 0 0 15px;  background-color: #F0F5F4; font-size: 20px; color: black;">에너지</div>
+									<div class="card-body" style=" background-color: #F0F5F4;">
+										<p class="card-text" style="text-align: right;"><img src="/images/batterise/charge_50.png" alt="..." style=" width: 46px; height: 80px; margin-top: 35px;"></p>
+									</div>
 								</div>
-							</div>
-							
+								 -->
+								 
 							<div class="card text-bg-primary mb-3" style="width: 380px; height: 184px; background-color: #F0F5F4; border-style: none;">
 								<div style="padding: 15px 0 0 15px;  background-color: #15C8A0; font-size: 20px;">받은나눔</div>
 								<div class="card-body" style=" background-color: #15C8A0;">
-									<p class="card-text" style="text-align: right; padding-top: 70px; font-size: 30px;">12건</p>
+									<p class="card-text" style="text-align: right; padding-top: 70px; font-size: 30px;">[[${mypage.share_take}]]</p>
 								</div>
 							</div>
 							
 							<div class="card text-bg-primary mb-3" style="width: 380px; height: 184px; background-color: #F0F5F4; border-style: none;">
 								<div style="padding: 15px 0 0 15px;  background-color: #F0F5F4; font-size: 20px; color: black;">사연내역</div>
 								<div class="card-body" style=" background-color: #F0F5F4;">
-									<p class="card-text" style="text-align: right; padding-top: 70px; font-size: 30px; color: black;">12건</p>
+									<p class="card-text" style="text-align: right; padding-top: 70px; font-size: 30px; color: black;">[[${mypage.share_story}]]건</p>
 								</div>
 							</div>
 
 						</div>
 					</div>
 				</div>
-			
+			</form>
 		</section>
 	</th:block>
 

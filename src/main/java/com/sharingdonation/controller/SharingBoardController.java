@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/sharing_board")
 public class SharingBoardController {
-	
+
 	private final SharingBoardService sharingBoardService;
 	private final SharingService sharingService;
 	
@@ -45,25 +45,25 @@ public class SharingBoardController {
 		model.addAttribute("sharingBoardList",sharingBoardPage);
 		return "sharing/sharedBoard";
 	}
-	
-	//게시글 보기, 댓글 보여줌
+
+	// 게시글 보기, 댓글 보여줌
 	@GetMapping(value = "/view/{shared_post_id}")
 	public String ViewSharedPost(Model model, @PathVariable("shared_post_id") Long id) {
 		SharingBoardDto sharingBoardDto = sharingBoardService.getCompletePost(id);
 		List<SharingBoardCommentDto> sharingBoardCommentDtoList = sharingBoardService.getBoardCommentList(id);
-		model.addAttribute("sharingBoardDto",sharingBoardDto);
-		model.addAttribute("sharingBoardCommentDtoList",sharingBoardCommentDtoList);
-		
+		model.addAttribute("sharingBoardDto", sharingBoardDto);
+		model.addAttribute("sharingBoardCommentDtoList", sharingBoardCommentDtoList);
+
 		return "sharing/sharedDetail";
 	}
-	
-	//댓글 등록
-	@PostMapping(value="/view/{shared_post_id}/comment")
+
+	// 댓글 등록
+	@PostMapping(value = "/view/{shared_post_id}/comment")
 	public String insertComment(@PathVariable("shared_post_id") Long id, @RequestParam String comment, Model model) {
-												//가짜 데이터 member_id 넣었음
+		// 가짜 데이터 member_id 넣었음
 		sharingBoardService.insertComment(1L, id, comment);
-		
-		return "redirect:/sharing_board/view/"+id;
+
+		return "redirect:/sharing_board/view/" + id;
 	}
 	
 	//인증완료 게시글 작성 페이지 보여줌

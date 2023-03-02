@@ -28,7 +28,7 @@ public class SharingBoardHeart {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="shring_board_id")
+	@JoinColumn(name="sharing_board_id")
 	private SharingBoard sharingBoard;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

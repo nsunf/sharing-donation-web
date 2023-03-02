@@ -26,7 +26,7 @@ public class SharingBoardImg {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="shring_board_id")
+	@JoinColumn(name="sharing_board_id")
 	private SharingBoard sharingBoard;
 	
 	@Column(nullable = false, columnDefinition = "varchar(100)")
