@@ -1,6 +1,5 @@
 package com.sharingdonation.dto;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +41,7 @@ public class DonationFormDto {
 	
 	private int price;
 	
-	private LocalDate startDate;
 	
-	private LocalDate endDate;
 	
 	@NotNull(message = "목표포인트는 필수 입력 값입니다.")
 	private int goalPoint;

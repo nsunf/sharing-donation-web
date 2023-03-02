@@ -47,16 +47,20 @@
 							<th>진행상황</th>
 						</tr>
 					</thead>
-					<tbody th:with="pages=(${(page == 0) ? 1 : page}),   rowNumber=(${totalCount - ((pages * rowPerPage)})">
+					<tbody><!--  th:with="pages=(${(page == 0 or page=='' or page== null) ? 1 : page}), rowNum=${(totalCount - (pages * rowPerPage))} " -->
 						<tr th:each="donationDto, status : ${donationDtoList}">
 							<th><input type="checkbox" name="donation" th:value="${donationDto.id}" /></th>
-							<td th:text=""></td>
+							<td th:text="${donationDtoList.getTotalElements-(((pages)-1) * rowPerPage) - status.index}"></td>
 							<td>[[${donationDto.nickName}]]</td>
 							<td>[[${donationDto.subject}]]</td>
 							<td>[[${donationDto.donationName}]]</td>
-							<td>[[${donationDto.regTime}]]</td>
-							<td>[[${donationDto.startDate}]]~[[${donationDto.endDate}]]</td>
-							<td><button class="admin_standby_btn">승인대기</button></td>
+							<td th:text="${#temporals.format(donationDto.regTime, 'yyyy-MM-dd')}"></td>
+							<td>[[${donationDto.startDate}]]~[[${donationDto.endDate}]], [[${donationDto.done}]]</td>
+							<td>
+								<a th:href="@{/admin/donation/edit/{id}(id=${donationDto.id})}">
+								<button class="admin_standby_btn" th:classappend="${donationDto.done == '완료'} ? 'status-gray' : (${donationDto.confirmYn == '진행중'} ? 'status-green' : 'status-yellow')">승인대기</button>
+								</a>
+							</td>
 						</tr>
 						<!-- <tr>
 							<th><input type="checkbox" name="" value="" /></th>
