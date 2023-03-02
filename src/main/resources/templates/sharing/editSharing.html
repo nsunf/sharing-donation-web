@@ -77,6 +77,10 @@
 <!--  							<button th:if="${title == '나눔 상품 승인 관리' && sharingFormDto.confirmYn == 'N'}" class="custom-btn ms-3" type="button" th:onclick="'approveSharing(' + ${sharingFormDto.id} + ')'">승인</button>
  --> 							<button th:if="${title == '나눔 상품 승인 관리' && sharingFormDto.confirmYn == 'N'}" class="custom-btn ms-3" type="button" data-bs-toggle="modal" data-bs-target="#approveModal">승인</button>
  						</div>
+ 						<div class="col-2 my-auto hstack mt-5">
+					<a class="btn ms-auto" th:href="'/sharing_board/admin/edit/'+${sharingFormDto.id}"
+						style="background: var(--thm-primary); color: white;">게시글 등록</a>
+				</div>
 					</div>
 				</div>
 			</form>

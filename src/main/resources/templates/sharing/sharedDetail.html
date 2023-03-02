@@ -1,166 +1,175 @@
 <!DOCTYPE html>
-<html
-	xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{layouts/layout1}"
->
+	layout:decorate="~{layouts/layout1}">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>나눔 완료 상세</title>
+<!-- <th:block layout:fragment="script">
+<script th:inline="javascript">
+function comment(){
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
+	var url = "/comment";
+	
+	var paramData = {
+			itemId : $("#itemId").val(),
+	};
+	
+	var param = JSON.stringify(paramData); //문자열로 변경
+	
+	$.ajax({
+		url : url,
+		type : "POST",
+		contentType : "application/json",
+		data : param,
+		beforeSend : function(xhr){
+			/* 데이터 전송 전에 header에 csrf 값을 설정 */
+			xhr.setRequestHeader(header, token);
+		},
+		dataType : "json",
+		cache : false,
+		success : function(result, status){
+			//alert("orderId:" + result);
+			alert("댓글이 등록되었습니다.");
+			location.href = "/";
+		},
+		error: function(jqXHR, status, error){ //에러 3가지를 받을 수 있음
+			if(jqXHR.status == '401'){
+				alert('로그인 후 이용하시오.');
+				location.href = 'members/login';
+			} else {
+				alert(jqXHR.responseText); //orderController에서 만들어놓은 400에러는 이곳에서 발생함.
+			}
+		}
+	})
+}
+</script>
+</th:block> -->
 <link rel="stylesheet" href="/css/longsiru/donated-board-detail.css" />
-<link rel="stylesheet" href="/css/longsiru/admin-donation-request-detail.css" />
+<link rel="stylesheet"
+	href="/css/longsiru/admin-donation-request-detail.css" />
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
-		<!--기부 완료 게시판 상세 시작-->
 		<section class="news-details">
 			<div class="container">
-					<div class="row">
-							<div class="col-xl-12 col-lg-12">
-									<div class="news-details__left">
-											<div class="col-12 mx-auto">
-													<div
-														class="swiper mySwiper position-relative overflow-hidden"
-													>
-														<div class="swiper-wrapper">
-															<div class="swiper-slide">
-																<img
-																	src="https://picsum.photos/id/104/1920/1080"
-																	alt=""
-																/>
-															</div>
-															<div class="swiper-slide">
-																<img
-																	src="https://picsum.photos/id/53/1920/1080"
-																	alt=""
-																/>
-															</div>
-															<div class="swiper-slide">
-																<img
-																	src="https://picsum.photos/id/840/1920/1080"
-																	alt=""
-																/>
-															</div>
-															<div class="swiper-slide">
-																<img
-																	src="https://picsum.photos/id/338/1920/1080"
-																	alt=""
-																/>
-															</div>
-															<div class="swiper-slide">
-																<img
-																	src="https://picsum.photos/id/18/1920/1080"
-																	alt=""
-																/>
-															</div>
-															<div class="swiper-slide">
-																<img
-																	src="https://picsum.photos/id/87/1920/1080"
-																	alt=""
-																/>
-															</div>
-															<div class="swiper-slide">
-																<img
-																	src="https://picsum.photos/id/77/1920/1080"
-																	alt=""
-																/>
-															</div>
-															<div class="swiper-slide">
-																<img
-																	src="https://picsum.photos/id/38/1920/1080"
-																	alt=""
-																/>
-															</div>
-															<div class="swiper-slide">
-																<img
-																	src="https://picsum.photos/id/294/1920/1080"
-																	alt=""
-																/>
-															</div>
-														</div>
-														<div class="swiper-button-next">&gt;&gt;</div>
-														<div class="swiper-button-prev">&lt;&lt;</div>
-													</div>
-												</div>
-				
-											
-											<div class="news-details__content">
-													<div class="content-detail-nav">
-															<ul class="list-unstyled news-details__meta navleft">
-																	<li th:text="${sharingBoardDto.regTime}">글작성 날짜</li>
-																	<li class="content-detail-like"><a href="#" ><img src="/images/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;">12</a>
-																	</li>
-															</ul>
-															<ul class="list-unstyled news-details__meta navright">
-																			<li th:text="${sharingBoardDto.sharing_member}"></li>
-																			<li th:text="${sharingBoardDto.story_member}"></li>
-																			<li>담당자명</li>
-															</ul>
-													</div>
-												 
-													
-													<h3 class="news-details__title" th:text="${sharingBoardDto.subject}"></h3>
-													<p class="news-details__text-one" th:text="${sharingBoardDto.content}">Tliq is notm hendr erit a augu</p>
-											
-											<!--댓글 보기 시작-->
-											<div class="comment-one">
-													<h3 class="comment-one__title">댓글 보기</h3>
-													
-													<ul id="comments-list" class="comments-list">
-														
-															<li>
-																	<div class="comment-main-level">
-																			<!-- Contenedor-->
-																		<th:block th:each="sharedComment, status: ${sharingBoardCommentDtoList}">
-																			<div class="comment-box">
-																					<div class="comment-head">
-																							<h6 th:text="${sharedComment.comment_member}" class="comment-name" id="commemt_writer"></a></h6>
-																							<div th:text="${sharedComment.regTime}" class="comment-time">댓글등록시간</div>
-																					</div>
-																					<div th:text="${sharedComment.comment}" class="comment-content">
-																					</div>
-																					<div class="comment-down">
-																							<button class="comment-bnt">삭제</button>
-																					 </div>
-																			</div>
-																		</th:block>
-																	</div>
-															</li>
-													</ul>
-											
-											</div>
-
-											<!--댓글 작성 시작-->
-											<div class="comment-form">
-													<h3 class="comment-form__title">댓글 작성</h3>
-													<form th:action="'/sharing_board/view/'+${sharingBoardDto.id}+'/comment'" method="post">
-																			<div class="comment-form__input-box" style="line-height:initial;">
-																					<textarea name="comment" placeholder="create your comments"></textarea>
-																			</div>
-																
-															<button type="submit" class="thm-btn comment-form__btn">제 출<i class="fas fa-arrow-circle-right" style="padding-left: 10px;"></i></button>
-													</form>
-												 
-											</div>
+				<div class="row">
+					<div class="col-xl-12 col-lg-12">
+						<div class="news-details__left">
+							<div class="col-12 mx-auto">
+								<div class="swiper mySwiper position-relative overflow-hidden">
+									<div class="swiper-wrapper">
+										<div class="swiper-slide">
+											<img src="https://picsum.photos/id/104/1920/1080" alt="" />
+										</div>
+										<div class="swiper-slide">
+											<img src="https://picsum.photos/id/53/1920/1080" alt="" />
+										</div>
+										<div class="swiper-slide">
+											<img src="https://picsum.photos/id/840/1920/1080" alt="" />
+										</div>
+										<div class="swiper-slide">
+											<img src="https://picsum.photos/id/338/1920/1080" alt="" />
+										</div>
+										<div class="swiper-slide">
+											<img src="https://picsum.photos/id/18/1920/1080" alt="" />
+										</div>
+										<div class="swiper-slide">
+											<img src="https://picsum.photos/id/87/1920/1080" alt="" />
+										</div>
+										<div class="swiper-slide">
+											<img src="https://picsum.photos/id/77/1920/1080" alt="" />
+										</div>
+										<div class="swiper-slide">
+											<img src="https://picsum.photos/id/38/1920/1080" alt="" />
+										</div>
+										<div class="swiper-slide">
+											<img src="https://picsum.photos/id/294/1920/1080" alt="" />
+										</div>
 									</div>
+									<div class="swiper-button-next">&gt;&gt;</div>
+									<div class="swiper-button-prev">&lt;&lt;</div>
+								</div>
 							</div>
-						 
+							<div class="news-details__content">
+								<div class="content-detail-nav">
+									<ul class="list-unstyled news-details__meta navleft">
+										<li th:text="${sharingBoardDto.regTime}">글작성 날짜</li>
+										<li class="content-detail-like"><a href="#"><img
+												src="/img/longsiru/like-icon.png" alt=""
+												style="width: 30px; height: 30px;">12</a></li>
+									</ul>
+									<ul class="list-unstyled news-details__meta navright">
+										<li th:text="${sharingBoardDto.sharing_member}"></li>
+										<li th:text="${sharingBoardDto.story_member}"></li>
+										<!-- <li>담당자명</li> -->
+									</ul>
+								</div>
+								<h3 class="news-details__title"
+									th:text="${sharingBoardDto.subject}"></h3>
+								<p class="news-details__text-one"
+									th:text="${sharingBoardDto.content}"></p>
+								<div class="comment-one">
+									<h3 class="comment-one__title">댓글 보기</h3>
+									<ul id="comments-list" class="comments-list">
+										<li>
+											<div class="comment-main-level">
+												<th:block
+													th:each="sharedComment, status: ${sharingBoardCommentDtoList}">
+													<div class="comment-box">
+														<div class="comment-head">
+															<h6 th:text="${sharedComment.comment_member}"
+																class="comment-name" id="commemt_writer"></h6>
+															<div th:text="${sharedComment.regTime}"
+																class="comment-time">댓글등록시간</div>
+														</div>
+														<div th:text="${sharedComment.comment}"
+															class="comment-content"></div>
+														<div class="comment-down">
+															<button class="comment-bnt">삭제</button>
+														</div>
+													</div>
+												</th:block>
+											</div>
+										</li>
+									</ul>
+								</div>
+								<div class="comment-form">
+									<h3 class="comment-form__title">댓글 작성</h3>
+									<form
+										th:action="'/sharing_board/view/'+${sharingBoardDto.id}+'/comment'"
+										method="post">
+										<div class="comment-form__input-box"
+											style="line-height: initial;">
+											<textarea name="comment" placeholder="create your comments"></textarea>
+										</div>
+
+										<button type="submit" class="thm-btn comment-form__btn p-3">
+											댓글등록<i class="fas fa-arrow-circle-right ps-2"></i>
+										</button>
+									</form>
+								</div>
+							</div>
+						</div>
+
 					</div>
+				</div>
 			</div>
 		</section>
-		<!-- 기부 완료 게시판 상세 끝-->
 	</th:block>
-
 	<th:block layout:fragment="script-bottom">
-	<!-- Initialize Swiper -->
-	<script>
+		<script>
 			var swiper = new Swiper(".mySwiper", {
-				navigation: {
-					nextEl: ".swiper-button-next",
-					prevEl: ".swiper-button-prev",
+				navigation : {
+					nextEl : ".swiper-button-next",
+					prevEl : ".swiper-button-prev",
 				},
 			});
-  </script>
+		</script>
 	</th:block>
 </body>
 </html>
