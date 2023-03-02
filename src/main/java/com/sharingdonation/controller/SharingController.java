@@ -26,12 +26,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sharingdonation.constant.Role;
+import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.SharingDto;
 import com.sharingdonation.dto.SharingFormDto;
 import com.sharingdonation.entity.Member;
 import com.sharingdonation.repository.MemberRepository;
 import com.sharingdonation.service.AreaService;
 import com.sharingdonation.service.CategoryService;
+import com.sharingdonation.service.MyPageService;
 import com.sharingdonation.service.SharingHeartService;
 import com.sharingdonation.service.SharingImgService;
 import com.sharingdonation.service.SharingService;
@@ -49,26 +51,14 @@ public class SharingController {
 	private final SharingImgService sharingImgService;
 	private final SharingHeartService sharingHeartService;
 	private final MemberRepository memberRepo;
+	private final MyPageService myPageService;
 	
-	private Member createMember(int n) {
-		Member member = new Member();
-		member.setAddress("주소" + n);
-		member.setAddressDetail("상세주소" + n);
-		member.setBirth(LocalDate.now());
-		member.setCellphone("000-000-00" + n);
-		member.setComNum("000-0000-00-000" + n);
-		member.setDelYn("N");
-		member.setEmail("test@email.com" + n);
-		member.setFax("032-0000-000" + n);
-		member.setName("사용자" + n);
-		member.setNickName("닉네임" + n);
-		member.setPassword("test123" + n);
-		member.setPoint(0);
-		member.setRegTime(LocalDateTime.now());
-		member.setRole(Role.USER);
-		member.setZipCode("0000" + n);
-
-		return member;
+	private Member getTmpMember(Role role) {
+		List<Member> memberList = memberRepo.findAll().stream().filter(m -> m.getRole() == role).toList();
+		if (memberList.size() > 0)
+			return memberList.get(0);
+		else 
+			return null;
 	}
 	
 //	@GetMapping("")
@@ -83,13 +73,16 @@ public class SharingController {
 //	}
 
 	@GetMapping("/area/{areaName}")
-	public String sharingListByArea(@PathVariable String areaName, @RequestParam Optional<Integer> page, @RequestParam Optional<String> search, Model model) {
+	public String sharingListByArea(@PathVariable String areaName, @RequestParam Optional<Integer> page, @RequestParam Optional<String> search, @RequestParam Optional<String> cat, Model model) {
 		Pageable pageable = PageRequest.of(page.orElse(0), 9);
+		String _cat = cat.orElse(null);
 		
+		String catName = (_cat != null && _cat.equals("전체")) ? null : cat.orElse(null);
 		
-
-		model.addAttribute("sharingDtoList", sharingService.getSharingDtoList(search.orElse(null), areaName, pageable));
+		model.addAttribute("sharingDtoList", sharingService.getSharingDtoList(search.orElse(null), areaName, catName, pageable));
 		model.addAttribute("area", areaName);
+		model.addAttribute("search", search.orElse(null));
+		model.addAttribute("cat", cat.orElse(null));
 		model.addAttribute("page", pageable.getPageNumber());
 		model.addAttribute("maxPage", 5);
 
@@ -107,7 +100,7 @@ public class SharingController {
 		return "sharing/sharingDetail";
 	}
 	
-	@GetMapping("/create")
+	@GetMapping("/new")
 	public String createSharingForm(Model model) {
 		model.addAttribute("title", "나눔 상품 등록");
 		model.addAttribute("sharingFormDto", new SharingFormDto());
@@ -116,7 +109,7 @@ public class SharingController {
 		return "sharing/editSharing";
 	}
 	
-	@PostMapping("/create")
+	@PostMapping("/new")
 	public String createSharing(@Valid SharingFormDto sharingFormDto, BindingResult bindingResult, List<MultipartFile> sharingImgFileList, Model model) {
 		
 		if (bindingResult.hasErrors()) {
@@ -157,11 +150,15 @@ public class SharingController {
 	// MypageController로 이동 필요
 	@GetMapping(value = {"/mypage", "/mypage/{page}"})
 	public String mypageSharingList(@PathVariable("page") Optional<Integer> page , Model model) {
-		Long memberId = 1L;
+		// 임시 멤버
+		Member tmpMemeber = getTmpMember(Role.USER);
+		MyPageMainDto myPageDto = myPageService.getMyPageMain(tmpMemeber.getId());
+
 		Pageable pageable = PageRequest.of(page.orElse(0), 6);
 		
-		Page<SharingDto> sharingDtoList = sharingService.getSharingDtoList(memberId, pageable);
+		Page<SharingDto> sharingDtoList = sharingService.getSharingDtoList(tmpMemeber.getId(), pageable);
 
+		model.addAttribute("mypage", myPageDto);
 		model.addAttribute("sharingDtoList", sharingDtoList);
 		model.addAttribute("page", pageable.getPageNumber());
 		model.addAttribute("maxPage", 5);
@@ -171,14 +168,14 @@ public class SharingController {
 
 	@GetMapping(value = {"/mypage/shared", "/mypage/shared/{page}"})
 	public String mypageAdoptedSharingList(@PathVariable("page") Optional<Integer> page , Model model) {
-		Long memberId = 1L;
-//		Pageable pageable = PageRequest.of(page.orElse(0), 6);
-//		
-//		Page<SharingDto> sharingDtoList = sharingService.getAdoptedSharingDtoList(memberId, pageable);
-//
-//		model.addAttribute("sharingDtoList", sharingDtoList);
-//		model.addAttribute("page", pageable.getPageNumber());
-//		model.addAttribute("maxPage", 5);
+		Member tmpMember = getTmpMember(Role.USER);
+		Pageable pageable = PageRequest.of(page.orElse(0), 6);
+		
+		Page<SharingDto> sharingDtoList = sharingService.getAdoptedSharingDtoList(tmpMember.getId(), pageable);
+
+		model.addAttribute("sharingDtoList", sharingDtoList);
+		model.addAttribute("page", pageable.getPageNumber());
+		model.addAttribute("maxPage", 5);
 		
 		return "mypage/adoptedShareList";
 	}

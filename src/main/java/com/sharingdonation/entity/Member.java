@@ -2,6 +2,7 @@ package com.sharingdonation.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,10 +61,10 @@ public class Member extends BaseEntity {
 	
 	private LocalDate birth;
 	
-	@Column(nullable = false, columnDefinition = "varchar(20)")
+	@Column(columnDefinition = "varchar(20)")
 	private String comNum;
 	
-	@Column(nullable = false, columnDefinition = "varchar(15)")
+	@Column(columnDefinition = "varchar(15)")
 	private String fax;
 	
 	@Column(nullable = false, columnDefinition = "int(11) default 0")
@@ -83,8 +84,11 @@ public class Member extends BaseEntity {
 	public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
 		Member member = new Member();
 		member.setName(memberFormDto.getName());
+		member.setZipCode(memberFormDto.getZipCode());
 		member.setAddress(memberFormDto.getAddress());
-		member.setBirth(memberFormDto.getBirth());
+		member.setAddressDetail(memberFormDto.getAddressDetail());
+		LocalDate date = LocalDate.parse(memberFormDto.getBirth(), DateTimeFormatter.ISO_DATE);
+		member.setBirth(date);
 		member.setCellphone(memberFormDto.getCellphone());
 		member.setEmail(memberFormDto.getEmail());
 		
@@ -92,6 +96,8 @@ public class Member extends BaseEntity {
 		member.setPassword(password);
 		
 		member.setNickName(memberFormDto.getNickName());
+		
+		member.setDelYn("N");
 		
 		member.setRole(Role.USER);
 		return member;

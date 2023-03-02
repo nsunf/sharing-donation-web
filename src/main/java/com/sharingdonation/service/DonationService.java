@@ -97,9 +97,9 @@ public class DonationService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<Donation> getAdminListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
-		Page<Donation> donationList = donationRepository.getAdminListDonationPage(donationSearchDto, pageable);
-		for(Donation donation : donationList) {
+	public Page<DonationDto> getAdminListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+		Page<DonationDto> donationList = donationRepository.getAdminListDonationPage(donationSearchDto, pageable);
+		for(DonationDto donation : donationList) {
 			double pointPer = 0 ;
 			
 //			if(donation.getPointSum() > 0 ) {
