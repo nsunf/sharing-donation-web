@@ -19,10 +19,12 @@ import com.sharingdonation.entity.Area;
 import com.sharingdonation.entity.Category;
 import com.sharingdonation.entity.Sharing;
 import com.sharingdonation.entity.SharingImg;
+import com.sharingdonation.entity.Story;
 import com.sharingdonation.repository.AreaRepository;
 import com.sharingdonation.repository.CategoryRepository;
 import com.sharingdonation.repository.MemberRepository;
 import com.sharingdonation.repository.SharingRepository;
+import com.sharingdonation.repository.StoryRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,12 +33,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SharingService {
 	
+	private final MemberRepository memberRepo;
 	private final SharingRepository sharingRepo;
 	private final SharingImgService sharingImgService;
 	private final SharingHeartService sharingHeartService;
 	private final CategoryRepository categoryRepo;
 	private final AreaRepository areaRepo;
-	private final MemberRepository memberRepo;
+	private final StoryRepository storyRepo;
 
 	public SharingDto getSharingDto(Long sharingId) {
 		Sharing sharing = sharingRepo.findById(sharingId).orElseThrow(EntityNotFoundException::new);
@@ -135,26 +138,26 @@ public class SharingService {
 		return sharingDtoList;
 	}
 
-//	public Page<SharingDto> getAdoptedSharingDtoList(Long memberId, Pageable pageable) {
-//		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDelYnOrderByRegTimeDesc(memberId, "N", pageable);
-//		
-//		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
-//			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(s.getId());
-//			SharingDto sharingDto = SharingDto.valueOf(s, sharingImgDto.getImgUrl());
-//			return sharingDto;
-//		});
-//
-//		Page<Story> storyList = storyRepo.findByMemberIdAndChooseYnAndDelYnOrderByRegTimeDesc(Long memberId, "Y", "N");
-//		
+	public Page<SharingDto> getAdoptedSharingDtoList(Long memberId, Pageable pageable) {
+		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDelYnOrderByRegTimeDesc(memberId, "N", pageable);
+		
+		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
+			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(s.getId());
+			SharingDto sharingDto = SharingDto.valueOf(s, sharingImgDto.getImgUrl());
+			return sharingDto;
+		});
+
+//		Page<Story> storyList = storyRepo.findByMemberIdAndChooseYnAndDelYnOrderByRegTimeDesc(memberId, "Y", "N");
+		
 //		Page<SharingDto> sharingDtoList = storyList.map(story -> {
 //			Sharing sharing = story.getSharing();
 //			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(sharing.getId());
 //			SharingDto sharingDto = sharingDto.valueOf(sharing, sharingImgDto.getImgUrl());
 //			return sharingDto;
 //		});
-//		
-//		return sharingDtoList;
-//	}
+		
+		return sharingDtoList;
+	}
 	
 	public Page<SharingDto> getAdminSharingDtoList(Pageable pageable, String filter, String search) {
 		Page<Sharing> sharingList = null;
