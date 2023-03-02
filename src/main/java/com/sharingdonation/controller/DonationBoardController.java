@@ -99,10 +99,15 @@ public class DonationBoardController {
 			
 			Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(donationBoardSearchDto, pageable);
 		
+			int nowPage = (page.isPresent()) ? page.get() : 1;
 			model.addAttribute("donationBoards",donationBoards);
 			//model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
 			model.addAttribute("donationBoardSearchDto", donationBoardSearchDto);
 			model.addAttribute("maxPage", 5);
+			model.addAttribute("rowPerPage", 6 );
+			model.addAttribute("pages", nowPage);
+			
+			
 			return "admin/donatedList";
 			
 		}

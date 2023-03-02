@@ -47,7 +47,7 @@
 							th:each="donationBoard, status: ${donationBoards.getContent()}">
 							<tbody>
 								<tr>
-									<td>[[${donationBoard.id}]]</td>
+									<td th:text="${donationBoards.getTotalElements-(((pages)-1) * rowPerPage) - status.index}"></td>
 									<td><a th:href="'/donatedBoard/' +${donationBoard.id}">[[${donationBoard.subject}]]</a></td>
 									<td th:text="${donationBoard.donationPerson}"></td>
 									<td>[[${donationBoard.startDate}]] ~
