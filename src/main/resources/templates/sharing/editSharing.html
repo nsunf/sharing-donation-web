@@ -19,7 +19,7 @@
 		</section>
 
 		<section class="my-5">
-			<form class="container" th:action="@{/sharing/create}" method="post" th:object="${sharingFormDto}" enctype="multipart/form-data">
+			<form class="container" th:action="@{/sharing/new}" method="post" th:object="${sharingFormDto}" enctype="multipart/form-data">
  				<input type="hidden" th:field="*{id}">
 				<div class="row">
 				 <div class="col-8 mx-auto">

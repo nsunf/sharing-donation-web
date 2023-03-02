@@ -69,7 +69,7 @@ public class SharingImgService {
 		List<SharingImgDto> sharingImgDtoList = sharingImgRepo.findBySharingId(sharingId).stream().map(SharingImgDto::of).toList();
 		List<SharingImgDto> filteredDtoList  = sharingImgDtoList.stream().filter(s -> s.getRepImgYn().equals("Y")).toList();
 		if (filteredDtoList.size() == 0)
-			return sharingImgDtoList.get(0);
+			return null;
 		else 
 			return filteredDtoList.get(0);
 	}
