@@ -28,6 +28,7 @@ import com.sharingdonation.dto.DonationBoardCommentDto;
 import com.sharingdonation.dto.DonationBoardDto;
 import com.sharingdonation.dto.DonationBoardFormDto;
 import com.sharingdonation.dto.DonationBoardImgDto;
+import com.sharingdonation.dto.DonationBoardSearchDto;
 import com.sharingdonation.dto.DonationBoardSelectDto;
 import com.sharingdonation.dto.DonationFormDto;
 import com.sharingdonation.dto.SharingBoardCommentDto;
@@ -89,28 +90,40 @@ public class DonationBoardController {
 		
 	}
 	
-	//show donated board list page
-		@GetMapping(value = "/admin/donatedBoard")
-		public String AdmindonatedBoard(Optional<Integer> page, Model model) { 
+	//show donated board list pages
+		@GetMapping(value = {"/admin/donatedBoards", "/admin/donatedBoards/{page}"})
+		public String AdmindonatedBoard(DonationBoardSearchDto donationBoardSearchDto, @PathVariable("page") Optional<Integer> page, Model model) { 
 			
-			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
-			Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(pageable);
+			
+			Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 6);
+			
+			Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(donationBoardSearchDto, pageable);
 		
+			int nowPage = (page.isPresent()) ? page.get() : 1;
 			model.addAttribute("donationBoards",donationBoards);
 			//model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
+			model.addAttribute("donationBoardSearchDto", donationBoardSearchDto);
 			model.addAttribute("maxPage", 5);
+			model.addAttribute("rowPerPage", 6 );
+			model.addAttribute("pages", nowPage);
+			
+			
 			return "admin/donatedList";
 			
 		}
 	
 	//show donated board list page
-	@GetMapping(value = "/donatedBoard")
-	public String donatedBoard(Optional<Integer> page, Model model) { 
+	@GetMapping(value = {"/donatedBoards", "/donatedBoards/{page}"})
+	public String donatedBoard(DonationBoardSearchDto donationBoardSearchDto, @PathVariable("page") Optional<Integer> page, Model model) { 
+		//System.out.println(" controller donatedBoard page -- " +   page.get());
 		
-		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
-		Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(pageable);
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 6);
+		
+		System.out.println(" donatedBoard Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);");
+		Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(donationBoardSearchDto, pageable);
 		
 		model.addAttribute("donationBoards",donationBoards);
+		model.addAttribute("donationBoardSearchDto", donationBoardSearchDto);
 		model.addAttribute("maxPage", 5);
 		return "donation/donatedList";
 		
@@ -161,7 +174,17 @@ public class DonationBoardController {
 			return "redirect:/donatedBoard/" + id;
 		}
 		
-	//좋어요
+	//댓글 삭제 
+		@DeleteMapping("/donatedBoard/{id}/delete")
+	    public @ResponseBody ResponseEntity<?> deleteComment(@PathVariable ("id") Long id,  Model model){
+			System.out.println("/donationBoard/{donationBoardId}/delete");
+			System.out.println("commentId = " + id);
+	        donationBoardService.deleteComment(id);
+
+	        return new ResponseEntity<Long> (id, HttpStatus.OK);
+	    }
+		
+	//좋아요
 		@GetMapping("/donatedBoard/heart/{id}")
 		public  @ResponseBody ResponseEntity<?> toggleDonationBoardHeart(@PathVariable Long id){
 			donationBoardHeartService.toggleDonationBoardHeart(id);
@@ -222,7 +245,7 @@ public class DonationBoardController {
 		
 		
 		
-	//delete
+	//doantionBoard delete
 		@DeleteMapping(value= "/admin/donatedBoard/{donationBoardId}/delete")
 		public @ResponseBody ResponseEntity<?> deleteDonationBoard(@PathVariable("donationBoardId") Long donationBoardId, Model model) {
 			System.out.println("/donationBoard/{donationBoardId}/delete");

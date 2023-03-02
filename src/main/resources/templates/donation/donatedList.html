@@ -21,10 +21,10 @@
           <div class="row">
             <div class="m-5">
               <form class="input-group mb-3 w-25 mx-auto">
-                <input type="text" class="form-control" placeholder="검색" />
+                <input type="text" class="form-control" placeholder="검색" th:field="${donationBoardSearchDto.searchQuery}"/>
                 <button
                   class="btn"
-                  type="button"
+                  type="submit"
                   style="background-color: #20c097; color: #fff"
                 >
                   검색
@@ -73,38 +73,31 @@
         </div>
       </section>
       <div class="archive-pages" th:with="start=${(donationBoards.number/maxPage) * maxPage + 1}
-      , end=(${(donationBoards.totalPages== 0) ? 1 : (start + (maxPage - 1) < donationBoards.totalPages ? start + (maxPage -1) : donationBoards.totalPages)})">
+      , end=(${(donationBoards.totalPages == 0) ? 1 : (start + (maxPage) < donationBoards.totalPages ? start + (maxPage -1) : donationBoards.totalPages)})">
         <ul>
-          <li class="previous" th:classappend="${donationBoards.first}? 'disabled'"><a href="#" title="previous page" th:onclick="'javascript:page(' + ${donationBoards.number - 1} + ')'"></a></li>
+          <li class="previous" th:classappend="${donationBoards.first}? 'disabled'">
+          <a title="previous page" th:href="@{'/donatedBoards/' + ${start} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}">
+          
+          </a></li>
           
           <li th:each="page: ${#numbers.sequence(start, end)}" 
-          th:classappend="${donationBoards.number eq page-1} ? 'active':''"><a th:inline="text" th:onclick="'javascript:page(' + ${page - 1} + ')'">[[${page}]]</a></li>
+          th:classappend="${donationBoards.number eq page-1} ? 'active':''">
+          <a th:inline="text" th:href="@{'/donatedBoards/' + ${page} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}">[[${page}]]</a>
+          </li>
           
-          <li class="next" th:classappend="${donationBoards.last}? 'disabled'"><a href="#" title="next page" th:onclick="'javascript:page(' + ${donationBoards.number + 1} + ')'"></a></li>
+          <li class="next" th:classappend="${donationBoards.last}? 'disabled'">
+          <a title="next page" th:href="@{'/donatedBoards/' + ${end} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}"></a></li>
         </ul>
       </div>
+      
+      donationBoard.number: [[${donationBoards.number}]]
+      maxPage: [[${maxPage}]]
       <!--기부 완료 게시판 페이지 끝-->
 
 	</th:block>
 
 	<th:block layout:fragment="script-bottom">
-	<script th:inline="javascript">
-		$(document).ready(function() {
-			$("#searchBtn").on("click", function(e) {
-				e.preventDefault();
-				page(0);
-			});
-		});
-		function page(page) {
-			var searchDateType = $("#searchDateType").val();
-			var searchSellStatus = $("#searchSellStatus").val();
-			var searchBy = $("#searchBy").val();
-			var searchQuery = $("#searchQuery").val();
-			location.href = "/admin/items/" + page + "?searchDateType="
-					+ searchDateType + "&searchSellStatus=" + searchSellStatus
-					+ "&searchBy=" + searchBy + "&searchQuery=" + searchQuery;
-		}
-	</script>
+	
 	</th:block>
 </body>
 </html>
