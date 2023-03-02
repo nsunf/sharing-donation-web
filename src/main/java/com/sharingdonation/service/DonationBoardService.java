@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,14 +17,12 @@ import com.sharingdonation.dto.DonationBoardDto;
 import com.sharingdonation.dto.DonationBoardFormDto;
 import com.sharingdonation.dto.DonationBoardImgDto;
 import com.sharingdonation.dto.DonationBoardSelectDto;
-import com.sharingdonation.dto.SharingBoardCommentDto;
 import com.sharingdonation.entity.Donation;
 import com.sharingdonation.entity.DonationBoard;
 import com.sharingdonation.entity.DonationBoardComment;
+import com.sharingdonation.entity.DonationBoardHeart;
 import com.sharingdonation.entity.DonationBoardImg;
 import com.sharingdonation.entity.Member;
-import com.sharingdonation.entity.SharingBoard;
-import com.sharingdonation.entity.SharingBoardComment;
 import com.sharingdonation.repository.DonationBoardCommentRepository;
 import com.sharingdonation.repository.DonationBoardHeartRepository;
 import com.sharingdonation.repository.DonationBoardImgRepository;
@@ -189,15 +186,18 @@ public class DonationBoardService {
 		
 		//modify
 		public Long donationBoardUpdate(DonationBoardFormDto donationBoardFormDto, List<MultipartFile> donationBoardImgFileList)  throws Exception {
-			DonationBoard donationBoard = donationBoardRepository.findById(donationBoardFormDto.getDonationId())
+			System.out.println("donationBoardFormDto.getId() ==== " + donationBoardFormDto.getId());
+			DonationBoard donationBoard = donationBoardRepository.findById(donationBoardFormDto.getId())
 					.orElseThrow(EntityNotFoundException::new);
 			
 			donationBoard.updateDonationBoard(donationBoardFormDto);
-			
+//			System.out.println(" service donationBoardUpdate updateDonationBoard"); 
 			List<Long> donationBoardImgIds = donationBoardFormDto.getDonationBoardImgIds();
-			
+//			 System.out.println(" service donationBoardUpdate donationBoardImgIds");
 			for(int i=0; i<donationBoardImgFileList.size(); i++) {
+//				System.out.println(" service donationBoardUpdate donationBoardImgFileList.size()");
 				donationBoardImgService.updateDonationBoardImg(donationBoardImgIds.get(i), donationBoardImgFileList.get(i));
+//				System.out.println(" service donationBoardUpdate updateDonationBoardImg");
 			}
 			
 			return donationBoard.getId();
@@ -219,6 +219,10 @@ public class DonationBoardService {
 					.orElseThrow(EntityNotFoundException::new);
 			
 			donationBoardCommentRepository.delete(donationBoardComment);
+			
+			DonationBoardHeart donationBoardHeart = donationBoardHeartRepository.findById(donationBoardId)
+					.orElseThrow(EntityNotFoundException::new);
+			donationBoardHeartRepository.delete(donationBoardHeart);
 		}
 
 
