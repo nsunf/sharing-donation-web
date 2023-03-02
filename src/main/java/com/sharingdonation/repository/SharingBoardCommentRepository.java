@@ -1,6 +1,7 @@
 package com.sharingdonation.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,6 @@ public interface SharingBoardCommentRepository extends JpaRepository<SharingBoar
 	List<SharingBoardComment> findBySharingBoardId(Long id);
 	
 	Long countBySharingBoardId(Long id);
+	
+	Optional<SharingBoardComment> findById(Long id);
 }

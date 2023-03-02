@@ -23,6 +23,8 @@ public class SharingBoardDto {
 	
 	private String subject; //글제목
 	
+	private Long boardHeartCount; //좋아요 갯수
+	
 	private String content; //상세내용
 	
 	private Long commentCount; //댓글 갯수

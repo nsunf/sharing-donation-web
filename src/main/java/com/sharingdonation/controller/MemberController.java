@@ -35,21 +35,22 @@ public class MemberController {
     @GetMapping(value = "/new")
     public String memberForm(Model model){
         model.addAttribute("memberFormDto", new MemberFormDto());
-        return "auth/signupCorp";
+        return "auth/signupNormal";
     }
 	
 	@PostMapping(value = "/new")
 	public String newMember(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
 		if(bindingResult.hasErrors()){
-            return "auth/signupCorp";
+            return "auth/signupNormal";
         }
 		
 		try {
             Member member = Member.createMember(memberFormDto, passwordEncoder);
             memberService.saveMember(member);
         } catch (IllegalStateException e){
+        	e.printStackTrace();
             model.addAttribute("errorMessage", e.getMessage());
-            return "auth/signupCorp";
+            return "auth/signupNormal";
         }
 
         return "redirect:/";

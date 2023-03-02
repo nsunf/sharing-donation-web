@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sharingdonation.dto.DonationDto;
 import com.sharingdonation.dto.DonationFormDto;
 import com.sharingdonation.dto.DonationSearchDto;
 import com.sharingdonation.dto.ListDonationDto;
@@ -38,14 +39,14 @@ public class DonationController {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 6);
 		Page<ListDonationDto> donationList = donationService.getListDonationPage(donationSearchDto, pageable);
 		
-		System.out.println(donationList.getContent());
-		for(ListDonationDto ln : donationList.getContent()) {
-			System.out.println("ln.getGoalPoint():" + ln.getGoalPoint() + ", ln.getPointSum() : " + ln.getPointSum() + ", ln.getHeartCount() : " +ln.getHeartCount());
-		}
+//		System.out.println(donationList.getContent());
+//		for(ListDonationDto ln : donationList.getContent()) {
+//			System.out.println("ln.getGoalPoint():" + ln.getGoalPoint() + ", ln.getPointSum() : " + ln.getPointSum() + ", ln.getHeartCount() : " +ln.getHeartCount());
+//		}
 		model.addAttribute("donationList", donationList);
 		model.addAttribute("donationSearchDto", donationSearchDto);
 		model.addAttribute("maxPage", 5);
-		System.out.println("donation_list_check");
+//		System.out.println("donation_list_check");
 		return "donation/donationList";
 	}
 	
@@ -97,17 +98,20 @@ public class DonationController {
 	//list페이
 	@GetMapping(value = "/admin/donation")
 	public String adminDonationList(DonationSearchDto donationSearchDto, Optional<Integer> page, Model model) {
-		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 6);
-		Page<Donation> donationList = donationService.getAdminListDonationPage(donationSearchDto, pageable);
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 10);
+		Page<DonationDto> donationList = donationService.getAdminListDonationPage(donationSearchDto, pageable);
 		
-		System.out.println(donationList.getContent());
-		for(Donation ln : donationList.getContent()) {
-			System.out.println("ln.getGoalPoint():" + ln.getGoalPoint() + ", ln.getPointSum() : ");
-		}
-		model.addAttribute("donationList", donationList);
+//		System.out.println(  donationList.pa);
+//		System.out.println(donationList.getContent());
+//		for(DonationDto ln : donationList.getContent()) {
+//			System.out.println("ln.getGoalPoint():" + ln.getId() + ", ln.getPointSum() : " + ln.getDonationName() + ":"+ ln.getStartDate());
+//		}
+		model.addAttribute("donationDtoList", donationList);
 		model.addAttribute("donationSearchDto", donationSearchDto);
 		model.addAttribute("maxPage", 5);
-		System.out.println("donation_list_check");
+		model.addAttribute("rowPerPage", 10 );
+		model.addAttribute("totalCount", donationList.getSize());
+//		System.out.println("donation_list_check");
 		return "admin/donationReqList";
 	}
 }

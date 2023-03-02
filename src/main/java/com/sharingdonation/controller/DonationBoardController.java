@@ -1,29 +1,40 @@
 package com.sharingdonation.controller;
 
-import java.time.format.DateTimeFormatter;
+//import java.time.*;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import com.sharingdonation.dto.DonationBoardCommentDto;
 import com.sharingdonation.dto.DonationBoardDto;
 import com.sharingdonation.dto.DonationBoardFormDto;
 import com.sharingdonation.dto.DonationBoardImgDto;
+import com.sharingdonation.dto.DonationBoardSelectDto;
 import com.sharingdonation.dto.DonationFormDto;
 import com.sharingdonation.dto.SharingBoardCommentDto;
+import com.sharingdonation.entity.DonationBoard;
+import com.sharingdonation.entity.DonationBoardComment;
+import com.sharingdonation.repository.MemberRepository;
+import com.sharingdonation.service.DonationBoardHeartService;
 import com.sharingdonation.service.DonationBoardImgService;
 import com.sharingdonation.service.DonationBoardService;
 
@@ -35,6 +46,9 @@ public class DonationBoardController {
 	
 	private final DonationBoardService donationBoardService;
 	private final DonationBoardImgService donationBoardImgService;
+	private final DonationBoardHeartService donationBoardHeartService;
+	private final MemberRepository memberRepository;
+	
 	//show the donated board create page
 	
 	@GetMapping(value = "/donatedBoard/edit")
@@ -71,9 +85,23 @@ public class DonationBoardController {
 			return "admin/editDonatedBoard";
 		}
 		
-		return "redirect:/donatedBoard";
+		return "redirect:/admin/donatedBoard";
 		
 	}
+	
+	//show donated board list page
+		@GetMapping(value = "/admin/donatedBoard")
+		public String AdmindonatedBoard(Optional<Integer> page, Model model) { 
+			
+			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+			Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(pageable);
+		
+			model.addAttribute("donationBoards",donationBoards);
+			model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
+			model.addAttribute("maxPage", 5);
+			return "admin/donatedList";
+			
+		}
 	
 	//show donated board list page
 	@GetMapping(value = "/donatedBoard")
@@ -100,14 +128,23 @@ public class DonationBoardController {
 		
 		List<DonationBoardImgDto> donationBoardImgDtos = donationBoardFormDto.getDonationBoardImgDtoList();
 		
-		for(DonationBoardImgDto p : donationBoardImgDtos) {
-			System.out.println("ccc:" + p.getImgUrl());
-		}
+//		for(DonationBoardImgDto p : donationBoardImgDtos) {
+//			System.out.println("ccc:" + p.getImgUrl());
+//		}
 
-		System.err.println(donationBoardFormDto.getDonationBoardSelectDto().getId());
+//		System.err.println(donationBoardFormDto.getDonationBoardSelectDto().getId());
 //		model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
 		model.addAttribute("donationBoardCommentDtoList",donationBoardCommentDtoList);
+		
+//		donationBoardFormDto.get
+//		for(DonationBoardFormDto f : donationBoardFormDto ) {
+//			
+//		}
 		model.addAttribute("donationBoard",donationBoardFormDto);
+		model.addAttribute("donationBoardHeartDto", donationBoardHeartService.getDonationBoardHeartCount(donationBoardId));
+		model.addAttribute("donationBoardHeartCount", donationBoardHeartService.getDonationBoardHeartCount(donationBoardId));
+//		model.addAttribute("localDateTime",LocalDateTime.now());
+//		model.addAttribute("df",DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		//model.addAttribute("commentFormDto", new CommentFormDto());
 		
 		
@@ -121,7 +158,76 @@ public class DonationBoardController {
 													//가짜 데이터 member_id 넣었음
 			donationBoardService.insertComment(1L, id, comment);
 			
-			return "redirect:/donatedBoard/{donationBoardId}/"+id;
+			return "redirect:/donatedBoard/" + id;
 		}
+		
+	//좋어요
+		@GetMapping("/donatedBoard/heart/{id}")
+		public  @ResponseBody ResponseEntity<?> toggleDonationBoardHeart(@PathVariable Long id){
+			donationBoardHeartService.toggleDonationBoardHeart(id);
+			Long donationBoardheartCount = donationBoardHeartService.getDonationBoardHeartCount(id);
+			return new ResponseEntity<Long>(donationBoardheartCount, HttpStatus.OK);
+		}
+		
+	
+	//doantionBoard modify view
+		@GetMapping(value = "/admin/donatedBoard/{donationBoardId}/modify")
+		public String donatedBoardDetail(@PathVariable("donationBoardId") Long donationBoardId, Model model) {
+			try {
+				DonationBoardFormDto donationBoardFormDto = donationBoardService.getdonationBoardDetail(donationBoardId);
+				model.addAttribute(donationBoardFormDto);
+			} catch (EntityNotFoundException e) {
+				model.addAttribute("errorMessage","This gamer that dose not exist." );
+				model.addAttribute("donationBoardFormDto", new DonationBoardFormDto());
+				model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
+				return "admin/editDonatedBoard";
+			}
+			
+			return "admin/editDonatedBoard";
+			
+		}
+		
+		
+		//doantionBoard modify
+		@PostMapping(value = "/admin/donatedBoard/{donationBoardId}/")
+		public String updateDonationBoard(@Valid DonationBoardFormDto donationBoardformDto, BindingResult bindingResult,
+				Model model, @RequestParam("donationBoardImgFile") List<MultipartFile> donationBoardImgFileList) {
+			if(bindingResult.hasErrors()) {
+				return "admin/editDonatedBoard";
+			}
+			
+			
+			if(donationBoardImgFileList.get(0).isEmpty() && donationBoardformDto.getId() == null) {
+				model.addAttribute("errorMessage", "Must enter danation board image.");
+				return "admin/editDonatedBoard";
+			}
+			
+			try {
+				donationBoardService.donationBoardUpdate(donationBoardformDto, donationBoardImgFileList);
+			} catch (Exception e) {
+				e.printStackTrace();
+				model.addAttribute("errorMessage", "An error occurred while modifying.");
+				return "admin/editDonatedBoard";
+			}
+			
+			
+			return "redirect:/";
+			
+		}
+		
+	//delete
+		@DeleteMapping(value= "/donationBoard/{donationBoardId}/delete")
+		public @ResponseBody ResponseEntity<?> deleteDonationBoard(@PathVariable("donationBoardId") Long donationBoardId, Model model) {
+			System.out.println("/donationBoard/{donationBoardId}/delete");
+			try {
+				donationBoardImgService.deleteDonationBoardImg(donationBoardId);
+				donationBoardService.deleteDonationBoard(donationBoardId);
+				donationBoardHeartService.deleteDonationBoardHeart(donationBoardId);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return new ResponseEntity<Long>(donationBoardId,HttpStatus.OK);
+		}
+		
 	
 }

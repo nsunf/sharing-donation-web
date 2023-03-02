@@ -3,7 +3,6 @@ package com.sharingdonation.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -12,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import com.sharingdonation.dto.SharingBoardCommentDto;
 import com.sharingdonation.dto.SharingBoardDto;
@@ -24,6 +24,7 @@ import com.sharingdonation.entity.SharingBoardImg;
 import com.sharingdonation.entity.Story;
 import com.sharingdonation.repository.MemberRepository;
 import com.sharingdonation.repository.SharingBoardCommentRepository;
+import com.sharingdonation.repository.SharingBoardHeartRepository;
 import com.sharingdonation.repository.SharingBoardImgRepository;
 import com.sharingdonation.repository.SharingBoardRepository;
 import com.sharingdonation.repository.SharingRepository;
@@ -36,12 +37,12 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class SharingBoardService {
 	private final SharingBoardRepository sharingBoardRepository;
-	private final SharingBoardImgRepository sharingBoardImgRepository;
 	private final StoryRepository storyRepository;
 	private final SharingBoardCommentRepository sharingBoardCommentRepository;
 	private final MemberRepository memberRepository;
 	private final SharingRepository sharingRepository;
 	private final SharingBoardImgService sharingBoardImgService;
+	private final SharingBoardHeartRepository sharingBoardHeartRepository;
 	
 	//게시글 보여줌. 페이징, 검색
 	@Transactional(readOnly = true)
@@ -49,6 +50,9 @@ public class SharingBoardService {
 		Page<SharingBoard> sharingPage = sharingBoardRepository.findBySharingNameContainsOrSubjectContainsOrderByRegTimeDesc(searchName, searchName, pageable);
 		Page<SharingBoardDto> sharingBoardDtoPage = sharingPage.map(sharingBoard -> {
 			SharingBoardDto sharingBoardDto = SharingBoardDto.of(sharingBoard);
+			
+			Long boardHeartCount = sharingBoardHeartRepository.countBySharingBoardId(sharingBoardDto.getId());
+			sharingBoardDto.setBoardHeartCount(boardHeartCount);
 			
 			Long commentCount = sharingBoardCommentRepository.countBySharingBoardId(sharingBoard.getId());
 			sharingBoardDto.setCommentCount(commentCount);
@@ -79,7 +83,9 @@ public class SharingBoardService {
 	// 나눔완료 게시글 여러 댓글들 보여줌
 	@Transactional(readOnly = true)
 	public List<SharingBoardCommentDto> getBoardCommentList(Long id) {
+		System.out.println("확인 : start");
 		List<SharingBoardComment> sharingBoardCommentList = sharingBoardCommentRepository.findBySharingBoardId(id);
+		System.out.println("확인 : start1" + sharingBoardCommentList);
 		List<SharingBoardCommentDto> sharingBoardCommentDtoList = new ArrayList<>();
 
 		for (SharingBoardComment sharingBoardComment : sharingBoardCommentList) {
@@ -114,6 +120,33 @@ public class SharingBoardService {
 		return sharingBoardComment.getId();
 	}
 	
+	public SharingBoardComment getSharingBoardComment (Long id) {
+		return sharingBoardCommentRepository.getReferenceById(id);
+	}
+	
+	/*
+	//현재 로그인 한 사용자와 댓글 작성한 사용자와 같은지 검사
+	@Transactional(readOnly = true)
+	public boolean validateComment(Long comment_id, String email) {
+		Member curMember = memberRepository.findByEmail(email);
+		SharingBoardComment sharingBoardComment = sharingBoardCommentRepository.findById(comment_id).orElseThrow(EntityNotFoundException::new);
+		Member savedMember = sharingBoardComment.getMember();
+		
+		if(!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())) {
+			return false;
+		}
+		return true;
+	}
+	*/
+	
+	//게시글 삭제
+	public void deleteComment(Long comment_id) {
+		SharingBoardComment sharingBoardComment = sharingBoardCommentRepository.findById(comment_id).orElseThrow(EntityNotFoundException::new);
+		
+		sharingBoardCommentRepository.delete(sharingBoardComment);
+	}
+	
+	
 	//나눔완료 게시글 작성
 	public Long insertSharedBoardPost(SharingBoardFormDto sharingBoardFormDto, List<MultipartFile> sharingBoardImgFileList ) throws Exception {
 		
@@ -137,5 +170,7 @@ public class SharingBoardService {
 		}
 		return sharingBoard.getId();
 	}
+	
+	
 	
 }

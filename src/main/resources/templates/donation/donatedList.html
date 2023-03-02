@@ -31,11 +31,7 @@
                 </button>
               </form>
             </div>
-            <div class="row hstack">
-        		<div class="col-2 mb-5 ms-auto">
-							<a class="btn" href="/donatedBoard/edit" style="background: var(--thm-primary); color: white;">기부 완료 게시판 등록</a>
-        		</div>
-        	</div>
+            
         	
         	<th:block th:each="donationBoard, status: ${donationBoards.getContent()}">
             <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="100ms">
@@ -58,14 +54,10 @@
                 <div class="news-two__content">
                   <ul class="list-unstyled news-two__meta">
                     <li>
-                      <a href="#"><i class="far fa-user-circle"></i> Admin</a>
+                      <a href="#"><i class="far fa-user-circle"></i>Admin</a>
                     </li>
                     <li><span>/</span></li>
-                    <li>
-                      <a href="#"
-                        ><i class="far fa-comments"></i> 10 Comments</a
-                      >
-                    </li>
+                    <li><i th:text="${donationBoard.commentCount}" class="far fa-comments"></i></li>
                   </ul>
                   <h3 class="read-more">
                     <a th:href="'/donatedBoard/' +${donationBoard.id}">[[${donationBoard.subject}]]</a>
