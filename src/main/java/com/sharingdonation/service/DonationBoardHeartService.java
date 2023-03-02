@@ -59,6 +59,16 @@ public class DonationBoardHeartService {
 		
 		
 	}
+
+
+
+	public void deleteDonationBoardHeart(Long donationBoardId) {
+		DonationBoardHeart donationBoardHeart = donationBoardHeartRepository.findById(donationBoardId)
+				.orElseThrow(EntityNotFoundException::new);
+		
+		donationBoardHeartRepository.delete(donationBoardHeart);
+		
+	}
 	
 	
 }
