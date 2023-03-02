@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.sharingdonation.dto.DonationBoardFormDto;
+
 import groovy.transform.ToString;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,4 +41,13 @@ public class DonationBoard {
 	
 	@Column(nullable = false)
 	private LocalDateTime regTime;
+
+	public void updateDonationBoard(DonationBoardFormDto donationBoardFormDto) {
+		this.subject = donationBoardFormDto.getSubject();
+		this.content = donationBoardFormDto.getContent();
+		this.regTime = donationBoardFormDto.getRegTime();
+		
+		
+		
+	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,6 +65,7 @@ public class DonationBoardService {
 	
 	
 	
+	
 	//create donation board
 	public Long SaveDonationBoard(DonationBoardFormDto donationBoardFormDto, List<MultipartFile> donationBoardImgFileList) throws Exception{
 		DonationBoard donationBoard = donationBoardFormDto.createDonationBoard();
@@ -92,7 +94,7 @@ public class DonationBoardService {
 	
 	//donation board list
 	@Transactional(readOnly = true)
-	public Page<DonationBoard> getAdminPostDtoPage(Pageable pageable){
+	public Page<DonationBoard> getAdminDonationBoardDtoPage(Pageable pageable){
 		return donationBoardRepository.getAdminDonationBoardPage(pageable);
 	}
 	
@@ -129,6 +131,7 @@ public class DonationBoardService {
 				
 				//이미지 정보를 넣어준다.
 				donationBoardFormDto.setHeartCount(heartCount);
+				donationBoardFormDto.setDonationBoardImgDtoList(donationBoardImgDtoList);
 				donationBoardFormDto.setDonationBoardImgDtoList(donationBoardImgDtoList);
 				
 				
@@ -182,6 +185,50 @@ public class DonationBoardService {
 			}
 			return donationBoardCommentDtoList;
 		}
+
+		
+		//modify
+		public Long donationBoardUpdate(DonationBoardFormDto donationBoardFormDto, List<MultipartFile> donationBoardImgFileList)  throws Exception {
+			DonationBoard donationBoard = donationBoardRepository.findById(donationBoardFormDto.getDonationId())
+					.orElseThrow(EntityNotFoundException::new);
+			
+			donationBoard.updateDonationBoard(donationBoardFormDto);
+			
+			List<Long> donationBoardImgIds = donationBoardFormDto.getDonationBoardImgIds();
+			
+			for(int i=0; i<donationBoardImgFileList.size(); i++) {
+				donationBoardImgService.updateDonationBoardImg(donationBoardImgIds.get(i), donationBoardImgFileList.get(i));
+			}
+			
+			return donationBoard.getId();
+			
+			
+			
+			
+		}
+
+
+		//delete
+		public void deleteDonationBoard(Long donationBoardId) {
+			DonationBoard donationBoard = donationBoardRepository.findById(donationBoardId)
+					.orElseThrow(EntityNotFoundException::new);
+			
+			donationBoardRepository.delete(donationBoard);
+			
+			DonationBoardComment donationBoardComment = donationBoardCommentRepository.findById(donationBoardId)
+					.orElseThrow(EntityNotFoundException::new);
+			
+			donationBoardCommentRepository.delete(donationBoardComment);
+		}
+
+
+
+
+
+
+
+
+		
 		
 		
 }

@@ -58,4 +58,16 @@ public class DonationBoardImgService {
 			
 		}
 	}
+
+	public void deleteDonationBoardImg(Long donationBoardId) throws Exception{
+		DonationBoardImg deleteDonationBoardImg = donationBoardImgRepository.findById(donationBoardId)
+				.orElseThrow(EntityNotFoundException::new);
+		
+		if(!StringUtils.isEmpty(deleteDonationBoardImg.getImgName())) {
+			fileService.deleteFile(donationBoardImgLocation + "/" + deleteDonationBoardImg.getImgName());
+		}
+		
+		
+		donationBoardImgRepository.delete(deleteDonationBoardImg);
+	}
 }

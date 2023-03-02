@@ -84,6 +84,7 @@ public class Member extends BaseEntity {
 	public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
 		Member member = new Member();
 		member.setName(memberFormDto.getName());
+		member.setZipCode(memberFormDto.getZipCode());
 		member.setAddress(memberFormDto.getAddress());
 		member.setAddressDetail(memberFormDto.getAddressDetail());
 		LocalDate date = LocalDate.parse(memberFormDto.getBirth(), DateTimeFormatter.ISO_DATE);
@@ -95,6 +96,8 @@ public class Member extends BaseEntity {
 		member.setPassword(password);
 		
 		member.setNickName(memberFormDto.getNickName());
+		
+		member.setDelYn("N");
 		
 		member.setRole(Role.USER);
 		return member;
