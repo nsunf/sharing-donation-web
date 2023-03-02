@@ -2,6 +2,8 @@ package com.sharingdonation.dto;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
+
 import com.sharingdonation.constant.Role;
 
 import lombok.Getter;
@@ -21,8 +23,6 @@ public class MyPageStoryListDto {
 	
 	private String nickName;
 	
-	private Long sharingId;
-	
 	private String sharProductName;
 	
 	private LocalDateTime regTime;
@@ -34,14 +34,14 @@ public class MyPageStoryListDto {
 	public MyPageStoryListDto() {};
 	
 	public MyPageStoryListDto(Long id, String name, String imgUrl,LocalDateTime regTime,Role role,
-			String nickName,Long sharingId,String sharProductName,String content) {
+			String nickName,String sharProductName,String content) {
 		this.id = id;
 		this.name = name;
 		this.imgUrl = imgUrl;
 		this.regTime = regTime;
 		this.role = role;
 		this.nickName = nickName;
-		this.sharingId = sharingId;
+		 
 		this.sharProductName = sharProductName;
 		this.content = content;
 

@@ -30,8 +30,8 @@ function page(page) {
 
 						<th:block
 							th:each="item, status: ${myPageStoryListDto.getContent()}">
-						 
-							<div class="col-12">
+						 <a th:href="@{|/mypage/story/detail/${mypage.id}/${item.id}|}">
+							<div class="col-12" >
 
 								<div class="mb-3 form-check"
 									style="background-color: #F0F5F4; height: 200px; width: 100%; border-radius: 10px; margin: 0; padding: 0; display: flex;">
@@ -63,6 +63,7 @@ function page(page) {
 
 							</div>
 							<!-- each -->
+							</a>
 						</th:block>
 
 
