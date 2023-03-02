@@ -44,8 +44,6 @@ public class Sharing {
 	private String name;
 	
 	
-	private String sharProductName;
-	
 	@Column(nullable = false, columnDefinition = "text")
 	private String detail;
 	
@@ -58,8 +56,7 @@ public class Sharing {
 	
 	@Column(nullable = false)
 	private LocalDateTime regTime;
-	
-	private LocalDateTime shareRegTime;
+
 	
 	private LocalDateTime upDateTime; //게시글 수정날짜
 	
