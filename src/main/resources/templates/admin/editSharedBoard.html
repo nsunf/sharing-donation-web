@@ -6,7 +6,7 @@
 >
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>나눔 완료 인증 게시글</title>
 <link
 	rel="stylesheet"
 	href="/css/longsiru/donation-request-form.css"
@@ -14,68 +14,66 @@
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
+	<script>
+	//alert("[[${errorMessage}]]");
+	</script>
 
 		<section class="banner d-flex justify-content-center align-items-center">
-        <h2 class="banner__title">기부 완료 게시판 등록/수정</h2>
+        <h2 class="banner__title">나눔 완료 인증 게시글</h2>
       </section>
 
       <section class="my-5">
         <form
           class="container"
-          th:action="@{/donatedBoard/edit}"
+          th:action="@{/sharing_board/admin/edit/{shared_id}(shared_id=${sharingDto.id})}"
           method="post"
           enctype="multipart/form-data" 
-          th:object="${donationBoardFormDto}"
+          th:object="${sharingBoardFormDto}"
         >
-<!--         <input type="hidden" th:field="*{id}" /> -->
+         <input type="hidden" th:field="*{id}" />
           <div class="row">
             <div class="col-8 mx-auto">
               <label class="input-label w-100" for="">
-                <span class="d-block ms-2 mb-1">기부 완료 주제</span>
-                <input th:field="*{subject}"
+                <span class="d-block ms-2 mb-1">게시글 제목</span>
+                <input
+                th:field="*{subject}"
                   class="input-box w-100 p-3"
                   type="text"
-                  placeholder="기부 요청 주제"
+                  placeholder="게시글 제목"
                 />
               </label>
 
            	<div>
                 <label class="input-label w-100" for="">
-                  <span class="d-block ms-2 mb-1">기부 선택</span>
+                  <span class="d-block ms-2 mb-1">나눔 완료 상품</span>
                 </label>
-                <select th:field="*{donationId}"
-                  onchange="selectdonation()"
-                  style="width: 100%; height: 60px; border: 1px solid #15c8a0"
-                >
-                  <option value="">기부를 선택 해주세요</option>
-                 <option th:each="donation : ${donations}" 
-                  th:value="${donation.id}" 
-                  th:text="${donation.subject + ' - ' + donation.donationName}"></option>
-                </select>
+                <div th:text="${sharingDto.name}" style="width: 100%; height: 60px; border: 1px solid #15c8a0;"
+                ></div>
+                <input type="hidden" th:field="*{sharing_id}"/>
               </div>
               
 
               <label class="input-label w-100" for="">
-                <span class="d-block ms-2 mb-1">기부 완료 상세설명</span>
-                <textarea th:field="*{content}"
+                <span class="d-block ms-2 mb-1">나눔 완료 상세내용</span>
+                <textarea
+                 th:field="*{content}"
                   class="input-box w-100 p-3"
-                  placeholder="나눔 물품 상세 설명"
+                  placeholder="나눔 물품 상세 내용"
                 ></textarea>
               </label>
               
               <label class="input-label w-100">
 				<span class="d-block ms-2 mb-1">이미지 등록</span>
-				<input class="img-input w-100" type="file" name="donationBoardImgFileList" accept="image/*" multiple>
+				<input class="img-input w-100" type="file" name="sharingBoardImgFileList" accept="image/*" multiple>
 			  </label>
-			  
-			<div  th:if="${#lists.isEmpty(donationBoardFormDto.donationBoardImgDtoList)}">
-              <div th:each="num: ${#numbers.sequence(1, 10)}">
-             	 <label class="input-label w-100" for="formFile" th:text="기부완료이미지 + ${num}">
+<!-- 			<div  th:if="${#lists.isEmpty(sharingBoardFormDto.sharingBoardImgDtoList)}">
+             	 <label class="input-label w-100" for="formFile" >
                 	<span class="d-block ms-2 mb-1">이미지 등록</span>
                     <input class="img-input w-100" type="file" accept="image/*" multiple/>
                 </label>
+              <div th:each="num: ${#numbers.sequence(1, 10)}">
               </div>
-           </div>
+           </div> -->
             </div>
           </div>
 
