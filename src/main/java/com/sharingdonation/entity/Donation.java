@@ -2,6 +2,7 @@ package com.sharingdonation.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.sharingdonation.dto.DonationAdminFormDto;
 import com.sharingdonation.dto.DonationFormDto;
 
 import lombok.Getter;
@@ -101,9 +103,32 @@ public class Donation extends BaseTimeEntity{
 		this.subject = donationFormDto.getSubject();
 		this.detail = donationFormDto.getDetail();
 		this.price = donationFormDto.getPrice();
-		this.startDate = donationFormDto.getStartDate();
-		this.endDate = donationFormDto.getEndDate();
+//
+//		this.startDate = (LocalDate) donationFormDto.getStartDate();
+//		this.endDate = (LocalDate) donationFormDto.getEndDate();
 		this.address = donationFormDto.getAddress();
 		this.goalPoint = donationFormDto.getGoalPoint();
+		
+	}
+	
+	//모든엔티티가노출되면 보안상안좋아서 관리자와 일반을 나눔
+	public void updateAdminDonation(DonationAdminFormDto donationAdminFormDto) {
+		this.donationName = donationAdminFormDto.getDonationName();
+		this.donationPerson = donationAdminFormDto.getDonationPerson();
+		this.donationTel = donationAdminFormDto.getDonationTel();
+		this.subject = donationAdminFormDto.getSubject();
+		this.detail = donationAdminFormDto.getDetail();
+		this.price = donationAdminFormDto.getPrice();
+		LocalDate startDate = LocalDate.parse(donationAdminFormDto.getStartDate(), DateTimeFormatter.ISO_DATE);
+		this.startDate = startDate;
+		LocalDate endDate = LocalDate.parse(donationAdminFormDto.getEndDate(), DateTimeFormatter.ISO_DATE);
+		this.endDate = endDate;
+//		this.startDate = (LocalDate) donationAdminFormDto.getStartDate();
+//		this.endDate = (LocalDate) donationAdminFormDto.getEndDate();
+		this.address = donationAdminFormDto.getAddress();
+		this.goalPoint = donationAdminFormDto.getGoalPoint();
+		this.delYn = donationAdminFormDto.getDelYn();
+		this.confirmYn = donationAdminFormDto.getConfirmYn();
+		this.done = donationAdminFormDto.getDone();
 	}
 }
