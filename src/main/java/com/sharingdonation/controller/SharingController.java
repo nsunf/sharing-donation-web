@@ -1,11 +1,10 @@
 package com.sharingdonation.controller;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -37,6 +36,7 @@ import com.sharingdonation.service.MyPageService;
 import com.sharingdonation.service.SharingHeartService;
 import com.sharingdonation.service.SharingImgService;
 import com.sharingdonation.service.SharingService;
+import com.sharingdonation.service.StoryService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,15 +50,30 @@ public class SharingController {
 	private final CategoryService categoryService;
 	private final SharingImgService sharingImgService;
 	private final SharingHeartService sharingHeartService;
+	private final StoryService storyService;
 	private final MemberRepository memberRepo;
 	private final MyPageService myPageService;
 	
+	private static Member user = null;
+	private static Member com = null;
+	
 	private Member getTmpMember(Role role) {
+		Member member = null;
 		List<Member> memberList = memberRepo.findAll().stream().filter(m -> m.getRole() == role).toList();
-		if (memberList.size() > 0)
-			return memberList.get(0);
-		else 
-			return null;
+		if (memberList.size() > 0) member = memberList.get(0);
+
+		switch (role) {
+		case USER:
+			if (user == null) user = member;
+			return user;
+		case COM:
+			if (com == null) com = member;
+			return com;
+		case ADMIN:
+			break;
+		}
+		
+		return member;
 	}
 	
 //	@GetMapping("")
@@ -91,10 +106,13 @@ public class SharingController {
 	
 	@GetMapping("/{id}")
 	public String getSharingDto(@PathVariable Long id, Model model) {
-
-		model.addAttribute("sharingDto", sharingService.getSharingDto(id));
+		Member member = getTmpMember(Role.USER);
+		SharingDto sharingDto = sharingService.getSharingDto(id);
+		
+		model.addAttribute("storyFormDto", storyService.getStoryFormDto(id, member.getId()));
+		model.addAttribute("sharingDto", sharingDto);
 		model.addAttribute("sharingImgDtoList", sharingImgService.getSharingImgDtoList(id));
-		model.addAttribute("sharingHeartDto", sharingHeartService.getSharingHeartDto(id));
+		model.addAttribute("sharingHeartDto", sharingHeartService.getSharingHeartDto(member.getId(), id));
 		model.addAttribute("sharingHeartCount", sharingHeartService.getSharingHeartCount(id));
 
 		return "sharing/sharingDetail";
@@ -111,6 +129,7 @@ public class SharingController {
 	
 	@PostMapping("/new")
 	public String createSharing(@Valid SharingFormDto sharingFormDto, BindingResult bindingResult, List<MultipartFile> sharingImgFileList, Model model) {
+		Member member = getTmpMember(Role.USER);
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("areaDtoList", areaService.getAreaList());
@@ -120,7 +139,7 @@ public class SharingController {
 		
 		try {
 			if (sharingFormDto.getId() == null)
-				sharingService.saveSharing(sharingFormDto, sharingImgFileList);
+				sharingService.saveSharing(sharingFormDto, member.getId(), sharingImgFileList);
 			else 
 				sharingService.updateSharing(sharingFormDto, sharingImgFileList);
 		} catch (Exception e) {
@@ -151,12 +170,12 @@ public class SharingController {
 	@GetMapping(value = {"/mypage", "/mypage/{page}"})
 	public String mypageSharingList(@PathVariable("page") Optional<Integer> page , Model model) {
 		// 임시 멤버
-		Member tmpMemeber = getTmpMember(Role.USER);
-		MyPageMainDto myPageDto = myPageService.getMyPageMain(tmpMemeber.getId());
+		Member tmpMember = getTmpMember(Role.USER);
+		MyPageMainDto myPageDto = myPageService.getMyPageMain(tmpMember.getId());
 
 		Pageable pageable = PageRequest.of(page.orElse(0), 6);
 		
-		Page<SharingDto> sharingDtoList = sharingService.getSharingDtoList(tmpMemeber.getId(), pageable);
+		Page<SharingDto> sharingDtoList = sharingService.getSharingDtoListById(tmpMember.getId(), pageable);
 
 		model.addAttribute("mypage", myPageDto);
 		model.addAttribute("sharingDtoList", sharingDtoList);
@@ -168,11 +187,15 @@ public class SharingController {
 
 	@GetMapping(value = {"/mypage/shared", "/mypage/shared/{page}"})
 	public String mypageAdoptedSharingList(@PathVariable("page") Optional<Integer> page , Model model) {
-		Member tmpMember = getTmpMember(Role.USER);
+//		Member tmpMember = getTmpMember(Role.USER);
+		Member tmpMember = memberRepo.findById(10L).orElseThrow(EntityNotFoundException::new);
+		MyPageMainDto myPageDto = myPageService.getMyPageMain(tmpMember.getId());
 		Pageable pageable = PageRequest.of(page.orElse(0), 6);
 		
-		Page<SharingDto> sharingDtoList = sharingService.getAdoptedSharingDtoList(tmpMember.getId(), pageable);
+		Page<SharingDto> sharingDtoList = sharingService.getAdoptedSharingDtoListById(tmpMember.getId(), pageable);
 
+		model.addAttribute("test", tmpMember.getId());
+		model.addAttribute("mypage", myPageDto);
 		model.addAttribute("sharingDtoList", sharingDtoList);
 		model.addAttribute("page", pageable.getPageNumber());
 		model.addAttribute("maxPage", 5);
@@ -229,7 +252,8 @@ public class SharingController {
 	
 	@GetMapping("/heart/{id}")
 	public @ResponseBody ResponseEntity<?> toggleHeart(@PathVariable Long id) {
-		sharingHeartService.toggleSharingHeart(id);
+		Member member = getTmpMember(Role.USER);
+		sharingHeartService.toggleSharingHeart(member.getId(), id);
 		Long heartCount = sharingHeartService.getSharingHeartCount(id);
 		return new ResponseEntity<Long>(heartCount, HttpStatus.OK);
 	}

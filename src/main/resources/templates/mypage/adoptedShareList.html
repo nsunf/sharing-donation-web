@@ -12,131 +12,21 @@
 	<th:block layout:fragment="layout-content">
 		<div class="row row-cols-1 row-cols-lg-2">
 			<!-- grid -->
-			<div class="col">
+			<div class="col" th:each="sharingDto: ${sharingDtoList.getContent()}">
 				<a class="card mb-3" href="#" style="max-width: 540px; background: #F0F5F4;">
 					<div class="row g-0">
 						<div class="col-md-4 p-0">
-							<img src="https://picsum.photos/id/483/720/360" class="img-fluid w-100 h-100 rounded-start object-fit-cover" alt="..." style="aspect-ratio: 3/4;">
+							<img th:src="${sharingDto.imgUrl}" class="img-fluid w-100 h-100 rounded-start object-fit-cover" alt="sharing-img" style="aspect-ratio: 3/4;">
 						</div>
 						<div class="col-md-8 ps-0">
 							<div class="card-body vstack h-100">
 								<div class="hstack align-middle">
-									<h5 class="card-title text-black fs-5">Card title</h5>
-									<p class="card-text text-black fs-6 fw-normal ms-auto">yyyy-mm-dd</p>
+									<h5 class="card-title text-black fs-5">[[${sharingDto.name}]]</h5>
+									<p class="card-text text-black fs-6 fw-normal ms-auto">[[${sharingDto.regTime}]]</p>
 								</div>
-								<p class="card-text text-black fs-6 fw-normal">나눔 카테고리</p>
+								<p class="card-text text-black fs-6 fw-normal">[[${sharingDto.categoryName}]]</p>
 								<div class="vstack mt-auto">
-									<div class="status status-yellow ms-auto mt-auto">진행중</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</a>
-			</div>
-
-			<div class="col">
-				<a class="card mb-3" href="#" style="max-width: 540px; background: #F0F5F4;">
-					<div class="row g-0">
-						<div class="col-md-4 p-0">
-							<img src="https://picsum.photos/id/483/720/360" class="img-fluid w-100 h-100 rounded-start object-fit-cover" alt="..." style="aspect-ratio: 3/4;">
-						</div>
-						<div class="col-md-8 ps-0">
-							<div class="card-body vstack h-100">
-								<div class="hstack align-middle">
-									<h5 class="card-title text-black fs-5">Card title</h5>
-									<p class="card-text text-black fs-6 fw-normal ms-auto">yyyy-mm-dd</p>
-								</div>
-								<p class="card-text text-black fs-6 fw-normal">나눔 카테고리</p>
-								<div class="vstack mt-auto">
-									<div class="status status-yellow ms-auto mt-auto">진행중</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</a>
-			</div>
-
-			<div class="col">
-				<a class="card mb-3" href="#" style="max-width: 540px; background: #F0F5F4;">
-					<div class="row g-0">
-						<div class="col-md-4 p-0">
-							<img src="https://picsum.photos/id/483/720/360" class="img-fluid w-100 h-100 rounded-start object-fit-cover" alt="..." style="aspect-ratio: 3/4;">
-						</div>
-						<div class="col-md-8 ps-0">
-							<div class="card-body vstack h-100">
-								<div class="hstack align-middle">
-									<h5 class="card-title text-black fs-5">Card title</h5>
-									<p class="card-text text-black fs-6 fw-normal ms-auto">yyyy-mm-dd</p>
-								</div>
-								<p class="card-text text-black fs-6 fw-normal">나눔 카테고리</p>
-								<div class="vstack mt-auto">
-									<div class="status status-yellow ms-auto mt-auto">진행중</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</a>
-			</div>
-
-			<div class="col">
-				<a class="card mb-3" href="#" style="max-width: 540px; background: #F0F5F4;">
-					<div class="row g-0">
-						<div class="col-md-4 p-0">
-							<img src="https://picsum.photos/id/483/720/360" class="img-fluid w-100 h-100 rounded-start object-fit-cover" alt="..." style="aspect-ratio: 3/4;">
-						</div>
-						<div class="col-md-8 ps-0">
-							<div class="card-body vstack h-100">
-								<div class="hstack align-middle">
-									<h5 class="card-title text-black fs-5">Card title</h5>
-									<p class="card-text text-black fs-6 fw-normal ms-auto">yyyy-mm-dd</p>
-								</div>
-								<p class="card-text text-black fs-6 fw-normal">나눔 카테고리</p>
-								<div class="vstack mt-auto">
-									<div class="status status-yellow ms-auto mt-auto">진행중</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</a>
-			</div>
-
-			<div class="col">
-				<a class="card mb-3" href="#" style="max-width: 540px; background: #F0F5F4;">
-					<div class="row g-0">
-						<div class="col-md-4 p-0">
-							<img src="https://picsum.photos/id/483/720/360" class="img-fluid w-100 h-100 rounded-start object-fit-cover" alt="..." style="aspect-ratio: 3/4;">
-						</div>
-						<div class="col-md-8 ps-0">
-							<div class="card-body vstack h-100">
-								<div class="hstack align-middle">
-									<h5 class="card-title text-black fs-5">Card title</h5>
-									<p class="card-text text-black fs-6 fw-normal ms-auto">yyyy-mm-dd</p>
-								</div>
-								<p class="card-text text-black fs-6 fw-normal">나눔 카테고리</p>
-								<div class="vstack mt-auto">
-									<div class="status status-gray ms-auto mt-auto">진행중</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</a>
-			</div>
-
-			<div class="col">
-				<a class="card mb-3" href="#" style="max-width: 540px; background: #F0F5F4;">
-					<div class="row g-0">
-						<div class="col-md-4 p-0">
-							<img src="https://picsum.photos/id/483/720/360" class="img-fluid w-100 h-100 rounded-start object-fit-cover" alt="..." style="aspect-ratio: 3/4;">
-						</div>
-						<div class="col-md-8 ps-0">
-							<div class="card-body vstack h-100">
-								<div class="hstack align-middle">
-									<h5 class="card-title text-black fs-5">Card title</h5>
-									<p class="card-text text-black fs-6 fw-normal ms-auto">yyyy-mm-dd</p>
-								</div>
-								<p class="card-text text-black fs-6 fw-normal">나눔 카테고리</p>
-								<div class="vstack mt-auto">
-									<div class="status status-green ms-auto mt-auto">진행중</div>
+									<div class="status ms-auto mt-auto" th:classappend="${sharingDto.status == '완료'} ? 'status-gray' : (${sharingDto.status == '진행중'} ? 'status-green' : 'status-yellow')">[[${sharingDto.status}]]</div>
 								</div>
 							</div>
 						</div>
@@ -147,23 +37,17 @@
 		</div>
 		<div class="row">
 			<!-- pagination -->
-			<nav aria-label="Page navigation example" class="hstack mt-5">
+			<nav aria-label="Page navigation example" class="hstack mt-5" th:with="start=${(sharingDtoList.number/maxPage)*maxPage + 1}, end=(${(sharingDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < sharingDtoList.totalPages ? start + (maxPage - 1) : sharingDtoList.totalPages)})">
 				<ul class="pagination mx-auto">
 					<li class="page-item">
-						<a class="page-link disabled" href="#" aria-label="Previous">
-							<span aria-hidden="true">&laquo;</span>
-						</a>
+						<a class="page-link" th:href="@{'/sharing/mypage/shared/' + ${sharingDtoList.number-1}}" aria-label="Previous" th:classappend="${sharingDtoList.number eq 0}?'disabled':''"> <span aria-hidden="true">&laquo;</span></a>
 					</li>
-					<li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><a class="page-link" href="#">4</a></li>
-					<li class="page-item"><a class="page-link" href="#">5</a></li>
-					<li class="page-item">
-						<a class="page-link" href="#" aria-label="Next">
-							<span aria-hidden="true">&raquo;</span>
-						</a>
+					<li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${sharingDtoList.number eq page-1}?'active':''">
+						<a class="page-link" th:href="@{'/sharing/mypage/shared/' + ${page-1}}" th:inline="text">[[${page}]]</a>
 					</li>
+					<li class="page-item"><a class="page-link" th:href="@{'/sharing/mypage/shared/' + ${sharingDtoList.number+1}}"
+						aria-label="Next" th:classappend="${sharingDtoList.number+1 ge sharingDtoList.totalPages}?'disabled':''"> <span aria-hidden="true">&raquo;</span>
+					</a></li>
 				</ul>
 			</nav>
 		</div>

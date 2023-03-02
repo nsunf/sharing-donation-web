@@ -23,8 +23,7 @@ public class SharingHeartService {
 	private final SharingRepository sharingRepo;
 	private final MemberRepository memberRepo;
 
-	public SharingHeartDto getSharingHeartDto(Long sharingId) {
-		Long memberId = 1L;
+	public SharingHeartDto getSharingHeartDto(Long memberId, Long sharingId) {
 		SharingHeart sharingHeart = sharingHeartRepo.findBySharingIdAndMemberId(sharingId, memberId).orElse(null);
 		if (sharingHeart == null)
 			return null;
@@ -36,8 +35,7 @@ public class SharingHeartService {
 		return sharingHeartRepo.countBySharingId(sharingId);
 	}
 	
-	public void toggleSharingHeart(Long sharingId) {
-		Long memberId = 1L;
+	public void toggleSharingHeart(Long memberId, Long sharingId) {
 		SharingHeart sharingHeart = sharingHeartRepo.findBySharingIdAndMemberId(sharingId, memberId).orElse(null);
 		if (sharingHeart == null) {
 			SharingHeart newHeart = new SharingHeart();

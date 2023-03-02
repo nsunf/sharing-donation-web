@@ -14,7 +14,7 @@
 <body>
 	<th:block layout:fragment="layout-content">
 	
-		<section class="image-slider container mt-5">
+		<section class="image-slider container mt-5 auto-min-height">
     <div class="row">
       <div class="col-12 col-md-10 col-xl-8 mx-auto">
         <div class="swiper mySwiper position-relative overflow-hidden">
@@ -69,7 +69,9 @@
       <div class="col-12 col-md-10 col-xl-8 d-flex mx-auto">
         <div class="ms-auto">
 <!--           <a class="causes-details__share-btn thm-btn py-2 px-4">수정</a>
- -->          <button class="causes-details__share-btn thm-btn py-2 px-3 ms-3" data-bs-toggle="modal" data-bs-target="#registModal">사연 등록</button>
+ -->          
+ 							<button th:if="${storyFormDto.registeredYn == 'Y'}" class="causes-details__share-btn thm-gray border-0 rounded-4 py-2 px-3 ms-3" disabled>사연 등록됨</button>
+           		<button th:unless="${storyFormDto.registeredYn == 'Y'}" id="registStoryBtn" class="causes-details__share-btn thm-btn py-2 px-3 ms-3" data-bs-toggle="modal" data-bs-target="#registModal">사연 등록</button>
         </div>
       </div>
     </div>
@@ -79,21 +81,23 @@
   <!-- Modal -->
   <div class="modal fade" id="registModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <form class="modal-content">
+      <form class="modal-content" th:action="@{/story/new}" method="post" th:object="${storyFormDto}">
+      	<input type="hidden" th:field="*{sharingId}" th:value="${sharingDto.id}">
+      	<input type="hidden" th:field="*{memberId}" th:value="*{memberId}">
         <div class="modal-header">
           <h1 class="modal-title modal-title-custom fs-5" id="exampleModalLabel">나눔 글제목</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div>나눔 상품 명</div>
-          <textarea name="" id="" class="form-control" cols="30" rows="10"></textarea>
+          <textarea th:field="*{content}" class="form-control" cols="30" rows="10"></textarea>
           <div class="hstack">
-            <span class="ms-auto">0/1000byte</span>
+            <span id="textLength" class="ms-auto">0/300</span>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-custom btn-custom-close" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-custom btn-custom-regist">Save changes</button>
+          <button type="button" class="btn btn-custom btn-custom-close" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-custom btn-custom-regist" onclick="addStory();">제출</button>
         </div>
       </form>
     </div>
@@ -111,6 +115,7 @@
 			});
 		</script>
 		<script src="/js/nsunf/sharingDetail.js"></script>
+		<script src="/js/setAutoHeight.js"></script>
 	</th:block>
 </body>
 </html>

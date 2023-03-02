@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.sharingdonation.entity.Area;
+import com.sharingdonation.entity.Category;
 import com.sharingdonation.entity.Sharing;
 
 import lombok.Getter;
@@ -39,12 +41,11 @@ public class SharingFormDto {
 	
 	private String delYn;
 
-	public Sharing createSharing() {
+	public Sharing createSharing(Category category, Area area) {
 		Sharing sharing = new Sharing();
 		
-//		cateogry
-//		member
-//		area
+		sharing.setCategory(category);
+		sharing.setArea(area);
 
 		sharing.setName(name);
 		sharing.setDetail(content);

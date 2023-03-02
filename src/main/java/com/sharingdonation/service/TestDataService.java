@@ -9,7 +9,6 @@ import java.util.stream.IntStream;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.sharingdonation.constant.Role;
@@ -56,9 +55,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class TestDataService {
-	
-	@Value("${sharingImgLocation}")
-	private String sharingImgLocation;
 
 	private final CategoryRepository categoryRepo;
 	private final AreaRepository areaRepository;
@@ -130,7 +126,7 @@ public class TestDataService {
 
 		// 사연
 		
-		sharingList.subList(0, 50).forEach(sharing -> {
+		sharingList.subList(0, 80).forEach(sharing -> {
 			if (sharing.getConfirmYn().equals("N")) {
 				sharing.setConfirmYn("Y");
 				sharing.setPoint(random.nextInt(1500) + 500);
@@ -140,7 +136,7 @@ public class TestDataService {
 				sharing.setModifyBy("TEST");
 			}
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 2; i++) {
 				List<Story> storyList = storyRepo.findAll().stream().filter(story -> story.getSharing().getId() == sharing.getId()).toList();
 				Member member = null;
 				

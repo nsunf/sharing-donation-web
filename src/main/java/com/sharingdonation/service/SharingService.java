@@ -40,6 +40,10 @@ public class SharingService {
 	private final CategoryRepository categoryRepo;
 	private final AreaRepository areaRepo;
 	private final StoryRepository storyRepo;
+	
+	public Long getNumOfShared() {
+		return sharingRepo.countByDone("Y");
+	}
 
 	public SharingDto getSharingDto(Long sharingId) {
 		Sharing sharing = sharingRepo.findById(sharingId).orElseThrow(EntityNotFoundException::new);
@@ -51,9 +55,9 @@ public class SharingService {
 		Page<Sharing> sharingList = null;
 		String _search = search == null ? "" : search;
 		if (catName == null) {
-			sharingList = sharingRepo.findAllByDetailContainsAndConfirmYnAndDelYnAndAreaGugunOrderByRegTimeDesc(_search, "Y", "N", areaName, pageable);
+			sharingList = sharingRepo.findAllByDetailContainsAndConfirmYnAndDoneAndDelYnAndAreaGugunOrderByRegTimeDesc(_search, "Y", "N", "N", areaName, pageable);
 		} else {
-			sharingList = sharingRepo.findAllByDetailContainsAndConfirmYnAndDelYnAndAreaGugunAndCategoryCategoryNameOrderByRegTimeDesc(_search, "Y", "N", areaName, catName, pageable);
+			sharingList = sharingRepo.findAllByDetailContainsAndConfirmYnAndDoneAndDelYnAndAreaGugunAndCategoryCategoryNameOrderByRegTimeDesc(_search, "Y", "N", "N", areaName, catName, pageable);
 		}
 		
 		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
@@ -68,17 +72,14 @@ public class SharingService {
 		return sharingDtoList;
 	}
 	
-	public void saveSharing(SharingFormDto sharingFormDto, List<MultipartFile> sharingImgFileList) throws Exception {
-		Sharing sharing = sharingFormDto.createSharing();
-		
+	public void saveSharing(SharingFormDto sharingFormDto, Long memberId, List<MultipartFile> sharingImgFileList) throws Exception {
 		Category category = categoryRepo.findById(sharingFormDto.getCategoryId()).orElseThrow(EntityNotFoundException::new);
 		Area area = areaRepo.findById(sharingFormDto.getAreaId()).orElseThrow(EntityNotFoundException::new);
+
+		Sharing sharing = sharingFormDto.createSharing(category, area);
 		
-//		로그인된 멤버 지정
-		sharing.setMember(memberRepo.findById(1L).get());
+		sharing.setMember(memberRepo.findById(memberId).get());
 		
-		sharing.setCategory(category);
-		sharing.setArea(area);
 
 		sharingRepo.save(sharing);
 		
@@ -126,8 +127,8 @@ public class SharingService {
 		return new SharingFormDto(sharing);
 	}
 
-	public Page<SharingDto> getSharingDtoList(Long memberId, Pageable pageable) {
-		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDelYnOrderByRegTimeDesc(memberId, "N", pageable);
+	public Page<SharingDto> getSharingDtoListById(Long memberId, Pageable pageable) {
+		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDoneAndDelYnOrderByRegTimeDesc(memberId, "N", "N", pageable);
 		
 		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
 			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(s.getId());
@@ -138,8 +139,8 @@ public class SharingService {
 		return sharingDtoList;
 	}
 
-	public Page<SharingDto> getAdoptedSharingDtoList(Long memberId, Pageable pageable) {
-		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDelYnOrderByRegTimeDesc(memberId, "N", pageable);
+	public Page<SharingDto> getAdoptedSharingDtoListById(Long memberId, Pageable pageable) {
+		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDoneAndDelYnOrderByRegTimeDesc(memberId, "Y", "N", pageable);
 		
 		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
 			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(s.getId());

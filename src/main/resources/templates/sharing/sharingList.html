@@ -28,7 +28,7 @@
       </section>
 
       <!-- 검색창 -->
-      <section class="causes-one causes-page pt-5 pb-3 vstack">
+      <section class="causes-one causes-page pt-5 pb-3 vstack" style="min-height: 50vh;">
         <div class="m-5">
           <form class="input-group mb-3 w-25 mx-auto" th:action="@{/sharing/area/{area}(area=${area})}">
           	<input type="hidden" name="cat" th:value="${cat}"/>
@@ -118,6 +118,7 @@
 	</th:block>
 	<th:block layout:fragment="script-bottom">
 		<script src="/js/pagination.js"></script>
+		<script src="/js/setAutoHeight.js"></script>
 	</th:block>
 </body>
 </html>
