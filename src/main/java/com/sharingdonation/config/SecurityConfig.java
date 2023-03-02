@@ -15,7 +15,9 @@ import com.sharingdonation.service.MemberService;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig{
+	
+	 
 
 	@Autowired
     MemberService memberService;
