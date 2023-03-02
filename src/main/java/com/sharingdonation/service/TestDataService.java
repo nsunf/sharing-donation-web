@@ -128,38 +128,38 @@ public class TestDataService {
 			}
 		}
 
-		// 사연
-		
-		sharingList.subList(0, 50).forEach(sharing -> {
-			if (sharing.getConfirmYn().equals("N")) {
-				sharing.setConfirmYn("Y");
-				sharing.setPoint(random.nextInt(1500) + 500);
-				sharing.setStartDate(LocalDate.now());
-				sharing.setEndDate(LocalDate.now().plusDays(7));
-				sharing.setUpDateTime(LocalDateTime.now());
-				sharing.setModifyBy("TEST");
-			}
-
-			for (int i = 0; i < 10; i++) {
-				List<Story> storyList = storyRepo.findAll().stream().filter(story -> story.getSharing().getId() == sharing.getId()).toList();
-				Member member = null;
-				
-				while (member == null) {
-					Member tmp = userList.get(random.nextInt(userList.size()));
-
-					boolean registered = storyList.stream().filter(story -> story.getMember().getId() == tmp.getId()).count() > 0;
-					if (!registered) member = tmp;
-				}
-				
-				boolean isAdopted = random.nextInt(10) > 8;
-				addStory(sharing, member, isAdopted);
-				if (isAdopted) {
-					sharing.setDone("Y");
-					sharing.setUpDateTime(LocalDateTime.now());
-					break;
-				}
-			}
-		});;
+//		// 사연
+//		
+//		sharingList.subList(0, 50).forEach(sharing -> {
+//			if (sharing.getConfirmYn().equals("N")) {
+//				sharing.setConfirmYn("Y");
+//				sharing.setPoint(random.nextInt(1500) + 500);
+//				sharing.setStartDate(LocalDate.now());
+//				sharing.setEndDate(LocalDate.now().plusDays(7));
+//				sharing.setUpDateTime(LocalDateTime.now());
+//				sharing.setModifyBy("TEST");
+//			}
+//
+//			for (int i = 0; i < 10; i++) {
+//				List<Story> storyList = storyRepo.findAll().stream().filter(story -> story.getSharing().getId() == sharing.getId()).toList();
+//				Member member = null;
+//				
+//				while (member == null) {
+//					Member tmp = userList.get(random.nextInt(userList.size()));
+//
+//					boolean registered = storyList.stream().filter(story -> story.getMember().getId() == tmp.getId()).count() > 0;
+//					if (!registered) member = tmp;
+//				}
+//				
+//				boolean isAdopted = random.nextInt(10) > 8;
+//				addStory(sharing, member, isAdopted);
+//				if (isAdopted) {
+//					sharing.setDone("Y");
+//					sharing.setUpDateTime(LocalDateTime.now());
+//					break;
+//				}
+//			}
+//		});;
 		
 		List<Story> storyList = storyRepo.findAll();
 		

@@ -63,7 +63,11 @@ private JPAQueryFactory queryFactory;
 							formattedDatetime,
 							donationBoardImg.imgUrl, 
 							ExpressionUtils.as(JPAExpressions.select(donationBoardComment.count()).from(donationBoardComment).where(donationBoardImg.donationBoard.eq(donationBoardComment.donationBoard)), "commentCount"),
-							ExpressionUtils.as(JPAExpressions.select(donationBoardHeart.count()).from(donationBoardHeart).where(donationBoardImg.donationBoard.eq(donationBoardHeart.donationBoard)), "donationBoardheartCount")
+							ExpressionUtils.as(JPAExpressions.select(donationBoardHeart.count()).from(donationBoardHeart).where(donationBoardImg.donationBoard.eq(donationBoardHeart.donationBoard)), "donationBoardheartCount"),
+							donationBoard.donation.donationPerson,
+							donationBoard.donation.startDate,
+							donationBoard.donation.endDate
+							
 						)
 				)
 				.from(donationBoardImg)
