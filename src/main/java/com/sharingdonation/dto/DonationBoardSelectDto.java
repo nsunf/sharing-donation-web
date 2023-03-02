@@ -28,6 +28,8 @@ public class DonationBoardSelectDto {
 	
 	private String address;
 	
+	private String done;
+	
 	private static ModelMapper modelMapper = new ModelMapper();
 	
 	public static DonationBoardSelectDto of(Donation donation) {
