@@ -76,15 +76,20 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 							)
 					)
 					.from(donation)
+//					.join(donation, donationImg.donation)
 					.join(donationImg).on(donation.eq(donationImg.donation))
 					.join(donation.member, member)
+					.where(donationImg.repimgYn.eq("Y"))
 					.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
 					.orderBy(donation.id.desc())
 					.offset(pageable.getOffset())
 					.limit(pageable.getPageSize())
 					.fetch();
 					
-		long total = queryFactory.select(Wildcard.count).from(QDonation.donation)
+		long total = queryFactory.select(Wildcard.count).from(donation)
+					.join(donationImg).on(donation.eq(donationImg.donation))
+					.join(donation.member, member)
+					.where(donationImg.repimgYn.eq("Y"))
 					.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
 					.fetchOne();
 		return new PageImpl<>(content, pageable, total);

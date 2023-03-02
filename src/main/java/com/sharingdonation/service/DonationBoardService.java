@@ -17,14 +17,12 @@ import com.sharingdonation.dto.DonationBoardDto;
 import com.sharingdonation.dto.DonationBoardFormDto;
 import com.sharingdonation.dto.DonationBoardImgDto;
 import com.sharingdonation.dto.DonationBoardSelectDto;
-import com.sharingdonation.dto.SharingBoardCommentDto;
 import com.sharingdonation.entity.Donation;
 import com.sharingdonation.entity.DonationBoard;
 import com.sharingdonation.entity.DonationBoardComment;
+import com.sharingdonation.entity.DonationBoardHeart;
 import com.sharingdonation.entity.DonationBoardImg;
 import com.sharingdonation.entity.Member;
-import com.sharingdonation.entity.SharingBoard;
-import com.sharingdonation.entity.SharingBoardComment;
 import com.sharingdonation.repository.DonationBoardCommentRepository;
 import com.sharingdonation.repository.DonationBoardHeartRepository;
 import com.sharingdonation.repository.DonationBoardImgRepository;
@@ -64,6 +62,7 @@ public class DonationBoardService {
 	
 	
 	
+	
 	//create donation board
 	public Long SaveDonationBoard(DonationBoardFormDto donationBoardFormDto, List<MultipartFile> donationBoardImgFileList) throws Exception{
 		DonationBoard donationBoard = donationBoardFormDto.createDonationBoard();
@@ -92,7 +91,7 @@ public class DonationBoardService {
 	
 	//donation board list
 	@Transactional(readOnly = true)
-	public Page<DonationBoard> getAdminPostDtoPage(Pageable pageable){
+	public Page<DonationBoard> getAdminDonationBoardDtoPage(Pageable pageable){
 		return donationBoardRepository.getAdminDonationBoardPage(pageable);
 	}
 	
@@ -129,6 +128,7 @@ public class DonationBoardService {
 				
 				//이미지 정보를 넣어준다.
 				donationBoardFormDto.setHeartCount(heartCount);
+				donationBoardFormDto.setDonationBoardImgDtoList(donationBoardImgDtoList);
 				donationBoardFormDto.setDonationBoardImgDtoList(donationBoardImgDtoList);
 				
 				
@@ -182,6 +182,57 @@ public class DonationBoardService {
 			}
 			return donationBoardCommentDtoList;
 		}
+
+		
+		//modify
+		public Long donationBoardUpdate(DonationBoardFormDto donationBoardFormDto, List<MultipartFile> donationBoardImgFileList)  throws Exception {
+			System.out.println("donationBoardFormDto.getId() ==== " + donationBoardFormDto.getId());
+			DonationBoard donationBoard = donationBoardRepository.findById(donationBoardFormDto.getId())
+					.orElseThrow(EntityNotFoundException::new);
+			
+			donationBoard.updateDonationBoard(donationBoardFormDto);
+//			System.out.println(" service donationBoardUpdate updateDonationBoard"); 
+			List<Long> donationBoardImgIds = donationBoardFormDto.getDonationBoardImgIds();
+//			 System.out.println(" service donationBoardUpdate donationBoardImgIds");
+			for(int i=0; i<donationBoardImgFileList.size(); i++) {
+//				System.out.println(" service donationBoardUpdate donationBoardImgFileList.size()");
+				donationBoardImgService.updateDonationBoardImg(donationBoardImgIds.get(i), donationBoardImgFileList.get(i));
+//				System.out.println(" service donationBoardUpdate updateDonationBoardImg");
+			}
+			
+			return donationBoard.getId();
+			
+			
+			
+			
+		}
+
+
+		//delete
+		public void deleteDonationBoard(Long donationBoardId) {
+			DonationBoard donationBoard = donationBoardRepository.findById(donationBoardId)
+					.orElseThrow(EntityNotFoundException::new);
+			
+			donationBoardRepository.delete(donationBoard);
+			
+			DonationBoardComment donationBoardComment = donationBoardCommentRepository.findById(donationBoardId)
+					.orElseThrow(EntityNotFoundException::new);
+			
+			donationBoardCommentRepository.delete(donationBoardComment);
+			
+			DonationBoardHeart donationBoardHeart = donationBoardHeartRepository.findById(donationBoardId)
+					.orElseThrow(EntityNotFoundException::new);
+			donationBoardHeartRepository.delete(donationBoardHeart);
+		}
+
+
+
+
+
+
+
+
+		
 		
 		
 }

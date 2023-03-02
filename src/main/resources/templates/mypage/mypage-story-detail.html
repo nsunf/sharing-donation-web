@@ -1,62 +1,92 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/layout1}">
+	layout:decorate="~{layouts/layout2}">
 <head>
 <meta charset="UTF-8">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-	crossorigin="anonymous" />
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <link href="/css/story.css" rel="stylesheet" />
+
+	<script type="text/javascript">
+	
+	function addReadOnly(){
+		$("#storyContent").attr("readonly",true); 
+		$("#setUpdate").show();
+		$("#updateComplete").hide();
+		
+	}
+	function removeReadOnly(){
+		$("#storyContent").removeAttr("readonly"); 
+		$("#setUpdate").hide();
+		$("#updateComplete").show();
+		
+	}
+	
+	
+	function storyContentUpdate() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        var url = "/mypage/story/detail/" + [[${mypage.id}]] +"/"+ [[${detail.id}]];
+        var paramData = {
+        	content : $("#storyContent").val()
+        };
+
+        var param = JSON.stringify(paramData);
+
+        $.ajax({
+            url      : url,
+            type     : "POST",
+            contentType : "application/json",
+            data     : param,
+            beforeSend : function(xhr){
+                /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                xhr.setRequestHeader(header, token);
+            },
+            dataType : "json",
+            cache   : false,
+            success  : function(result, status){
+ 
+                alert("사연이 수정 완료 되었습니다.");
+                /*
+                location.href="/mypage/privacy/" + [[${mypage.id}]];
+                */
+                
+                $("#storyContent").val() = result.content;
+            },
+            error : function(jqXHR, status, error){
+                if(jqXHR.status == '401'){
+                    alert('로그인 후 이용해주세요');
+                    location.href='/';
+                } else{
+                    alert(jqXHR.responseText);
+                }
+            }
+        });
+	}	
+	</script>
+
+	
 <title>Insert title here</title>
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
 		<section>
-
 			<div class="section container" style="width: margin: 0 auto;">
-
-				<div style="display: flex; margin-top: 70px;">
-
-					<div>
-						<div style="border: 1px solid black; width: 280px; height: 630px;">
-							<div
-								style="border-bottom: 1px solid black; width: 100%; height: 315px;">
-								<h2 style="text-align: center; margin-top: 20px;">닉네임</h2>
-								<ul style="list-style: none;">
-									<li style="margin-top: 20px; margin-bottom: 20px;">이름</li>
-									<li style="margin-bottom: 20px;">김김김</li>
-									<li style="margin-bottom: 20px;">가입날짜</li>
-									<li style="margin-bottom: 20px;">YYYY년 MM월 DD일</li>
-								</ul>
-							</div>
-							<ul style="list-style: none;">
-								<li style="margin-top: 40px; margin-bottom: 20px;">개인정보수정</li>
-								<li style="margin-bottom: 20px;">나눔등록내역</li>
-								<li style="margin-bottom: 20px;">나눔받은내역</li>
-								<li style="margin-bottom: 20px;">사연내역</li>
-							</ul>
-						</div>
-					</div>
-
-
-
-					<div style="margin: 0 auto;">
-						<div>
-							<h1
-								style="border-bottom: 5px solid #15C8A0; width: 200px; text-align: left; margin-bottom: 20px;">사연
-								상세</h1>
-						</div>
-
-						<!-- 상세 내용 div -->
+				<div style="display: flex;">
+					<div></div>
+					<div class="mb-3 row"
+						style="display: flex;">
+				
+							
+					<!-- 상세 내용 div -->
 						<div
 							style="width: 780px; height: 800px; background-color: #F0F5F4; margin: 0 auto;">
 							<div style="display: flex;">
 								<img
-									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoC9HzzsvJwl4UPdn6fan8H1P2zxgknfHGCcmQMxRA54QAWk2skELHJIUfs4HspsNl9Ws&usqp=CAU"
-									class="img-thumbnail" alt="..."
+									th:src="${detail.imgUrl}"
+									class="img-thumbnail" th:alt="${detail.imgUrl}"
 									style="width: 350px; height: 300px; margin: 20px 0 0 20px;">
 								<!-- 제목 물품명 작성자 -->
 
@@ -66,9 +96,9 @@
 										<div class="form-floating">
 											<input type="text" class="form-control-plaintext"
 												id="floatingInputGrid" placeholder="name@example.com"
-												value="(서울시 은평구) 장롱 나눔 합니다."
+												th:value="${detail.name}"
 												style="border-style: none; background-color: #F0F5F4;"
-												readonly><label for="floatingInputGrid">제목</label>
+												readonly><label for="floatingInputGrid">상품명</label>
 										</div>
 									</div>
 
@@ -76,18 +106,18 @@
 										<div class="form-floating">
 											<input type="text" class="form-control-plaintext"
 												id="floatingInputGrid" placeholder="name@example.com"
-												value="장롱"
+												th:value="${detail.gugun}"
 												style="border-style: none; background-color: #F0F5F4;"
-												readonly><label for="floatingInputGrid">물품명</label>
+												readonly><label for="floatingInputGrid">지역</label>
 										</div>
 									</div>
 
 
 									<div class="col-md">
-										<div class="form-floating">
+										<div  class="form-floating">
 											<input type="text" class="form-control-plaintext"
 												id="floatingInputGrid" placeholder="name@example.com"
-												value="김김김"
+												th:value="${detail.nickName}"
 												style="border-style: none; background-color: #F0F5F4;"
 												readonly><label for="floatingInputGrid">작성자</label>
 										</div>
@@ -98,36 +128,42 @@
 							<!-- 나눔 등록 사연 -->
 							<div>
 								<div class="form-floating mb-3" style="background-color: #fff; border-radius: 10px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25); width: 700px; height: 130px; margin: 0 auto; margin-top: 20px;">
-									<input type="email" readonly class="form-control-plaintext"
-										id="floatingPlaintextInput" placeholder="name@example.com"
-										value="등록 사연"> <label
+									<input type="text" readonly class="form-control-plaintext"
+										id="floatingPlaintextInput"
+										th:value="${detail.detail}"> <label
 										for="floatingPlaintextInput">나눔 등록 사연</label>
 								</div>
 								<div style="border: 1px solid rgba(0, 0, 0, 0.3); width: 741px; margin: 0 auto;"></div>
 							</div>
 
 								<div class="form-floating mb-3" style="background-color: #fff; border-radius: 10px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25); width: 700px; height: 130px; margin: 0 auto; margin-top: 20px;">
-									<input type="email" readonly class="form-control-plaintext"
-										id="floatingPlaintextInput" placeholder="name@example.com"
-										value="신청 사연"> <label
-										for="floatingPlaintextInput">나눔 신청 사연</label>
+									<input type="text" class="form-control-plaintext"
+										id="storyContent"  
+										th:value="${detail.content}" readonly="readonly"> <label
+										for="storyContent">나눔 신청 사연</label>
 								</div>
 
 							<div
 								style="display: flex; justify-content: space-around; margin-top: 70px;">
-								<button type="submit" class="btn btn-primary btn-3">삭제</button>
-								<button type="submit" class="btn btn-primary btn-2">등록</button>
+								<button type="button" id="delete" class="btn btn-primary btn-3">삭제</button>
+								<button type="button" id="setUpdate" onclick="removeReadOnly()"  class="btn btn-primary btn-2" style="display:">수정</button>
+								<button type="button" id="updateComplete" onclick="addReadOnly(); storyContentUpdate();" class="btn btn-primary btn-2" style="display: none;">수정완료</button>
+								
 							</div>
 						</div>
+
+
+			
 					</div>
+
 				</div>
+
+
 			</div>
+
 		</section>
 	</th:block>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-		crossorigin="anonymous"></script>
+
 
 </body>
 </html>

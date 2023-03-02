@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MyPagePrivacyDto {
+public class MyPageEnterPricePrivacyDto {
 
 	private Long id;
 	
@@ -19,7 +19,11 @@ public class MyPagePrivacyDto {
 	
 	private String email;
 	
-	private LocalDate birth;
+	private String cellphone;
+	
+	private String comNum;
+	
+	private String fax;
 	
 	private String nickName;
 	
@@ -34,13 +38,15 @@ public class MyPagePrivacyDto {
 	private Role role;
 
 	//디폴트 생성자
-	public MyPagePrivacyDto() {}
+	public MyPageEnterPricePrivacyDto() {}
 
-	public MyPagePrivacyDto(Long id,Role role ,String name, String email,LocalDate birth, String nickName, String zipCode, String address, String addressDetail, LocalDateTime regTime) {
+	public MyPageEnterPricePrivacyDto(Long id,Role role ,String cellphone, String comNum, String fax  , String name, String email,  String nickName, String zipCode, String address, String addressDetail, LocalDateTime regTime) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
-		this.birth = birth;
+		this.cellphone = cellphone;
+		this.comNum = comNum;
+		this.fax = fax;
 		this.nickName = nickName;
 		this.zipCode = zipCode;
 		this.address = address;

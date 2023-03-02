@@ -13,24 +13,39 @@
 	<th:block layout:fragment="layout-content">
 
 		<section class="my-5 auto-min-height">
-			<h2 class="text-center border-bottom pb-4">나눔 상품 신청 관리</h2>
-			<form class="container" action="" method="post" enctype="multipart/form-data">
+			<h2 class="text-center border-bottom pb-4">기부 관리</h2>
+			<form name="adminDonationForm" class="container" method="post" enctype="multipart/form-data" th:object="${donationAdminFormDto}">
+				<input type="hidden" th:field="*{id}">
+				<input type="hidden" th:field="*{confirmYn}">
+				<input type="hidden" th:field="*{delYn}">
+				<input type="hidden" th:field="*{done}">
 				<div class="row">
 				 <div class="col-8 mx-auto">
-				 
-				 	<div class="hstack">
+				 	<label class="input-label w-100" for="">
+						<span class="d-block ms-2 mb-1">기부 요청 주제</span>
+						<input class="input-box w-100 p-3" type="text" placeholder="기부 요청 주제" th:field="*{subject}">
+						<p th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}" class="fieldError text-danger fw-normal">Incorrect Data</p>
+					</label>
+					<div class="hstack">
 						<label class="input-label w-100" for="">
-							<span class="d-block ms-2 mb-1">등록자</span>
-							<input class="input-box w-100 p-3" type="text" value="등록자" readonly>
+							<span class="d-block ms-2 mb-1">기부처 기관명</span>
+							<input class="input-box w-100 p-3" type="text" placeholder="기부처 기관명" th:field="*{donationName}">
+							<p th:if="${#fields.hasErrors('donationName')}" th:errors="*{donationName}" class="fieldError text-danger fw-normal">Incorrect Data</p>
 						</label>
 
 						<label class="input-label w-100" for="">
-							<span class="d-block ms-2 mb-1">등록 날짜</span>
-							<input class="input-box w-100 p-3" type="date" value="2022-02-20" readonly>
+							<span class="d-block ms-2 mb-1">기부처 담당자</span>
+							<input class="input-box w-100 p-3" type="text" placeholder="기부처 담당자" th:field="*{donationPerson}">
+							<p th:if="${#fields.hasErrors('donationPerson')}" th:errors="*{donationPerson}" class="fieldError text-danger fw-normal">Incorrect Data</p>
 						</label>
 				 	</div>
-
 				 	<div class="hstack">
+						<label class="input-label w-100" for="">
+							<span class="d-block ms-2 mb-1">기부처 전화번호</span>
+							<input class="input-box w-100 p-3" type="text" placeholder="기부처 전화번호" th:field="*{donationTel}">
+							<p th:if="${#fields.hasErrors('donationTel')}" th:errors="*{donationTel}" class="fieldError text-danger fw-normal">Incorrect Data</p>
+						</label>
+
 						<label class="input-label w-100" for="">
 							<span class="d-block ms-2 mb-1">상태</span>
 							<div class="btn text-white" style="background: var(--thm-primary);">승인대기</div>
@@ -38,35 +53,61 @@
 							<div class="btn text-white" style="background: var(--thm-gray);">취소</div>
 <!-- 							<input class="input-box w-100 p-3" type="text" value="등록자" readonly>
  -->						</label>
+						</label>
+				 	</div>
+				 	<div class="hstack">
+						<label class="input-label w-100" for="">
+							<span class="d-block ms-2 mb-1">주소</span>
+							<input class="input-box w-100 p-3" type="text" placeholder="우편번호" readonly th:field="*{zipCode}">
+						</label>
 
 						<label class="input-label w-100" for="">
-							<span class="d-block ms-2 mb-1">포인트</span>
-							<input class="input-box w-100 p-3" type="number" placeholder="0" >
+							<div class="btn text-white" style="background: var(--thm-primary);">우편번호 찾기</div>
+						</label>
+				 	</div>
+				 	
+				 	<label class="input-label w-100" for="">
+						<input class="input-box w-100 p-3" type="text" placeholder="주소" th:field="*{address}">
+					</label>
+					
+					<label class="input-label w-100" for="">
+						<input class="input-box w-100 p-3" type="text" placeholder="상세주소" th:field="*{addressDetail}">
+					</label>
+
+				 	
+				 	<div class="hstack">
+						<label class="input-label w-100" for="">
+							<span class="d-block ms-2 mb-1">기부금액</span>
+							<input class="input-box w-100 p-3" type="number" placeholder="0" th:field="*{price}" >
+						</label>
+						<label class="input-label w-100" for="">
+							<span class="d-block ms-2 mb-1">목표포인트</span>
+							<input class="input-box w-100 p-3" type="number" placeholder="0" th:field="*{goalPoint}" >
+							<p th:if="${#fields.hasErrors('goalPoint')}" th:errors="*{goalPoint}" class="fieldError">Incorrect Data</p>
 						</label>
 				 	</div>
 
+					<div class="hstack">
+						<label class="input-label w-100" for="">
+							<span class="d-block ms-2 mb-1">시작일</span>
+							<input class="input-box w-100 p-3" type="date" th:field="*{startDate}"><!--  th:pattern="'yyyy-MM-dd'" -->
+						</label>
 
-				 <label class="input-label">나눔 지역</label>
-				 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-						<option selected>지역을 선택해주세요.</option>
-						<option value="1">One</option>
-						<option value="2">Two</option>
-						<option value="3">Three</option>
-					</select>
-
-					<label class="input-label w-100" for="">
-						<span class="d-block ms-2 mb-1">나눔 물품명</span>
-						<input class="input-box w-100 p-3" type="text" placeholder="나눔 물품명">
-					</label>
+						<label class="input-label w-100" for="">
+							<span class="d-block ms-2 mb-1">종료일</span>
+							<input class="input-box w-100 p-3" type="date"  th:field="*{endDate}"><!--  th:pattern="'yyyy-MM-dd'" -->
+						</label>
+				 	</div>
 
 					<label class="input-label w-100" for="">
-						<span class="d-block ms-2 mb-1">나눔 상세 설명</span>
-						<textarea class="input-box w-100 p-3" type="text" placeholder="나눔 물품 상세 설명"></textarea>
+						<span class="d-block ms-2 mb-1">기부 상세 설명</span>
+						<textarea class="input-box w-100 p-3" type="text" placeholder="기부 물품 상세 설명"  th:field="*{detail}"></textarea>
+						<p th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}" class="fieldError">Incorrect Data</p>
 					</label>
 
 					<label class="input-label w-100">
-						<span class="d-block ms-2 mb-1">물품 사진 등록</span>
-						<input class="img-input w-100" type="file" accept="image/*" multiple>
+						<span class="d-block ms-2 mb-1">기부 사진 등록</span>
+						<input class="img-input w-100" type="file" accept="image/*" id="donationImgFile" name="donationImgFile" multiple>
 					</label>
 				 </div>
 				</div>
@@ -92,19 +133,51 @@
 					</div>
 				</div>
 
+				
+				
 				<div class="row mt-4">
 					<div class="col-8 mx-auto hstack">
-						<button class="custom-btn custom-btn-del ms-auto">취소</button>
-						<button class="custom-btn ms-3">수정</button>
-						<button class="custom-btn ms-3">승인</button>
+						<button class="custom-btn custom-btn-del ms-auto" reset>취소</button>
+						<button class="custom-btn ms-3" type="submit">수정</button>
+						
+						<th:block th:if="*{confirmYn == 'N'}" > 
+						
+						<button class="custom-btn ms-3" type="button" onclick="confirm();">승인</button>
+						</th:block>
+						<th:block th:if="*{done == 'N'}">
+						
+						<button class="custom-btn ms-3" type="button">완료</button>
+						</th:block>
 					</div>
 				</div>
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 			</form>
 		</section>
 
 	</th:block>
 
 	<th:block layout:fragment="script-bottom">
+	<script>
+		function confirm() {
+			let form = document.adminDonationForm;
+			let confirm=document.getElementsByName("confirmYn");
+			confirm.value = "Y";
+			/* console.log(confirm.value);
+			return false; */
+			/*  */form.submit();
+			/*let form = do cument.adminDonationForm;
+			form.action="/admin/donation/confirm" + [[${donationAdminFormDto.id}]]; */
+		}
+		
+		function done() {
+			let form = document.adminDonationForm;
+			let done=document.getElementsByName("done");
+			done.value = "Y";
+			/* console.log(confirm.value);
+			return false; */
+			/*  */form.submit();
+		}
+	</script>
 		<script src="/js/imgInputPreview.js"></script>
 		<script src="/js/setAutoHeight.js"></script>
 	</th:block>

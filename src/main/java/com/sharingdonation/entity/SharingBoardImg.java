@@ -26,7 +26,7 @@ public class SharingBoardImg {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="shring_board_id")
+	@JoinColumn(name="sharing_board_id")
 	private SharingBoard sharingBoard;
 	
 	@Column(nullable = false, columnDefinition = "varchar(100)")
@@ -41,4 +41,9 @@ public class SharingBoardImg {
 	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String repimgYn;
 	
+	public void updateSharingBoardImg(String imgName, String oriImgName, String imgUrl) {
+		this.imgName = imgName;
+		this.oriImgName = oriImgName;
+		this.imgUrl = imgUrl;
+	}
 }

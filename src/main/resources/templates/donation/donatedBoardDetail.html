@@ -6,6 +6,8 @@
 >
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>Insert title here</title>
 <link
 	rel="stylesheet"
@@ -32,8 +34,7 @@
                     <div class="swiper-wrapper">
                       <div class="swiper-slide">
                         <img
-                          src="https://picsum.photos/id/104/1920/1080"
-                          alt=""
+                          th:src="${donationBoard.donationBoardImgDtoList[0].ImgUrl}" th:alt="${donationBoard.id}"
                         />
                       </div>
                       <div class="swiper-slide">
@@ -101,7 +102,7 @@
                   <div class="content-detail-nav">
                     <ul class="list-unstyled news-details__meta navleft">
                       <li th:text="${#temporals.format(donationBoard.regTime, 'yyyy-MM-dd')}"></li>
-                      <li class="content-detail-like">
+                      <li class="">
                       <button class="like-btn d-flex justify-content-center align-items-center">
              			 <div class="like" th:classappend="${donationBoardHeartDto == null} ? 'like-false' : 'like-true'" th:onclick="'toggleDonationBoardHeart(' + ${donationBoardId} + ');'"></div>
              			 <span class="like-count px-1" style="font-size: 12px; color:var(--thm-primary);" th:text="${donationBoard.heartCount}"></span>
@@ -155,11 +156,25 @@
                 <div class="comment-form">
 					<h3 class="comment-form__title">댓글 작성</h3>
 					<form th:action="@{/donatedBoard/}+${donationBoardId}+ @{/comment}" method="post">
-								<div class="comment-form__input-box" style="line-height:initial;">
+							<div class="comment-form__input-box" style="line-height:initial;">
 								<textarea name="comment" placeholder="create your comments"></textarea>
-								</div>
-																
-							<button type="submit" class="thm-btn comment-form__btn">제 출<i class="fas fa-arrow-circle-right" style="padding-left: 10px;"></i></button>
+							</div>
+							
+              				
+           								
+							<button type="submit" class="thm-btn comment-form__btn" style="margin-left:5px;">제 출<i class="fas fa-arrow-circle-right" style="padding-left: 10px;"></i></button>
+              
+              				<button class="thm-btn comment-form__btn" style="margin-left:5px;" type="button" sec:authorize="hasAnyAuthority('ROLE_ADMIN')" 
+             						 th:value="${donationBoard.id}" onclick="deleteDonationBoard(this.value)">삭 제 
+              				</button>
+              				
+              				<button id="submit" class="thm-btn comment-form__btn" style="margin-left:5px;" type="submit" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+               						<a th:href="'/admin/donatedBoard/' + ${donationBoardId}">수 정</a> <span></span>
+              				</button>
+              			
+              				<button id="" class="thm-btn comment-form__btn" style="margin-left:5px;" type="submit">
+               					 	<a href="/donatedBoard">뒤로가기 </a> <span></span>
+          					</button>
 					</form>
 												 
 				</div>
@@ -181,8 +196,48 @@
         },
       });
       
+     
+		function deleteDonationBoard(donationBoardId){
+	      	let deleteConf = confirm("삭제하시겠습니까?");    
+	      	
+	      	if(!deleteConf) return; //취소 버튼 누르면 삭제 취소
+	      	
+	         var token = $("meta[name='_csrf']").attr("content");
+	         var header = $("meta[name='_csrf_header']").attr("content");
+	         
+	         var url = "/admin/donatedBoard/" + donationBoardId + "/delete";
+
+	         $.ajax({
+	             url      : url,
+	             type     : "DELETE",
+	             beforeSend : function(xhr){
+	                 /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+	                 xhr.setRequestHeader(header, token);
+	             },
+	             dataType : "json",
+	             cache   : false,
+	             success  : function(result, status){
+	             	alert("삭제 되었습니다.");
+	             	location.href='/admin/donatedBoard';
+	             },
+	             error : function(jqXHR, status, error){
+
+	                 if(jqXHR.status == '401'){
+	                     alert('로그인 후 이용해주세요');
+	                     location.href='/auth/login';
+	                 } else{
+	                     alert(jqXHR.responseJSON.message);
+	                 }
+
+	             }
+	         });
+	      }
+      
     </script>
     <script src="/js/longsiru/donationBoardDetail.js"></script>
+    
+    
+    
 	</th:block>
 </body>
 </html>

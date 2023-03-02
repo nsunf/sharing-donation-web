@@ -58,6 +58,8 @@ public class DonationDto {
 	
 	private Integer pointSum;
 	
+	private Integer pointPer;
+	
 	@QueryProjection
 	public DonationDto(Long id, String subject
 			, String donationName

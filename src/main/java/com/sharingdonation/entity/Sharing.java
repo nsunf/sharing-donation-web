@@ -43,6 +43,7 @@ public class Sharing {
 	@Column(nullable = false, columnDefinition = "varchar(100)")
 	private String name;
 	
+	
 	@Column(nullable = false, columnDefinition = "text")
 	private String detail;
 	
@@ -55,6 +56,7 @@ public class Sharing {
 	
 	@Column(nullable = false)
 	private LocalDateTime regTime;
+
 	
 	private LocalDateTime upDateTime; //게시글 수정날짜
 	

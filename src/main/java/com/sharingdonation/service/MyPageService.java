@@ -1,10 +1,15 @@
 package com.sharingdonation.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sharingdonation.dto.MyPageEnterPricePrivacyDto;
 import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.MyPagePrivacyDto;
+import com.sharingdonation.dto.MyPageStoryDetailDto;
+import com.sharingdonation.dto.MyPageStoryListDto;
 import com.sharingdonation.entity.Member;
 import com.sharingdonation.repository.MyPageRepository;
 
@@ -34,6 +39,35 @@ public class MyPageService {
 
 		return myPageRepository.updateMyPrivacy(myPagePrivacyDto,memberId);
 	}
+	
+	@Transactional(readOnly = true)
+	public MyPageEnterPricePrivacyDto getMyPageEnterPricePrivacyDto(Long memberId) {
+		return myPageRepository.getMyPageEnterPricePrivacy(memberId);
+	}
+	
+	@Transactional
+	public Long myEnterpricePrivacyUpdate(MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto,Long memberId) {
+
+		return myPageRepository.updateMyEnterPricePrivacy(myPageEnterPricePrivacyDto,memberId);
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<MyPageStoryListDto> getMyPageStoryList(Long memberId, Pageable pageable){
+		return myPageRepository.getMyPageStoryList(memberId, pageable);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	public MyPageStoryDetailDto getMyPageStoryDetail(Long memberId, Long storyId){
+		return myPageRepository.getMyPageStoryDetail(memberId,storyId);
+		
+	}
+	
+	@Transactional
+	public Long myPageStoryDetailUpdate(MyPageStoryDetailDto myPageStoryDetailDto, Long memberId, Long storyId) {
+		return myPageRepository.updateMyPageStoryDetail(myPageStoryDetailDto, memberId, storyId);
+	}
+	
 	
 	
 	
