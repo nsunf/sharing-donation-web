@@ -1,5 +1,6 @@
 package com.sharingdonation.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -7,6 +8,7 @@ import org.modelmapper.ModelMapper;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
+import com.sharingdonation.entity.Donation;
 import com.sharingdonation.entity.DonationBoard;
 
 import lombok.Getter;
@@ -32,7 +34,15 @@ public class DonationBoardDto {
 	
 	private Long donationBoardheartCount;
 	
-//	private static ModelMapper modelMapper = new ModelMapper();
+	private String donationPerson;
+	
+	private LocalDate startDate;
+	
+	private LocalDate endDate;
+	
+	private DonationBoardSelectDto donationBoardSelectDto;
+	
+	//private static ModelMapper modelMapper = new ModelMapper();
 	
 //	//dto를 엔티티로 바꿈
 //	public DonationBoard donationPost() {
@@ -46,7 +56,7 @@ public class DonationBoardDto {
 	
 	@QueryProjection
 	public DonationBoardDto(Long id, Long donationId, String subject, String content,  String regTime, String imgUrl
-			, Long commentCount, Long donationBoardheartCount) {
+			, Long commentCount, Long donationBoardheartCount, String donationPerson, LocalDate startDate, LocalDate endDate) {
 		this.id = id;
 		this.donationId = donationId;
 		this.subject = subject;
@@ -55,7 +65,18 @@ public class DonationBoardDto {
 		this.imgUrl = imgUrl;
 		this.commentCount = commentCount;
 		this.donationBoardheartCount = donationBoardheartCount;
+		this.donationPerson = donationPerson;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
+	
+//	public static DonationBoardDto of(DonationBoard donationBoard) {
+//		DonationBoardDto result = modelMapper.map(donationBoard, DonationBoardDto.class); 
+//		Donation donation = donationBoard.getDonation();
+//		result.setDonationBoardSelectDto(DonationBoardSelectDto.of(donation));
+//		return result;
+//		
+//	}
 
 	
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 //import com.myshop.controller.SessionManager;
 import com.sharingdonation.dto.MemberFormDto;
+import com.sharingdonation.dto.CorpFormDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -49,8 +50,34 @@ public class MemberController {
             memberService.saveMember(member);
         } catch (IllegalStateException e){
         	e.printStackTrace();
-            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("errorMessage",  e.getMessage());
             return "auth/signupNormal";
+        }
+
+        return "redirect:/";
+	} 
+	
+	//////////////////////////////////////////////////////////////////////////////////////
+	
+    @GetMapping(value = "/newCorp")
+    public String CorpForm(Model model){
+        model.addAttribute("corpFormDto", new CorpFormDto());
+        return "auth/signupCorp";
+    }
+	
+	@PostMapping(value = "/newCorp")
+	public String newCorp(@Valid CorpFormDto corpFormDto, BindingResult bindingResult, Model model) {
+		if(bindingResult.hasErrors()){
+            return "auth/signupCorp";
+        }
+		
+		try {
+            Member corp = Member.createCorp(corpFormDto, passwordEncoder);
+            memberService.saveCorp(corp);
+        } catch (IllegalStateException e){
+        	e.printStackTrace();
+            model.addAttribute("errorMessage", e.getMessage());
+            return "auth/signupCorp";
         }
 
         return "redirect:/";

@@ -52,14 +52,11 @@
       <div class="row mt-5">
         <div class="col-10 col-lg-3 mx-auto" > 
         
-        <script type="text/javascript">
-</script>
-
         <th:block th:switch=${mypage.role}>
-		      <div th:case="${T(com.sharingdonation.constant.Role).USER}" >
+		      <div th:if="${#strings.equals(mypage.role, T(com.sharingdonation.constant.Role).USER)}">
 		      <th:block th:replace="fragments/mypageSide::mypageSide(${mypage.name},${mypage.regTime},${mypage.id},${mypage.nickName})"></th:block> 
 		      </div>
-		      <div th:case="${T(com.sharingdonation.constant.Role).COM}" >
+		      <div th:if="${#strings.equals(mypage.role, T(com.sharingdonation.constant.Role).COM)}">
 		      <div th:replace="fragments/mypageEnterpriceSide::mypageEnterpriceSide(${mypage.name},${mypage.regTime},${mypage.id},${mypage.nickName})"></div> 
 		      </div>
  		</th:block>

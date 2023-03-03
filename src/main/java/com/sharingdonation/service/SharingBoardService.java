@@ -16,6 +16,7 @@ import org.thymeleaf.util.StringUtils;
 import com.sharingdonation.dto.SharingBoardCommentDto;
 import com.sharingdonation.dto.SharingBoardDto;
 import com.sharingdonation.dto.SharingBoardFormDto;
+import com.sharingdonation.dto.SharingBoardImgDto;
 import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.Sharing;
 import com.sharingdonation.entity.SharingBoard;
@@ -43,6 +44,7 @@ public class SharingBoardService {
 	private final SharingRepository sharingRepository;
 	private final SharingBoardImgService sharingBoardImgService;
 	private final SharingBoardHeartRepository sharingBoardHeartRepository;
+	private final SharingBoardImgRepository sharingBoardImgRepository;
 	
 	//게시글 보여줌. 페이징, 검색
 	@Transactional(readOnly = true)
@@ -63,6 +65,27 @@ public class SharingBoardService {
 		return sharingBoardDtoPage;
 	}
 
+	//나눔완료 게시글 가져옴
+		public SharingBoardFormDto getSharingBoardFormDetail(Long sharingBoard_id) {
+			List<SharingBoardImg> sharingBoardImgList = sharingBoardImgRepository.findBySharingIdOrderByIdAsc(sharingBoard_id);
+			List<SharingBoardImgDto> sharingBoardImgDtoList = new ArrayList<>();
+			
+			for(SharingBoardImg sharingBoardImg : sharingBoardImgList) {
+				SharingBoardImgDto sharingBoardImgDto = SharingBoardImgDto.of(sharingBoardImg);
+				
+				sharingBoardImgDtoList.add(sharingBoardImgDto);
+			}
+			
+			SharingBoard sharingBoard = sharingBoardRepository.findById(sharingBoard_id)
+										.orElseThrow(EntityNotFoundException::new);
+			
+			SharingBoardFormDto sharingBoardFormDto = SharingBoardFormDto.of(sharingBoard);
+			
+			sharingBoardFormDto.setSharingBoardImgDtoList(sharingBoardImgDtoList);
+			
+			return sharingBoardFormDto;
+		}
+	
 	// 나눔완료 게시글 상세페이지 데이터 가져오기
 	@Transactional(readOnly = true)
 	public SharingBoardDto getCompletePost(Long id) {
@@ -83,9 +106,7 @@ public class SharingBoardService {
 	// 나눔완료 게시글 여러 댓글들 보여줌
 	@Transactional(readOnly = true)
 	public List<SharingBoardCommentDto> getBoardCommentList(Long id) {
-		System.out.println("확인 : start");
 		List<SharingBoardComment> sharingBoardCommentList = sharingBoardCommentRepository.findBySharingBoardId(id);
-		System.out.println("확인 : start1" + sharingBoardCommentList);
 		List<SharingBoardCommentDto> sharingBoardCommentDtoList = new ArrayList<>();
 
 		for (SharingBoardComment sharingBoardComment : sharingBoardCommentList) {

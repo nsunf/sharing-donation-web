@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.sharingdonation.entity.BaseEntity;
 import com.sharingdonation.constant.Role;
+import com.sharingdonation.dto.CorpFormDto;
 import com.sharingdonation.dto.MemberFormDto;
 
 import lombok.Getter;
@@ -102,4 +103,28 @@ public class Member extends BaseEntity {
 		member.setRole(Role.USER);
 		return member;
 	}
+	
+	public static Member createCorp(CorpFormDto corpFormDto, PasswordEncoder passwordEncoder) {
+		Member corp = new Member();
+		corp.setNickName(corpFormDto.getNickName());
+		corp.setName(corpFormDto.getName());
+		corp.setZipCode(corpFormDto.getZipCode());
+		corp.setAddress(corpFormDto.getAddress());
+		corp.setAddressDetail(corpFormDto.getAddressDetail());
+		corp.setCellphone(corpFormDto.getCellphone());
+		corp.setFax(corpFormDto.getFax());
+		LocalDate date = LocalDate.parse(corpFormDto.getBirth(), DateTimeFormatter.ISO_DATE);
+		corp.setBirth(date);
+		corp.setEmail(corpFormDto.getEmail());
+		
+		String password = passwordEncoder.encode(corpFormDto.getPassword());
+		corp.setPassword(password);
+		
+		corp.setDelYn("N");
+		
+		corp.setRole(Role.COM);
+		return corp;
+	}
+	
+	
 }

@@ -44,7 +44,7 @@ public class DonationBoardImgService {
 			DonationBoardImg savedDonationBoardImg = donationBoardImgRepository.findById(donationBoardImgId)
 					.orElseThrow(EntityNotFoundException::new);
 			
-			//기존 이미지 파일 삭
+			//기존 이미지 파일 삭제 
 			if(!StringUtils.isEmpty(savedDonationBoardImg.getImgName())) {
 				fileService.deleteFile(donationBoardImgLocation + "/" + savedDonationBoardImg.getImgName());
 			}
@@ -52,17 +52,22 @@ public class DonationBoardImgService {
 			//수정된 이미지 파일 업로드
 			String oriImgName = donationBoardImgFile.getOriginalFilename();
 			String imgName = fileService.uploadFile(donationBoardImgLocation, oriImgName, donationBoardImgFile.getBytes());
-			String imgUrl = "/donatedimages/donatedBoard" + imgName;
+			String imgUrl = "/donatedimages/donatedBoard/" + imgName;
 			
-			savedDonationBoardImg.updateDonationBoardImg(oriImgName, imgName, imgUrl);
+			savedDonationBoardImg.updateDonationBoardImg(imgName, oriImgName, imgUrl);
 			
 		}
 	}
 
+	
+	
+	
 	public void deleteDonationBoardImg(Long donationBoardId) throws Exception{
 		DonationBoardImg deleteDonationBoardImg = donationBoardImgRepository.findById(donationBoardId)
 				.orElseThrow(EntityNotFoundException::new);
 		
+		
+		//기존 이미지 파일 삭제
 		if(!StringUtils.isEmpty(deleteDonationBoardImg.getImgName())) {
 			fileService.deleteFile(donationBoardImgLocation + "/" + deleteDonationBoardImg.getImgName());
 		}

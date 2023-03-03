@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -75,11 +76,30 @@ public class SharingBoardController {
 		return "sharing/sharedDetail";
 	}
 
+	//게시글 수정 페이지 보여줌
+	@GetMapping(value = "/admin/edit/{sharingBord_id}")
+	public String viewUpdateSharingBoard(@PathVariable("sharingBord_id")Long sharingBoard_id, Model model) {
+		try {
+			SharingBoardFormDto sharingBoardFormDto = sharingBoardService.getSharingBoardFormDetail(sharingBoard_id);
+			model.addAttribute(sharingBoardFormDto);
+			model.addAttribute("sharedPosts",sharingBoardService.getCompletePost(sharingBoard_id));
+		}catch(EntityNotFoundException e) {
+			model.addAttribute("errorMessage", "존재하지 않는 게시글입니다.");
+			model.addAttribute("sharongBoardFormDto", new SharingBoardFormDto());
+			return "admin/editSharedBoard";
+		}
+		return "admin/editSharedBoard";
+	}
+	
+	/*
 	// 게시글 수정
 	@PostMapping(value = "/view/{shared_post_id}")
 	public String updateSharingBoard(@Valid SharingBoardFormDto sharingBoardFormDto, BindingResult bindingResult, Model model) {
-
+		if() {
+			
+		}
 	}
+	*/
 
 	// 댓글 등록
 	@PostMapping(value = "/view/{shared_post_id}/comment")
@@ -141,6 +161,8 @@ public class SharingBoardController {
 		}
 		return "redirect:/sharing_board";
 	}
+	
+	
 
 	///////////////////////////////////////////////
 	// admin 나눔완료 게시글 관리 게시판 페이지 보여줌
