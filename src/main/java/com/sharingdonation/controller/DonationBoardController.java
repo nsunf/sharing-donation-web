@@ -53,9 +53,10 @@ public class DonationBoardController {
 	//show the donated board create page
 	
 	@GetMapping(value = "/admin/donatedBoard/edit")
-	public String addDonatedBoard(Model model) { 
+	public String addDonatedBoard( Model model) { 
 		model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
 		model.addAttribute("donationBoardFormDto", new DonationBoardFormDto());
+		//model.addAttribute("donationBoardImgDtoList", donationBoardImgService.getDonationBoardImgDtoList(donationBoardId));
 		return "admin/editDonatedBoard"; 
 	}
 	
@@ -159,7 +160,7 @@ public class DonationBoardController {
 //		model.addAttribute("localDateTime",LocalDateTime.now());
 //		model.addAttribute("df",DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		//model.addAttribute("commentFormDto", new CommentFormDto());
-		
+		model.addAttribute("donationBoardImgDtos", donationBoardImgDtos);
 		
 		return "donation/donatedBoardDetail";
 		
@@ -200,6 +201,7 @@ public class DonationBoardController {
 				DonationBoardFormDto donationBoardFormDto = donationBoardService.getdonationBoardDetail(donationBoardId);   //get detail
 				model.addAttribute(donationBoardFormDto);
 				model.addAttribute("donations", donationBoardService.getDonationBorardSelect());  //get select list
+				//model.addAttribute("donationBoardImgDtoList", donationBoardImgService.getDonationBoardImgDtoList(donationBoardId));
 			} catch (EntityNotFoundException e) {
 				model.addAttribute("errorMessage","This danatioBoard that dose not exist." );
 				model.addAttribute("donationBoardFormDto", new DonationBoardFormDto());
@@ -239,7 +241,7 @@ public class DonationBoardController {
 				model.addAttribute("errorMessage", "An error occurred while modifying.");
 				return "admin/editDonatedBoard";
 			}
-			return "redirect:/admin/donatedBoard";
+			return "redirect:/admin/donatedBoards";
 			
 		}
 		

@@ -46,8 +46,5 @@ public class DonationBoard {
 		this.subject = donationBoardFormDto.getSubject();
 		this.content = donationBoardFormDto.getContent();
 		this.regTime = donationBoardFormDto.getRegTime();
-		
-		
-		
 	}
 }

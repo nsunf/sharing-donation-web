@@ -62,6 +62,8 @@ public class DonationBoardService {
 	
 	
 	
+	
+	
 	//create donation board
 	public Long SaveDonationBoard(DonationBoardFormDto donationBoardFormDto, List<MultipartFile> donationBoardImgFileList) throws Exception{
 		DonationBoard donationBoard = donationBoardFormDto.createDonationBoard();
@@ -129,7 +131,6 @@ public class DonationBoardService {
 				
 				//이미지 정보를 넣어준다.
 				donationBoardFormDto.setHeartCount(heartCount);
-				donationBoardFormDto.setDonationBoardImgDtoList(donationBoardImgDtoList);
 				donationBoardFormDto.setDonationBoardImgDtoList(donationBoardImgDtoList);
 				
 				
@@ -199,14 +200,22 @@ public class DonationBoardService {
 					.orElseThrow(EntityNotFoundException::new);
 			
 			donationBoard.updateDonationBoard(donationBoardFormDto);
-//			System.out.println(" service donationBoardUpdate updateDonationBoard"); 
-			List<Long> donationBoardImgIds = donationBoardFormDto.getDonationBoardImgIds();
-//			 System.out.println(" service donationBoardUpdate donationBoardImgIds");
-			for(int i=0; i<donationBoardImgFileList.size(); i++) {
-//				System.out.println(" service donationBoardUpdate donationBoardImgFileList.size()");
-				donationBoardImgService.updateDonationBoardImg(donationBoardImgIds.get(i), donationBoardImgFileList.get(i));
-//				System.out.println(" service donationBoardUpdate updateDonationBoardImg");
-			}
+			System.out.println(" service donationBoardUpdate updateDonationBoard"); 
+//			List<Long> donationBoardImgIds = donationBoardFormDto.getDonationBoardImgIds();
+			 System.out.println(" service donationBoardUpdate donationBoardImgIds");
+			 if(donationBoardImgFileList.size() >= 0 && !donationBoardImgFileList.get(0).isEmpty()) {
+				 donationBoardImgService.deleteImgsByDonationBoardId(donationBoardFormDto.getId());
+				 
+				for(int i=0; i<donationBoardImgFileList.size(); i++) {
+					System.out.println(" service donationBoardUpdate donationBoardImgFileList.size() index == " + i);
+					DonationBoardImg donationBoardImg = new DonationBoardImg();
+					donationBoardImg.setDonationBoard(donationBoard);
+					donationBoardImg.setRepimgYn(i == 0 ? "Y" : "N");
+					donationBoardImgService.saveDonationBoardImg(donationBoardImg, donationBoardImgFileList.get(i));
+//					donationBoardImgService.updateDonationBoardImg(donationBoardImgIds.get(i), donationBoardImgFileList.get(i));
+					System.out.println(" service donationBoardUpdate updateDonationBoardImg");
+				}
+			 }
 			
 			return donationBoard.getId();
 			
