@@ -172,12 +172,14 @@ public class DonationBoardService {
 				DonationBoardCommentDto donationBoardCommentDto = DonationBoardCommentDto.of(donationBoardComment);
 //				System.out.println("확인 : start3");
 				
-				String donatedWriteCommentMember = donationBoardComment.getMember().getNickName();
+				//String donatedWriteCommentMember = donationBoardComment.getMember().getNickName(); 修改前直接用这个方法得到昵称，但是要得到两个的话，在会员这里截止，然后分别得到两个值。
+				Member donatedWriteCommentMember = donationBoardComment.getMember();
+				
 //				System.out.println("확인 : start4"+donationBoardComment.getMember().getNickName());
 				
-				donationBoardCommentDto.setCommentMember(donatedWriteCommentMember);
+				donationBoardCommentDto.setCommentMember(donatedWriteCommentMember.getNickName());
 //				System.out.println("확인 : start5"+donationBoardCommentDto.getComment());
-				
+				donationBoardCommentDto.setCommentEmail(donatedWriteCommentMember.getEmail());
 				
 				donationBoardCommentDtoList.add(donationBoardCommentDto);
 

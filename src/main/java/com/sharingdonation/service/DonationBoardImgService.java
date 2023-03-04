@@ -37,7 +37,7 @@ public class DonationBoardImgService {
 		
 		if(!StringUtils.isEmpty(oriImgName)) {
 			imgName = fileService.uploadFile(donationBoardImgLocation, oriImgName, donationBoardImgFile.getBytes());
-			imgUrl = "/donatedimages/donatedBoard/" + imgName;
+			imgUrl = "/images/donatedBoard/" + imgName;
 		}
 		
 		donationBoardImg.updateDonationBoardImg(imgName, oriImgName, imgUrl);
@@ -74,7 +74,7 @@ public class DonationBoardImgService {
 			//수정된 이미지 파일 업로드
 			String oriImgName = donationBoardImgFile.getOriginalFilename();
 			String imgName = fileService.uploadFile(donationBoardImgLocation, oriImgName, donationBoardImgFile.getBytes());
-			String imgUrl = "/donatedimages/donatedBoard/" + imgName;
+			String imgUrl = "/images/donatedBoard/" + imgName;
 			
 			savedDonationBoardImg.updateDonationBoardImg(imgName, oriImgName, imgUrl);
 			

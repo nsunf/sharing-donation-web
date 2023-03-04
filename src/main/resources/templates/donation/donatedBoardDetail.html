@@ -23,9 +23,9 @@
 							<div class="col-12 mx-auto">
 								<div class="swiper mySwiper position-relative overflow-hidden">
 									<div class="swiper-wrapper">
-										<div class="swiper-slide" th:each="donationBoardImgDto, status : ${donationBoardImgDtos}">
-											<img 
-											th:src="@{${donationBoardImgDto.imgUrl}}" alt=""/>
+										<div class="swiper-slide"
+											th:each="donationBoardImgDto, status : ${donationBoardImgDtos}">
+											<img th:src="@{${donationBoardImgDto.imgUrl}}" alt="" />
 										</div>
 									</div>
 									<div class="swiper-button-next">&gt;&gt;</div>
@@ -84,7 +84,7 @@
 											<input type="hidden" th:field="${donationBoard.id}">
 											<th:block
 												th:each="donatedComment, status: ${donationBoardCommentDtoList}">
-												<div class="comment-box">
+												<div class="comment-box my-3" >
 													<div class="comment-head">
 														<h6 th:text="${donatedComment.commentMember}"
 															class="comment-name" id="comment_writer">
@@ -95,11 +95,20 @@
 													</div>
 													<div th:text="${donatedComment.comment}"
 														class="comment-content"></div>
-													<div class="comment-down">
+
+
+													<div class="comment-down"
+														sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
 
 														<button class="btn" style="float: right !important;"
+															type="button" th:value="${donatedComment.id}"
+															onclick="deleteComment(this.value)">삭제</button>
+													</div>
+
+													<div class="comment-down" sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_COM')">
+														<button class="btn" style="float: right !important;"
 															type="button"
-															sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
+															th:if="${#authentication.principal.username == donatedComment.commentEmail}"
 															th:value="${donatedComment.id}"
 															onclick="deleteComment(this.value)">삭제</button>
 													</div>
