@@ -1,5 +1,6 @@
 package com.sharingdonation.controller;
 
+import java.security.Principal;
 //import java.time.*;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,7 @@ import com.sharingdonation.dto.DonationFormDto;
 import com.sharingdonation.dto.SharingBoardCommentDto;
 import com.sharingdonation.entity.DonationBoard;
 import com.sharingdonation.entity.DonationBoardComment;
+import com.sharingdonation.entity.Member;
 import com.sharingdonation.repository.MemberRepository;
 import com.sharingdonation.service.DonationBoardHeartService;
 import com.sharingdonation.service.DonationBoardImgService;
@@ -53,9 +55,10 @@ public class DonationBoardController {
 	//show the donated board create page
 	
 	@GetMapping(value = "/admin/donatedBoard/edit")
-	public String addDonatedBoard(Model model) { 
+	public String addDonatedBoard( Model model) { 
 		model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
 		model.addAttribute("donationBoardFormDto", new DonationBoardFormDto());
+		//model.addAttribute("donationBoardImgDtoList", donationBoardImgService.getDonationBoardImgDtoList(donationBoardId));
 		return "admin/editDonatedBoard"; 
 	}
 	
@@ -86,7 +89,7 @@ public class DonationBoardController {
 			return "admin/editDonatedBoard";
 		}
 		
-		return "redirect:/admin/donatedBoard";
+		return "redirect:/admin/donatedBoards";
 		
 	}
 	
@@ -159,7 +162,7 @@ public class DonationBoardController {
 //		model.addAttribute("localDateTime",LocalDateTime.now());
 //		model.addAttribute("df",DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		//model.addAttribute("commentFormDto", new CommentFormDto());
-		
+		model.addAttribute("donationBoardImgDtos", donationBoardImgDtos);
 		
 		return "donation/donatedBoardDetail";
 		
@@ -167,9 +170,13 @@ public class DonationBoardController {
 	
 	//댓글 등록
 		@PostMapping(value="/donatedBoard/{donationBoardId}/comment")
-		public String insertComment(@PathVariable("donationBoardId") Long id, @RequestParam String comment, Model model) {
-													//가짜 데이터 member_id 넣었음
-			donationBoardService.insertComment(1L, id, comment);
+		public String insertComment(@PathVariable("donationBoardId") Long id, @RequestParam String comment, Principal principal,  Model model) {
+			String email = principal.getName();
+			Member member = memberRepository.findByEmail(email);
+			Long cmember = member.getId();
+			
+			//가짜 데이터 member_id 넣었음
+			donationBoardService.insertComment(cmember, id, comment);
 			
 			return "redirect:/donatedBoard/" + id;
 		}
@@ -200,6 +207,7 @@ public class DonationBoardController {
 				DonationBoardFormDto donationBoardFormDto = donationBoardService.getdonationBoardDetail(donationBoardId);   //get detail
 				model.addAttribute(donationBoardFormDto);
 				model.addAttribute("donations", donationBoardService.getDonationBorardSelect());  //get select list
+				//model.addAttribute("donationBoardImgDtoList", donationBoardImgService.getDonationBoardImgDtoList(donationBoardId));
 			} catch (EntityNotFoundException e) {
 				model.addAttribute("errorMessage","This danatioBoard that dose not exist." );
 				model.addAttribute("donationBoardFormDto", new DonationBoardFormDto());
@@ -239,7 +247,7 @@ public class DonationBoardController {
 				model.addAttribute("errorMessage", "An error occurred while modifying.");
 				return "admin/editDonatedBoard";
 			}
-			return "redirect:/admin/donatedBoard";
+			return "redirect:/admin/donatedBoards";
 			
 		}
 		

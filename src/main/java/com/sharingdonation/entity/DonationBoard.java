@@ -45,9 +45,6 @@ public class DonationBoard {
 	public void updateDonationBoard(DonationBoardFormDto donationBoardFormDto) {
 		this.subject = donationBoardFormDto.getSubject();
 		this.content = donationBoardFormDto.getContent();
-		this.regTime = donationBoardFormDto.getRegTime();
-		
-		
-		
+		//this.regTime = donationBoardFormDto.getRegTime();
 	}
 }
