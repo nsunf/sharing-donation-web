@@ -1,12 +1,19 @@
 package com.sharingdonation.dto;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.modelmapper.ModelMapper;
+
+import com.querydsl.core.annotations.QueryProjection;
 import com.sharingdonation.entity.Sharing;
+import com.sharingdonation.entity.SharingImg;
+import com.sharingdonation.entity.Story;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -43,6 +50,24 @@ public class SharingDto {
 	private Long heartCount;
 	
 	private int point;
+	
+
+	@QueryProjection
+	public SharingDto(Sharing sharing, SharingImg sharingImg, Story story) {
+		this.id = sharing.getId();
+		this.name = sharing.getName();
+		this.content = sharing.getDetail();
+		this.categoryName = sharing.getCategory().getCategoryName();
+		this.areaName = sharing.getArea().getGugun();
+		this.authorName = sharing.getMember().getName();
+		this.regTime = sharing.getRegTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		this.confirmYn = sharing.getConfirmYn();
+		this.done = sharing.getDone();
+		this.status = sharing.getDone().equals("Y") ? "완료" : (sharing.getConfirmYn().equals("Y") ? "진행중": "승인대기");
+		this.imgUrl = sharingImg.getImgUrl();
+		this.startDate = sharing.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		this.endDate = sharing.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	}
 	
 	public static SharingDto valueOf(Sharing sharing, String imgUrl) {
 		String _status = sharing.getDone().equals("Y") ? "완료" : (sharing.getConfirmYn().equals("Y") ? "진행중": "승인대기");

@@ -54,8 +54,9 @@
                 <th><input class="select-all-btn" type="checkbox" /></th>
                 <th>번호</th>
                 <th>작성자</th>
-                <th>글제목</th>
                 <th>상품명</th>
+                <th>카테고리</th>
+                <th>지역명</th>
                 <th>신청일자</th>
                 <th>게시기간</th>
                 <th>진행상황</th>
@@ -68,11 +69,12 @@
                 <td>[[${sharingDto.authorName}]]</td>
                 <td>[[${sharingDto.name}]]</td>
                 <td>[[${sharingDto.categoryName}]]</td>
+                <td>[[${sharingDto.areaName}]]</td>
                 <td>[[${sharingDto.regTime}]]</td>
                 <td th:if="${sharingDto.startDate != null}">[[${sharingDto.startDate + '~' + sharingDto.endDate}]]</td>
                 <td th:unless="${sharingDto.startDate != null}">---</td>
                 <td>
-                	<a th:href="@{/sharing/admin/edit/{id}(id=${sharingDto.id})}">
+                	<a th:href="@{/admin/sharing/edit/{id}(id=${sharingDto.id})}">
                 		<button class="text-white border-0 status ms-auto mt-auto" th:classappend="${sharingDto.status == '완료'} ? 'status-gray' : (${sharingDto.status == '진행중'} ? 'status-green' : 'status-yellow')">[[${sharingDto.status}]]</button>
 									</a>
                 </td>

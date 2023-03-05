@@ -8,6 +8,15 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="/css/story.css" rel="stylesheet"/>
+<style>
+	.story-link {
+		
+	}
+
+	.story-link:hover {
+		text-decoration: underline;
+	}
+</style>
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
@@ -19,11 +28,12 @@
 				</div>
 	
 				
-				<form
+				<form name="searchFrm"
 					style="width: 100%; height: 47px; display: flex; justify-content: flex-end; margin-bottom: 20px; padding-right: 20px;">
-					<input type="search"
+					<input type="search" id="searchInput" th:value="${searchTerm}"
 						style="width: 355px; height: 47px; border: #FFFFFF; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);"
 						placeholder="검색어를 입력하세요.">
+					<input type="submit" id="searchBtn" value="검색"/>
 				</form>
 
 
@@ -40,52 +50,48 @@
 						</tr>
 					</thead>
 					<tbody style="line-height: 50px;">
-						<tr>
-							<td style="text-align: center;">1</td>
-							<td><img
-								src="https://cdn.imweb.me/upload/S20220720fbea1e2f94585/ee086dba55859.jpg"
-								alt="핸드폰"
-								style="width: 50px; height: 50px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">(서울
-								은평구)책장 나눔 합니다</td>
+						<tr th:each="sharingStory, status : ${sharingStoryDtoList}">
+							<td style="text-align: center;">[[${sharingStoryDtoList.totalElements - status.index - (sharingStoryDtoList.size * page)}]]</td>
+							<td>
+								<a class="story-link" th:href="@{/admin/story/id/{id}(id=${sharingStory.sharingId})}">
+									<img
+										th:src="${sharingStory.imgUrl}"
+										th:alt="${sharingStory.imgUrl}"
+										style="width: 50px; height: 50px; margin-right: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" 
+									>
+									[[${sharingStory.sharingName}]]
+								</a>
+							</td>
 
-							<td style="text-align: center;">핸드폰</td>
-							<td style="text-align: center;">Writer</td>
-							<td style="text-align: center;">2023-02-17</td>
-							<td style="text-align: center;">0</td>
-							<td style="text-align: center;"><div
-									style="width: 80px; height: 100%; background-color: #15C8A0; color: white; border-radius: 10px; margin: 0 auto;">승인대기</div></td>
+							<td style="text-align: center;" th:text="${sharingStory.areaName}">핸드폰</td>
+							<td style="text-align: center;" th:text="${sharingStory.createdBy}">Writer</td>
+							<td style="text-align: center;" th:text="${sharingStory.regDate}">2023-02-17</td>
+							<td style="text-align: center;" th:text="${sharingStory.numOfStory}">0</td>
+							<td style="text-align: center;">
+								<a th:href="@{/admin/story/id/{id}(id=${sharingStory.sharingId})}">
+									<div class="status w-100" th:classappend="${sharingStory.status == '완료'} ? 'status-gray' : (${sharingStory.status == '진행중'} ? 'status-green' : 'status-yellow')" th:text="${sharingStory.status}">승인대기</div>
+								</a>
+							</td>
 						</tr>
-						<tr>
-							<td style="text-align: center;">1</td>
-							<td><img
-								src="https://cdn.imweb.me/upload/S20220720fbea1e2f94585/ee086dba55859.jpg"
-								alt="핸드폰"
-								style="width: 50px; height: 50px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Title
-								L O N G</td>
-
-							<td style="text-align: center;">핸드폰</td>
-							<td style="text-align: center;">Writer</td>
-							<td style="text-align: center;">2023-02-17</td>
-							<td style="text-align: center;">59</td>
-							<td style="text-align: center;"><div
-									style="width: 80px; height: 100%; background-color: #000008; color: white; border-radius: 10px; margin: 0 auto;">승인완료</div></td>
-						</tr>
-					</tbody>
+ 					</tbody>
 				</table>
 
-				<nav>
-					<ul class="pagination justify-content-center">
-						<li class="page-item"><a class="page-link" href="#"
-							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-						</a></li>
-						<li class="page-item"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item"><a class="page-link" href="#"
-							aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-						</a></li>
+				<nav aria-label="Page navigation example" class="hstack mt-5" th:with="start=${(sharingStoryDtoList.number/maxPage)*maxPage + 1}, end=(${(sharingStoryDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < sharingStoryDtoList.totalPages ? start + (maxPage - 1) : sharingStoryDtoList.totalPages)})">
+					<ul class="pagination mx-auto">
+						<li class="page-item">
+							<a class="page-link page-prev" th:href="${#httpServletRequest.requestURL + '?page=' + (sharingStoryDtoList.number-1)}" aria-label="Previous" th:classappend="${sharingStoryDtoList.number eq 0}?'disabled':''"> <span aria-hidden="true">&laquo;</span></a>
+						</li>
+						<li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${sharingStoryDtoList.number eq page-1}?'active':''">
+								 <a class="page-link page-num" th:inline="text" th:href="${#httpServletRequest.requestURL + '?page=' + (page - 1)}">[[${page}]]</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link page-next" th:href="${#httpServletRequest.requestURL + '?page=' + (sharingStoryDtoList.number+1)}" aria-label="Next" th:classappend="${sharingStoryDtoList.number+1 ge sharingStoryDtoList.totalPages}?'disabled':''">
+								<span aria-hidden="true">&raquo;</span>
+							</a>
+						</li>
 					</ul>
 				</nav>
+
 				
 
 			</div>
@@ -97,6 +103,16 @@
 
 	<th:block layout:fragment="script-bottom">
 		<script src="/js/setAutoHeight.js"></script>
+		<script>
+			document.searchFrm.addEventListener("submit", e => {
+				e.preventDefault();
+				search();
+			});
+			function search() {
+				const searchTerm = document.getElementById("searchInput").value;
+				location.href = "/admin/story/" + searchTerm;
+			}
+		</script>
 	</th:block>
 </body>
 </html>
