@@ -41,3 +41,39 @@ body {
 .page-item:not(.active):hover > .page-link {
   filter: brightness(0.9);
 }
+
+.modal-title-custom {
+  border-bottom: 2px solid var(--thm-primary);
+}
+
+.btn-custom {
+  color: white;
+  color: white;
+}
+
+.btn-custom-close {
+  background: var(--thm-gray);
+}
+
+.btn-custom-close:hover {
+  background: rgba(var(--thm-gray-rgb), 0.8);
+  color: white;
+}
+
+.btn-custom-close:active {
+  color: var(--thm-gray) !important;
+}
+
+.btn-custom-regist {
+  background: var(--thm-primary);
+  color: white;
+}
+
+.btn-custom-regist:hover {
+  background: rgba(var(--thm-primary-rgb), 0.8);
+  color: white;
+}
+
+.btn-custom-regist:active {
+  color: var(--thm-primary) !important;
+}

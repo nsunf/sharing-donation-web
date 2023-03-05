@@ -6,6 +6,8 @@
 >
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>Insert title here</title>
 </head>
 <body>
@@ -13,7 +15,7 @@
 		<div class="row row-cols-1 row-cols-lg-2">
 			<!-- grid -->
 			<div class="col" th:each="sharingDto: ${sharingDtoList.getContent()}">
-				<a class="card mb-3" href="#" style="max-width: 540px; background: #F0F5F4;">
+				<div class="card mb-3" href="#" style="max-width: 540px; background: #F0F5F4; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#storyModal" th:onclick="'getStoryDto(' + ${sharingDto.id} + ')'">
 					<div class="row g-0">
 						<div class="col-md-4 p-0">
 							<img th:src="${sharingDto.imgUrl}" class="img-fluid w-100 h-100 rounded-start object-fit-cover" alt="sharing-img" style="aspect-ratio: 3/4;">
@@ -31,7 +33,7 @@
 							</div>
 						</div>
 					</div>
-				</a>
+				</div>
 			</div>
 			
 		</div>
@@ -40,20 +42,59 @@
 			<nav aria-label="Page navigation example" class="hstack mt-5" th:with="start=${(sharingDtoList.number/maxPage)*maxPage + 1}, end=(${(sharingDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < sharingDtoList.totalPages ? start + (maxPage - 1) : sharingDtoList.totalPages)})">
 				<ul class="pagination mx-auto">
 					<li class="page-item">
-						<a class="page-link" th:href="@{'/sharing/mypage/shared/' + ${sharingDtoList.number-1}}" aria-label="Previous" th:classappend="${sharingDtoList.number eq 0}?'disabled':''"> <span aria-hidden="true">&laquo;</span></a>
+						<a class="page-link" th:href="@{'/mypage/shared/' + ${sharingDtoList.number-1}}" aria-label="Previous" th:classappend="${sharingDtoList.number eq 0}?'disabled':''"> <span aria-hidden="true">&laquo;</span></a>
 					</li>
 					<li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${sharingDtoList.number eq page-1}?'active':''">
-						<a class="page-link" th:href="@{'/sharing/mypage/shared/' + ${page-1}}" th:inline="text">[[${page}]]</a>
+						<a class="page-link" th:href="@{'/mypage/shared/' + ${page-1}}" th:inline="text">[[${page}]]</a>
 					</li>
-					<li class="page-item"><a class="page-link" th:href="@{'/sharing/mypage/shared/' + ${sharingDtoList.number+1}}"
+					<li class="page-item"><a class="page-link" th:href="@{'/mypage/shared/' + ${sharingDtoList.number+1}}"
 						aria-label="Next" th:classappend="${sharingDtoList.number+1 ge sharingDtoList.totalPages}?'disabled':''"> <span aria-hidden="true">&raquo;</span>
 					</a></li>
 				</ul>
 			</nav>
 		</div>
+		
+		<!--modal -->
+		<div class="modal fade" id="storyModal" tabindex="-1" aria-labelledby="storyModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title fs-5" id="storyModalLabel">등록한 사연</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+          	<textarea class="form-control" id="storyModalContent" rows="10" readonly></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-custom btn-custom-close" data-bs-dismiss="modal">닫기</button>
+						<button type="button" id="editStoryBtn" class="btn btn-custom btn-custom-regist" data-bs-target="#storyFormModal" data-bs-toggle="modal">수정</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="storyFormModal" tabindex="-1" aria-labelledby="storyFormModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title fs-5" id="storyFormModalLabel">등록한 사연</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+          	<textarea class="form-control" id="storyFormModalContent" rows="10"></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-custom btn-custom-close" data-bs-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-custom btn-custom-regist">수정</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 	</th:block>
 
 	<th:block layout:fragment="script-bottom">
+		<script src="/js/nsunf/adoptedShareList.js"></script>
 	</th:block>
 </body>
 </html>

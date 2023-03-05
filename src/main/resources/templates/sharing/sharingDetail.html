@@ -2,7 +2,8 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{layouts/layout1}"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+  layout:decorate="~{layouts/layout1}"
 >
 <head>
 <meta charset="UTF-8">
@@ -71,7 +72,7 @@
 <!--           <a class="causes-details__share-btn thm-btn py-2 px-4">수정</a>
  -->          
  							<button th:if="${storyFormDto.registeredYn == 'Y'}" class="causes-details__share-btn thm-gray border-0 rounded-4 py-2 px-3 ms-3" disabled>사연 등록됨</button>
-           		<button th:unless="${storyFormDto.registeredYn == 'Y'}" id="registStoryBtn" class="causes-details__share-btn thm-btn py-2 px-3 ms-3" data-bs-toggle="modal" data-bs-target="#registModal">사연 등록</button>
+           		<button th:unless="${storyFormDto.registeredYn == 'Y'}" id="registStoryBtn" class="causes-details__share-btn thm-btn py-2 px-3 ms-3" data-bs-toggle="modal" data-bs-target="#registModal" sec:authorize="!hasRole('COM')">사연 등록</button>
         </div>
       </div>
     </div>

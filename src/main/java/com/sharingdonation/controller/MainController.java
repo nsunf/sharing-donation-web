@@ -18,6 +18,7 @@ public class MainController {
 	@GetMapping(value={"/", "/sharing"})
 	public String main(Model model) {
 		model.addAttribute("sharedCount", sharingService.getNumOfShared());
+		model.addAttribute("currentSharingCount", sharingService.getCurrentSharingCount());
 		return "main";
 	}
 	

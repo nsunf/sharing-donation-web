@@ -1,5 +1,6 @@
 package com.sharingdonation.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,6 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +33,7 @@ import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.SharingDto;
 import com.sharingdonation.dto.SharingFormDto;
 import com.sharingdonation.entity.Member;
+import com.sharingdonation.entity.Sharing;
 import com.sharingdonation.repository.MemberRepository;
 import com.sharingdonation.service.AreaService;
 import com.sharingdonation.service.CategoryService;
@@ -41,7 +46,6 @@ import com.sharingdonation.service.StoryService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/sharing")
 @RequiredArgsConstructor
 public class SharingController {
 	
@@ -87,7 +91,8 @@ public class SharingController {
 //		return "sharing/sharingList";
 //	}
 
-	@GetMapping("/area/{areaName}")
+	// 지역별 나눔 목록 리스트
+	@GetMapping("sharing/area/{areaName}")
 	public String sharingListByArea(@PathVariable String areaName, @RequestParam Optional<Integer> page, @RequestParam Optional<String> search, @RequestParam Optional<String> cat, Model model) {
 		Pageable pageable = PageRequest.of(page.orElse(0), 9);
 		String _cat = cat.orElse(null);
@@ -104,9 +109,13 @@ public class SharingController {
 		return "sharing/sharingList";
 	}
 	
-	@GetMapping("/{id}")
-	public String getSharingDto(@PathVariable Long id, Model model) {
-		Member member = getTmpMember(Role.USER);
+	// 나눔 상세
+	@GetMapping("sharing/{id}")
+	public String getSharingDto(@PathVariable Long id, Principal principal, Model model) {
+//		Member member = getTmpMember(Role.USER);
+		String email = principal.getName();
+		Member member = memberRepo.findByEmail(email);
+
 		SharingDto sharingDto = sharingService.getSharingDto(id);
 		
 		model.addAttribute("storyFormDto", storyService.getStoryFormDto(id, member.getId()));
@@ -118,7 +127,9 @@ public class SharingController {
 		return "sharing/sharingDetail";
 	}
 	
-	@GetMapping("/new")
+	// 나눔 등록 페이지
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+	@GetMapping("sharing/new")
 	public String createSharingForm(Model model) {
 		model.addAttribute("title", "나눔 상품 등록");
 		model.addAttribute("sharingFormDto", new SharingFormDto());
@@ -127,31 +138,57 @@ public class SharingController {
 		return "sharing/editSharing";
 	}
 	
-	@PostMapping("/new")
-	public String createSharing(@Valid SharingFormDto sharingFormDto, BindingResult bindingResult, List<MultipartFile> sharingImgFileList, Model model) {
-		Member member = getTmpMember(Role.USER);
+	// 나눔 등록
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+	@PostMapping("sharing/new")
+	public String createSharing(@Valid SharingFormDto sharingFormDto, BindingResult bindingResult, List<MultipartFile> sharingImgFileList, Principal principal, Model model) {
+//		Member member = getTmpMember(Role.USER);
+		String email = principal.getName();
+		Member member = memberRepo.findByEmail(email);
 		
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("title", "나눔 상품 등록");
 			model.addAttribute("areaDtoList", areaService.getAreaList());
 			model.addAttribute("categoryDtoList", categoryService.getCategoryDtoLIst());
 			return "sharing/editSharing";
 		}
 		
+		Sharing sharing = null;
+		
 		try {
 			if (sharingFormDto.getId() == null)
-				sharingService.saveSharing(sharingFormDto, member.getId(), sharingImgFileList);
+				sharing = sharingService.saveSharing(sharingFormDto, member.getId(), sharingImgFileList);
 			else 
-				sharingService.updateSharing(sharingFormDto, sharingImgFileList);
+				sharing = sharingService.updateSharing(sharingFormDto, sharingImgFileList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+		if (sharing != null) {
+			if (sharing.getConfirmYn().equals("Y")) {
+				return "redirect:/sharing/" + sharing.getId();
+			} else {
+				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+				if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
+					return "redirect:/mypage/sharing";
+				} else if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+					return "redirect:/admin/sharing";
+				}
+			}
+		}
+			
 		return "redirect:/sharing/";
 	}
 	
-	@GetMapping("/edit/{id}")
-	public String editSharing(@PathVariable Long id, Model model) {
-		model.addAttribute("title", "나눔 상품 신청 관리");
+	// 나눔 수정 페이지
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+	@GetMapping("sharing/edit/{id}")
+	public String editSharing(@PathVariable Long id, Principal principal, Model model) {
+		String email = principal.getName();
+		Member member = memberRepo.findByEmail(email);
+
+		model.addAttribute("title", "나눔 상품 내역");
+		model.addAttribute("member", member);
 		model.addAttribute("sharingFormDto", sharingService.getSharingFormDto(id));
 		model.addAttribute("areaDtoList", areaService.getAreaList());
 		model.addAttribute("categoryDtoList", categoryService.getCategoryDtoLIst());
@@ -159,23 +196,29 @@ public class SharingController {
 		return "sharing/editSharing";
 	}
 	
-	@GetMapping("/delete/{id}")
+	// 나눔 삭제
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+	@GetMapping("sharing/delete/{id}")
 	public String deleteSharing(@PathVariable Long id) {
 		sharingService.deleteSharing(id);
-		return "redirect:/sharing/mypage";
+		return "redirect:/mypage/sharing";
 	}
 	
 	
 	// MypageController로 이동 필요
-	@GetMapping(value = {"/mypage", "/mypage/{page}"})
-	public String mypageSharingList(@PathVariable("page") Optional<Integer> page , Model model) {
+	// 마이페이지 나눔 등록 내역
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@GetMapping(value = {"mypage/sharing", "mypage/sharing/{page}"})
+	public String mypageSharingList(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
 		// 임시 멤버
-		Member tmpMember = getTmpMember(Role.USER);
-		MyPageMainDto myPageDto = myPageService.getMyPageMain(tmpMember.getId());
+//		Member member = getTmpMember(Role.USER);
+		String email = principal.getName();
+		Member member = memberRepo.findByEmail(email);
+		MyPageMainDto myPageDto = myPageService.getMyPageMain(member.getId());
 
 		Pageable pageable = PageRequest.of(page.orElse(0), 6);
 		
-		Page<SharingDto> sharingDtoList = sharingService.getSharingDtoListById(tmpMember.getId(), pageable);
+		Page<SharingDto> sharingDtoList = sharingService.getSharingDtoListById(member.getId(), pageable);
 
 		model.addAttribute("mypage", myPageDto);
 		model.addAttribute("sharingDtoList", sharingDtoList);
@@ -185,16 +228,20 @@ public class SharingController {
 		return "mypage/registeredShareList";
 	}
 
-	@GetMapping(value = {"/mypage/shared", "/mypage/shared/{page}"})
-	public String mypageAdoptedSharingList(@PathVariable("page") Optional<Integer> page , Model model) {
-//		Member tmpMember = getTmpMember(Role.USER);
-		Member tmpMember = memberRepo.findById(10L).orElseThrow(EntityNotFoundException::new);
-		MyPageMainDto myPageDto = myPageService.getMyPageMain(tmpMember.getId());
+	// 마이페이지 나눔 받은 내역
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@GetMapping(value = {"mypage/shared", "mypage/shared/{page}"})
+	public String mypageAdoptedSharingList(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
+//		Member member = getTmpMember(Role.USER);
+//		Member member = memberRepo.findById(10L).orElseThrow(EntityNotFoundException::new);
+		
+		String email = principal.getName();
+		Member member = memberRepo.findByEmail(email);
+		MyPageMainDto myPageDto = myPageService.getMyPageMain(member.getId());
 		Pageable pageable = PageRequest.of(page.orElse(0), 6);
 		
-		Page<SharingDto> sharingDtoList = sharingService.getAdoptedSharingDtoListById(tmpMember.getId(), pageable);
+		Page<SharingDto> sharingDtoList = sharingService.getAdoptedSharingDtoListById(member.getId(), pageable);
 
-		model.addAttribute("test", tmpMember.getId());
 		model.addAttribute("mypage", myPageDto);
 		model.addAttribute("sharingDtoList", sharingDtoList);
 		model.addAttribute("page", pageable.getPageNumber());
@@ -205,7 +252,9 @@ public class SharingController {
 	
 	
 	// AdminController로 이동 필요
-	@GetMapping("/admin")
+	// 관리자 나눔 리스트
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/admin/sharing")
 	public String adminSharing(@RequestParam Optional<Integer> page, @RequestParam Optional<String> filter, @RequestParam Optional<String> search, Model model) {
 		Pageable pageable = PageRequest.of(page.orElse(0), 10);
 		
@@ -225,21 +274,28 @@ public class SharingController {
 //		sharingService.approveSharings(tmp.stream().map(s -> Long.valueOf(s)).toList());
 //		return new ResponseEntity<String>("approve", HttpStatus.OK);
 //	}
-
-	@PostMapping("/admin/approve")
+	
+	// 관리자 나눔 상품 승인
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/admin/sharing/approve")
 	public String adminSharingApprove(@RequestParam Long id, @RequestParam int point) {
 		sharingService.approveSharing(id, point);
-		return "redirect:/sharing/admin";
+		return "redirect:/admin/sharing";
 	}
 	
-	@PostMapping("/admin/delete")
+	// 나눔 상품 삭제
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/admin/sharing/delete")
 	public @ResponseBody ResponseEntity<?> adminSharingDelete(@RequestBody Map<String, Object> map) {
 		List<String> tmp = (List<String>)map.get("sharingIdList");
 		sharingService.deleteSharings(tmp.stream().map(s -> Long.valueOf(s)).toList());
 		return new ResponseEntity<String>("approve", HttpStatus.OK);
 	}
 	
-	@GetMapping("/admin/edit/{id}")
+	
+	// 관리자 나눔 상품 수정 페이지
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/admin/sharing/edit/{id}")
 	public String adminEditSharing(@PathVariable Long id, Model model) {
 		model.addAttribute("title", "나눔 상품 승인 관리");
 		model.addAttribute("sharingFormDto", sharingService.getSharingFormDto(id));
@@ -250,16 +306,15 @@ public class SharingController {
 		return "sharing/editSharing";
 	}
 	
-	@GetMapping("/heart/{id}")
-	public @ResponseBody ResponseEntity<?> toggleHeart(@PathVariable Long id) {
-		Member member = getTmpMember(Role.USER);
+	// 나눔 좋아요
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+	@GetMapping("sharing/heart/{id}")
+	public @ResponseBody ResponseEntity<?> toggleHeart(@PathVariable Long id, Principal principal) {
+//		Member member = getTmpMember(Role.USER);
+		String email = principal.getName();
+		Member member = memberRepo.findByEmail(email);
 		sharingHeartService.toggleSharingHeart(member.getId(), id);
 		Long heartCount = sharingHeartService.getSharingHeartCount(id);
 		return new ResponseEntity<Long>(heartCount, HttpStatus.OK);
-	}
-	
-	@GetMapping("/test")
-	public String test() {
-		return "dist/longsiru/donated-board-create";
 	}
 }

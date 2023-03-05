@@ -19,7 +19,6 @@ import com.sharingdonation.entity.Area;
 import com.sharingdonation.entity.Category;
 import com.sharingdonation.entity.Sharing;
 import com.sharingdonation.entity.SharingImg;
-import com.sharingdonation.entity.Story;
 import com.sharingdonation.repository.AreaRepository;
 import com.sharingdonation.repository.CategoryRepository;
 import com.sharingdonation.repository.MemberRepository;
@@ -43,6 +42,10 @@ public class SharingService {
 	
 	public Long getNumOfShared() {
 		return sharingRepo.countByDone("Y");
+	}
+	
+	public Long getCurrentSharingCount() {
+		return sharingRepo.countByConfirmYnAndDone("Y", "N");
 	}
 
 	public SharingDto getSharingDto(Long sharingId) {
@@ -72,7 +75,7 @@ public class SharingService {
 		return sharingDtoList;
 	}
 	
-	public void saveSharing(SharingFormDto sharingFormDto, Long memberId, List<MultipartFile> sharingImgFileList) throws Exception {
+	public Sharing saveSharing(SharingFormDto sharingFormDto, Long memberId, List<MultipartFile> sharingImgFileList) throws Exception {
 		Category category = categoryRepo.findById(sharingFormDto.getCategoryId()).orElseThrow(EntityNotFoundException::new);
 		Area area = areaRepo.findById(sharingFormDto.getAreaId()).orElseThrow(EntityNotFoundException::new);
 
@@ -90,9 +93,11 @@ public class SharingService {
 			sharingImg.setRepimgYn(i == 0 ? "Y" : "N");
 			sharingImgService.saveImg(sharingImg, sharingImgFileList.get(i));
 		}
+		
+		return sharing;
 	}
 	
-	public void updateSharing(SharingFormDto sharingFormDto, List<MultipartFile> sharingImgFileList) throws Exception {
+	public Sharing updateSharing(SharingFormDto sharingFormDto, List<MultipartFile> sharingImgFileList) throws Exception {
 		Sharing sharing = sharingRepo.findById(sharingFormDto.getId()).orElseThrow(EntityNotFoundException::new);
 		
 		Category category = categoryRepo.findById(sharingFormDto.getCategoryId()).orElseThrow(EntityNotFoundException::new);
@@ -115,6 +120,8 @@ public class SharingService {
 				sharingImgService.saveImg(sharingImg, sharingImgFileList.get(i));
 			}
 		}
+		
+		return sharing;
 	}
 	
 	public void deleteSharing(Long sharingId) {
@@ -128,7 +135,7 @@ public class SharingService {
 	}
 
 	public Page<SharingDto> getSharingDtoListById(Long memberId, Pageable pageable) {
-		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDoneAndDelYnOrderByRegTimeDesc(memberId, "N", "N", pageable);
+		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDelYnOrderByRegTimeDesc(memberId, "N", pageable);
 		
 		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
 			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(s.getId());
@@ -140,22 +147,16 @@ public class SharingService {
 	}
 
 	public Page<SharingDto> getAdoptedSharingDtoListById(Long memberId, Pageable pageable) {
-		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDoneAndDelYnOrderByRegTimeDesc(memberId, "Y", "N", pageable);
-		
-		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
-			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(s.getId());
-			SharingDto sharingDto = SharingDto.valueOf(s, sharingImgDto.getImgUrl());
-			return sharingDto;
-		});
-
-//		Page<Story> storyList = storyRepo.findByMemberIdAndChooseYnAndDelYnOrderByRegTimeDesc(memberId, "Y", "N");
-		
-//		Page<SharingDto> sharingDtoList = storyList.map(story -> {
-//			Sharing sharing = story.getSharing();
-//			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(sharing.getId());
-//			SharingDto sharingDto = sharingDto.valueOf(sharing, sharingImgDto.getImgUrl());
+//		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDoneAndDelYnOrderByRegTimeDesc(memberId, "Y", "N", pageable);
+//		
+//		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
+//			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(s.getId());
+//			SharingDto sharingDto = SharingDto.valueOf(s, sharingImgDto.getImgUrl());
 //			return sharingDto;
 //		});
+		
+		Page<SharingDto> sharingDtoList = sharingRepo.getAdoptedSharingList(memberId, pageable);
+
 		
 		return sharingDtoList;
 	}

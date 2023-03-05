@@ -21,6 +21,8 @@ public class SharingFormDto {
 	
 	private Long id;
 	
+	private Long memberId;
+	
 	@NotNull(message = "지역을 선택해주세요.")
 	private Long areaId;
 
@@ -40,10 +42,11 @@ public class SharingFormDto {
 	private String done;
 	
 	private String delYn;
+	
+	private String status;
 
 	public Sharing createSharing(Category category, Area area) {
 		Sharing sharing = new Sharing();
-		
 		sharing.setCategory(category);
 		sharing.setArea(area);
 
@@ -52,7 +55,7 @@ public class SharingFormDto {
 		
 		sharing.setRegTime(LocalDateTime.now());
 
-		sharing.setCreateBy("test");
+//		sharing.setCreateBy("test");
 		
 		sharing.setConfirmYn("N");
 		sharing.setDone("N");
@@ -63,6 +66,7 @@ public class SharingFormDto {
 	
 	public SharingFormDto(Sharing sharing) {
 		this.id = sharing.getId();
+		this.memberId = sharing.getMember().getId();
 		this.areaId = sharing.getArea().getId();
 		this.categoryId = sharing.getCategory().getId();
 		this.name = sharing.getName();
@@ -72,5 +76,7 @@ public class SharingFormDto {
 		this.confirmYn = sharing.getConfirmYn();
 		this.done = sharing.getDone();
 		this.delYn = sharing.getDelYn();
+
+		this.status = sharing.getDone().equals("Y") ? "완료" : (sharing.getConfirmYn().equals("Y") ? "진행중": "승인대기");
 	}
 }
