@@ -87,9 +87,9 @@ public class DonationController {
 	}
 	
 	@GetMapping(value = "/donation/{donationId}")
-	public String donationDtl(@PathVariable("donationId") Long DonationId, Model model) {
+	public String donationDtl(@PathVariable("donationId") Long donationId, Model model) {
 		try {
-			DonationFormDto donationFormDto = donationService.getDonationDtl(DonationId);
+			DonationFormDto donationFormDto = donationService.getDonationDtl(donationId);
 			model.addAttribute(donationFormDto);
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "존재하지 않는 상품입니다.");
@@ -113,6 +113,8 @@ public class DonationController {
 //		System.out.println(donationList.getTotalElements() +":: " +  page.get());
 		
 		
+//		donationList.
+		
 		int nowPage = (page.isPresent()) ? page.get() : 1;
 		System.out.println("pages:" + nowPage);
 		model.addAttribute("donationDtoList", donationList);
@@ -127,6 +129,8 @@ public class DonationController {
 	
 	@GetMapping("/admin/donation/edit/{id}")
 	public String adminDonationEdit(@PathVariable Long id, Model model) {
+//		DonationAdminFormDto dto = donationService.getAdminDonationDtl(id);
+//		dto.getDonationImgDtoList();
 //		model.addAttribute("title", "나눔 상품 승인 관리");
 		model.addAttribute("donationAdminFormDto", donationService.getAdminDonationDtl(id));
 //		model.addAttribute("areaDtoList", donationService.getAreaList());
@@ -145,22 +149,22 @@ public class DonationController {
 			, @RequestParam("donationImgFile") List<MultipartFile> donationImgFileList) {
 //	System.out.println(" controller adminDonationUpdate");
 //	System.out.println(donationAdminFormDto.getId());
-	System.out.println(donationAdminFormDto.getEndDate());
+//	System.out.println(donationAdminFormDto.getEndDate());
 //	
 //	donationAdminFormDto.setStartDate(startDate);
 //	donationAdminFormDto.setEndDate(endDate);
 	
 //	DonationAdminFormDto donationAdminFormDto1 = LocalDate.parse(donationAdminFormDto1.getEndDate());
 		if(bindingResult.hasErrors()) {
-			System.out.println(bindingResult.getAllErrors());
-			System.out.println(" controller adminDonationUpdate hasErrors");
+//			System.out.println(bindingResult.getAllErrors());
+//			System.out.println(" controller adminDonationUpdate hasErrors");
 			return "admin/editDonation";
 		}
 		
 		
 		//첫번째 이미지가 있는지 검사(첫번째 이미지는 필수 입력값이기 때문에)
 		if(donationImgFileList.get(0).isEmpty() && donationAdminFormDto.getId() == null) {
-			System.out.println(" controller adminDonationUpdate nullcheck");
+//			System.out.println(" controller adminDonationUpdate nullcheck");
 			model.addAttribute("errorMessage", "첫번째 이미지는 필수 입력 값 입니다.");
 			return "admin/editDonation";
 		}
@@ -168,7 +172,7 @@ public class DonationController {
 		try {
 			donationService.updateAdminDonation(donationAdminFormDto, donationImgFileList);
 		} catch (Exception e) {
-			System.out.println(" controller adminDonationUpdate exception");
+//			System.out.println(" controller adminDonationUpdate exception");
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "기부 수정 중 에러가 발생하였습니다.");
 			return "admin/editDonation";

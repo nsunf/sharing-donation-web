@@ -62,5 +62,6 @@ public class DonationImgService {
 	}
 	public void deleteImgsByDonationId(Long donationId) {
 		donationImgRepository.deleteAllByDonationId(donationId);
+		donationImgRepository.flush();
 	}
 }

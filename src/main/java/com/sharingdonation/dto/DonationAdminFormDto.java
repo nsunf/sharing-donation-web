@@ -16,7 +16,9 @@ import lombok.Setter;
 @Setter
 public class DonationAdminFormDto extends DonationFormDto {
 	private String delYn;
+	
 	private String confirmYn;
+	
 	private String done;
 	
 	private String startDate;

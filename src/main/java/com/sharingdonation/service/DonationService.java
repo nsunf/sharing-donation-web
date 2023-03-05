@@ -102,17 +102,20 @@ public class DonationService {
 	public Long updateAdminDonation(DonationAdminFormDto donationAdminFormDto, List<MultipartFile> donationImgFileList) throws Exception {
 		Donation donation = donationRepository.findById(donationAdminFormDto.getId())
 				.orElseThrow(EntityNotFoundException::new);
-				
+		
+//				System.out.println("service updateAdminDonation");
 		donation.updateAdminDonation(donationAdminFormDto);
 		
-//		List<Long> donationImgIds = donationFormDto.getDonateionImgIds();
+//		List<Long> donationImgIds = donationAdminFormDto.getDonateionImgIds();
 		
 //		for(int i = 0; i<donationImgFileList.size(); i++) {
 //			donationImgService.updateDonationImg(donationImgIds.get(i), donationImgFileList.get(i));
 //		}
-		
+		System.out.println(donationImgFileList.size() + ":" + donationImgFileList.get(0).isEmpty());
 		if (donationImgFileList.size() >= 0 && !donationImgFileList.get(0).isEmpty()) {
+//			System.out.println(" !donationImgFileList.get(0).isEmpty() -- " + donationAdminFormDto.getId());
 			donationImgService.deleteImgsByDonationId(donationAdminFormDto.getId());
+			
 			for (int i = 0; i < donationImgFileList.size(); i++) {
 				DonationImg donationImg = new DonationImg();
 				donationImg.setDonation(donation);
@@ -158,7 +161,8 @@ public class DonationService {
 				.orElseThrow(EntityNotFoundException::new);
 		
 		DonationAdminFormDto donationAdminFormDto = DonationAdminFormDto.of(donation);
-		
+		String status = donationAdminFormDto.getDone().equals("Y") ? "완료" : (donationAdminFormDto.getConfirmYn().equals("Y") ? "진행중": "승인대기");
+		donationAdminFormDto.setStatus(status);
 		donationAdminFormDto.setDonationImgDtoList(donationImgDtoList);
 		
 		return donationAdminFormDto;
@@ -174,6 +178,9 @@ public class DonationService {
 				pointPer = (double)((double)donation.getPointSum() / (double)donation.getGoalPoint()) * 100; //double 로 계산해야 정상적으로 계산이 된다.
 			}
 			donation.setPointPer((int)pointPer);
+			
+			String status = donation.getDone().equals("Y") ? "완료" : (donation.getConfirmYn().equals("Y") ? "진행중": "승인대기");
+			donation.setStatus(status);
 //			
 //			System.out.println(donation.getId() + ":"+ donation.getPointSum() +":"+ donation.getGoalPoint() +":"+ donation.getPointPer());
 		}

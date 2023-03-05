@@ -60,6 +60,8 @@ public class DonationDto {
 	
 	private Integer pointPer;
 	
+	private String status;
+	
 	@QueryProjection
 	public DonationDto(Long id, String subject
 			, String donationName
