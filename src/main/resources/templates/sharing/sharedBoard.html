@@ -36,7 +36,7 @@
 							<div class="news-two__single">
 								<div class="news-two__img-box">
 									<div class="news-two__img">
-										<img src="https://picsum.photos/200/170" alt="사진" /> <a
+										<img th:src="${sharedPost.imgUrl}" style="width:100%; aspect-ratio: 1/1; object-fit: cover;" alt="사진" /> <a
 											href="news-details.html"> <i class="fa fa-plus"></i>
 										</a>
 									</div>
@@ -47,7 +47,7 @@
 								<div class="news-two__content">
 									<ul class="list-unstyled news-two__meta">
 										<!-- <li><i class="far fa-user-circle"></i> Admin</li> -->
-										<li><img src="static/img/longsiru/like-icon.png"><i th:text="${sharedPost.boardHeartCount}"></i></li>
+										<li><img src="/img/longsiru/like-icon.png" style="width:16px; height:16px;"><i th:text="${sharedPost.boardHeartCount}"></i></li>
 										<li><span>/</span></li>
 										<li><i th:text="${sharedPost.commentCount}"
 											class="far fa-comments"></i></li>

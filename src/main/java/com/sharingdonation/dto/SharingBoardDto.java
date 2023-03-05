@@ -1,6 +1,7 @@
 package com.sharingdonation.dto;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 
@@ -23,6 +24,8 @@ public class SharingBoardDto {
 	
 	private String subject; //글제목
 	
+	private String imgUrl; //이미지 url
+	
 	private Long boardHeartCount; //좋아요 갯수
 	
 	private String content; //상세내용
@@ -35,6 +38,7 @@ public class SharingBoardDto {
 	public SharingBoard sharedPost() {
 		return modelMapper.map(this, SharingBoard.class);
 	}
+	
 	//엔티티를 dto로 바꿈
 	public static SharingBoardDto of(SharingBoard sharingBoard) {
 		SharingBoardDto sharingBoardDto = modelMapper.map(sharingBoard, SharingBoardDto.class);

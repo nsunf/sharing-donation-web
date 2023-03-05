@@ -69,32 +69,8 @@
 							<div class="col-12 mx-auto">
 								<div class="swiper mySwiper position-relative overflow-hidden">
 									<div class="swiper-wrapper">
-										<div class="swiper-slide">
-											<img src="https://picsum.photos/id/104/1920/1080" alt="" />
-										</div>
-										<div class="swiper-slide">
-											<img src="https://picsum.photos/id/53/1920/1080" alt="" />
-										</div>
-										<div class="swiper-slide">
-											<img src="https://picsum.photos/id/840/1920/1080" alt="" />
-										</div>
-										<div class="swiper-slide">
-											<img src="https://picsum.photos/id/338/1920/1080" alt="" />
-										</div>
-										<div class="swiper-slide">
-											<img src="https://picsum.photos/id/18/1920/1080" alt="" />
-										</div>
-										<div class="swiper-slide">
-											<img src="https://picsum.photos/id/87/1920/1080" alt="" />
-										</div>
-										<div class="swiper-slide">
-											<img src="https://picsum.photos/id/77/1920/1080" alt="" />
-										</div>
-										<div class="swiper-slide">
-											<img src="https://picsum.photos/id/38/1920/1080" alt="" />
-										</div>
-										<div class="swiper-slide">
-											<img src="https://picsum.photos/id/294/1920/1080" alt="" />
+										<div class="swiper-slide ratio ratio-16x9" th:each="sharingBoardImgDto : ${sharingBoardImgDtoList}">
+											<img class="object-fit-contain" th:src="${sharingBoardImgDto.imgUrl}" th:alt="${sharingBoardImgDto.id}" />
 										</div>
 									</div>
 									<div class="swiper-button-next">&gt;&gt;</div>
@@ -160,31 +136,29 @@
 								<div class="comment-form">
 									<h3 class="comment-form__title">댓글 작성</h3>
 									<form
+										class="overflow-hidden"
 										th:action="'/sharing_board/view/'+${sharingBoardDto.id}+'/comment'"
 										method="post">
 										<div class="comment-form__input-box"
 											style="line-height: initial;">
 											<textarea name="comment" placeholder="create your comments"></textarea>
 										</div>
-										<button type="submit" class="thm-btn comment-form__btn p-3">
+										<button type="submit" class="thm-btn comment-form__btn p-2">
 											댓글등록<i class="fas fa-arrow-circle-right ps-2"></i>
 										</button>
-										<!-- <button class="thm-btn comment-form__btn"
+									</form>
+								</div>
+								<div class="hstack">
+									<!-- <button class="thm-btn comment-form__btn"
 											style="margin-left: 5px;" type="button"
 											sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
 											th:value="${sharingBoardDto.id}}"
 											onclick="deleteDonationBoard(this.value)">삭 제</button> -->
-										<button id="submit" class="thm-btn comment-form__btn"
-											style="margin-left: 5px;" type="submit"
-											sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-											<a th:href="'/admin/editSharedBoard/' + ${sharingBoardDto.id}">수
+										<button id="submit" class="thm-btn rounded-1 ms-auto mt-3 py-1 px-3" type="submit">
+											<!-- sec:authorize="hasAnyAuthority('ROLE_ADMIN')" -->
+											<a th:href="'/sharing_board/update/' + ${sharingBoardDto.id}">수
 												정</a> <span></span>
 										</button>
-										<!-- <button id="" class="thm-btn comment-form__btn"
-											style="margin-left: 5px;" type="submit">
-											<a href="/donatedBoard">뒤로가기 </a> <span></span> -->
-										</button>
-									</form>
 								</div>
 							</div>
 						</div>

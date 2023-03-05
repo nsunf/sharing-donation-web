@@ -7,5 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.sharingdonation.entity.SharingBoardImg;
 
 public interface SharingBoardImgRepository extends JpaRepository<SharingBoardImg, Long> {
-	List<SharingBoardImg> findBySharingIdOrderByIdAsc(Long sharingBoard_id);
+	List<SharingBoardImg> findBySharingBoardId(Long sharingBoard_id);
+	
+	SharingBoardImg findBySharingBoardIdAndRepimgYn(Long sharingBoard_id, String repimgYn);
+	
 }

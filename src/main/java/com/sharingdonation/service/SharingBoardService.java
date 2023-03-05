@@ -46,18 +46,23 @@ public class SharingBoardService {
 	private final SharingBoardHeartRepository sharingBoardHeartRepository;
 	private final SharingBoardImgRepository sharingBoardImgRepository;
 	
-	//게시글 보여줌. 페이징, 검색
+	//게시판 보여줌. 페이징, 검색
 	@Transactional(readOnly = true)
 	public Page<SharingBoardDto> getCompletePostPage(String searchName, Pageable pageable){
 		Page<SharingBoard> sharingPage = sharingBoardRepository.findBySharingNameContainsOrSubjectContainsOrderByRegTimeDesc(searchName, searchName, pageable);
 		Page<SharingBoardDto> sharingBoardDtoPage = sharingPage.map(sharingBoard -> {
 			SharingBoardDto sharingBoardDto = SharingBoardDto.of(sharingBoard);
 			
+			String imgUrl = sharingBoardImgService.getSharingBoardImg(sharingBoard.getId()).getImgUrl();
+			sharingBoardDto.setImgUrl(imgUrl);
+			
 			Long boardHeartCount = sharingBoardHeartRepository.countBySharingBoardId(sharingBoardDto.getId());
 			sharingBoardDto.setBoardHeartCount(boardHeartCount);
 			
 			Long commentCount = sharingBoardCommentRepository.countBySharingBoardId(sharingBoard.getId());
 			sharingBoardDto.setCommentCount(commentCount);
+			
+			
 			
 			return sharingBoardDto;
 		});
@@ -67,7 +72,7 @@ public class SharingBoardService {
 
 	//나눔완료 게시글 가져옴
 		public SharingBoardFormDto getSharingBoardFormDetail(Long sharingBoard_id) {
-			List<SharingBoardImg> sharingBoardImgList = sharingBoardImgRepository.findBySharingIdOrderByIdAsc(sharingBoard_id);
+			List<SharingBoardImg> sharingBoardImgList = sharingBoardImgRepository.findBySharingBoardId(sharingBoard_id);
 			List<SharingBoardImgDto> sharingBoardImgDtoList = new ArrayList<>();
 			
 			for(SharingBoardImg sharingBoardImg : sharingBoardImgList) {
@@ -85,18 +90,19 @@ public class SharingBoardService {
 			
 			return sharingBoardFormDto;
 		}
+
 	
 	// 나눔완료 게시글 상세페이지 데이터 가져오기
 	@Transactional(readOnly = true)
-	public SharingBoardDto getCompletePost(Long id) {
+	public SharingBoardDto getCompletePost(Long sharingBoardId) {
 
-		SharingBoard sharingBoard = sharingBoardRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		SharingBoard sharingBoard = sharingBoardRepository.findById(sharingBoardId).orElseThrow(EntityNotFoundException::new);
 		SharingBoardDto sharingBoardDto = SharingBoardDto.of(sharingBoard);
-
+		
 		String sharedPostNickname = sharingBoard.getSharing().getMember().getNickName();
 		sharingBoardDto.setSharing_member(sharedPostNickname);
 
-		Story story = storyRepository.findByIdAndChooseYn(id, "Y");
+		Story story = storyRepository.findBySharingIdAndChooseYn(sharingBoard.getSharing().getId(), "Y");
 		String chooseYStory = story.getMember().getNickName();
 		sharingBoardDto.setStory_member(chooseYStory);
 
@@ -160,7 +166,7 @@ public class SharingBoardService {
 	}
 	*/
 	
-	//게시글 삭제
+	//댓글 삭제
 	public void deleteComment(Long comment_id) {
 		SharingBoardComment sharingBoardComment = sharingBoardCommentRepository.findById(comment_id).orElseThrow(EntityNotFoundException::new);
 		
@@ -191,6 +197,43 @@ public class SharingBoardService {
 		}
 		return sharingBoard.getId();
 	}
+	
+	//게시글 수정 페이지 보여줌
+	public SharingBoardFormDto viewsharingBoardFormDto(Long id) {
+		SharingBoard sharingBoard = sharingBoardRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		SharingBoardFormDto sharingBoardFormDto = SharingBoardFormDto.of(sharingBoard);
+		
+		sharingBoardFormDto.setId(sharingBoard.getId());
+		sharingBoardFormDto.setSharing_name(sharingBoard.getSharing().getName());
+		sharingBoardFormDto.setSubject(sharingBoard.getSubject());
+		sharingBoardFormDto.setContent(sharingBoard.getContent());
+		
+		List<SharingBoardImgDto> sharingBoardDtoImgDtoList = sharingBoardImgService.getSharingBoardImgs(id);
+		List<Long> sharingBoardImgIdList = new ArrayList<>();
+		
+		for(SharingBoardImgDto sharingBoardImgDto : sharingBoardDtoImgDtoList) {
+			sharingBoardImgIdList.add(sharingBoardImgDto.getId());
+		}
+		
+		sharingBoardFormDto.setSharingBoardImgIds(sharingBoardImgIdList);
+		
+		return sharingBoardFormDto;
+	}
+	
+	//게시글 수정
+	public Long sharingBoardUpdate(SharingBoardFormDto sharingBoardFormDto, List<MultipartFile> sharingBoardImgFileList) throws Exception {
+		SharingBoard sharingBoard = sharingBoardRepository.findById(sharingBoardFormDto.getId()).orElseThrow(EntityNotFoundException::new);
+		
+		sharingBoard.updateSharingBoard(sharingBoardFormDto);
+		
+		List<Long> sharingBoardImgIds = sharingBoardFormDto.getSharingBoardImgIds();
+		
+		for(int i=0; i<sharingBoardImgFileList.size(); i++) {
+			sharingBoardImgService.updateSharingBoardImg(sharingBoardImgIds.get(i), sharingBoardImgFileList.get(i));
+		}
+		return sharingBoard.getId();
+	}
+
 	
 	
 	

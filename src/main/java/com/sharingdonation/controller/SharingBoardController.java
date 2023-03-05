@@ -28,8 +28,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sharingdonation.dto.SharingBoardCommentDto;
 import com.sharingdonation.dto.SharingBoardDto;
 import com.sharingdonation.dto.SharingBoardFormDto;
+import com.sharingdonation.dto.SharingBoardImgDto;
 import com.sharingdonation.dto.SharingDto;
 import com.sharingdonation.entity.SharingBoardComment;
+import com.sharingdonation.service.SharingBoardImgService;
 import com.sharingdonation.service.SharingBoardService;
 import com.sharingdonation.service.SharingHeartService;
 import com.sharingdonation.service.SharingService;
@@ -44,6 +46,7 @@ public class SharingBoardController {
 	private final SharingBoardService sharingBoardService;
 	private final SharingService sharingService;
 	private final SharingHeartService sharingHeartService;
+	private final SharingBoardImgService sharingBoardImgService;
 
 	// 게시판 화면 띄워줌
 	@GetMapping(value = { "", "{page}" })
@@ -69,38 +72,49 @@ public class SharingBoardController {
 	@GetMapping(value = "/view/{shared_post_id}")
 	public String ViewSharedPost(Model model, @PathVariable("shared_post_id") Long id) {
 		SharingBoardDto sharingBoardDto = sharingBoardService.getCompletePost(id);
+		List<SharingBoardImgDto> sharingBoardImgDtoList = sharingBoardImgService.getSharingBoardImgs(id);
 		List<SharingBoardCommentDto> sharingBoardCommentDtoList = sharingBoardService.getBoardCommentList(id);
+		
 		model.addAttribute("sharingBoardDto", sharingBoardDto);
+		model.addAttribute("sharingBoardImgDtoList",sharingBoardImgDtoList);
 		model.addAttribute("sharingBoardCommentDtoList", sharingBoardCommentDtoList);
-
+		
+		
 		return "sharing/sharedDetail";
 	}
-
+	
 	//게시글 수정 페이지 보여줌
-	@GetMapping(value = "/admin/edit/{sharingBord_id}")
-	public String viewUpdateSharingBoard(@PathVariable("sharingBord_id")Long sharingBoard_id, Model model) {
-		try {
-			SharingBoardFormDto sharingBoardFormDto = sharingBoardService.getSharingBoardFormDetail(sharingBoard_id);
-			model.addAttribute(sharingBoardFormDto);
-			model.addAttribute("sharedPosts",sharingBoardService.getCompletePost(sharingBoard_id));
-		}catch(EntityNotFoundException e) {
-			model.addAttribute("errorMessage", "존재하지 않는 게시글입니다.");
-			model.addAttribute("sharongBoardFormDto", new SharingBoardFormDto());
-			return "admin/editSharedBoard";
-		}
-		return "admin/editSharedBoard";
+	@GetMapping(value = "/update/{sharedBoard_id}")
+	public String sharingBoardDetail (@PathVariable("sharedBoard_id") Long id, Model model) {
+		SharingBoardFormDto sharingBoardFormDto = sharingBoardService.viewsharingBoardFormDto(id);
+		model.addAttribute("sharingBoardFormDto",sharingBoardFormDto);
+		
+		return "admin/updateSharedBoard";
 	}
 	
-	/*
-	// 게시글 수정
-	@PostMapping(value = "/view/{shared_post_id}")
-	public String updateSharingBoard(@Valid SharingBoardFormDto sharingBoardFormDto, BindingResult bindingResult, Model model) {
-		if() {
-			
+	//게시글 수정
+	@PostMapping(value = "/update/{sharedBoard_id}")
+	public String updateSharedBoard(@Valid SharingBoardFormDto sharingBoardFormDto, BindingResult bindingResult, Model model, List<MultipartFile> sharingBoardImgFileList) {
+		
+		if(bindingResult.hasErrors()) {
+			return "admin/updateSharedBoard";
 		}
+		
+		if(sharingBoardImgFileList.get(0).isEmpty() && sharingBoardFormDto.getId() == null) {
+			model.addAttribute("errorMessage","이미지를 찾을 수 없습니다.");
+			return "admin/updateSharedBoard";
+		}
+		
+		try {
+			sharingBoardService.sharingBoardUpdate(sharingBoardFormDto, sharingBoardImgFileList);
+		} catch(Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "게시글 수정이 정상적으로 이루어지지 않았습니다.");
+			return "admin/updateSharedBoard";
+		}
+		return "redirect:/admin/updateSharedBoard";
 	}
-	*/
-
+	
 	// 댓글 등록
 	@PostMapping(value = "/view/{shared_post_id}/comment")
 	public String insertComment(@PathVariable("shared_post_id") Long id, @RequestParam String comment, Model model) {
@@ -124,18 +138,18 @@ public class SharingBoardController {
 	}
 
 	// 인증완료 게시글 작성 페이지 보여줌
-	@GetMapping(value = "admin/edit/{shared_id}")
+	@GetMapping(value = "admin/create/{shared_id}")
 	public String getinsertSharedBoardPost(Model model, @PathVariable("shared_id") Long id) {
 		SharingDto sharingDto = sharingService.getSharingDto(id);
 		SharingBoardFormDto sharingBoardFormDto = new SharingBoardFormDto();
 		sharingBoardFormDto.setSharing_id(id);
 		model.addAttribute("sharingDto", sharingDto);
 		model.addAttribute("sharingBoardFormDto", sharingBoardFormDto);
-		return "admin/editSharedBoard";
+		return "admin/createSharedBoard";
 	}
 
 	// 인증완료 게시글 작성
-	@PostMapping(value = "admin/edit/{shared_id}")
+	@PostMapping(value = "admin/create/{shared_id}")
 	public String insertSharedBoardPost(@PathVariable("shared_id") Long id,
 			@Valid SharingBoardFormDto sharingBoardFormDto, BindingResult bindingResult, Model model,
 			List<MultipartFile> sharingBoardImgFileList) {
@@ -144,11 +158,11 @@ public class SharingBoardController {
 		model.addAttribute("sharingDto", sharingDto);
 
 		if (bindingResult.hasErrors()) {
-			return "admin/editSharedBoard";
+			return "admin/createSharedBoard";
 		}
 		if (sharingBoardImgFileList.isEmpty() && sharingBoardFormDto.getId() == null) {
 			model.addAttribute("errorMessage", "첫번째 이미지는 필수 입력 값 입니다.");
-			return "admin/editSharedBoard";
+			return "admin/createSharedBoard";
 		}
 
 		try {
@@ -157,7 +171,7 @@ public class SharingBoardController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "게시글이 정상적으로 등록되지 않았습니다.");
-			return "admin/editSharedBoard";
+			return "admin/createSharedBoard";
 		}
 		return "redirect:/sharing_board";
 	}
