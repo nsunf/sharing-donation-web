@@ -39,7 +39,7 @@
                 </li>
                 <li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/donation')} ? 'current' : null"><a th:href="@{/donation}">기부</a></li>
                 <li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing_board')} ? 'current' : null"><a th:href="@{/sharing_board}">나눔 인증 게시판</a></li>
-                <li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/donatedBoard')} ? 'current' : null"><a th:href="@{/donatedBoard}">기부 완료 게시판</a></li>
+                <li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/donatedBoard')} ? 'current' : null"><a th:href="@{/donatedBoards}">기부 완료 게시판</a></li>
 
 								<!-- 관리자 -->
                 <!-- <li class="text-center current"><a href="#">회원<br/>관리</a></li>

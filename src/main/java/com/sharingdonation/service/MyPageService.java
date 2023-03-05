@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sharingdonation.dto.MyPageEnterPricePrivacyDto;
 import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.MyPagePrivacyDto;
+import com.sharingdonation.dto.MyPageStoryDetailDto;
 import com.sharingdonation.dto.MyPageStoryListDto;
 import com.sharingdonation.entity.Member;
 import com.sharingdonation.repository.MyPageRepository;
@@ -55,6 +56,19 @@ public class MyPageService {
 		return myPageRepository.getMyPageStoryList(memberId, pageable);
 		
 	}
+	
+	@Transactional(readOnly = true)
+	public MyPageStoryDetailDto getMyPageStoryDetail(Long memberId, Long storyId){
+		return myPageRepository.getMyPageStoryDetail(memberId,storyId);
+		
+	}
+	
+	@Transactional
+	public Long myPageStoryDetailUpdate(MyPageStoryDetailDto myPageStoryDetailDto, Long memberId, Long storyId) {
+		return myPageRepository.updateMyPageStoryDetail(myPageStoryDetailDto, memberId, storyId);
+	}
+	
+	
 	
 	
 	
