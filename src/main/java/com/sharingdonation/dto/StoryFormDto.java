@@ -1,5 +1,7 @@
 package com.sharingdonation.dto;
 
+import java.time.format.DateTimeFormatter;
+
 import com.sharingdonation.entity.Story;
 
 import lombok.Getter;
@@ -16,6 +18,9 @@ public class StoryFormDto {
 	private String memberName;
 	private String content;
 	private String registeredYn;
+
+	private String sharingDone;
+	private String regTime;
 	
 	public StoryFormDto(Long sharingId, Long memberId, String registeredYn) {
 		this.sharingId = sharingId;
@@ -29,5 +34,8 @@ public class StoryFormDto {
 		this.memberId = story.getMember().getId();
 		this.memberName = story.getMember().getName();
 		this.content = story.getContent();
+		
+		this.sharingDone = story.getSharing().getDone();
+		this.regTime = story.getRegTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 }

@@ -1,5 +1,6 @@
 package com.sharingdonation.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -63,29 +64,32 @@ public class StoryController {
 		
 		return new ResponseEntity<StoryFormDto>(storyFormDto, HttpStatus.OK);
 	}
-
+// 내가 등록한 사연
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	@PostMapping("/story/sharingid/{id}")
-	public @ResponseBody ResponseEntity<?> getStoryBySharingId(@PathVariable("id") Long sharingId) {
-		StoryFormDto storyFormDto = storyService.getStoryFormDtoBySharingId(sharingId);
+	public @ResponseBody ResponseEntity<?> getStoryBySharingId(@PathVariable("id") Long sharingId, Principal principal) {
+		StoryFormDto storyFormDto = storyService.getStoryFormDtoBySharingIdAndEmail(sharingId, principal.getName());
 		
 		return new ResponseEntity<StoryFormDto>(storyFormDto, HttpStatus.OK);
 	}
 	
 	// 사연 수정
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/story/edit")
 	public String editStory(StoryFormDto storyFormDto) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String email = auth.getName();
-		Member member = memberRepo.findByEmail(email);
-		boolean isAdmin = auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-		boolean isAuthor = storyFormDto.getMemberId() == member.getId();
-
-		if (isAdmin || isAuthor)
-			storyService.updateStory(storyFormDto);
+		storyService.updateStory(storyFormDto);
 
 		return "redirect:/admin/story/id/" + storyFormDto.getId();
+	}
+
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@PostMapping("/mypage/story/edit")
+	public String editMyStory(StoryFormDto storyFormDto, Principal principal) {
+		String email = principal.getName();
+		Member member = memberRepo.findByEmail(email);
+		if (storyFormDto.getMemberId() == member.getId())
+			storyService.updateStory(storyFormDto);
+		return "redirect:/mypage/shared";
 	}
 	
 	// 사연 채택

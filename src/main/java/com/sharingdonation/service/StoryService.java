@@ -45,8 +45,7 @@ public class StoryService {
 		return new StoryFormDto(story);
 	}
 
-	public StoryFormDto getStoryFormDtoBySharingId(Long sharingId) {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+	public StoryFormDto getStoryFormDtoBySharingIdAndEmail(Long sharingId, String email) {
 		Member member = memberRepo.findByEmail(email);
 		Story story = storyRepo.findBySharingIdAndMemberId(sharingId, member.getId());
 		return new StoryFormDto(story);
