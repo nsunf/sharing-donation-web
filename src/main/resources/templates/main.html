@@ -21,7 +21,7 @@
     <div class="container h-100 vstack">
       <div class="row row-cols-2 row-cols-sm-4 row-cols-lg-6 mt-auto">
         <div class="col ms-auto bg-white text-center py-2">
-          <h3 class="main-sldier__counter-digit">4390</h3>
+          <h3 class="main-sldier__counter-digit">[[${sharedCount}]]</h3>
           <span class="main-slider__counter-text">나눔</span>
         </div>
         <div class="col bg-white text-center py-2">
@@ -34,6 +34,9 @@
 
 		<section class="map container mt-5">
 			<div class="row">
+				<div class="col-12">
+					현재 등록된 나눔 수 : [[${currentSharingCount}]]
+				</div>
 				<div class="col-12 col-md-10 col-xl-8 mx-auto">
 					<!-- <svg id="map-svg" class="mx-auto" style="background:#eaeaea;overflow:visible" height="656" width="800" xmlns="http://www.w3.org/2000/svg"> -->
 					<svg id="map-svg" class="mx-auto" style="overflow:visible" viewBox="0 0 800 640" xmlns="http://www.w3.org/2000/svg">

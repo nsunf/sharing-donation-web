@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sharingdonation.constant.Role;
@@ -57,8 +57,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TestDataService {
 	
-	@Value("${sharingImgLocation}")
-	private String sharingImgLocation;
+	private final PasswordEncoder pwdEncoder;
 
 	private final CategoryRepository categoryRepo;
 	private final AreaRepository areaRepository;
@@ -93,8 +92,9 @@ public class TestDataService {
 		List<Area> areaList = areaRepository.findAll();
 		
 		//회원
-		IntStream.range(0, 10).forEach(i -> addMember(Role.USER));
-		IntStream.range(0, 10).forEach(i -> addMember(Role.COM));
+		IntStream.range(0, 10).forEach(i -> addMember(Role.USER, i));
+		IntStream.range(0, 10).forEach(i -> addMember(Role.COM, i));
+		addMember(Role.ADMIN, 0);
 		List<Member> memberList = memberRepo.findAll();
 		List<Member> userList = memberList.stream().filter(member -> member.getRole() == Role.USER).toList();
 		List<Member> comList = memberList.stream().filter(member -> member.getRole() == Role.COM).toList();
@@ -104,7 +104,7 @@ public class TestDataService {
 			Category c = categoryList.get(random.nextInt(categoryList.size()));
 			Member m = userList.get(random.nextInt(userList.size()));
 			Area a = areaList.get(random.nextInt(areaList.size()));
-			addSharing(c, m, a);
+			addSharing(c, m, a, i < 80);
 		});
 		List<Sharing> sharingList = sharingRepo.findAll();
 		
@@ -128,38 +128,31 @@ public class TestDataService {
 			}
 		}
 
-//		// 사연
-//		
-//		sharingList.subList(0, 50).forEach(sharing -> {
-//			if (sharing.getConfirmYn().equals("N")) {
-//				sharing.setConfirmYn("Y");
-//				sharing.setPoint(random.nextInt(1500) + 500);
-//				sharing.setStartDate(LocalDate.now());
-//				sharing.setEndDate(LocalDate.now().plusDays(7));
-//				sharing.setUpDateTime(LocalDateTime.now());
-//				sharing.setModifyBy("TEST");
-//			}
-//
-//			for (int i = 0; i < 10; i++) {
-//				List<Story> storyList = storyRepo.findAll().stream().filter(story -> story.getSharing().getId() == sharing.getId()).toList();
-//				Member member = null;
-//				
-//				while (member == null) {
-//					Member tmp = userList.get(random.nextInt(userList.size()));
-//
-//					boolean registered = storyList.stream().filter(story -> story.getMember().getId() == tmp.getId()).count() > 0;
-//					if (!registered) member = tmp;
-//				}
-//				
-//				boolean isAdopted = random.nextInt(10) > 8;
-//				addStory(sharing, member, isAdopted);
-//				if (isAdopted) {
-//					sharing.setDone("Y");
-//					sharing.setUpDateTime(LocalDateTime.now());
-//					break;
-//				}
-//			}
-//		});;
+		// 사연
+		
+		sharingList.stream()
+			.filter(sharing -> sharing.getConfirmYn().equals("Y"))
+			.forEach(sharing -> {
+				for (int i = 0; i < 3; i++) {
+					List<Story> storyList = storyRepo.findAll().stream().filter(story -> story.getSharing().getId() == sharing.getId()).toList();
+					Member member = null;
+					
+					while (member == null) {
+						Member tmp = userList.get(random.nextInt(userList.size()));
+
+						boolean registered = storyList.stream().filter(story -> story.getMember().getId() == tmp.getId()).count() > 0;
+						if (!registered) member = tmp;
+					}
+					
+					boolean isAdopted = random.nextInt(10) > 8;
+					addStory(sharing, member, isAdopted);
+					if (isAdopted) {
+						sharing.setDone("Y");
+						sharing.setUpDateTime(LocalDateTime.now());
+						break;
+					}
+			}
+		});;
 		
 		List<Story> storyList = storyRepo.findAll();
 		
@@ -267,16 +260,18 @@ public class TestDataService {
 	}
 
 //		멤버
-	public void addMember(Role role) {
+	public void addMember(Role role, int i) {
 		Member member = new Member();
-		member.setEmail(randomString(10) + "@email.com");
-		member.setPassword("test1234");
-		member.setName(randomString(5));
+		String username = role.toString().toLowerCase() + i;
+
+		member.setEmail(username + "@email.com");
+		member.setPassword(pwdEncoder.encode("test1234"));
+		member.setName(username);
 		member.setCellphone(randomPhone());
 		member.setZipCode((random.nextInt(90000) + 10000) + "");
 		member.setAddress(randomString(5) + " " + randomString(5));
 		member.setAddressDetail(randomString(13));
-		member.setNickName(randomString(5));
+		member.setNickName(username + "_nick");
 		member.setRegTime(LocalDateTime.now());
 		member.setDelYn("N");
 
@@ -285,7 +280,7 @@ public class TestDataService {
 		if (role == Role.COM) {
 			member.setComNum(randomComNum());
 			member.setFax(randomFax());
-		} else if (role == Role.USER) {
+		} else if (role == Role.USER || role == Role.ADMIN) {
 			member.setComNum("");
 			member.setFax("");
 			member.setBirth(LocalDate.now());
@@ -293,19 +288,29 @@ public class TestDataService {
 		memberRepo.save(member);
 	}
 //		나눔
-	public void addSharing(Category category, Member member, Area area) {
+	public void addSharing(Category category, Member member, Area area, boolean isConfirmed) {
 		Sharing sharing = new Sharing();
 		sharing.setCategory(category);
 		sharing.setMember(member);
 		sharing.setArea(area);
 		sharing.setName(randomString(8));
 		sharing.setDetail(randomString(50));
-		sharing.setPoint(0);
 		sharing.setRegTime(LocalDateTime.now());
 		sharing.setCreateBy("TEST");
-		sharing.setConfirmYn("N");
 		sharing.setDone("N");
 		sharing.setDelYn("N");
+		
+		if (isConfirmed) {
+			sharing.setPoint(random.nextInt(1500) + 500);
+			sharing.setConfirmYn("Y");
+			sharing.setStartDate(LocalDate.now());
+			sharing.setEndDate(LocalDate.now().plusDays(7));
+			sharing.setUpDateTime(LocalDateTime.now());
+			sharing.setModifyBy("TEST");
+		} else {
+			sharing.setPoint(0);
+			sharing.setConfirmYn("N");
+		}
 		
 		sharingRepo.save(sharing);
 	}
@@ -462,6 +467,7 @@ public class TestDataService {
 		story.setContent(randomString(100));
 		story.setRegTime(LocalDateTime.now());
 		story.setChooseYn(choosen ? "Y" : "N");
+		story.setDelYn("N");
 		
 		storyRepo.save(story);
 	}

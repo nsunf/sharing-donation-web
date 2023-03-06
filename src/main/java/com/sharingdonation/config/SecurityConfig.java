@@ -3,6 +3,7 @@ package com.sharingdonation.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,6 +15,7 @@ import com.sharingdonation.config.CustomAuthenticationEntryPoint;
 import com.sharingdonation.service.MemberService;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 public class SecurityConfig{
 	
@@ -37,7 +39,7 @@ public class SecurityConfig{
 
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**", "/img/**", "/assets/**").permitAll()
-                .mvcMatchers("/", "/auth/**", "/images/**", "/lib/**", "/mypage/**", "/program/**", "/sharing/**", "/donation/**", "/sharing_board/**", "/donatedBoard/**").permitAll()
+                .mvcMatchers("/", "/auth/**", "/images/**", "/lib/**", "/mypage/**", "/program/**", "/sharing/**", "/donation/**", "/sharing_board/**", "/donatedBoard/**", "/story/**").permitAll()
                 .mvcMatchers("/test/**").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
