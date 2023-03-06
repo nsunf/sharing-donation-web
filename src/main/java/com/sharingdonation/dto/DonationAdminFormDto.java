@@ -20,10 +20,7 @@ public class DonationAdminFormDto extends DonationFormDto {
 	private String confirmYn;
 	
 	private String done;
-	
-	private String startDate;
-	
-	private String endDate;
+
 	
 	private String status;
 	

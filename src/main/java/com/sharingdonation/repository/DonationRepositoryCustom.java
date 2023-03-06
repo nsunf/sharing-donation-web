@@ -4,12 +4,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.sharingdonation.dto.DonationDto;
-import com.sharingdonation.dto.DonationSearchDto;
+import com.sharingdonation.dto.SearchDto;
 import com.sharingdonation.dto.ListDonationDto;
 import com.sharingdonation.entity.Donation;
 
 public interface DonationRepositoryCustom {
-	Page<DonationDto> getAdminListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable);
+	Page<DonationDto> getAdminListDonationPage(SearchDto searchDto, Pageable pageable);
 	
-	Page<ListDonationDto> getListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable);
+	Page<ListDonationDto> getListDonationPage(SearchDto searchDto, Pageable pageable);
 }
