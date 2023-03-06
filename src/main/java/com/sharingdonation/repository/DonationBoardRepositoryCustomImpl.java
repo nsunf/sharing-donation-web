@@ -7,8 +7,10 @@ import javax.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.thymeleaf.util.StringUtils;
 
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.dsl.Wildcard;
@@ -18,6 +20,7 @@ import com.sharingdonation.dto.DonationBoardDto;
 import com.sharingdonation.dto.DonationBoardSearchDto;
 import com.sharingdonation.dto.QDonationBoardDto;
 import com.sharingdonation.entity.DonationBoard;
+import com.sharingdonation.entity.QDonation;
 //import com.sharingdonation.entity.QDonation;
 import com.sharingdonation.entity.QDonationBoard;
 import com.sharingdonation.entity.QDonationBoardComment;
@@ -33,7 +36,14 @@ private JPAQueryFactory queryFactory;
 		this.queryFactory = new JPAQueryFactory(em);
 	}
 	
-	
+	private BooleanExpression searchByLike(String searchQuery) {//String searchBy, 
+		if (! searchQuery.equals("") ) {
+			return QDonation.donation.subject.like("%" + searchQuery + "%");
+//		} else if(StringUtils.equals("d",searchBy)) {
+//			return QDonation.donation.donationName.like("%" + searchQuery + "%");
+		}
+		return null;
+	}
 	
 	@Override
 	public Page<DonationBoard> getAdminDonationBoardPage(DonationBoardSearchDto donationBoardSearchDto, Pageable pageable) {
@@ -77,7 +87,7 @@ private JPAQueryFactory queryFactory;
 				.from(donationBoardImg)
 				.join(donationBoardImg.donationBoard, donationBoard)
 				.where(donationBoardImg.repimgYn.eq("Y"))
-				.where(donationBoard.subject.like("%" + donationBoardSearchDto.getSearchQuery() + "%"))
+				.where(searchByLike(donationBoardSearchDto.getSearchQuery()))
 				.orderBy(donationBoard.id.desc())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
@@ -87,7 +97,7 @@ private JPAQueryFactory queryFactory;
 				.from(donationBoardImg)
 				.join(donationBoardImg.donationBoard, donationBoard)
 				.where(donationBoardImg.repimgYn.eq("Y"))
-				.where(donationBoard.subject.like("%" + donationBoardSearchDto.getSearchQuery() + "%"))
+				.where(searchByLike(donationBoardSearchDto.getSearchQuery()))
 				.fetchOne();
 		return new PageImpl<>(content, pageable, total);
 	}

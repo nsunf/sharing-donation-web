@@ -1,101 +1,158 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/layout1}">
-<head>
-<meta charset="UTF-8">
-<title>나눔 완료 인증 게시판</title>
-<link rel="stylesheet" href="/css/sol/sharing_board.css" />
-</head>
-<body>
-	<th:block layout:fragment="layout-content">
-		<section class="page-header">
-			<div class="page-header__bg"
-				style="background-image: url('https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=3270&amp;q=80');"></div>
-			<!-- /.page-header__bg -->
-			<div class="container">
-				<h2 class="text-center sharing_board_title">나눔 완료 인증 게시판</h2>
-			</div>
-		</section>
-		<!-- 검색창 -->
-		<section class="news-page pt-5 pb-3 vstack">
-			<div class="m-5">
-				<form class="input-group mb-3 w-25 mx-auto my-4"
-					action="/sharing_board/">
-					<input id="searchName" type="text" name="searchName" class="form-control"
-						placeholder="검색" />
-					<button id="searchBtn" class="btn" type="submit"
-						style="background-color: #15c8a0; color: #fff">검색</button>
-				</form>
-			</div>
-			<!-- 나눔완료 게시글 -->
-			<div class="container">
-				<div class="row g-5 row-cols-auto">
-					<th:block th:each="sharedPost, status: ${sharingBoardList}">
-						<div class="col-4">
-							<div class="news-two__single">
-								<div class="news-two__img-box">
-									<div class="news-two__img">
-										<img src="https://picsum.photos/200/170" alt="사진" /> <a
-											href="news-details.html"> <i class="fa fa-plus"></i>
-										</a>
-									</div>
-									<div class="news-two__date">
-										<p th:text="${sharedPost.regTime}"></p>
-									</div>
-								</div>
-								<div class="news-two__content">
-									<ul class="list-unstyled news-two__meta">
-										<!-- <li><i class="far fa-user-circle"></i> Admin</li> -->
-										<li><span>/</span></li>
-										<li><i th:text="${sharedPost.commentCount}"
-											class="far fa-comments"></i></li>
-									</ul>
-									<a th:href="'/sharing_board/view/'+${sharedPost.id}"><h3
-											th:text="${sharedPost.subject}"></h3></a>
-									<p th:text="${sharedPost.content}" class="news-two__text">
-									</p>
-								</div>
-							</div>
-						</div>
-					</th:block>
-				</div>
-			</div>
-		</section>
-		<div class="archive-pages"
-			th:with="start=${(sharingBoardList.number/maxPage) * maxPage + 1}
-      , end=(${(sharingBoardList.totalPages== 0) ? 1 : (start + (maxPage - 1) < sharingBoardList.totalPages ? start + (maxPage -1) : sharingBoardList.totalPages)})">
-			<ul>
-				<li class="previous"
-					th:classappend="${sharingBoardList.first}? 'disabled'"><a
-					href="#" title="previous page"
-					th:onclick="'javascript:page(' + ${sharingBoardList.number - 1} + ')'"></a></li>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/layout1}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>나눔 완료 인증 게시판</title>
+    <link rel="stylesheet" href="/css/sol/sharing_board.css" />
+  </head>
+  <body>
+    <th:block layout:fragment="layout-content">
+      <section class="page-header">
+        <div
+          class="page-header__bg"
+          style="
+            background-image: url('https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=3270&amp;q=80');
+          "
+        ></div>
+        <!-- /.page-header__bg -->
+        <div class="container">
+          <h2 class="text-center sharing_board_title">나눔 완료 인증 게시판</h2>
+        </div>
+      </section>
+      <!-- 검색창 -->
+      <section class="news-page pt-5 pb-3 vstack">
+        <div class="container">
+          <div class="row g-5 m-5">
+            <div class="col-xl-3 col-lg-3"></div>
+            <div class="col-xl-6 col-lg-6">
+              <form
+                class="input-group mb-3 w-100 mx-auto my-4"
+                action="/sharing_board/"
+              >
+                <input
+                  id="searchName"
+                  type="text"
+                  name="searchName"
+                  class="form-control"
+                  placeholder="검색"
+                />
+                <button
+                  id="searchBtn"
+                  class="btn"
+                  type="submit"
+                  style="background-color: #15c8a0; color: #fff"
+                >
+                  검색
+                </button>
+              </form>
+            </div>
+            <div class="col-xl-3 col-lg-3"></div>
+          </div>
+        </div>
+        <!-- 나눔완료 게시글 -->
+        <div class="container">
+          <div class="row g-5">
+            <th:block th:each="sharedPost, status: ${sharingBoardList}">
+              <div
+                class="col-xl-4 col-lg-4 wow fadeInUp"
+                data-wow-delay="100ms"
+              >
+                <div class="news-two__single">
+                  <div class="news-two__img-box">
+                    <div class="news-two__img">
+                      <img src="https://picsum.photos/200/170" alt="사진" />
+                      <a href="news-details.html">
+                        <i class="fa fa-plus"></i>
+                      </a>
+                    </div>
+                    <div class="news-two__date">
+                      <p th:text="${sharedPost.regTime}"></p>
+                    </div>
+                  </div>
+                  <div class="news-two__content">
+                    <ul class="list-unstyled news-two__meta">
+                      <!-- <li><i class="far fa-user-circle"></i> Admin</li> -->
+                      <li><span>/</span></li>
+                      <li>
+                        <i
+                          th:text="${sharedPost.commentCount}"
+                          class="far fa-comments"
+                        ></i>
+                      </li>
+                    </ul>
+                    <a th:href="'/sharing_board/view/'+${sharedPost.id}"
+                      ><h3 th:text="${sharedPost.subject}"></h3
+                    ></a>
+                    <p
+                      th:text="${sharedPost.content}"
+                      class="news-two__text"
+                    ></p>
+                  </div>
+                </div>
+              </div>
+            </th:block>
+          </div>
+        </div>
+      </section>
+      <div
+        class="archive-pages"
+        th:with="start=${(sharingBoardList.number/maxPage) * maxPage + 1}
+      , end=(${(sharingBoardList.totalPages== 0) ? 1 : (start + (maxPage - 1) < sharingBoardList.totalPages ? start + (maxPage -1) : sharingBoardList.totalPages)})"
+      >
+        <ul>
+          <li
+            class="previous"
+            th:classappend="${sharingBoardList.first}? 'disabled'"
+          >
+            <a
+              href="#"
+              title="previous page"
+              th:onclick="'javascript:page(' + ${sharingBoardList.number - 1} + ')'"
+            ></a>
+          </li>
 
-				<li th:each="page: ${#numbers.sequence(start, end)}"
-					th:classappend="${sharingBoardList.number eq page-1} ? 'active':''"><a
-					th:inline="text"
-					th:onclick="'javascript:page(' + ${page - 1} + ')'">[[${page}]]</a></li>
+          <li
+            th:each="page: ${#numbers.sequence(start, end)}"
+            th:classappend="${sharingBoardList.number eq page-1} ? 'active':''"
+          >
+            <a
+              th:inline="text"
+              th:onclick="'javascript:page(' + ${page - 1} + ')'"
+              >[[${page}]]</a
+            >
+          </li>
 
-				<li class="next"
-					th:classappend="${sharingBoardList.last}? 'disabled'"><a
-					href="#" title="next page"
-					th:onclick="'javascript:page(' + ${sharingBoardList.number + 1} + ')'"></a></li>
-			</ul>
-		</div>
-	</th:block>
-	<th:block layout:fragment="script-bottom">
-		<script th:inline="javascript">
-		$(document).ready(function() {
-			$("#searchBtn").on("click", function(e) {
-				e.preventDefault();
-				page(0);
-			});
-		});
-		function page(page) {
-			var searchName = $("#searchName").val();
-			location.href = "/sharing_board/" + page + "?searchName=" + searchName;
-		}
-	</script>
-	</th:block>
-</body>
+          <li
+            class="next"
+            th:classappend="${sharingBoardList.last}? 'disabled'"
+          >
+            <a
+              href="#"
+              title="next page"
+              th:onclick="'javascript:page(' + ${sharingBoardList.number + 1} + ')'"
+            ></a>
+          </li>
+        </ul>
+      </div>
+    </th:block>
+    <th:block layout:fragment="script-bottom">
+      <script th:inline="javascript">
+        $(document).ready(function () {
+          $("#searchBtn").on("click", function (e) {
+            e.preventDefault();
+            page(0);
+          });
+        });
+        function page(page) {
+          var searchName = $("#searchName").val();
+          location.href =
+            "/sharing_board/" + page + "?searchName=" + searchName;
+        }
+      </script>
+    </th:block>
+  </body>
 </html>

@@ -234,10 +234,10 @@ public class DonationBoardService {
 			
 			donationBoardRepository.delete(donationBoard);
 			
-			DonationBoardComment donationBoardComment = donationBoardCommentRepository.findById(donationBoardId)
-					.orElseThrow(EntityNotFoundException::new);
+			List<DonationBoardComment> donationBoardComment = donationBoardCommentRepository.findByDonationBoardId(donationBoardId);
+//					.orElseThrow(EntityNotFoundException::new);
 			
-			donationBoardCommentRepository.delete(donationBoardComment);
+			donationBoardCommentRepository.deleteAll(donationBoardComment);
 			
 			DonationBoardHeart donationBoardHeart = donationBoardHeartRepository.findById(donationBoardId)
 					.orElseThrow(EntityNotFoundException::new);

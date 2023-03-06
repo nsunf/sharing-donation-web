@@ -131,28 +131,28 @@
 									</div>
 
 
-									<button type="submit" class="thm-btn comment-form__btn"
+									<button type="submit" class="comment-form__btn "
 										style="margin-left: 5px;">
 										제 출<i class="fas fa-arrow-circle-right"
 											style="padding-left: 10px;"></i>
 									</button>
 
-									<button class="thm-btn comment-form__btn"
+									<button class="comment-form__btn"
 										style="margin-left: 5px;" type="button"
 										sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
 										th:value="${donationBoard.id}"
 										onclick="deleteDonationBoard(this.value)">삭 제</button>
 
-									<button id="submit" class="thm-btn comment-form__btn"
-										style="margin-left: 5px;" type="submit"
+									<button id="submit" class="comment-form__btn"
+										style="margin-left: 5px;" type="button"
 										sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
 										<a th:href="'/admin/donatedBoard/' + ${donationBoardId}">수
 											정</a> <span></span>
 									</button>
 
-									<button id="" class="thm-btn comment-form__btn"
-										style="margin-left: 5px;" type="submit">
-										<a href="/donatedBoard">뒤로가기 </a> <span></span>
+									<button id="" class="comment-form__btn"
+										style="margin-left: 5px;" type="button">
+										<a href="/donatedBoards">뒤로가기 </a> <span></span>
 									</button>
 								</form>
 
