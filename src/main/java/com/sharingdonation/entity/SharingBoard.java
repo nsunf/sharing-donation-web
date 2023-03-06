@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.sharingdonation.dto.SharingBoardFormDto;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -39,5 +41,10 @@ public class SharingBoard {
 	
 	@Column(nullable = false)
 	private LocalDateTime regTime;
+	
+	public void updateSharingBoard(SharingBoardFormDto sharingBoardFormDto) {
+		this.subject = sharingBoardFormDto.getSubject();
+		this.content = sharingBoardFormDto.getContent();
+	}
 	
 }

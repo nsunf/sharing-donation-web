@@ -108,6 +108,7 @@ public class Member extends BaseEntity {
 		Member corp = new Member();
 		corp.setNickName(corpFormDto.getNickName());
 		corp.setName(corpFormDto.getName());
+		corp.setComNum(corpFormDto.getComNum());
 		corp.setZipCode(corpFormDto.getZipCode());
 		corp.setAddress(corpFormDto.getAddress());
 		corp.setAddressDetail(corpFormDto.getAddressDetail());
