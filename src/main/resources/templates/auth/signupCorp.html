@@ -33,7 +33,7 @@
             <input type="text" name="name" th:field="*{name}" class="text-field" placeholder="대표자 성명을 입력해주세요.">
             <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">Incorrect Data</p>
             <div>사업자 등록 번호</div>
-            <input type="text" name="comNum" th:field="*{comNum}" id="b_no" class="co-field b_no" placeholder="사업자등록번호를 '-'빼고 입력해주세요.">
+            <input type="text" th:field="*{comNum}" id="b_no" class="co-field b_no" placeholder="사업자등록번호를 '-'빼고 입력해주세요.">
             <button id="check" class="check co-btn" type="button" style="background-color: #8D9391;">확인</button>
             <p id="demo1"></p>
             <p th:if="${#fields.hasErrors('comNum')}" th:errors="*{comNum}" class="fieldError">Incorrect Data</p>

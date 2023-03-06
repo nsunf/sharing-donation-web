@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/layout1}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Insert title here</title>
+    <link rel="stylesheet" href="/css/sol/admin_donation_complete_board.css" />
+  </head>
+  <body>
+    <th:block layout:fragment="layout-content">
+      <section class="auto-min-height">
+        <div class="my-5">
+          <h1 class="text-center">회원 리스트</h1>
+        </div>
+        <!-- 검색창 -->
+        <div class="container">
+          <div class="w-25 my-auto ms-auto me-3">
+            <form class="input-group" action="admin/memberList">
+              <input type="text" class="form-control" placeholder="검색" />
+              <button
+                class="btn"
+                type="submit"
+                style="background-color: #15C8A0; color: #fff"
+              >
+                검색
+              </button>
+            </form>
+          </div>
+          <div class="mx-auto my-5 p-3">
+            <table class="table" style="text-align: center">
+              <thead>
+                <tr class="border-top">
+                  <th>NickName</th>
+                  <th>성명</th>
+                  <th>가입일자</th>
+                  <th>수정/삭제</th>
+                </tr>
+              </thead>
+              <th:block
+                th:each="donationBoard, status: ${donationBoards.getContent()}"
+              >
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <ul>
+                        <li><button class="bnt">수정</button></li>
+                        <li><button class="bnt">삭제</button></li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </th:block>
+            </table>
+          </div>
+          <!-- <div
+            class="archive-pages"
+            th:with="start=${(donationBoards.number/maxPage) * maxPage + 1}
+                             , end=(${(donationBoards.totalPages == 0) ? 1 : (start + (maxPage) < donationBoards.totalPages ? start + (maxPage -1) : donationBoards.totalPages)})"
+          >
+            <ul>
+              <li
+                class="previous"
+                th:classappend="${donationBoards.first}? 'disabled'"
+              >
+                <a
+                  title="previous page"
+                  th:href="@{'/admin/donatedBoards/' + ${start} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}"
+                >
+                </a>
+              </li>
+              <li
+                th:each="page: ${#numbers.sequence(start, end)}"
+                th:classappend="${donationBoards.number eq page-1} ? 'active':''"
+              >
+                <a
+                  th:inline="text"
+                  th:href="@{'/admin/donatedBoards/' + ${page} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}"
+                  >[[${page}]]</a
+                >
+              </li>
+              <li
+                class="next"
+                th:classappend="${donationBoards.last}? 'disabled'"
+              >
+                <a
+                  title="next page"
+                  th:href="@{'/admin/donatedBoards/' + ${end} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}"
+                ></a>
+              </li>
+            </ul>
+          </div> -->
+        </div>
+      </section>
+    </th:block>
+    <th:block layout:fragment="script-bottom">
+      <script src="/js/setAutoHeight.js"></script>
+    </th:block>
+  </body>
+</html>

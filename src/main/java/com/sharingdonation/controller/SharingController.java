@@ -296,8 +296,12 @@ public class SharingController {
 	// 관리자 나눔 상품 수정 페이지
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/admin/sharing/edit/{id}")
-	public String adminEditSharing(@PathVariable Long id, Model model) {
+	public String adminEditSharing(@PathVariable Long id, Principal principal, Model model) {
+		String email = principal.getName();
+		Member member = memberRepo.findByEmail(email);
+
 		model.addAttribute("title", "나눔 상품 승인 관리");
+		model.addAttribute("member", member);
 		model.addAttribute("sharingFormDto", sharingService.getSharingFormDto(id));
 		model.addAttribute("areaDtoList", areaService.getAreaList());
 		model.addAttribute("categoryDtoList", categoryService.getCategoryDtoLIst());

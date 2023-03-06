@@ -18,9 +18,11 @@ import lombok.*;
 @Setter
 public class SharingBoardFormDto {
 
-	private String id; //식별아이디
+	private Long id; //식별아이디
 	
 	private Long sharing_id; //나눔물품 식별 아이디
+	
+	private String sharing_name;
 	
 	@NotBlank(message = "제목을 입력해주세요.")
 	private String subject; //글제목
