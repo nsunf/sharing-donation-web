@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sharingdonation.dto.CategoryDto;
 import com.sharingdonation.entity.Category;
 import com.sharingdonation.repository.CategoryRepository;
+import com.sharingdonation.repository.SharingRepository;
 
 import lombok.RequiredArgsConstructor;
 

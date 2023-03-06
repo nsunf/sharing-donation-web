@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sharingdonation.dto.AreaDto;
 import com.sharingdonation.entity.Area;
 import com.sharingdonation.repository.AreaRepository;
+import com.sharingdonation.repository.SharingRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class AreaService {
 	private final AreaRepository areaRepo;
+	private final SharingRepository sharingRepo;
 
 	public void addTestData() {
 
@@ -41,7 +43,12 @@ public class AreaService {
 	}
 
 	public List<AreaDto> getAreaList() {
-		System.out.println("haha");
-		return areaRepo.findAll().stream().map(AreaDto::of).toList();
+		return areaRepo.findAll().stream().map(a -> {
+			AreaDto areaDto = AreaDto.of(a);
+			Long count = sharingRepo.countByAreaIdAndConfirmYnAndDoneAndDelYn(a.getId(), "Y", "N", "N");
+			areaDto.setSharingCount(count);
+			
+			return areaDto;
+		}).toList();
 	}
 }

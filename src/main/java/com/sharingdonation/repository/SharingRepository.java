@@ -34,4 +34,5 @@ public interface SharingRepository extends JpaRepository<Sharing, Long>, Sharing
 
 	Long countByDone(String done);
 	Long countByConfirmYnAndDone(String confirmYn, String done);
+	Long countByAreaIdAndConfirmYnAndDoneAndDelYn(Long categoryId, String confirmYn, String done, String delYn);
 }
