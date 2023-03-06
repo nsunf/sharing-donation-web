@@ -1,5 +1,6 @@
 package com.sharingdonation.controller;
 
+import java.security.Principal;
 //import java.time.*;
 import java.util.List;
 import java.util.Optional;
@@ -28,11 +29,13 @@ import com.sharingdonation.dto.DonationBoardCommentDto;
 import com.sharingdonation.dto.DonationBoardDto;
 import com.sharingdonation.dto.DonationBoardFormDto;
 import com.sharingdonation.dto.DonationBoardImgDto;
+import com.sharingdonation.dto.DonationBoardSearchDto;
 import com.sharingdonation.dto.DonationBoardSelectDto;
 import com.sharingdonation.dto.DonationFormDto;
 import com.sharingdonation.dto.SharingBoardCommentDto;
 import com.sharingdonation.entity.DonationBoard;
 import com.sharingdonation.entity.DonationBoardComment;
+import com.sharingdonation.entity.Member;
 import com.sharingdonation.repository.MemberRepository;
 import com.sharingdonation.service.DonationBoardHeartService;
 import com.sharingdonation.service.DonationBoardImgService;
@@ -52,9 +55,10 @@ public class DonationBoardController {
 	//show the donated board create page
 	
 	@GetMapping(value = "/admin/donatedBoard/edit")
-	public String addDonatedBoard(Model model) { 
+	public String addDonatedBoard( Model model) { 
 		model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
 		model.addAttribute("donationBoardFormDto", new DonationBoardFormDto());
+		//model.addAttribute("donationBoardImgDtoList", donationBoardImgService.getDonationBoardImgDtoList(donationBoardId));
 		return "admin/editDonatedBoard"; 
 	}
 	
@@ -85,32 +89,44 @@ public class DonationBoardController {
 			return "admin/editDonatedBoard";
 		}
 		
-		return "redirect:/admin/donatedBoard";
+		return "redirect:/admin/donatedBoards";
 		
 	}
 	
-	//show donated board list page
-		@GetMapping(value = "/admin/donatedBoard")
-		public String AdmindonatedBoard(Optional<Integer> page, Model model) { 
+	//show donated board list pages
+		@GetMapping(value = {"/admin/donatedBoards", "/admin/donatedBoards/{page}"})
+		public String AdmindonatedBoard(DonationBoardSearchDto donationBoardSearchDto, @PathVariable("page") Optional<Integer> page, Model model) { 
 			
-			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
-			Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(pageable);
+			
+			Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 6);
+			
+			Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(donationBoardSearchDto, pageable);
 		
+			int nowPage = (page.isPresent()) ? page.get() : 1;
 			model.addAttribute("donationBoards",donationBoards);
 			//model.addAttribute("donations", donationBoardService.getDonationBorardSelect());
+			model.addAttribute("donationBoardSearchDto", donationBoardSearchDto);
 			model.addAttribute("maxPage", 5);
+			model.addAttribute("rowPerPage", 6 );
+			model.addAttribute("pages", nowPage);
+			
+			
 			return "admin/donatedList";
 			
 		}
 	
 	//show donated board list page
-	@GetMapping(value = "/donatedBoard")
-	public String donatedBoard(Optional<Integer> page, Model model) { 
+	@GetMapping(value = {"/donatedBoards", "/donatedBoards/{page}"})
+	public String donatedBoard(DonationBoardSearchDto donationBoardSearchDto, @PathVariable("page") Optional<Integer> page, Model model) { 
+		//System.out.println(" controller donatedBoard page -- " +   page.get());
 		
-		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
-		Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(pageable);
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 6);
+		
+		System.out.println(" donatedBoard Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);");
+		Page<DonationBoardDto> donationBoards = donationBoardService.getDonationBoardDtoPage(donationBoardSearchDto, pageable);
 		
 		model.addAttribute("donationBoards",donationBoards);
+		model.addAttribute("donationBoardSearchDto", donationBoardSearchDto);
 		model.addAttribute("maxPage", 5);
 		return "donation/donatedList";
 		
@@ -146,7 +162,7 @@ public class DonationBoardController {
 //		model.addAttribute("localDateTime",LocalDateTime.now());
 //		model.addAttribute("df",DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		//model.addAttribute("commentFormDto", new CommentFormDto());
-		
+		model.addAttribute("donationBoardImgDtos", donationBoardImgDtos);
 		
 		return "donation/donatedBoardDetail";
 		
@@ -154,14 +170,28 @@ public class DonationBoardController {
 	
 	//댓글 등록
 		@PostMapping(value="/donatedBoard/{donationBoardId}/comment")
-		public String insertComment(@PathVariable("donationBoardId") Long id, @RequestParam String comment, Model model) {
-													//가짜 데이터 member_id 넣었음
-			donationBoardService.insertComment(1L, id, comment);
+		public String insertComment(@PathVariable("donationBoardId") Long id, @RequestParam String comment, Principal principal,  Model model) {
+			String email = principal.getName();
+			Member member = memberRepository.findByEmail(email);
+			Long cmember = member.getId();
+			
+			//가짜 데이터 member_id 넣었음
+			donationBoardService.insertComment(cmember, id, comment);
 			
 			return "redirect:/donatedBoard/" + id;
 		}
 		
-	//좋어요
+	//댓글 삭제 
+		@DeleteMapping("/donatedBoard/{id}/delete")
+	    public @ResponseBody ResponseEntity<?> deleteComment(@PathVariable ("id") Long id,  Model model){
+			System.out.println("/donationBoard/{donationBoardId}/delete");
+			System.out.println("commentId = " + id);
+	        donationBoardService.deleteComment(id);
+
+	        return new ResponseEntity<Long> (id, HttpStatus.OK);
+	    }
+		
+	//좋아요
 		@GetMapping("/donatedBoard/heart/{id}")
 		public  @ResponseBody ResponseEntity<?> toggleDonationBoardHeart(@PathVariable Long id){
 			donationBoardHeartService.toggleDonationBoardHeart(id);
@@ -177,6 +207,7 @@ public class DonationBoardController {
 				DonationBoardFormDto donationBoardFormDto = donationBoardService.getdonationBoardDetail(donationBoardId);   //get detail
 				model.addAttribute(donationBoardFormDto);
 				model.addAttribute("donations", donationBoardService.getDonationBorardSelect());  //get select list
+				//model.addAttribute("donationBoardImgDtoList", donationBoardImgService.getDonationBoardImgDtoList(donationBoardId));
 			} catch (EntityNotFoundException e) {
 				model.addAttribute("errorMessage","This danatioBoard that dose not exist." );
 				model.addAttribute("donationBoardFormDto", new DonationBoardFormDto());
@@ -216,13 +247,13 @@ public class DonationBoardController {
 				model.addAttribute("errorMessage", "An error occurred while modifying.");
 				return "admin/editDonatedBoard";
 			}
-			return "redirect:/admin/donatedBoard";
+			return "redirect:/admin/donatedBoards";
 			
 		}
 		
 		
 		
-	//delete
+	//doantionBoard delete
 		@DeleteMapping(value= "/admin/donatedBoard/{donationBoardId}/delete")
 		public @ResponseBody ResponseEntity<?> deleteDonationBoard(@PathVariable("donationBoardId") Long donationBoardId, Model model) {
 			System.out.println("/donationBoard/{donationBoardId}/delete");

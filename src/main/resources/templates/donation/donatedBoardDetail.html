@@ -1,243 +1,258 @@
 <!DOCTYPE html>
-<html
-	xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{layouts/layout1}"
->
+	layout:decorate="~{layouts/layout1}">
 <head>
 <meta charset="UTF-8">
-<meta name="_csrf" th:content="${_csrf.token}"/>
-<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 <title>Insert title here</title>
-<link
-	rel="stylesheet"
-	href="/css/longsiru/donated-board-detail.css"
-/>
-<link
-	rel="stylesheet"
-	href="/css/longsiru/admin-donation-request-detail.css"
-/>
+<link rel="stylesheet" href="/css/longsiru/donated-board-detail.css" />
+<link rel="stylesheet"
+	href="/css/longsiru/admin-donation-request-detail.css" />
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
-	
-	<!--기부 완료 게시판 상세 시작-->
-      <section class="news-details">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-12 col-lg-12">
-              <div class="news-details__left">
-                <div class="col-12 mx-auto">
-                  <div
-                    class="swiper mySwiper position-relative overflow-hidden"
-                  >
-                    <div class="swiper-wrapper">
-                      <div class="swiper-slide">
-                        <img
-                          th:src="${donationBoard.donationBoardImgDtoList[0].ImgUrl}" th:alt="${donationBoard.id}"
-                        />
-                      </div>
-                      <div class="swiper-slide">
-                        <img
-                          src="https://picsum.photos/id/53/1920/1080"
-                          alt=""
-                        />
-                      </div>
-                      <div class="swiper-slide">
-                        <img
-                          src="https://picsum.photos/id/840/1920/1080"
-                          alt=""
-                        />
-                      </div>
-                      <div class="swiper-slide">
-                        <img
-                          src="https://picsum.photos/id/338/1920/1080"
-                          alt=""
-                        />
-                      </div>
-                      <div class="swiper-slide">
-                        <img
-                          src="https://picsum.photos/id/18/1920/1080"
-                          alt=""
-                        />
-                      </div>
-                      <div class="swiper-slide">
-                        <img
-                          src="https://picsum.photos/id/87/1920/1080"
-                          alt=""
-                        />
-                      </div>
-                      <div class="swiper-slide">
-                        <img
-                          src="https://picsum.photos/id/77/1920/1080"
-                          alt=""
-                        />
-                      </div>
-                      <div class="swiper-slide">
-                        <img
-                          src="https://picsum.photos/id/38/1920/1080"
-                          alt=""
-                        />
-                      </div>
-                      <div class="swiper-slide">
-                        <img
-                          src="https://picsum.photos/id/294/1920/1080"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                    <div class="swiper-button-next">&gt;&gt;</div>
-                    <div class="swiper-button-prev">&lt;&lt;</div>
-                  </div>
-                </div>
 
-                <div class="causes-details__progress">
-                  <div class="bar">
-                    <div class="bar-inner count-bar" data-percent="100%">
-                      <div class="count-text">100%</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="news-details__content">
-                  <div class="content-detail-nav">
-                    <ul class="list-unstyled news-details__meta navleft">
-                      <li th:text="${#temporals.format(donationBoard.regTime, 'yyyy-MM-dd')}"></li>
-                      <li class="">
-                      <button class="like-btn d-flex justify-content-center align-items-center">
-             			 <div class="like" th:classappend="${donationBoardHeartDto == null} ? 'like-false' : 'like-true'" th:onclick="'toggleDonationBoardHeart(' + ${donationBoardId} + ');'"></div>
-             			 <span class="like-count px-1" style="font-size: 12px; color:var(--thm-primary);" th:text="${donationBoard.heartCount}"></span>
-           			  </button>
-                        
-                      </li>
-                    </ul>
-                    <ul class="list-unstyled news-details__meta navright">
-                      <li th:text="${donationBoard.donationBoardSelectDto.nickName}"></li>
-                      <li th:text="${donationBoard.donationBoardSelectDto.address}"></li>
-                      <li th:text="${donationBoard.donationBoardSelectDto.donationPerson}"></li>
-                    </ul>
-                  </div>
-
-                  <h3 class="news-details__title">
-                    [[${donationBoard.subject}]]
-                  </h3>
-                  <p class="news-details__text-one">
-                    [[${donationBoard.content}]]
-                  </p>
-                </div>
-
-               <!--댓글 보기 시작-->
-				<div class="comment-one">
-					<h3 class="comment-one__title">댓글 보기</h3>
-													
-					<ul id="comments-list" class="comments-list">
-														
-						<li>
-							<div class="comment-main-level">
-								<!-- Contenedor-->
-								<th:block th:each="donatedComment, status: ${donationBoardCommentDtoList}">
-									<div class="comment-box">
-										<div class="comment-head">
-											<h6 th:text="${donatedComment.commentMember}" class="comment-name" id="comment_writer"></a></h6>
-											<div th:text="${donatedComment.regTime}" class="comment-time">댓글등록시간</div>
+		<!--기부 완료 게시판 상세 시작-->
+		<section class="news-details">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-12 col-lg-12">
+						<div class="news-details__left">
+							<div class="col-12 mx-auto">
+								<div class="swiper mySwiper position-relative overflow-hidden">
+									<div class="swiper-wrapper">
+										<div class="swiper-slide"
+											th:each="donationBoardImgDto, status : ${donationBoardImgDtos}">
+											<img th:src="@{${donationBoardImgDto.imgUrl}}" alt="" />
 										</div>
-										<div th:text="${donatedComment.comment}" class="comment-content">
-										</div>
-										<div class="comment-down">
-											<button class="comment-bnt">삭제</button>
-										</div>
-									 </div>
-								</th:block>
+									</div>
+									<div class="swiper-button-next">&gt;&gt;</div>
+									<div class="swiper-button-prev">&lt;&lt;</div>
+								</div>
 							</div>
-						</li>
-					</ul>
-				</div>
 
-                <!--댓글 작성 시작-->
-                <div class="comment-form">
-					<h3 class="comment-form__title">댓글 작성</h3>
-					<form th:action="@{/donatedBoard/}+${donationBoardId}+ @{/comment}" method="post">
-							<div class="comment-form__input-box" style="line-height:initial;">
-								<textarea name="comment" placeholder="create your comments"></textarea>
+							<div class="causes-details__progress">
+								<div class="bar">
+									<div class="bar-inner count-bar" data-percent="100%">
+										<div class="count-text">100%</div>
+									</div>
+								</div>
 							</div>
-							
-              				
-           								
-							<button type="submit" class="thm-btn comment-form__btn" style="margin-left:5px;">제 출<i class="fas fa-arrow-circle-right" style="padding-left: 10px;"></i></button>
-              
-              				<button class="thm-btn comment-form__btn" style="margin-left:5px;" type="button" sec:authorize="hasAnyAuthority('ROLE_ADMIN')" 
-             						 th:value="${donationBoard.id}" onclick="deleteDonationBoard(this.value)">삭 제 
-              				</button>
-              				
-              				<button id="submit" class="thm-btn comment-form__btn" style="margin-left:5px;" type="submit" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-               						<a th:href="'/admin/donatedBoard/' + ${donationBoardId}">수 정</a> <span></span>
-              				</button>
-              			
-              				<button id="" class="thm-btn comment-form__btn" style="margin-left:5px;" type="submit">
-               					 	<a href="/donatedBoard">뒤로가기 </a> <span></span>
-          					</button>
-					</form>
-												 
+							<div class="news-details__content">
+								<div class="content-detail-nav">
+									<ul class="list-unstyled news-details__meta navleft">
+										<li
+											th:text="${#temporals.format(donationBoard.regTime, 'yyyy-MM-dd')}"></li>
+										<li class="">
+											<button
+												class="like-btn d-flex justify-content-center align-items-center">
+												<div class="like"
+													th:classappend="${donationBoardHeartDto == null} ? 'like-false' : 'like-true'"
+													th:onclick="'toggleDonationBoardHeart(' + ${donationBoardId} + ');'"></div>
+												<span class="like-count px-1"
+													style="font-size: 12px; color: var(- -thm-primary);"
+													th:text="${donationBoard.heartCount}"></span>
+											</button>
+
+										</li>
+									</ul>
+									<ul class="list-unstyled news-details__meta navright">
+										<li th:text="${donationBoard.donationBoardSelectDto.nickName}"></li>
+										<li th:text="${donationBoard.donationBoardSelectDto.address}"></li>
+										<li
+											th:text="${donationBoard.donationBoardSelectDto.donationPerson}"></li>
+									</ul>
+								</div>
+
+								<h3 class="news-details__title">
+									[[${donationBoard.subject}]]</h3>
+								<p class="news-details__text-one">
+									[[${donationBoard.content}]]</p>
+							</div>
+
+							<!--댓글 보기 시작-->
+							<div class="comment-one">
+								<h3 class="comment-one__title">댓글 보기</h3>
+
+								<ul id="comments-list" class="comments-list">
+
+									<li>
+										<div class="comment-main-level">
+											<!-- Contenedor-->
+											<input type="hidden" th:field="${donationBoard.id}">
+											<th:block
+												th:each="donatedComment, status: ${donationBoardCommentDtoList}">
+												<div class="comment-box my-3" >
+													<div class="comment-head">
+														<h6 th:text="${donatedComment.commentMember}"
+															class="comment-name" id="comment_writer">
+															</a>
+														</h6>
+														<div th:text="${donatedComment.regTime}"
+															class="comment-time">댓글등록시간</div>
+													</div>
+													<div th:text="${donatedComment.comment}"
+														class="comment-content"></div>
+
+
+													<div class="comment-down"
+														sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+
+														<button class="btn" style="float: right !important;"
+															type="button" th:value="${donatedComment.id}"
+															onclick="deleteComment(this.value)">삭제</button>
+													</div>
+
+													<div class="comment-down" sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_COM')">
+														<button class="btn" style="float: right !important;"
+															type="button"
+															th:if="${#authentication.principal.username == donatedComment.commentEmail}"
+															th:value="${donatedComment.id}"
+															onclick="deleteComment(this.value)">삭제</button>
+													</div>
+												</div>
+											</th:block>
+										</div>
+									</li>
+								</ul>
+							</div>
+
+							<!--댓글 작성 시작-->
+							<div class="comment-form">
+								<h3 class="comment-form__title">댓글 작성</h3>
+								<form
+									th:action="@{/donatedBoard/}+${donationBoard.id}+ @{/comment}"
+									method="post">
+									<div class="comment-form__input-box"
+										style="line-height: initial;">
+										<textarea name="comment" placeholder="create your comments"></textarea>
+									</div>
+
+
+									<button type="submit" class="thm-btn comment-form__btn"
+										style="margin-left: 5px;">
+										제 출<i class="fas fa-arrow-circle-right"
+											style="padding-left: 10px;"></i>
+									</button>
+
+									<button class="thm-btn comment-form__btn"
+										style="margin-left: 5px;" type="button"
+										sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
+										th:value="${donationBoard.id}"
+										onclick="deleteDonationBoard(this.value)">삭 제</button>
+
+									<button id="submit" class="thm-btn comment-form__btn"
+										style="margin-left: 5px;" type="submit"
+										sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+										<a th:href="'/admin/donatedBoard/' + ${donationBoardId}">수
+											정</a> <span></span>
+									</button>
+
+									<button id="" class="thm-btn comment-form__btn"
+										style="margin-left: 5px;" type="submit">
+										<a href="/donatedBoard">뒤로가기 </a> <span></span>
+									</button>
+								</form>
+
+							</div>
+						</div>
+					</div>
 				</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <!-- 기부 완료 게시판 상세 끝-->
+			</div>
+		</section>
+		<!-- 기부 완료 게시판 상세 끝-->
 
 	</th:block>
 
 	<th:block layout:fragment="script-bottom">
-    <script>
-      var swiper = new Swiper(".mySwiper", {
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      });
-      
-     
-		function deleteDonationBoard(donationBoardId){
-	      	let deleteConf = confirm("삭제하시겠습니까?");    
-	      	
-	      	if(!deleteConf) return; //취소 버튼 누르면 삭제 취소
-	      	
-	         var token = $("meta[name='_csrf']").attr("content");
-	         var header = $("meta[name='_csrf_header']").attr("content");
-	         
-	         var url = "/admin/donatedBoard/" + donationBoardId + "/delete";
+		<script>
+			var swiper = new Swiper(".mySwiper", {
+				navigation : {
+					nextEl : ".swiper-button-next",
+					prevEl : ".swiper-button-prev",
+				},
+			});
 
-	         $.ajax({
-	             url      : url,
-	             type     : "DELETE",
-	             beforeSend : function(xhr){
-	                 /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-	                 xhr.setRequestHeader(header, token);
-	             },
-	             dataType : "json",
-	             cache   : false,
-	             success  : function(result, status){
-	             	alert("삭제 되었습니다.");
-	             	location.href='/admin/donatedBoard';
-	             },
-	             error : function(jqXHR, status, error){
+			function deleteDonationBoard(donationBoardId) {
+				let deleteConf = confirm("삭제하시겠습니까?");
 
-	                 if(jqXHR.status == '401'){
-	                     alert('로그인 후 이용해주세요');
-	                     location.href='/auth/login';
-	                 } else{
-	                     alert(jqXHR.responseJSON.message);
-	                 }
+				if (!deleteConf)
+					return; //취소 버튼 누르면 삭제 취소
 
-	             }
-	         });
-	      }
-      
-    </script>
-    <script src="/js/longsiru/donationBoardDetail.js"></script>
-    
-    
-    
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+
+				var url = "/admin/donatedBoard/" + donationBoardId + "/delete";
+
+				$.ajax({
+					url : url,
+					type : "DELETE",
+					beforeSend : function(xhr) {
+						/* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+						xhr.setRequestHeader(header, token);
+					},
+					dataType : "json",
+					cache : false,
+					success : function(result, status) {
+						alert("삭제 되었습니다.");
+						location.href = '/admin/donatedBoards';
+					},
+					error : function(jqXHR, status, error) {
+
+						if (jqXHR.status == '401') {
+							alert('로그인 후 이용해주세요');
+							location.href = '/auth/login';
+						} else {
+							alert(jqXHR.responseJSON.message);
+						}
+
+					}
+				});
+			}
+
+			function deleteComment(id) {
+				let deleteConf = confirm("삭제하시겠습니까?");
+				console.log('버튼클릭');
+				console.log(id);
+				if (!deleteConf)
+					return;
+				let boardId = document.getElementById('id').value;
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+
+				var url = "/donatedBoard/" + id + "/delete"
+				$.ajax({
+					url : url,
+					type : "DELETE",
+					beforeSend : function(xhr) {
+						/* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+						xhr.setRequestHeader(header, token);
+					},
+					dataType : "json",
+					cache : false,
+					success : function(result, status) {
+						alert("삭제 되었습니다.");
+						location.href = '/donatedBoard/' + boardId;
+					},
+					error : function(jqXHR, status, error) {
+
+						if (jqXHR.status == '401') {
+							alert('로그인 후 이용해주세요');
+							location.href = '/auth/login';
+						} else {
+							alert(jqXHR.responseJSON.message);
+						}
+
+					}
+				});
+			}
+		</script>
+		<script src="/js/longsiru/donationBoardDetail.js"></script>
+
+
+
 	</th:block>
 </body>
 </html>

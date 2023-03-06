@@ -16,6 +16,8 @@ public class AreaDto {
 	
 	private String gugun;
 	
+	private Long sharingCount;
+	
 	private static ModelMapper modelMapper = new ModelMapper();
 	
 	public static AreaDto of(Area area) {

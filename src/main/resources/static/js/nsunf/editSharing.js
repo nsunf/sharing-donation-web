@@ -9,7 +9,7 @@ function approveSharing(id) {
 
 	if (!confirm("신청을 승인하시겠습니까?")) return;
 	
-	fetch("/sharing/admin/approve", {
+	fetch("/admin/sharing/approve", {
 		method: "POST",
 		headers: {
 				'header': header,
