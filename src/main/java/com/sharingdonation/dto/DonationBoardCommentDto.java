@@ -21,6 +21,8 @@ public class DonationBoardCommentDto {
 	
 	private String donationBoardId;
 	
+	private String commentEmail;
+	
 	private String commentMember;
 	
 	private String regTime;

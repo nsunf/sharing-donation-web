@@ -8,4 +8,6 @@ import com.sharingdonation.entity.DonationBoardImg;
 
 public interface DonationBoardImgRepository extends JpaRepository<DonationBoardImg, Long>{
 	 List<DonationBoardImg> findByDonationBoardIdOrderByIdAsc(Long donationBoardId);
+	 
+	 void deleteAllByDonationBoardId(Long donationBoardId);
 }
