@@ -21,8 +21,11 @@
 							<div class="col-12 mx-auto">
 								<div class="swiper mySwiper position-relative overflow-hidden">
 									<div class="swiper-wrapper">
-										<div class="swiper-slide ratio ratio-16x9" th:each="sharingBoardImgDto : ${sharingBoardImgDtoList}">
-											<img class="object-fit-contain" th:src="${sharingBoardImgDto.imgUrl}" th:alt="${sharingBoardImgDto.id}" />
+										<div class="swiper-slide ratio ratio-16x9"
+											th:each="sharingBoardImgDto : ${sharingBoardImgDtoList}">
+											<img class="object-fit-contain"
+												th:src="${sharingBoardImgDto.imgUrl}"
+												th:alt="${sharingBoardImgDto.id}" />
 										</div>
 									</div>
 									<div class="swiper-button-next">&gt;&gt;</div>
@@ -87,8 +90,7 @@
 								</div>
 								<div class="comment-form">
 									<h3 class="comment-form__title">댓글 작성</h3>
-									<form
-										class="overflow-hidden"
+									<form class="overflow-hidden"
 										th:action="'/sharing_board/view/'+${sharingBoardDto.id}+'/comment'"
 										method="post">
 										<div class="comment-form__input-box"
@@ -101,12 +103,13 @@
 									</form>
 								</div>
 								<div class="hstack">
-										<button id="submit" class="thm-btn rounded-1 ms-auto mt-3 py-1 px-3" type="submit">
-											<!-- sec:authorize="hasAnyAuthority('ROLE_ADMIN')" -->
-											<a th:href="'/sharing_board/update/' + ${sharingBoardDto.id}">수
-												정</a>
-										</button>
-										<button class="thm-btn comment-form__btn mt-3 py-1 px-3"
+									<button id="submit"
+										class="thm-btn rounded-1 ms-auto mt-3 py-1 px-3" type="submit"
+										sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+										<a th:href="'/sharing_board/update/' + ${sharingBoardDto.id}">수
+											정</a>
+									</button>
+									<button class="thm-btn comment-form__btn mt-3 py-1 px-3"
 										style="margin-left: 5px;" type="button"
 										sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
 										th:value="${sharingBoardDto.id}"
@@ -128,7 +131,7 @@
 					prevEl : ".swiper-button-prev",
 				},
 			});
-			
+
 			function deleteComment(id) {
 				const deleteConf = confirm("삭제하시겠습니까?");
 
@@ -173,7 +176,7 @@
 				});
 
 			}
-			
+
 			function deleteSharingBoard(sharingBoardId) {
 				let deleteConf = confirm("삭제하시겠습니까?");
 
@@ -184,7 +187,7 @@
 				var header = $("meta[name='_csrf_header']").attr("content");
 
 				var url = "/sharing_board/view/" + sharingBoardId + "/delete";
-	console.log(url);
+				console.log(url);
 				$.ajax({
 					url : url,
 					type : "DELETE",
