@@ -22,8 +22,8 @@
 			<div class="m-5">
 				<form class="input-group mb-3 w-25 mx-auto my-4"
 					action="/sharing_board/">
-					<input id="searchName" type="text" name="searchName" class="form-control"
-						placeholder="검색" />
+					<input id="searchName" type="text" name="searchName"
+						class="form-control" placeholder="검색" />
 					<button id="searchBtn" class="btn" type="submit"
 						style="background-color: #15c8a0; color: #fff">검색</button>
 				</form>
@@ -36,7 +36,7 @@
 							<div class="news-two__single">
 								<div class="news-two__img-box">
 									<div class="news-two__img">
-										<img src="https://picsum.photos/200/170" alt="사진" /> <a
+										<img th:src="${sharedPost.imgUrl}" style="width:100%; aspect-ratio: 1/1; object-fit: cover;" alt="사진" /> <a
 											href="news-details.html"> <i class="fa fa-plus"></i>
 										</a>
 									</div>
@@ -47,6 +47,7 @@
 								<div class="news-two__content">
 									<ul class="list-unstyled news-two__meta">
 										<!-- <li><i class="far fa-user-circle"></i> Admin</li> -->
+										<li><img src="/img/longsiru/like-icon.png" style="width:16px; height:16px;"><i th:text="${sharedPost.boardHeartCount}"></i></li>
 										<li><span>/</span></li>
 										<li><i th:text="${sharedPost.commentCount}"
 											class="far fa-comments"></i></li>
@@ -85,17 +86,18 @@
 	</th:block>
 	<th:block layout:fragment="script-bottom">
 		<script th:inline="javascript">
-		$(document).ready(function() {
-			$("#searchBtn").on("click", function(e) {
-				e.preventDefault();
-				page(0);
+			$(document).ready(function() {
+				$("#searchBtn").on("click", function(e) {
+					e.preventDefault();
+					page(0);
+				});
 			});
-		});
-		function page(page) {
-			var searchName = $("#searchName").val();
-			location.href = "/sharing_board/" + page + "?searchName=" + searchName;
-		}
-	</script>
+			function page(page) {
+				var searchName = $("#searchName").val();
+				location.href = "/sharing_board/" + page + "?searchName="
+						+ searchName;
+			}
+		</script>
 	</th:block>
 </body>
 </html>
