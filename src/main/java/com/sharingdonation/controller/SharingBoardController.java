@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +31,9 @@ import com.sharingdonation.dto.SharingBoardDto;
 import com.sharingdonation.dto.SharingBoardFormDto;
 import com.sharingdonation.dto.SharingBoardImgDto;
 import com.sharingdonation.dto.SharingDto;
+import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.SharingBoardComment;
+import com.sharingdonation.repository.MemberRepository;
 import com.sharingdonation.service.SharingBoardImgService;
 import com.sharingdonation.service.SharingBoardService;
 import com.sharingdonation.service.SharingHeartService;
@@ -47,6 +50,7 @@ public class SharingBoardController {
 	private final SharingService sharingService;
 	private final SharingHeartService sharingHeartService;
 	private final SharingBoardImgService sharingBoardImgService;
+	private final MemberRepository memberRepository;
 
 	// 게시판 화면 띄워줌
 	@GetMapping(value = { "", "{page}" })
@@ -61,9 +65,12 @@ public class SharingBoardController {
 	}
 
 	// 좋아요 체크
+	// @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	@GetMapping(value = "/heart/{id}")
-	public @ResponseBody ResponseEntity<?> toggleSharedHeart(@PathVariable Long id) {
-		sharingHeartService.toggleSharingBoardHeart(id);
+	public @ResponseBody ResponseEntity<?> toggleSharedHeart(@PathVariable Long id, Principal principal) {
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		sharingHeartService.toggleSharingBoardHeart(member.getId(), id);
 		Long boardHeartCount = sharingHeartService.getSharingBoardHeartCount(id);
 		return new ResponseEntity<Long>(boardHeartCount, HttpStatus.OK);
 	}
@@ -71,55 +78,72 @@ public class SharingBoardController {
 	// 게시글 보기, 댓글 보여줌
 	@GetMapping(value = "/view/{shared_post_id}")
 	public String ViewSharedPost(Model model, @PathVariable("shared_post_id") Long id) {
+
 		SharingBoardDto sharingBoardDto = sharingBoardService.getCompletePost(id);
 		List<SharingBoardImgDto> sharingBoardImgDtoList = sharingBoardImgService.getSharingBoardImgs(id);
 		List<SharingBoardCommentDto> sharingBoardCommentDtoList = sharingBoardService.getBoardCommentList(id);
-		
+
 		model.addAttribute("sharingBoardDto", sharingBoardDto);
-		model.addAttribute("sharingBoardImgDtoList",sharingBoardImgDtoList);
+		model.addAttribute("sharingBoardImgDtoList", sharingBoardImgDtoList);
 		model.addAttribute("sharingBoardCommentDtoList", sharingBoardCommentDtoList);
-		
-		
+
 		return "sharing/sharedDetail";
 	}
-	
-	//게시글 수정 페이지 보여줌
+
+	// 게시글 수정 페이지 보여줌
 	@GetMapping(value = "/update/{sharedBoard_id}")
-	public String sharingBoardDetail (@PathVariable("sharedBoard_id") Long id, Model model) {
+	public String sharingBoardDetail(@PathVariable("sharedBoard_id") Long id, Model model) {
 		SharingBoardFormDto sharingBoardFormDto = sharingBoardService.viewsharingBoardFormDto(id);
-		model.addAttribute("sharingBoardFormDto",sharingBoardFormDto);
-		
+		model.addAttribute("sharingBoardFormDto", sharingBoardFormDto);
+
 		return "admin/updateSharedBoard";
 	}
-	
-	//게시글 수정
+
+	// 게시글 수정
 	@PostMapping(value = "/update/{sharedBoard_id}")
-	public String updateSharedBoard(@Valid SharingBoardFormDto sharingBoardFormDto, BindingResult bindingResult, Model model, List<MultipartFile> sharingBoardImgFileList) {
-		
-		if(bindingResult.hasErrors()) {
+	public String updateSharedBoard(@Valid SharingBoardFormDto sharingBoardFormDto, BindingResult bindingResult,
+			Model model, List<MultipartFile> sharingBoardImgFileList) {
+
+		if (bindingResult.hasErrors()) {
 			return "admin/updateSharedBoard";
 		}
-		
-		if(sharingBoardImgFileList.get(0).isEmpty() && sharingBoardFormDto.getId() == null) {
-			model.addAttribute("errorMessage","이미지를 찾을 수 없습니다.");
+
+		if (sharingBoardImgFileList.get(0).isEmpty() && sharingBoardFormDto.getId() == null) {
+			model.addAttribute("errorMessage", "이미지를 찾을 수 없습니다.");
 			return "admin/updateSharedBoard";
 		}
-		
+
 		try {
 			sharingBoardService.sharingBoardUpdate(sharingBoardFormDto, sharingBoardImgFileList);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "게시글 수정이 정상적으로 이루어지지 않았습니다.");
 			return "admin/updateSharedBoard";
 		}
-		return "redirect:/admin/updateSharedBoard";
+		return "redirect:/sharing_board/view/" + sharingBoardFormDto.getId();
 	}
-	
+
+	// 게시글 삭제
+	@DeleteMapping(value = "/view/{shared_post_id}/delete")
+	public @ResponseBody ResponseEntity deleteSharingBoard(@PathVariable("shared_post_id") Long sharingBoardId) {
+		try {
+			sharingBoardImgService.deleteImgsBySharingBoardId(sharingBoardId);
+			sharingHeartService.deleteSharingBoardHeart(sharingBoardId);
+			sharingBoardService.deleteSharingBoard(sharingBoardId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Long>(sharingBoardId, HttpStatus.OK);
+	}
+
 	// 댓글 등록
 	@PostMapping(value = "/view/{shared_post_id}/comment")
-	public String insertComment(@PathVariable("shared_post_id") Long id, @RequestParam String comment, Model model) {
-		// 가짜 데이터 member_id 넣었음
-		sharingBoardService.insertComment(1L, id, comment);
+	public String insertComment(@PathVariable("shared_post_id") Long id, @RequestParam String comment, Model model,
+			Principal principal) {
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		Long member_id = member.getId();
+		sharingBoardService.insertComment(member_id, id, comment);
 
 		return "redirect:/sharing_board/view/" + id;
 	}
@@ -128,10 +152,7 @@ public class SharingBoardController {
 	@DeleteMapping(value = "/view/{shared_post_id}/comment/delete")
 	public @ResponseBody ResponseEntity deleteComment(@PathVariable("shared_post_id") Long comment_id) {
 		SharingBoardComment sharingBoardComment = sharingBoardService.getSharingBoardComment(comment_id);
-		/*
-		 * if(!sharingBoardService.validateComment(comment_id)) { return new
-		 * ResponseEntity<String>("댓글 삭제 권한이 없습니다.", HttpStatus.FORBIDDEN); }
-		 */
+
 		sharingBoardService.deleteComment(comment_id);
 
 		return new ResponseEntity<Long>(comment_id, HttpStatus.OK);
@@ -152,8 +173,11 @@ public class SharingBoardController {
 	@PostMapping(value = "admin/create/{shared_id}")
 	public String insertSharedBoardPost(@PathVariable("shared_id") Long id,
 			@Valid SharingBoardFormDto sharingBoardFormDto, BindingResult bindingResult, Model model,
-			List<MultipartFile> sharingBoardImgFileList) {
-
+			List<MultipartFile> sharingBoardImgFileList, Principal principal) {
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		
+		
 		SharingDto sharingDto = sharingService.getSharingDto(id);
 		model.addAttribute("sharingDto", sharingDto);
 
@@ -175,8 +199,6 @@ public class SharingBoardController {
 		}
 		return "redirect:/sharing_board";
 	}
-	
-	
 
 	///////////////////////////////////////////////
 	// admin 나눔완료 게시글 관리 게시판 페이지 보여줌

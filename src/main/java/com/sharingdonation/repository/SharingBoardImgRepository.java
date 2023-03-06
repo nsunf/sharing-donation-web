@@ -11,4 +11,5 @@ public interface SharingBoardImgRepository extends JpaRepository<SharingBoardImg
 	
 	SharingBoardImg findBySharingBoardIdAndRepimgYn(Long sharingBoard_id, String repimgYn);
 	
+	void deleteAllBySharingBoardId(Long sharingBoardId);
 }

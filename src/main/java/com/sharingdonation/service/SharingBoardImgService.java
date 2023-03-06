@@ -67,6 +67,25 @@ public class SharingBoardImgService {
 			savedSharingBoardImg.updateSharingBoardImg(oriImgName, imgName, imgUrl);
 		}
 	}
+	
+	//이미지 삭제
+	public void deleteImgsBySharingBoardId(Long sharingBoardId) {
+		sharingBoardImgRepository.deleteAllBySharingBoardId(sharingBoardId);
+		sharingBoardImgRepository.flush();
+	}
+	
+	//이미지 삭제
+	public void deleteSharingBoardImg(Long sharingBoardId)throws Exception {
+		List<SharingBoardImg> deletesharingBoardImgList = sharingBoardImgRepository.findBySharingBoardId(sharingBoardId);
+		
+		for(SharingBoardImg sharingBoardImg : deletesharingBoardImgList) {
+			if(!StringUtils.isEmpty(sharingBoardImg.getImgName())) {
+				fileService.deleteFile(sharingBoardImgLocation + "/" + sharingBoardImg.getImgName());
+			}
+			
+			sharingBoardImgRepository.delete(sharingBoardImg);
+		}
+	}
 
 	//이미지 한 개만 가져옴. sharingboardid로 대표 이미지 1개를 꺼내준다.
 	@Transactional(readOnly = true)

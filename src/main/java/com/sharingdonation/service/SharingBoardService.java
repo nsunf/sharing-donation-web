@@ -21,6 +21,7 @@ import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.Sharing;
 import com.sharingdonation.entity.SharingBoard;
 import com.sharingdonation.entity.SharingBoardComment;
+import com.sharingdonation.entity.SharingBoardHeart;
 import com.sharingdonation.entity.SharingBoardImg;
 import com.sharingdonation.entity.Story;
 import com.sharingdonation.repository.MemberRepository;
@@ -151,7 +152,6 @@ public class SharingBoardService {
 		return sharingBoardCommentRepository.getReferenceById(id);
 	}
 	
-	/*
 	//현재 로그인 한 사용자와 댓글 작성한 사용자와 같은지 검사
 	@Transactional(readOnly = true)
 	public boolean validateComment(Long comment_id, String email) {
@@ -164,7 +164,6 @@ public class SharingBoardService {
 		}
 		return true;
 	}
-	*/
 	
 	//댓글 삭제
 	public void deleteComment(Long comment_id) {
@@ -216,22 +215,41 @@ public class SharingBoardService {
 		}
 		
 		sharingBoardFormDto.setSharingBoardImgIds(sharingBoardImgIdList);
+		sharingBoardFormDto.setSharingBoardImgDtoList(sharingBoardDtoImgDtoList);
 		
 		return sharingBoardFormDto;
 	}
 	
 	//게시글 수정
-	public Long sharingBoardUpdate(SharingBoardFormDto sharingBoardFormDto, List<MultipartFile> sharingBoardImgFileList) throws Exception {
+	public void sharingBoardUpdate(SharingBoardFormDto sharingBoardFormDto, List<MultipartFile> sharingBoardImgFileList) throws Exception {
 		SharingBoard sharingBoard = sharingBoardRepository.findById(sharingBoardFormDto.getId()).orElseThrow(EntityNotFoundException::new);
 		
 		sharingBoard.updateSharingBoard(sharingBoardFormDto);
 		
 		List<Long> sharingBoardImgIds = sharingBoardFormDto.getSharingBoardImgIds();
 		
-		for(int i=0; i<sharingBoardImgFileList.size(); i++) {
-			sharingBoardImgService.updateSharingBoardImg(sharingBoardImgIds.get(i), sharingBoardImgFileList.get(i));
+		if(sharingBoardImgFileList.size() >= 0 && !sharingBoardImgFileList.get(0).isEmpty()) {
+			sharingBoardImgService.deleteImgsBySharingBoardId(sharingBoardFormDto.getId());
+			for(int i=0; i<sharingBoardImgFileList.size(); i++) {
+				SharingBoardImg sharingBoardImg = new SharingBoardImg();
+				sharingBoardImg.setSharingBoard(sharingBoard);
+				
+				sharingBoardImg.setRepimgYn(i == 0 ? "Y" : "N");
+				sharingBoardImgService.saveSharingBoardImg(sharingBoardImg, sharingBoardImgFileList.get(i));
+			}
 		}
-		return sharingBoard.getId();
+	}
+	
+	//게시글 삭제
+	public void deleteSharingBoard(Long sharingBoardId) {
+		
+		List<SharingBoardComment> sharingBoardCommentList = sharingBoardCommentRepository.findBySharingBoardId(sharingBoardId);
+		sharingBoardCommentRepository.deleteAll(sharingBoardCommentList);
+		
+		SharingBoard sharingBoard = sharingBoardRepository.findById(sharingBoardId)
+				.orElseThrow(EntityNotFoundException::new);
+		
+		sharingBoardRepository.delete(sharingBoard);
 	}
 
 	

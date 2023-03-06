@@ -1,6 +1,7 @@
 package com.sharingdonation.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -29,8 +30,7 @@ public class SharingHeartService {
 	private final SharingBoardHeartRepository sharingBoardHeartRepository;
 	private final SharingBoardRepository sharingBoardRepository;
 
-	public SharingHeartDto getSharingHeartDto(Long sharingId) {
-		Long memberId = 1L;
+	public SharingHeartDto getSharingHeartDto(Long memberId, Long sharingId) {
 		SharingHeart sharingHeart = sharingHeartRepo.findBySharingIdAndMemberId(sharingId, memberId).orElse(null);
 		if (sharingHeart == null)
 			return null;
@@ -42,8 +42,7 @@ public class SharingHeartService {
 		return sharingHeartRepo.countBySharingId(sharingId);
 	}
 	
-	public void toggleSharingHeart(Long sharingId) {
-		Long memberId = 1L;
+	public void toggleSharingHeart(Long memberId, Long sharingId) {
 		SharingHeart sharingHeart = sharingHeartRepo.findBySharingIdAndMemberId(sharingId, memberId).orElse(null);
 		if (sharingHeart == null) {
 			SharingHeart newHeart = new SharingHeart();
@@ -71,8 +70,7 @@ public class SharingHeartService {
 		return sharingBoardHeartRepository.countBySharingBoardId(sharingBoard_id);
 	}
 	
-	public void toggleSharingBoardHeart(Long sharingBoard_id) {
-		Long member_id = 1L;
+	public void toggleSharingBoardHeart(Long member_id, Long sharingBoard_id) {
 		SharingBoardHeart sharingBoardHeart = sharingBoardHeartRepository.findBySharingBoardIdAndMemberId(sharingBoard_id, member_id).orElse(null);
 		if(sharingBoardHeart == null) {
 			SharingBoardHeart newSharingBoardHeart = new SharingBoardHeart();
@@ -84,5 +82,10 @@ public class SharingHeartService {
 		}else {
 			sharingBoardHeartRepository.delete(sharingBoardHeart);
 		}
+	}
+	
+	public void deleteSharingBoardHeart(Long sharingBoardId) {
+		List<SharingBoardHeart> sharingBoardHeartList = sharingBoardHeartRepository.findBySharingBoardId(sharingBoardId);
+		sharingBoardHeartRepository.deleteAll(sharingBoardHeartList);
 	}
 }

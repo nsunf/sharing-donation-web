@@ -44,12 +44,12 @@
 			<nav aria-label="Page navigation example" class="hstack mt-5" th:with="start=${(sharingDtoList.number/maxPage)*maxPage + 1}, end=(${(sharingDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < sharingDtoList.totalPages ? start + (maxPage - 1) : sharingDtoList.totalPages)})">
 				<ul class="pagination mx-auto">
 					<li class="page-item">
-						<a class="page-link" th:href="@{'/sharing/mypage/' + ${sharingDtoList.number-1}}" aria-label="Previous" th:classappend="${sharingDtoList.number eq 0}?'disabled':''"> <span aria-hidden="true">&laquo;</span></a>
+						<a class="page-link" th:href="@{'/mypage/sharing/' + ${sharingDtoList.number-1}}" aria-label="Previous" th:classappend="${sharingDtoList.number eq 0}?'disabled':''"> <span aria-hidden="true">&laquo;</span></a>
 					</li>
 					<li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${sharingDtoList.number eq page-1}?'active':''">
-						<a class="page-link" th:href="@{'/sharing/mypage/' + ${page-1}}" th:inline="text">[[${page}]]</a>
+						<a class="page-link" th:href="@{'/mypage/sharing/' + ${page-1}}" th:inline="text">[[${page}]]</a>
 					</li>
-					<li class="page-item"><a class="page-link" th:href="@{'/sharing/mypage/' + ${sharingDtoList.number+1}}"
+					<li class="page-item"><a class="page-link" th:href="@{'/mypage/sharing/' + ${sharingDtoList.number+1}}"
 						aria-label="Next" th:classappend="${sharingDtoList.number+1 ge sharingDtoList.totalPages}?'disabled':''"> <span aria-hidden="true">&raquo;</span>
 					</a></li>
 				</ul>

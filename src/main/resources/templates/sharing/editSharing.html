@@ -23,7 +23,10 @@
  				<input type="hidden" th:field="*{id}">
 				<div class="row">
 				 <div class="col-8 mx-auto">
-				 <div th:text="*{regTime}"></div>
+				 	<div class="hstack">
+				 		<div th:text="*{regTime}"></div>
+				 		<div class="status ms-auto" th:classappend="${sharingFormDto.status == '완료'} ? 'status-gray' : (${sharingFormDto.status == '진행중'} ? 'status-green' : 'status-yellow')" th:text="${sharingFormDto.status}"></div>
+				 	</div>
 
 				 <label class="input-label">나눔 지역</label>
 				 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" th:field="*{areaId}">
@@ -71,16 +74,22 @@
 				<div class="row mt-4">
 					<div class="col-8 mx-auto hstack">
 						<div class="mt-5 ms-auto">
-							<button th:if="${title == '나눔 상품 신청 관리' || title == '나눔 상품 승인 관리'}" class="custom-btn custom-btn-del" type="button" th:onclick="'deleteSharing(' + ${sharingFormDto.id} + ');'">삭제</button>
-							<button th:if="${title == '나눔 상품 승인 관리' && sharingFormDto.done == 'N'}" class="custom-btn ms-3" type="submit">수정</button>
-							<button th:if="${title == '나눔 상품 등록' || title == '나눔 상품 신청 관리'}" class="custom-btn ms-3" type="submit">요청 제출</button>
+							<button th:if="${title == '나눔 상품 내역' || title == '나눔 상품 승인 관리'}" class="custom-btn custom-btn-del" type="button" th:onclick="'deleteSharing(' + ${sharingFormDto.id} + ');'">삭제</button>
+							<button th:if="${(title == '나눔 상품 내역' || title == '나눔 상품 승인 관리') && sharingFormDto.done == 'N'}" class="custom-btn ms-3" type="submit">수정</button>
+							<button th:if="${title == '나눔 상품 등록'}" class="custom-btn ms-3" type="submit">요청 제출</button>
 <!--  							<button th:if="${title == '나눔 상품 승인 관리' && sharingFormDto.confirmYn == 'N'}" class="custom-btn ms-3" type="button" th:onclick="'approveSharing(' + ${sharingFormDto.id} + ')'">승인</button>
  --> 							<button th:if="${title == '나눔 상품 승인 관리' && sharingFormDto.confirmYn == 'N'}" class="custom-btn ms-3" type="button" data-bs-toggle="modal" data-bs-target="#approveModal">승인</button>
  						</div>
- 						<div class="col-2 my-auto hstack mt-5">
-					<a class="btn ms-auto" th:href="'/sharing_board/admin/create/'+${sharingFormDto.id}"
-						style="background: var(--thm-primary); color: white;">게시글 등록</a>
-				</div>
+ 						<div class="col-2 my-auto hstack mt-5" th:if="${title != '나눔 상품 등록' && sharingFormDto.done == 'Y' && sharingFormDto.memberId == member.id}">
+							<a 
+								class="btn ms-auto" 
+								th:href="'/admin/sharing_board/edit/'+${sharingFormDto.id}"
+								style="background: var(--thm-primary); 
+								color: white;"
+							>
+								게시글 등록
+							</a>
+						</div>
 					</div>
 				</div>
 			</form>
@@ -88,7 +97,7 @@
 		
 		<div class="modal fade" tabindex="-1" id="approveModal">
 			<div class="modal-dialog modal-dialog-centered">
-				<form class="modal-content" th:action="@{/sharing/admin/approve}" method="post">
+				<form class="modal-content" th:action="@{/admin/sharing/approve}" method="post">
 					<div class="modal-header">
 						<h5 class="modal-title">나눔 상품 승인</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -99,8 +108,8 @@
 						<input class="form-control" type="number" name="point" placeholder="포인트를 입력해주세요."/>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="submit" class="btn thm-btn px-4 py-2">승인</button>
+						<button type="button" class="btn btn-custom btn-custom-close" data-bs-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-custom btn-custom-regist">승인</button>
 					</div>
 				</form>
 			</div>
