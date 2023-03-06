@@ -1,13 +1,11 @@
 package com.sharingdonation.repository;
-
-import java.util.Optional;
+ 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.sharingdonation.entity.Member;
 
-public interface AdminRepository extends JpaRepository<Member, Long> {
-
-	
-	Member findByid (Long memberId);
+public interface AdminRepository extends JpaRepository<Member, Long>, QuerydslPredicateExecutor<Member>, AdminRepositoryCustom {
+	Member findByidAndDelYn (Long memberId, String delYn);
 }

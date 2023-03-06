@@ -31,6 +31,6 @@ public interface MyPageRepositoryCustom {
  
  Long updateMyPageStoryDetail(MyPageStoryDetailDto myPageStoryDetailDto, Long memeberId, Long storyId);
  
- Long updateAdminMember(MemberAllDto memberAllDto, Long memberId);
+ 
  
 }
