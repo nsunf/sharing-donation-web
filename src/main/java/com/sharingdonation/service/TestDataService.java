@@ -361,7 +361,7 @@ public class TestDataService {
 		boardImg.setSharingBoard(board);
 		boardImg.setImgName("img-" + i + ".jpg");
 		boardImg.setOriImgName("img-" + i + ".jpg");
-		boardImg.setImgUrl("/images/sharingBoard/dummy/img-" + i + ".jpg");
+		boardImg.setImgUrl("/images/sharedBoard/dummy/img-" + i + ".jpg");
 		boardImg.setRepimgYn(isRepImg ? "Y": "N");
 
 		sharingBoardImgRepo.save(boardImg);

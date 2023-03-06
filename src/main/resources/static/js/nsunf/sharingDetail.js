@@ -86,6 +86,6 @@ function disableRegistStoryBtn() {
 	btn.dataset.bsToggle = null;
 }
 
-window.onload = () => {
+window.addEventListener("load", () => {
 	setTextArea();
-};
+});

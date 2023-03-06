@@ -29,6 +29,12 @@ outlineEls.forEach((outline, i) => {
   })
 });
 
+textEls.forEach(el => {
+	const tmp = el.textContent;
+	if (el.dataset.count != null) {
+		el.innerHTML = tmp + '<tspan>' + el.dataset.count + '</tspan>'; 
+	}
+});
 
 function resetHover() {
   outlineEls.forEach(el => {
