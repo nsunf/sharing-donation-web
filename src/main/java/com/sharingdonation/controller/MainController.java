@@ -14,4 +14,8 @@ public class MainController {
 	}
 	
 
+	@GetMapping(value="/intro")
+	public String intro() {
+		return "intro";
+	}
 }
