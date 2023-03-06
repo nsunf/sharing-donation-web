@@ -14,6 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.sharingdonation.config.CustomAuthenticationEntryPoint;
 import com.sharingdonation.service.MemberService;
 
+
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
@@ -23,6 +24,7 @@ public class SecurityConfig{
 
 	@Autowired
     MemberService memberService;
+	
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,13 +40,22 @@ public class SecurityConfig{
         ;
 
         http.authorizeRequests()
-                .mvcMatchers("/css/**", "/js/**", "/img/**", "/assets/**").permitAll()
-                .mvcMatchers("/", "/auth/**", "/images/**", "/lib/**", "/mypage/**", "/program/**", "/sharing/**", "/donation/**", "/sharing_board/**", "/donatedBoard/**", "/story/**").permitAll()
-                .mvcMatchers("/test/**").permitAll()
-                .mvcMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
+        .mvcMatchers("/css/**", "/js/**", "/img/**", "/assets/**").permitAll()
+        .mvcMatchers("/intro", "/auth/**", "/images/**", "/lib/**").permitAll()
+        .mvcMatchers("/test/**").permitAll()
+        .mvcMatchers("/admin/**").hasRole("ADMIN")
+        .anyRequest().authenticated()
         ;
-
+        
+		/*
+		 * http.authorizeRequests() .mvcMatchers("/css/**", "/js/**", "/img/**",
+		 * "/assets/**").permitAll() .mvcMatchers("/", "/auth/**", "/images/**",
+		 * "/lib/**", "/mypage/**", "/program/**", "/sharing/**", "/donation/**",
+		 * "/sharing_board/**", "/donatedBoard/**").permitAll()
+		 * .mvcMatchers("/test/**").permitAll()
+		 * .mvcMatchers("/admin/**").hasRole("ADMIN") 
+		 * .anyRequest().authenticated() ;
+		 */
         http.exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
         ;
