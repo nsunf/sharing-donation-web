@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/layout-admin}">
+	layout:decorate="~{layouts/layout1}">
 <head>
 <meta charset="UTF-8">
 <meta name="_csrf" th:content="${_csrf.token}"/>
@@ -158,19 +158,19 @@
 
 			<div class="section container" style="width: margin: 0 auto;">
 
-				<div style="display: flex; margin-top: 20px;">
+				<div style="display: flex; margin:100px 0;">
 					<div style="margin: 0 auto;">
 
-					<input type="hidden" id="id" th:value="${member.id}">
+					
 
 						<!-- 상세 내용 div -->
 						<div
-							style="width: 780px; height: 556px; margin: 0 auto; padding: 0;">
+							style="width: 780px; height: 756px; margin: 0 auto; padding: 0;">
 							<table class="privacy-tbl"
 								style="width: 100%; height: 100%; margin: 0;">
 								<thead></thead>
 								<tbody>
-									<tr style="height: 80px;">
+									<tr style="height: 103.91px;">
 										<td style="display:flex; margin-top: 10px; width: 100%;">
 										<div style="margin-left: 18px;">
 											<div>
@@ -195,8 +195,8 @@
 											</div>
 											</td>
 									</tr>
-									<tr>
-										<td style="display:flex; margin-top: 10px; width: 100%;">
+									<tr style="height: 103.91px;">
+										<td style="display:flex;  width: 100%;">
 										<div style="margin-left: 18px;">
 											<div>
 												 <label for="name" style="color: #20C097;">대표자 성명</label>
@@ -222,7 +222,7 @@
 
 									</tr>
 									<tr>
-										<td style="display:flex; margin-top: 10px; width: 100%;">
+										<td style="display:flex; margin-top: 10px; height:130px; width: 100%;">
 										<div style="margin-left: 18px;">
 											<div>
 												 <label for="floatingEmptyPlaintextInput" style="color: #20C097;">휴대폰 번호</label>
@@ -249,24 +249,24 @@
 
 									</tr>
 									<tr>
-										<td style="width: 100%; padding-left: 18px;" rowspan="1">
+										<td style="width: 100%; padding:0 18px;" rowspan="1">
 											 <div>
 												 <label for="floatingEmptyPlaintextInput" style="color: #20C097;">주소</label>
 											 </div>
-          										  <input type="text" class="ad-field privacyinput" id="sample4_postcode" placeholder="우편번호" style="width: 175px;" th:value="${member.zipCode}">
+          										  <input type="text" class="ad-field privacyinput" id="sample4_postcode" placeholder="우편번호" style="width: 193px;" th:value="${member.zipCode}">
 										            <input type="button" class="ad-btn privacyinput" style="background-color: #8D9391;" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-										            <input type="text" class="ad-field privacyinput" id="sample4_roadAddress" placeholder="도로명주소" th:value="${member.address}">
+										            <input type="text" class="ad-field privacyinput" id="sample4_roadAddress" placeholder="도로명주소" th:value="${member.address}" style="width: 745px; ">
 										            <input type="hidden" class="ad-field privacyinput" id="sample4_jibunAddress" placeholder="지번주소">
 										            <span id="guide"  style="color:#999;display:none"></span>
 										        </br>
-										            <input type="text" class="ad-field privacyinput" id="sample4_detailAddress" placeholder="상세주소"  th:value="${member.addressDetail}">
+										            <input type="text" class="ad-field privacyinput" id="sample4_detailAddress" placeholder="상세주소"  th:value="${member.addressDetail}" style="width: 745px; ">
 										            <input type="hidden" class="ad-field privacyinput" id="sample4_extraAddress" placeholder="참고항목">
 										</td>
 										
 
 									</tr>
 									<tr>
-										<td colspan="1" style="text-align: center;">
+										<td colspan="1" style="text-align:center; height: 150px;">
 										<button type="button" value="저장" class="submit-btn"
 												onclick="enterpriceDelete()" style="background-color: #FE6262;">삭제</button>
 										<button type="button" value="저장" class="submit-btn" onclick="enterpriceUpdate();">저장</button>
