@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.sharingdonation.dto.MemberAllDto;
 import com.sharingdonation.dto.MyPageEnterPricePrivacyDto;
 import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.MyPagePrivacyDto;
@@ -29,5 +30,7 @@ public interface MyPageRepositoryCustom {
  MyPageStoryDetailDto getMyPageStoryDetail(Long memeberId, Long storyId);
  
  Long updateMyPageStoryDetail(MyPageStoryDetailDto myPageStoryDetailDto, Long memeberId, Long storyId);
+ 
+ 
  
 }
