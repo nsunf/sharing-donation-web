@@ -2,7 +2,9 @@ package com.sharingdonation.dto;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.sharingdonation.constant.Role;
 
 import lombok.Getter;
@@ -49,7 +51,7 @@ public class MyPageMainDto {
 		this.nickName = nickName;
 		this.role = role;
 		
-//		this.regTimeStr
+ 
 	}
-	
+
 }

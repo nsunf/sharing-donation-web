@@ -15,21 +15,21 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.querydsl.jpa.impl.JPAUpdateClause;
+ 
 import com.sharingdonation.constant.MoveType;
 import com.sharingdonation.dto.MyPageEnterPricePrivacyDto;
 import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.MyPagePrivacyDto;
 import com.sharingdonation.dto.MyPageStoryDetailDto;
 import com.sharingdonation.dto.MyPageStoryListDto;
-import com.sharingdonation.entity.Member;
+ 
 import com.sharingdonation.entity.QMember;
 import com.sharingdonation.entity.QPoint;
 import com.sharingdonation.entity.QSharing;
 import com.sharingdonation.entity.QSharingImg;
 import com.sharingdonation.entity.QStory;
 
-import groovy.time.BaseDuration.From;
+
 
 
 public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
@@ -191,7 +191,7 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 						 story.content
 						 ))
 				 .from(story)
-				 .where(story.member.id.eq(memberId))
+				 .where(story.member.id.eq(memberId).and(story.delYn.eq("N")))
 				 .orderBy(story.id.asc())
 	             .offset(pageable.getOffset())
 	             .limit(pageable.getPageSize())
@@ -244,6 +244,19 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 				.execute();
 		return update;
 	
+	}
+
+	@Override
+	public Long deleteMyPageStoryDetail(Long memberId, Long storyId) {
+		QStory story = QStory.story;
+		
+		long update = queryFactory
+				.update(story)
+				.set(story.delYn, "Y")
+				.where(story.id.eq(storyId).and(story.member.id.eq(memberId)))
+				.execute();
+		
+		return update;
 	}
 	
 	

@@ -34,26 +34,32 @@ public class MyPageService {
 	}
 	
 	@Transactional(readOnly = true)
-	public MyPagePrivacyDto getMyPagePrivacy(Long memberId) {
-		return myPageRepository.getMyPagePrivacy(memberId);
+	public MyPagePrivacyDto getMyPagePrivacy(Principal principal) {
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		return myPageRepository.getMyPagePrivacy(member.getId());
 	}
 	
 	
 	@Transactional
-	public Long myPrivacyUpdate(MyPagePrivacyDto myPagePrivacyDto,Long memberId) {
-
-		return myPageRepository.updateMyPrivacy(myPagePrivacyDto,memberId);
+	public Long myPrivacyUpdate(MyPagePrivacyDto myPagePrivacyDto,Principal principal) {
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		return myPageRepository.updateMyPrivacy(myPagePrivacyDto,member.getId());
 	}
 	
 	@Transactional(readOnly = true)
-	public MyPageEnterPricePrivacyDto getMyPageEnterPricePrivacyDto(Long memberId) {
-		return myPageRepository.getMyPageEnterPricePrivacy(memberId);
+	public MyPageEnterPricePrivacyDto getMyPageEnterPricePrivacyDto(Principal principal) {
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		return myPageRepository.getMyPageEnterPricePrivacy(member.getId());
 	}
 	
 	@Transactional
-	public Long myEnterpricePrivacyUpdate(MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto,Long memberId) {
-
-		return myPageRepository.updateMyEnterPricePrivacy(myPageEnterPricePrivacyDto,memberId);
+	public Long myEnterpricePrivacyUpdate(MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto,Principal principal) {
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		return myPageRepository.updateMyEnterPricePrivacy(myPageEnterPricePrivacyDto,member.getId());
 	}
 	
 	@Transactional(readOnly = true)
@@ -77,6 +83,13 @@ public class MyPageService {
 		String email = principal.getName();
 		Member member = memberRepository.findByEmail(email);
 		return myPageRepository.updateMyPageStoryDetail(myPageStoryDetailDto, member.getId(), storyId);
+	}
+	
+	@Transactional
+	public Long mypageStoryDetailDelete(Principal principal, Long storyId) {
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		return myPageRepository.deleteMyPageStoryDetail(member.getId(), storyId);
 	}
 	
 	
