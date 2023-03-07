@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -45,13 +46,10 @@ public class MyPageController {
 	@GetMapping("/mypage")
 	public String myPageMain(Principal principal, Model model) {
 		
-		//진짜 코드
+		
+		
 		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(principal);
 		
-		
-		
-		//실험용 코드
-		//MyPageMainDto myPageMainDto = new MyPageMainDto(memberId, 0, memberId, memberId, memberId, memberId, "김김김", null);
 		model.addAttribute("mypage",myPageMainDto);
 		return "/myPage/mypageMain";
 	}
@@ -158,8 +156,6 @@ public class MyPageController {
 	
 	@PostMapping("/mypage/story/detail/{storyId}")
 	public @ResponseBody ResponseEntity myPageStoryDetailUpdate(@RequestBody  @Valid MyPageStoryDetailDto myPageStoryDetailDto ,BindingResult bindingResult, @PathVariable("storyId") Long storyId, Principal principal ) {
-
-		 
 		  if(bindingResult.hasErrors()){
 	            StringBuilder sb = new StringBuilder();
 	            List<FieldError> fieldErrors = bindingResult.getFieldErrors();

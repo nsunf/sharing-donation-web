@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -70,7 +72,7 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 								 .where(story.member.id.eq(memberId))
 								 , "share_story"),
 						 member.name,
-						 member.regTime	,	
+						 member.regTime,	
 						 member.nickName,
 						 member.role
 						 ))
@@ -79,6 +81,9 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 				 .fetchOne();
 		 
 		return result;
+		
+		
+		
 		
 		
 	}

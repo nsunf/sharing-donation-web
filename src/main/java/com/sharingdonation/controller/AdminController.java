@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.sharingdonation.constant.Role;
 import com.sharingdonation.dto.MemberAllDto;
 import com.sharingdonation.service.AdminService;
 
@@ -42,7 +43,14 @@ public class AdminController {
 	public String adminManagement(@PathVariable("memberId") Long memberId, Model model) {
 		MemberAllDto memberAllDto = adminService.findByMemberId(memberId);
 			 model.addAttribute("member",memberAllDto);
-			 return "/admin/MemberManagement";
+			 if (memberAllDto.getRole().equals(Role.USER)) {
+				 return "/admin/MemberManagement";
+			}if(memberAllDto.getRole().equals(Role.COM)) {
+				return "/admin/EnterpriceManagement";
+			}
+			  
+			return "/";
+			 
 		 
 	}
 	
