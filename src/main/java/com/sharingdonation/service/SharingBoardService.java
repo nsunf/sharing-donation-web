@@ -251,6 +251,10 @@ public class SharingBoardService {
 		
 		sharingBoardRepository.delete(sharingBoard);
 	}
+	
+	
+	//!!!!!!관리자페이지 시작~~~~~~~~~!!!!!!//
+	
 
 	
 	

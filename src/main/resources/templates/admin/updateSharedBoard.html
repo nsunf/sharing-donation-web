@@ -31,13 +31,14 @@
 							th:field="*{subject}" class="input-box w-100 p-3" type="text"
 							placeholder="게시글 제목" />
 						</label>
+						<p th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}" class="fieldError text-danger">Incorrect Data</p>
 
 						<div>
 							<label class="input-label w-100" for=""> <span
 								class="d-block ms-2 mb-1">나눔 완료 상품</span>
 							</label>
-							<div th:text="${sharingBoardFormDto.sharing_name}"
-								style="width: 100%; height: 60px; border: 1px solid #15c8a0;"></div>
+							<input th:field="*{sharing_name}"
+								style="width: 100%; height: 60px; border: 1px solid #15c8a0;" />
 							<input type="hidden" th:field="*{sharing_id}" />
 						</div>
 
@@ -46,7 +47,9 @@
 							class="d-block ms-2 mb-1">나눔 완료 상세내용</span> <textarea
 								th:field="*{content}" class="input-box w-100 p-3"
 								placeholder="나눔 물품 상세 내용"></textarea>
-						</label> <label class="input-label w-100"> <span
+						</label>
+						<p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError text-danger">Incorrect Data</p>
+						<label class="input-label w-100"> <span
 							class="d-block ms-2 mb-1">이미지 등록</span> <input
 							class="img-input w-100" type="file"
 							name="sharingBoardImgFileList" accept="image/*" multiple>

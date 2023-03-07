@@ -54,7 +54,7 @@
 									</ul>
 									<a th:href="'/sharing_board/view/'+${sharedPost.id}"><h3
 											th:text="${sharedPost.subject}"></h3></a>
-									<p th:text="${sharedPost.content}" class="news-two__text">
+									<p th:text="${sharedPost.content}" class="news-two__text" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
 									</p>
 								</div>
 							</div>
