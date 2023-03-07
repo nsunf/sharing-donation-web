@@ -22,6 +22,7 @@ import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.MyPagePrivacyDto;
 import com.sharingdonation.dto.MyPageStoryDetailDto;
 import com.sharingdonation.dto.MyPageStoryListDto;
+import com.sharingdonation.dto.QMyPageMainDto;
 import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.QMember;
 import com.sharingdonation.entity.QPoint;
@@ -50,7 +51,31 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 		
 		
 		 MyPageMainDto result = queryFactory
-				 .select(Projections.fields(MyPageMainDto.class,
+//				 .select(Projections.fields(MyPageMainDto.class,
+//						 member.id,
+//						 member.point,
+//						 ExpressionUtils.as(JPAExpressions.select(sharing.id.count())
+//								 .from(sharing)
+//								 .where(sharing.member.id.eq(memberId).and(sharing.delYn.eq("N")))
+//								 ,"share_reg"),
+//						 ExpressionUtils.as(JPAExpressions.select(story.id.count())
+//								 .from(story)
+//								 .where(story.member.id.eq(memberId).and(story.chooseYn.eq("Y")))
+//								 ,"share_take"),
+//						 ExpressionUtils.as(JPAExpressions.select(point.id.count())
+//								 .from(point)
+//								 .where(point.member.id.eq(memberId).and(point.moveType.eq(MoveType.PLUS)))
+//								 ,"share_apply"),
+//						 ExpressionUtils.as(JPAExpressions.select(story.id.count())
+//								 .from(story)
+//								 .where(story.member.id.eq(memberId))
+//								 , "share_story"),
+//						 member.name,
+//						 member.regTime	,	
+//						 member.nickName,
+//						 member.role
+//						 ))
+				 .select(new QMyPageMainDto(
 						 member.id,
 						 member.point,
 						 ExpressionUtils.as(JPAExpressions.select(sharing.id.count())
