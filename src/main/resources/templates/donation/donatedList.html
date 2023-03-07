@@ -11,12 +11,26 @@
   </head>
   <body>
     <th:block layout:fragment="layout-content">
-      <!--기부 완요 게판 페이지 시각-->
-      <section class="news-page">
+      <section class="page-header">
+        <div
+          class="page-header__bg"
+          style="
+            background-image: url('https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=3270&amp;q=80');
+          "
+        ></div>
+        <!-- /.page-header__bg -->
         <div class="container">
-          <div class="row">
-            <div class="m-5">
-              <form class="input-group mb-3 w-25 mx-auto">
+          <h2 class="text-center sharing_board_title">기부 완료 게시판</h2>
+        </div>
+      </section>
+
+      <section class="news-page pt-5 pb-3 vstack">
+        <!--검색창-->
+        <div class="container">
+          <div class="row g-5 m-5">
+            <div class="col-xl-3 col-lg-3"></div>
+            <div class="col-xl-6 col-lg-6">
+              <form class="input-group mb-3 w-100 mx-auto my-4">
                 <input
                   type="text"
                   class="form-control"
@@ -32,7 +46,14 @@
                 </button>
               </form>
             </div>
+            <div class="col-xl-3 col-lg-3"></div>
+          </div>
+        </div>
+        <!--  -->
 
+        <!--기부 완요 게판 페이지 시각-->
+        <div class="container">
+          <div class="row g-5">
             <th:block
               th:each="donationBoard, status: ${donationBoards.getContent()}"
             >
@@ -40,7 +61,6 @@
                 class="col-xl-4 col-lg-4 wow fadeInUp"
                 data-wow-delay="100ms"
               >
-                <!--News Two Single-->
                 <div class="news-two__single">
                   <div class="news-two__img-box">
                     <div class="news-two__img">
@@ -58,10 +78,6 @@
                   </div>
                   <div class="news-two__content">
                     <ul class="list-unstyled news-two__meta">
-                      <li>
-                        <a href="#"><i class="far fa-user-circle"></i>Admin</a>
-                      </li>
-                      <li><span>/</span></li>
                       <li>
                         <i
                           th:text="${donationBoard.commentCount}"
@@ -121,7 +137,6 @@
         </ul>
       </div>
 
-      donationBoard.number: [[${donationBoards.number}]] maxPage: [[${maxPage}]]
       <!--기부 완료 게시판 페이지 끝-->
     </th:block>
 

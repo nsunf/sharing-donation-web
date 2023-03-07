@@ -89,7 +89,7 @@
 
 				<div th:if="${#strings.isEmpty(donationBoardFormDto.id)}">
 					<div class="row mt-4 ">
-						<div class="col-8 mx-auto hstack">
+						<div class="col-8 mx-auto">
 							<button type="submit" class="custom-btn ms-3">제출</button>
 						</div>
 					</div>
@@ -97,7 +97,7 @@
 
 				<div th:if="${not #strings.isEmpty(donationBoardFormDto.id)}">
 					<div class="row mt-4 ">
-						<div class="col-8 mx-auto hstack">
+						<div class="col-8 mx-auto">
 							<button
 								th:formaction="@{'/admin/donatedBoard/' + ${donationBoardFormDto.id} }"
 								type="submit" class="custom-btn ms-3">수정</button>
