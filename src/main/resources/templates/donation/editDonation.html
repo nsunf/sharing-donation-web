@@ -148,12 +148,11 @@
               </label>
               
               
-			 <th:block th:if="${#lists.isEmpty(donationFormDto.donationImgDtoList)}">
+			 
               <label class="input-label w-100">
                 <span class="d-block ms-2 mb-1">이미지 등록</span>
                 <input class="img-input w-100" type="file" accept="image/*" id="donationImgFile" name="donationImgFile" multiple/>
               </label>
-             </th:block>
               
              <!--  <th:block th:if="${not #lists.isEmpty(donationFormDto.donationImgDtoList)}">
               <label class="input-label w-100"  th:each="num: ${#numbers.sequence(1,10)}">
@@ -171,7 +170,7 @@
 					<div class="col" th:each="imgDto, status : ${donationImgDtoList}">
 						<img class="preview-img" th:src="@{${imgDto.imgUrl}}" th:alt="${'img-' + status.index}">
 					</div>
-					</div>
+				</div>
 			</div>
 		</div>
 

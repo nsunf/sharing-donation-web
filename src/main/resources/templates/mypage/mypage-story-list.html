@@ -11,7 +11,7 @@
  
 function page(page) {
 
-	location.href = "/mypage/story/" + [[${mypage.id}]] + "/" +page;
+	location.href = "/mypage/story/" +page;
 }
 	</script>
 	</th:block>
@@ -21,7 +21,7 @@ function page(page) {
 <body>
 	<th:block layout:fragment="layout-content">
 		<section>
-			<div class="section container" style="width: margin: 0 auto;">
+			<div class="section container" style="margin: 0 auto;">
 				<div style="display: flex;">
 					<div></div>
 					<div class="mb-3 row"
@@ -30,7 +30,7 @@ function page(page) {
 
 						<th:block
 							th:each="item, status: ${myPageStoryListDto.getContent()}">
-						 <a th:href="@{|/mypage/story/detail/${mypage.id}/${item.id}|}">
+						 <a th:href="@{|/mypage/story/detail/${item.id}|}">
 							<div class="col-12" >
 
 								<div class="mb-3 form-check"

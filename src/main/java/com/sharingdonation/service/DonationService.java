@@ -245,8 +245,13 @@ public class DonationService {
 	}
 	
 	
-	public Page<DonationDto> getDonationDtoListByMemberId(Long memberId, Pageable pageable) {
-		Page<Donation> donationList = donationRepository.findByMemberIdAndDelYnOrderByRegTimeDesc(memberId, "N", pageable);
+	public Page<DonationDto> getDonationDtoListByMemberId(Principal principal, Pageable pageable) {
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		
+		
+		Page<Donation> donationList = donationRepository.findByMemberIdAndDelYnOrderByRegTimeDesc(member.getId(), "N", pageable);
+		
 		
 		Page<DonationDto> donationDtoList = donationList.map(s -> {
 			DonationImgDto donationImgDto = donationImgService.getDonationImgDto(s.getId());

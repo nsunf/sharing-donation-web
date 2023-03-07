@@ -69,7 +69,7 @@
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
 
-        var url = "/mypage/enterpriceprivacy/" + [[${mypage.id}]];
+        var url = "/mypage/enterpriceprivacy/";
         var paramData = {
             name : $("#name").val(),
             cellphone : $("#cellphone").val(),
@@ -96,7 +96,7 @@
  
                 alert("기업 정보 수정이 완료 되었습니다.");
                 /*
-                location.href="/mypage/privacy/" + [[${mypage.id}]];
+                location.href="/mypage/privacy/";
                 */
             },
             error : function(jqXHR, status, error){
@@ -119,12 +119,10 @@
 	<th:block layout:fragment="layout-content">
 		<section>
 
-			<div class="section container" style="width: margin: 0 auto;">
+			<div class="section container" style="margin: 0 auto;">
 
 				<div style="display: flex; margin-top: 20px;">
 					<div style="margin: 0 auto;">
-
-					<input type="hidden" id="id" th:value="${mypage.id}">
 
 						<!-- 상세 내용 div -->
 						<div
