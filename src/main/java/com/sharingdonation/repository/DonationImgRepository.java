@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.sharingdonation.entity.DonationImg;
-import com.sharingdonation.entity.SharingImg;
 
 public interface DonationImgRepository extends JpaRepository<DonationImg, Long> {
 	List<DonationImg> findByDonationIdOrderByIdAsc(Long donationId);
@@ -13,5 +12,6 @@ public interface DonationImgRepository extends JpaRepository<DonationImg, Long> 
 	DonationImg findByDonationIdAndRepimgYn(Long donationId, String repimgYn);
 	
 	List<DonationImg> findByDonationId(Long donationId);
+	
 	void deleteAllByDonationId(Long donationId);
 }

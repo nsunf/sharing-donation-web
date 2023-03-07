@@ -99,7 +99,7 @@ public class Member extends BaseEntity {
 		member.setNickName(memberFormDto.getNickName());
 		
 		member.setDelYn("N");
-		
+		member.setRegTime(LocalDateTime.now());
 		member.setRole(Role.USER);
 		return member;
 	}
@@ -114,6 +114,7 @@ public class Member extends BaseEntity {
 		corp.setAddressDetail(corpFormDto.getAddressDetail());
 		corp.setCellphone(corpFormDto.getCellphone());
 		corp.setFax(corpFormDto.getFax());
+		corp.setRegTime(LocalDateTime.now());
 		LocalDate date = LocalDate.parse(corpFormDto.getBirth(), DateTimeFormatter.ISO_DATE);
 		corp.setBirth(date);
 		corp.setEmail(corpFormDto.getEmail());

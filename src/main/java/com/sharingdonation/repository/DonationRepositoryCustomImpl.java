@@ -19,7 +19,7 @@ import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharingdonation.dto.DonationDto;
-import com.sharingdonation.dto.DonationSearchDto;
+import com.sharingdonation.dto.SearchDto;
 import com.sharingdonation.dto.ListDonationDto;
 import com.sharingdonation.dto.QDonationDto;
 import com.sharingdonation.dto.QListDonationDto;
@@ -48,7 +48,7 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 	}
 
 	@Override
-	public Page<DonationDto> getAdminListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+	public Page<DonationDto> getAdminListDonationPage(SearchDto donationSearchDto, Pageable pageable) {
 		QDonation donation = QDonation.donation;
 		QDonationImg donationImg = QDonationImg.donationImg;
 		QMember member = QMember.member;
@@ -77,26 +77,26 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 					)
 					.from(donation)
 //					.join(donation, donationImg.donation)
-					.join(donationImg).on(donation.eq(donationImg.donation))
-					.join(donation.member, member)
-					.where(donationImg.repimgYn.eq("Y"))
+					.join(donationImg).on(donation.donation.eq(donationImg.donation), donationImg.repimgYn.eq("Y"))
+					.join(member).on(donation.member.eq(member.member))
+//					.where(donationImg.repimgYn.eq("Y"))
 					.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
 					.orderBy(donation.id.desc())
 					.offset(pageable.getOffset())
 					.limit(pageable.getPageSize())
 					.fetch();
 					
-		long total = queryFactory.select(Wildcard.count).from(donation)
-					.join(donationImg).on(donation.eq(donationImg.donation))
-					.join(donation.member, member)
-					.where(donationImg.repimgYn.eq("Y"))
+		long total = queryFactory.select(Wildcard.count)
+					.from(donation)
+					.leftJoin(donationImg).on(donation.donation.eq(donationImg.donation), donationImg.repimgYn.eq("Y"))
+					.leftJoin(member).on(donation.member.eq(member.member))
 					.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
 					.fetchOne();
 		return new PageImpl<>(content, pageable, total);
 	}
 	
 	@Override
-	public Page<ListDonationDto> getListDonationPage(DonationSearchDto donationSearchDto, Pageable pageable) {
+	public Page<ListDonationDto> getListDonationPage(SearchDto donationSearchDto, Pageable pageable) {
 		QDonation donation = QDonation.donation;
 		QDonationImg donationImg = QDonationImg.donationImg;
 		QMember member = QMember.member;
@@ -118,10 +118,9 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 						ExpressionUtils.as(JPAExpressions.select(subPoint.point.sum().coalesce(0)).from(subPoint).where(donationImg.donation.eq(subPoint.donation)), "pointSum")
 						)
 				)
-				.from(donationImg)
-				.join(donationImg.donation, donation)
-				.join(donation.member, member)
-				.where(donationImg.repimgYn.eq("Y"))
+				.from(donation)
+				.join(donationImg).on(donation.eq(donationImg.donation), donationImg.repimgYn.eq("Y"))
+				.join(member).on(donation.member.eq(member))
 				.where(donation.donationName.like("%" + donationSearchDto.getSearchQuery() + "%")
 						, donation.subject.like("%" + donationSearchDto.getSearchQuery() + "%"))
 //				.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
@@ -169,9 +168,10 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 		
 		long total = queryFactory
 				.select(Wildcard.count)
-				.from(donationImg)
-				.join(donationImg.donation, donation)
-				.where(donationImg.repimgYn.eq("Y"))
+				.from(donation)
+				.leftJoin(donationImg).on(donation.eq(donationImg.donation), donationImg.repimgYn.eq("Y"))
+				.leftJoin(member).on(donation.member.eq(member))
+//				.where(donationImg.repimgYn.eq("Y"))
 //				.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
 				.where(donation.donationName.like("%" + donationSearchDto.getSearchQuery() + "%")
 						, donation.subject.like("%" + donationSearchDto.getSearchQuery() + "%"))
