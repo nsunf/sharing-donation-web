@@ -28,15 +28,15 @@ public class AdminController {
 	
 	private final AdminService adminService;
 
-	@GetMapping("/admin/story")
-	public String adminStory() {
-		return "/admin/storyList";
-	}
-	
-	@GetMapping("/admin/story/detail")
-	public String adminStoryDetail() {
-		return "/admin/storyDetail";
-	}
+//	@GetMapping("/admin/story")
+//	public String adminStory() {
+//		return "/admin/storyList";
+//	}
+//	
+//	@GetMapping("/admin/story/detail")
+//	public String adminStoryDetail() {
+//		return "/admin/storyDetail";
+//	}
 	
 	@GetMapping("/admin/management/{memberId}")
 	public String adminManagement(@PathVariable("memberId") Long memberId, Model model) {
