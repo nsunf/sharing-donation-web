@@ -28,6 +28,8 @@ class ImgInputPreview {
 
 			this.showPreview(this.imgInput.files);
 		});
+		
+		this.validImgInput();
 	}
 
 	createImgCard(src, idx) {
@@ -91,6 +93,17 @@ class ImgInputPreview {
 		this.tmpFiles = df;
 
 		this.showPreview(this.imgInput.files);
+	}
+	
+	validImgInput() {
+		const form = document.querySelector("form");
+		form.addEventListener("submit", e => {
+			e.preventDefault();
+			if (this.imgInput.files.length == 0)
+				alert("이미지를 입력해주세요.")
+			else
+				form.submit();
+		})
 	}
 }
 new ImgInputPreview();
