@@ -54,10 +54,10 @@
         
         <th:block th:switch=${mypage.role}>
 						<div th:if="${#strings.equals(mypage.role, T(com.sharingdonation.constant.Role).USER)}">
-							<th:block th:replace="fragments/mypageSide::mypageSide(${mypage.name},${mypage.regTimeStr},${mypage.nickName})"></th:block> 
+							<th:block th:replace="fragments/mypageSide::mypageSide(${mypage.name},${mypage.regTime},${mypage.nickName})"></th:block> 
 						</div>
 						<div th:if="${#strings.equals(mypage.role, T(com.sharingdonation.constant.Role).COM)}">
-							<div th:replace="fragments/mypageEnterpriceSide::mypageEnterpriceSide(${mypage.name},${mypage.regTimeStr},${mypage.nickName})"></div> 
+							<div th:replace="fragments/mypageEnterpriceSide::mypageEnterpriceSide(${mypage.name},${mypage.regTime},${mypage.nickName})"></div> 
 						</div>
 				 </th:block>
         </div>
@@ -91,6 +91,7 @@
 	<script src="/lib/isotope/isotope.js"></script>
 	<script src="/lib/countdown/countdown.min.js"></script>
 	<script src="/lib/owl-carousel/owl.carousel.min.js"></script>
+	
 	<!-- template js -->
 	<script src="/js/halpes.js"></script>
 	<script src="/js/layout1.js"></script>
