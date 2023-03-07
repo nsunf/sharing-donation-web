@@ -48,9 +48,9 @@
 
 						<label class="input-label w-100" for="">
 							<span class="d-block ms-2 mb-1">상태</span>
-							<div class="btn text-white" style="background: var(--thm-primary);">승인대기</div>
-							<div class="btn text-white" style="background: var(--thm-gray);">승인완료</div>
-							<div class="btn text-white" style="background: var(--thm-gray);">취소</div>
+							<div class="btn text-white" style="background: var(--thm-primary);">[[*{status}]]</div>
+							<!-- <div class="btn text-white" style="background: var(--thm-gray);">승인완료</div>
+							<div class="btn text-white" style="background: var(--thm-gray);">취소</div> -->
 <!-- 							<input class="input-box w-100 p-3" type="text" value="등록자" readonly>
  -->						</label>
 						</label>
@@ -62,7 +62,7 @@
 						</label>
 
 						<label class="input-label w-100" for="">
-							<div class="btn text-white" style="background: var(--thm-primary);">우편번호 찾기</div>
+							<div class="btn text-white" style="background: var(--thm-primary);" ><a  onclick="sample4_execDaumPostcode();">우편번호 찾기</a></div>
 						</label>
 				 	</div>
 				 	
@@ -115,20 +115,9 @@
 				<div class="row mt-5">
 					<div class="col-8 mx-auto">미리보기
 						<div class="img-preview-list row row-cols-4 g-4">
-
- 							<div class="col">
-								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
+							<div class="col" th:each="imgDto, status : ${donationImgDtoList}">
+								<img class="preview-img" th:src="@{${imgDto.imgUrl}}" th:alt="${'img-' + status.index}">
 							</div>
- 							<div class="col">
-								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
-							</div>
- 							<div class="col">
-								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
-							</div>
- 							<div class="col">
-								<img class="preview-img" src="https://picsum.photos/id/237/720/480" alt="">
-							</div>
-
  						</div>
 					</div>
 				</div>
@@ -139,14 +128,11 @@
 					<div class="col-8 mx-auto hstack">
 						<button class="custom-btn custom-btn-del ms-auto" reset>취소</button>
 						<button class="custom-btn ms-3" type="submit">수정</button>
-						
-						<th:block th:if="*{confirmYn == 'N'}" > 
-						
-						<button class="custom-btn ms-3" type="button" onclick="confirm();">승인</button>
+						<th:block th:if="*{confirmYn == 'N'}" >
+						<button class="custom-btn ms-3" type="button" onclick="confirmCheck();">승인</button>
 						</th:block>
 						<th:block th:if="*{done == 'N'}">
-						
-						<button class="custom-btn ms-3" type="button">완료</button>
+						<button class="custom-btn ms-3" type="button" onclick="doneCheck();">완료</button>
 						</th:block>
 					</div>
 				</div>
@@ -157,27 +143,83 @@
 	</th:block>
 
 	<th:block layout:fragment="script-bottom">
-	<script>
-		function confirm() {
-			let form = document.adminDonationForm;
-			let confirm=document.getElementsByName("confirmYn");
-			confirm.value = "Y";
-			/* console.log(confirm.value);
-			return false; */
-			/*  */form.submit();
-			/*let form = do cument.adminDonationForm;
-			form.action="/admin/donation/confirm" + [[${donationAdminFormDto.id}]]; */
-		}
-		
-		function done() {
-			let form = document.adminDonationForm;
-			let done=document.getElementsByName("done");
-			done.value = "Y";
-			/* console.log(confirm.value);
-			return false; */
-			/*  */form.submit();
-		}
-	</script>
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+		<script>
+			//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+			function sample4_execDaumPostcode() {
+				new daum.Postcode({
+					oncomplete: function(data) {
+						// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+						// 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+						// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+						var roadAddr = data.roadAddress; // 도로명 주소 변수
+						var extraRoadAddr = ''; // 참고 항목 변수
+
+						// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+						// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+						if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+								extraRoadAddr += data.bname;
+						}
+						// 건물명이 있고, 공동주택일 경우 추가한다.
+						if(data.buildingName !== '' && data.apartment === 'Y'){
+							 extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+						}
+						// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+						if(extraRoadAddr !== ''){
+								extraRoadAddr = ' (' + extraRoadAddr + ')';
+						}
+
+						// 우편번호와 주소 정보를 해당 필드에 넣는다.
+						document.getElementById('zipCode').value = data.zonecode;
+						document.getElementById("address").value = roadAddr;
+						/* document.getElementById("sample4_jibunAddress").value = data.jibunAddress; */
+						
+						// 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+						if(roadAddr !== ''){
+								document.getElementById("address").value = document.getElementById("address").value + extraRoadAddr;
+						} else {
+								document.getElementById("address").value = document.getElementById("address").value ;
+						}
+
+						/* var guideTextBox = document.getElementById("guide");
+						// 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+						if(data.autoRoadAddress) {
+								var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+								guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+								guideTextBox.style.display = 'block';
+
+						} else if(data.autoJibunAddress) {
+								var expJibunAddr = data.autoJibunAddress;
+								guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+								guideTextBox.style.display = 'block';
+						} else {
+								guideTextBox.innerHTML = '';
+								guideTextBox.style.display = 'none';
+						} */
+					}
+				}).open();
+			}
+		</script>
+		<script>
+			function confirmCheck() {
+				let form = document.adminDonationForm;
+				let confirm=document.getElementById("confirmYn");
+				confirm.value = "Y";
+				/* console.log(confirm.value);
+				return false; */
+				/*  */form.submit();
+			}
+			
+			function doneCheck() {
+				let form = document.adminDonationForm;
+				let done=document.getElementById("done");
+				done.value = "Y";
+				/* console.log(confirm.value);
+				return false; */
+				/*  */form.submit();
+			}
+		</script>
 		<script src="/js/imgInputPreview.js"></script>
 		<script src="/js/setAutoHeight.js"></script>
 	</th:block>

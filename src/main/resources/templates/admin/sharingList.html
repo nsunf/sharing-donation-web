@@ -26,7 +26,7 @@
         </div>
           <!-- 검색창 -->
         <div class="container">
-            <form class="row hstack" th:action="@{/sharing/admin}">
+            <form class="row hstack" th:action="@{/admin/sharing}">
 								<div class="col-md-2 m-auto">
 										<select class="form-select admin_md_ctr_select" name="filter" aria-label="Default select example">
 												<option value="title" th:selected="${filter == 'title'} ? 'selected' : null">글제목</option>
@@ -65,7 +65,7 @@
             <tbody>
               <tr th:each="sharingDto, status : ${sharingDtoList}">
                 <th><input type="checkbox" class="sharing" name="sharing" th:value="${sharingDto.id}" /></th>
-                <td>[[${status.index + 1}]]</td>
+                <td>[[${sharingDtoList.totalElements - status.index - (sharingDtoList.size * page)}]]</td>
                 <td>[[${sharingDto.authorName}]]</td>
                 <td>[[${sharingDto.name}]]</td>
                 <td>[[${sharingDto.categoryName}]]</td>

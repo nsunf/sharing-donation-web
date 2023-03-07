@@ -52,8 +52,7 @@
 										<li><i th:text="${sharedPost.commentCount}"
 											class="far fa-comments"></i></li>
 									</ul>
-									<a th:href="'/sharing_board/view/'+${sharedPost.id}"><h3
-											th:text="${sharedPost.subject}"></h3></a>
+									<a th:href="'/sharing_board/view/'+${sharedPost.id}"><h3 th:text="${sharedPost.subject}"></h3></a>
 									<p th:text="${sharedPost.content}" class="news-two__text" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
 									</p>
 								</div>
@@ -72,10 +71,17 @@
 					href="#" title="previous page"
 					th:onclick="'javascript:page(' + ${sharingBoardList.number - 1} + ')'"></a></li>
 
-				<li th:each="page: ${#numbers.sequence(start, end)}"
-					th:classappend="${sharingBoardList.number eq page-1} ? 'active':''"><a
-					th:inline="text"
-					th:onclick="'javascript:page(' + ${page - 1} + ')'">[[${page}]]</a></li>
+
+          <li
+            th:each="page: ${#numbers.sequence(start, end)}"
+            th:classappend="${sharingBoardList.number eq page-1} ? 'active':''"
+          >
+            <a
+              th:inline="text"
+              th:onclick="'javascript:page(' + ${page - 1} + ')'"
+              >[[${page}]]</a
+            >
+          </li>
 
 				<li class="next"
 					th:classappend="${sharingBoardList.last}? 'disabled'"><a

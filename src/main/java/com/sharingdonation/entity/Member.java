@@ -75,8 +75,8 @@ public class Member extends BaseEntity {
 	@Column(nullable = false, columnDefinition = "varchar(5)")
 	private Role role;
 	
-	@Column(nullable = false)
-	private LocalDateTime regTime;
+//	@Column(nullable = false)
+//	private LocalDateTime regTime;
 	
 	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String delYn;
@@ -99,7 +99,7 @@ public class Member extends BaseEntity {
 		member.setNickName(memberFormDto.getNickName());
 		
 		member.setDelYn("N");
-		
+		member.setRegTime(LocalDateTime.now());
 		member.setRole(Role.USER);
 		return member;
 	}
@@ -114,6 +114,7 @@ public class Member extends BaseEntity {
 		corp.setAddressDetail(corpFormDto.getAddressDetail());
 		corp.setCellphone(corpFormDto.getCellphone());
 		corp.setFax(corpFormDto.getFax());
+		corp.setRegTime(LocalDateTime.now());
 		LocalDate date = LocalDate.parse(corpFormDto.getBirth(), DateTimeFormatter.ISO_DATE);
 		corp.setBirth(date);
 		corp.setEmail(corpFormDto.getEmail());

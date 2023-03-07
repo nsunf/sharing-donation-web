@@ -2,7 +2,9 @@ package com.sharingdonation.dto;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.sharingdonation.constant.Role;
 
 import lombok.Getter;
@@ -27,6 +29,8 @@ public class MyPageMainDto {
 	private String name;
 	
 	private LocalDateTime regTime;
+
+	private String regTimeStr;
 	
 	private String nickName;
 	
@@ -35,7 +39,22 @@ public class MyPageMainDto {
 	//디폴트 생성자 
 	public MyPageMainDto() {}
 
-	public MyPageMainDto(Long id,String nickName,int point, Long share_reg, Long share_take, Long share_apply, Long share_story, String name, LocalDateTime regTime, Role role) {
+//	public MyPageMainDto(Long id,String nickName,int point, Long share_reg, Long share_take, Long share_apply, Long share_story, String name, LocalDateTime regTime, Role role) {
+//		this.id = id;
+//		this.point = point;
+//		this.share_reg = share_reg;
+//		this.share_take = share_take;
+//		this.share_apply = share_apply;
+//		this.share_story = share_story;
+//		this.name = name;
+//		this.regTime = regTime;
+//		this.nickName = nickName;
+//		this.role = role;
+//		
+//	}
+
+	@QueryProjection
+	public MyPageMainDto(Long id, int point, Long share_reg, Long share_take, Long share_apply, Long share_story, String name, LocalDateTime regTime, String nickName, Role role) {
 		this.id = id;
 		this.point = point;
 		this.share_reg = share_reg;
@@ -46,6 +65,7 @@ public class MyPageMainDto {
 		this.regTime = regTime;
 		this.nickName = nickName;
 		this.role = role;
-	}
 	
+		this.regTimeStr = regTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	}
 }
