@@ -87,31 +87,31 @@
 						</g>
 						<g filter="url(#dropshadow2)"></g>
 						<g>
-							<text id="LCD11110" class="TEXT" x="380" y="300" data-gu="종로구" th:data-count="${areaDtoList.^[gugun=='종로구'].sharingCount}">종로구</text>
-							<text id="LCD11140" class="TEXT" x="420" y="342" data-gu="중구" th:data-count="${areaDtoList.^[gugun=='중구'].sharingCount}">중구</text>
-							<text id="LCD11170" class="TEXT" x="385" y="395" data-gu="용산구" th:data-count="${areaDtoList.^[gugun=='용산구'].sharingCount}">용산구</text>
-							<text id="LCD11200" class="TEXT" x="485" y="356" data-gu="성동구" th:data-count="${areaDtoList.^[gugun=='성동구'].sharingCount}">성동구</text>
-							<text id="LCD11215" class="TEXT" x="555" y="365" data-gu="광진구" th:data-count="${areaDtoList.^[gugun=='광진구'].sharingCount}">광진구</text>
-							<text id="LCD11230" class="TEXT" x="485" y="300" data-gu="동대문구" th:data-count="${areaDtoList.^[gugun=='동대문구'].sharingCount}">동대문구</text>
-							<text id="LCD11260" class="TEXT" x="560" y="270" data-gu="중랑구" th:data-count="${areaDtoList.^[gugun=='중랑구'].sharingCount}">중랑구</text>
-							<text id="LCD11290" class="TEXT" x="455" y="258" data-gu="성북구" th:data-count="${areaDtoList.^[gugun=='성북구'].sharingCount}">성북구</text>
-							<text id="LCD11305" class="TEXT" x="425" y="181" data-gu="강북구" th:data-count="${areaDtoList.^[gugun=='강북구'].sharingCount}">강북구</text>
-							<text id="LCD11320" class="TEXT" x="472" y="125" data-gu="도봉구" th:data-count="${areaDtoList.^[gugun=='도봉구'].sharingCount}">도봉구</text>
-							<text id="LCD11350" class="TEXT" x="532" y="153" data-gu="노원구" th:data-count="${areaDtoList.^[gugun=='노원구'].sharingCount}">노원구</text>
-							<text id="LCD11380" class="TEXT" x="300" y="218" data-gu="은평구" th:data-count="${areaDtoList.^[gugun=='은평구'].sharingCount}">은평구</text>
-							<text id="LCD11410" class="TEXT" x="290" y="310" data-gu="서대문구" th:data-count="${areaDtoList.^[gugun=='서대문구'].sharingCount}">서대문구</text>
-							<text id="LCD11440" class="TEXT" x="276" y="360" data-gu="마포구" th:data-count="${areaDtoList.^[gugun=='마포구'].sharingCount}">마포구</text>
-							<text id="LCD11470" class="TEXT" x="180" y="421" data-gu="양천구" th:data-count="${areaDtoList.^[gugun=='양천구'].sharingCount}">양천구</text>
-							<text id="LCD11500" class="TEXT" x="145" y="334" data-gu="강서구" th:data-count="${areaDtoList.^[gugun=='강서구'].sharingCount}">강서구</text>
-							<text id="LCD11530" class="TEXT" x="199" y="470" data-gu="구로구" th:data-count="${areaDtoList.^[gugun=='구로구'].sharingCount}">구로구</text>
-							<text id="LCD11545" class="TEXT" x="253" y="548" data-gu="금천구" th:data-count="${areaDtoList.^[gugun=='금천구'].sharingCount}">금천구</text>
-							<text id="LCD11560" class="TEXT" x="280" y="413" data-gu="영등포구" th:data-count="${areaDtoList.^[gugun=='영등포구'].sharingCount}">영등포구</text>
-							<text id="LCD11590" class="TEXT" x="340" y="461" data-gu="동작구" th:data-count="${areaDtoList.^[gugun=='동작구'].sharingCount}">동작구</text>
-							<text id="LCD11620" class="TEXT" x="330" y="529" data-gu="관악구" th:data-count="${areaDtoList.^[gugun=='관악구'].sharingCount}">관악구</text>
-							<text id="LCD11650" class="TEXT" x="448" y="515" data-gu="서초구" th:data-count="${areaDtoList.^[gugun=='서초구'].sharingCount}">서초구</text>
-							<text id="LCD11680" class="TEXT" x="515" y="480" data-gu="강남구" th:data-count="${areaDtoList.^[gugun=='강남구'].sharingCount}">강남구</text>
-							<text id="LCD11710" class="TEXT" x="602" y="448" data-gu="송파구" th:data-count="${areaDtoList.^[gugun=='송파구'].sharingCount}">송파구</text>
-							<text id="LCD11740" class="TEXT" x="660" y="358" data-gu="강동구" th:data-count="${areaDtoList.^[gugun=='강동구'].sharingCount}">강동구</text>
+							<text id="LCD11110" class="TEXT" x="380" y="300" data-gu="종로구" th:if="${not areaDtoList.?[gugun=='종로구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='종로구'].sharingCount}">종로구</text>
+							<text id="LCD11140" class="TEXT" x="420" y="342" data-gu="중구" th:if="${not areaDtoList.?[gugun=='중구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='중구'].sharingCount}">중구</text>
+							<text id="LCD11170" class="TEXT" x="385" y="395" data-gu="용산구" th:if="${not areaDtoList.?[gugun=='용산구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='용산구'].sharingCount}">용산구</text>
+							<text id="LCD11200" class="TEXT" x="485" y="356" data-gu="성동구" th:if="${not areaDtoList.?[gugun=='성동구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='성동구'].sharingCount}">성동구</text>
+							<text id="LCD11215" class="TEXT" x="555" y="365" data-gu="광진구" th:if="${not areaDtoList.?[gugun=='광진구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='광진구'].sharingCount}">광진구</text>
+							<text id="LCD11230" class="TEXT" x="485" y="300" data-gu="동대문구" th:if="${not areaDtoList.?[gugun=='동대문구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='동대문구'].sharingCount}">동대문구</text>
+							<text id="LCD11260" class="TEXT" x="560" y="270" data-gu="중랑구" th:if="${not areaDtoList.?[gugun=='중랑구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='중랑구'].sharingCount}">중랑구</text>
+							<text id="LCD11290" class="TEXT" x="455" y="258" data-gu="성북구" th:if="${not areaDtoList.?[gugun=='성북구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='성북구'].sharingCount}">성북구</text>
+							<text id="LCD11305" class="TEXT" x="425" y="181" data-gu="강북구" th:if="${not areaDtoList.?[gugun=='강북구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='강북구'].sharingCount}">강북구</text>
+							<text id="LCD11320" class="TEXT" x="472" y="125" data-gu="도봉구" th:if="${not areaDtoList.?[gugun=='도봉구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='도봉구'].sharingCount}">도봉구</text>
+							<text id="LCD11350" class="TEXT" x="532" y="153" data-gu="노원구" th:if="${not areaDtoList.?[gugun=='노원구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='노원구'].sharingCount}">노원구</text>
+							<text id="LCD11380" class="TEXT" x="300" y="218" data-gu="은평구" th:if="${not areaDtoList.?[gugun=='은평구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='은평구'].sharingCount}">은평구</text>
+							<text id="LCD11410" class="TEXT" x="290" y="310" data-gu="서대문구" th:if="${not areaDtoList.?[gugun=='서대문구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='서대문구'].sharingCount}">서대문구</text>
+							<text id="LCD11440" class="TEXT" x="276" y="360" data-gu="마포구" th:if="${not areaDtoList.?[gugun=='마포구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='마포구'].sharingCount}">마포구</text>
+							<text id="LCD11470" class="TEXT" x="180" y="421" data-gu="양천구" th:if="${not areaDtoList.?[gugun=='양천구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='양천구'].sharingCount}">양천구</text>
+							<text id="LCD11500" class="TEXT" x="145" y="334" data-gu="강서구" th:if="${not areaDtoList.?[gugun=='강서구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='강서구'].sharingCount}">강서구</text>
+							<text id="LCD11530" class="TEXT" x="199" y="470" data-gu="구로구" th:if="${not areaDtoList.?[gugun=='구로구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='구로구'].sharingCount}">구로구</text>
+							<text id="LCD11545" class="TEXT" x="253" y="548" data-gu="금천구" th:if="${not areaDtoList.?[gugun=='금천구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='금천구'].sharingCount}">금천구</text>
+							<text id="LCD11560" class="TEXT" x="280" y="413" data-gu="영등포구" th:if="${not areaDtoList.?[gugun=='영등포구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='영등포구'].sharingCount}">영등포구</text>
+							<text id="LCD11590" class="TEXT" x="340" y="461" data-gu="동작구" th:if="${not areaDtoList.?[gugun=='동작구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='동작구'].sharingCount}">동작구</text>
+							<text id="LCD11620" class="TEXT" x="330" y="529" data-gu="관악구" th:if="${not areaDtoList.?[gugun=='관악구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='관악구'].sharingCount}">관악구</text>
+							<text id="LCD11650" class="TEXT" x="448" y="515" data-gu="서초구" th:if="${not areaDtoList.?[gugun=='서초구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='서초구'].sharingCount}">서초구</text>
+							<text id="LCD11680" class="TEXT" x="515" y="480" data-gu="강남구" th:if="${not areaDtoList.?[gugun=='강남구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='강남구'].sharingCount}">강남구</text>
+							<text id="LCD11710" class="TEXT" x="602" y="448" data-gu="송파구" th:if="${not areaDtoList.?[gugun=='송파구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='송파구'].sharingCount}">송파구</text>
+							<text id="LCD11740" class="TEXT" x="660" y="358" data-gu="강동구" th:if="${not areaDtoList.?[gugun=='강동구'].isEmpty()}" th:data-count="${areaDtoList.^[gugun=='강동구'].sharingCount}">강동구</text>
 						</g>
 					</svg>
 				</div>

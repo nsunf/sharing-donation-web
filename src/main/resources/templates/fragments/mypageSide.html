@@ -6,14 +6,14 @@
   </head>
   <body>
 
-    <div th:fragment="mypageSide(param1,param2,param3)"class="row row-cols-2 row-cols-lg-1 border rounded-3 w-100 py-4 mt-4 mt-md-0 align-items-center">
+    <div th:fragment="mypageSide(userName, regTime, nickname)"class="row row-cols-2 row-cols-lg-1 border rounded-3 w-100 py-4 mt-4 mt-md-0 align-items-center">
       <div class="col px-3 px-md-5">
-        <h3 class="sidebar__nickname text-center py-2" id="sidea" th:text="${param3}"></h3>
+        <h3 class="sidebar__nickname text-center py-2" id="sidea" th:text="${nickname}"></h3>
         <div class="sidebar__profile">
           <p class="profile__label">이름</p>
-          <p class="profile__value" th:text="${param1}"></p>
+          <p class="profile__value" th:text="${userName}"></p>
           <p class="profile__label">가입날짜</p>
-          <p class="profile__value" th:text="${param2}"></p>
+          <p class="profile__value" th:text="${regTime}"></p>
         </div>
       </div>
       
@@ -21,7 +21,7 @@
       <div class="col list-group px-3 px-md-5" style="list-style: none;">
         <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/privacy') ? 'nav__item--selected' : ''}" th:href="@{/mypage/privacy}">개인정보수정</a>
         <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/sharing') ? 'nav__item--selected' : ''}" th:href="@{/mypage/sharing}">나눔등록내역</a>
-        <a class="nav__item" href="">나눔받은내역</a>
+        <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/shared') ? 'nav__item--selected' : ''}" th:href="@{/mypage/shared}" href="">나눔받은내역</a>
         <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/story') ? 'nav__item--selected' : ''}" th:href="@{/mypage/story}">사연내역</a>
         <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/donation') ? 'nav__item--selected' : ''}" th:href="@{/mypage/donation}">기부신청내역</a>
       </div>

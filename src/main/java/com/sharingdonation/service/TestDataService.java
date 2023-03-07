@@ -80,15 +80,28 @@ public class TestDataService {
 	
 	private static Random random = new Random();
 	
+	private static final String[] CATEGORIES = {"가전", "생활", "유아", "의류", "스포츠", "도서", "취미", "기타"}; 
+	private static final String[] AREAS = {"강서구", "마포구", "양천구", "구로구", "은평구", "서대문구", "영등포구", "금천구", "동작구", "관악구", "종로구", "중구", "용산구", "서초구", "강북구", "성북구", "도봉구", "동대문구", "성동구", "강남구", "노원구", "중랑구", "광진구", "송파구", "강동구"};
+
+	public void initData() {
+		Arrays.asList(CATEGORIES).forEach(c -> {
+			Category cat = categoryRepo.findByCategoryName(c);
+			if (cat == null) addCategory(c);
+		});
+
+		Arrays.asList(AREAS).forEach(a -> {
+			Area area = areaRepository.findByGugun(a);
+			if (area == null) addArea(a);
+		});
+	}
+	
 	public void generateTestData() {
 		// 카테고리
-		String[] category = {"가전", "생활", "유아", "의류", "스포츠", "도서", "취미", "기타"};
-		Arrays.asList(category).stream().forEach(c -> addCategory(c));
+		Arrays.asList(CATEGORIES).forEach(c -> addCategory(c));
 		List<Category> categoryList = categoryRepo.findAll();
 		
 		// 지역 
-		String[] area = {"강서구", "마포구", "양천구", "구로구", "은평구", "서대문구", "영등포구", "금천구", "동작구", "관악구", "종로구", "중구", "용산구", "서초구", "강북구", "성북구", "도봉구", "동대문구", "성동구", "강남구", "노원구", "중랑구", "광진구", "송파구", "강동구"};
-		Arrays.asList(area).stream().forEach(a -> addArea(a));
+		Arrays.asList(AREAS).forEach(a -> addArea(a));
 		List<Area> areaList = areaRepository.findAll();
 		
 		//회원
