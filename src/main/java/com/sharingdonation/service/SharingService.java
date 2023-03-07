@@ -1,5 +1,6 @@
 package com.sharingdonation.service;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -135,8 +136,10 @@ public class SharingService {
 		return new SharingFormDto(sharing);
 	}
 
-	public Page<SharingDto> getSharingDtoListById(Long memberId, Pageable pageable) {
-		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDelYnOrderByRegTimeDesc(memberId, "N", pageable);
+	public Page<SharingDto> getSharingDtoListById(Principal principal, Pageable pageable) {
+		String email = principal.getName();
+		Member member = memberRepo.findByEmail(email);
+		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDelYnOrderByRegTimeDesc(member.getId(), "N", pageable);
 		
 		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
 			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(s.getId());
@@ -147,7 +150,7 @@ public class SharingService {
 		return sharingDtoList;
 	}
 
-	public Page<SharingDto> getAdoptedSharingDtoListById(Long memberId, Pageable pageable) {
+	public Page<SharingDto> getAdoptedSharingDtoListById(Principal principal, Pageable pageable) {
 //		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDoneAndDelYnOrderByRegTimeDesc(memberId, "Y", "N", pageable);
 //		
 //		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
@@ -155,8 +158,10 @@ public class SharingService {
 //			SharingDto sharingDto = SharingDto.valueOf(s, sharingImgDto.getImgUrl());
 //			return sharingDto;
 //		});
+		String email = principal.getName();
+		Member member = memberRepo.findByEmail(email);
 		
-		Page<SharingDto> sharingDtoList = sharingRepo.getAdoptedSharingList(memberId, pageable);
+		Page<SharingDto> sharingDtoList = sharingRepo.getAdoptedSharingList(member.getId(), pageable);
 
 		
 		return sharingDtoList;

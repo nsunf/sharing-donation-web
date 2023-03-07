@@ -28,7 +28,7 @@
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
 
-        var url = "/mypage/story/detail/" + [[${mypage.id}]] +"/"+ [[${detail.id}]];
+        var url = "/mypage/story/detail/" + [[${detail.id}]];
         var paramData = {
         	content : $("#storyContent").val()
         };
@@ -50,7 +50,7 @@
  
                 alert("사연이 수정 완료 되었습니다.");
                 /*
-                location.href="/mypage/privacy/" + [[${mypage.id}]];
+                location.href="/mypage/privacy/";
                 */
                 
                 $("#storyContent").val() = result.content;
@@ -73,7 +73,7 @@
 <body>
 	<th:block layout:fragment="layout-content">
 		<section>
-			<div class="section container" style="width: margin: 0 auto;">
+			<div class="section container" style="margin: 0 auto;">
 				<div style="display: flex;">
 					<div></div>
 					<div class="mb-3 row"
@@ -146,7 +146,7 @@
 							<div
 								style="display: flex; justify-content: space-around; margin-top: 70px;">
 								<button type="button" id="delete" class="btn btn-primary btn-3">삭제</button>
-								<button type="button" id="setUpdate" onclick="removeReadOnly()"  class="btn btn-primary btn-2" style="display:">수정</button>
+								<button type="button" id="setUpdate" onclick="removeReadOnly()"  class="btn btn-primary btn-2" style="">수정</button>
 								<button type="button" id="updateComplete" onclick="addReadOnly(); storyContentUpdate();" class="btn btn-primary btn-2" style="display: none;">수정완료</button>
 								
 							</div>
