@@ -27,6 +27,8 @@ public class MyPageMainDto {
 	private String name;
 	
 	private LocalDateTime regTime;
+
+	private String regTimeStr;
 	
 	private String nickName;
 	
@@ -46,6 +48,8 @@ public class MyPageMainDto {
 		this.regTime = regTime;
 		this.nickName = nickName;
 		this.role = role;
+		
+//		this.regTimeStr
 	}
 	
 }

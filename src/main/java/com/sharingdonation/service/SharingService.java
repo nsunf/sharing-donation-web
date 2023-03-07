@@ -17,6 +17,7 @@ import com.sharingdonation.dto.SharingFormDto;
 import com.sharingdonation.dto.SharingImgDto;
 import com.sharingdonation.entity.Area;
 import com.sharingdonation.entity.Category;
+import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.Sharing;
 import com.sharingdonation.entity.SharingImg;
 import com.sharingdonation.repository.AreaRepository;
@@ -170,10 +171,9 @@ public class SharingService {
 			} else if (filter.equals("content")) {
 				sharingList = sharingRepo.findByDetailContainsAndDelYnOrderByRegTimeDesc(search, "N", pageable);
 			} else if (filter.equals("author")) {
-//				List<Member> member = memberRepo.findAllByNickNameContains(String nickName);
-//				sharingList = sharingRepo.findByMemberIdIn(member.stream().map(Memeber::getId).toList());
+				List<Member> member = memberRepo.findAllByEmailContainsOrNickNameContains(search, search);
+				sharingList = sharingRepo.findByMemberIdInAndDelYnOrderByRegTimeDesc(member.stream().map(Member::getId).toList(), "N", pageable);
 			}
-			
 		} else {
 			sharingList = sharingRepo.findAllByDelYnOrderByRegTimeDesc("N", pageable);
 		}

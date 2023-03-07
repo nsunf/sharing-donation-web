@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
   <head>
     <meta charset="UTF-8" />
     <title>header</title>
@@ -27,39 +27,45 @@
               </a>
 
               <ul class="main-menu__list">
-								<!-- 일반 -->
-                <li class="dropdown" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing')} ? 'current' : null">
-                  <a th:href="@{/sharing}">나눔</a>
-                   <ul class="d-xl-none">
-                    <li><a th:href="@{${#httpServletRequest.requestURL}(cat='전체')}">전체</a></li>
-                    <li th:each="categoryDto : ${categoryDtoList}" th:classappend="${#strings.equals(param.cat, categoryDto.categoryName)} ? 'text-primary' : 'test'">
-                    	<a th:href="@{${#httpServletRequest.requestURL}(cat=${categoryDto.categoryName})}">[[${categoryDto.categoryName}]]</a>
-                    </li>
-                  </ul>
-                </li>
-                <li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/donation')} ? 'current' : null"><a th:href="@{/donation}">기부</a></li>
-                <li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing_board')} ? 'current' : null"><a th:href="@{/sharing_board}">나눔 인증 게시판</a></li>
-                <li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/donatedBoard')} ? 'current' : null"><a th:href="@{/donatedBoards}">기부 완료 게시판</a></li>
+								<th:block th:if="${#strings.startsWith(#httpServletRequest.servletPath, '/admin')}">
+									<!-- 관리자 -->
+									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/member')} ? 'current' : null"><a th:href="@{/admin/member}">회원관리</a></li>
+									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/sharing')} ? 'current' : null"><a th:href="@{/admin/sharing}">나눔상품관리</a></li>
+									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/story')} ? 'current' : null"><a th:href="@{/admin/story}">사연관리</a></li>
+									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/donation')} ? 'current' : null"><a th:href="@{/admin/donation}">기부관리</a></li>
+									<!-- <li class="text-center"><a href="#">카테고리<br/>관리</a></li>
+									<li class="text-center"><a href="#">지역<br/>관리</a></li>
+									<li class="text-center"><a href="#">좋아요<br/>관리</a></li>
+									<li class="text-center"><a href="#">기부<br/>포인트</a></li> -->
+								</th:block>
 
-								<!-- 관리자 -->
-                <!-- <li class="text-center current"><a href="#">회원<br/>관리</a></li>
-                <li class="text-center"><a href="#">나눔상품<br/>관리</a></li>
-                <li class="text-center"><a href="#">사연<br/>관리</a></li>
-                <li class="text-center"><a href="#">기부<br/>관리</a></li>
-                <li class="text-center"><a href="#">카테고리<br/>관리</a></li>
-                <li class="text-center"><a href="#">지역<br/>관리</a></li>
-                <li class="text-center"><a href="#">좋아요<br/>관리</a></li>
-                <li class="text-center"><a href="#">기부<br/>포인트</a></li> -->
+								<th:block th:unless="${#strings.startsWith(#httpServletRequest.servletPath, '/admin')}">
+									<!-- 일반 -->
+									<li class="dropdown" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing')} ? 'current' : null">
+										<a th:href="@{/sharing}">나눔</a>
+										 <ul class="d-xl-none">
+											<li><a th:href="@{${#httpServletRequest.requestURL}(cat='전체')}">전체</a></li>
+											<li th:each="categoryDto : ${categoryDtoList}" th:classappend="${#strings.equals(param.cat, categoryDto.categoryName)} ? 'text-primary' : 'test'">
+												<a th:href="@{${#httpServletRequest.requestURL}(cat=${categoryDto.categoryName})}">[[${categoryDto.categoryName}]]</a>
+											</li>
+										</ul>
+									</li>
+									<li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/donation')} ? 'current' : null"><a th:href="@{/donation}">기부</a></li>
+									<li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing_board')} ? 'current' : null"><a th:href="@{/sharing_board}">나눔 인증 게시판</a></li>
+									<li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/donatedBoard')} ? 'current' : null"><a th:href="@{/donatedBoards}">기부 완료 게시판</a></li>
+								</th:block>
+
               </ul>
 
               <div class="main-menu__right">
                 
                 <th sec:authorize="isAnonymous()" >
-                <a href="/auth/login" class="logout-btn py-1 px-2" >sign in</a>
+                <a href="/auth/login" class="logout-btn py-1 px-2" >로그인</a>
                 </th>
                 <th sec:authorize="isAuthenticated()" >
-                <a href="/">username</a>
-                <a href="/auth/logout" class="logout-btn py-1 px-2" >sign out</a>
+                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/sharing}">[[${#authentication.principal.username}]]</a>
+                <a sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/mypage/sharing}">[[${#authentication.principal.username}]]</a>
+                <a href="/auth/logout" class="logout-btn py-1 px-2" >로그아웃</a>
                 </th>
               </div>
             </div>
