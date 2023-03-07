@@ -9,7 +9,6 @@
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
-
 		<section class="auto-min-height">
 			<div class="my-5">
 				<h1 class="text-center">기부요청 리스트</h1>
@@ -53,12 +52,11 @@
 								<td>[[${donationDto.donationName}]]</td>
 								<td
 									th:text="${#temporals.format(donationDto.regTime, 'yyyy-MM-dd')}"></td>
-								<td>[[${donationDto.startDate}]]~[[${donationDto.endDate}]],
-									[[${donationDto.done}]]</td>
+								<td>[[${donationDto.startDate}]]~[[${donationDto.endDate}]]</td>
 								<td><a
 									th:href="@{/admin/donation/edit/{id}(id=${donationDto.id})}">
-										<button class="admin_standby_btn"
-											th:classappend="${donationDto.done == '완료'} ? 'status-gray' : (${donationDto.confirmYn == '진행중'} ? 'status-green' : 'status-yellow')">승인대기</button>
+										<button
+											th:classappend="${donationDto.status == '완료'} ? 'admin_approve_btn' : (${donationDto.status == '진행중'} ? 'admin_md_ctr_btn' : 'admin_standby_btn')">[[${donationDto.status}]]</button>
 								</a></td>
 							</tr>
 							<!-- <tr>

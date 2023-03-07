@@ -184,7 +184,7 @@ public class DonationBoardController {
 	//댓글 삭제 
 		@DeleteMapping("/donatedBoard/{id}/delete")
 	    public @ResponseBody ResponseEntity<?> deleteComment(@PathVariable ("id") Long id,  Model model){
-			System.out.println("/donationBoard/{donationBoardId}/delete");
+			System.out.println("/donatedBoard/{donationBoardId}/delete");
 			System.out.println("commentId = " + id);
 	        donationBoardService.deleteComment(id);
 
@@ -256,11 +256,12 @@ public class DonationBoardController {
 	//doantionBoard delete
 		@DeleteMapping(value= "/admin/donatedBoard/{donationBoardId}/delete")
 		public @ResponseBody ResponseEntity<?> deleteDonationBoard(@PathVariable("donationBoardId") Long donationBoardId, Model model) {
-			System.out.println("/donationBoard/{donationBoardId}/delete");
+			System.out.println("/admin/donatedBoard/{donationBoardId}/delete");
 			try {
 				donationBoardImgService.deleteDonationBoardImg(donationBoardId);
 				donationBoardService.deleteDonationBoard(donationBoardId);
 				donationBoardHeartService.deleteDonationBoardHeart(donationBoardId);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

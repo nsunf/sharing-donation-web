@@ -88,16 +88,21 @@ public class DonationBoardImgService {
 	
 	
 	public void deleteDonationBoardImg(Long donationBoardId) throws Exception{
-		DonationBoardImg deleteDonationBoardImg = donationBoardImgRepository.findById(donationBoardId)
-				.orElseThrow(EntityNotFoundException::new);
+		List<DonationBoardImg> deleteDonationBoardImgList = donationBoardImgRepository.findByDonationBoardIdOrderByIdAsc(donationBoardId);
+				//.orElseThrow(EntityNotFoundException::new);
 		
-		
+		System.out.println("deleteDonationBoardImg.size() ::: " + deleteDonationBoardImgList.size());
 		//기존 이미지 파일 삭제
-		if(!StringUtils.isEmpty(deleteDonationBoardImg.getImgName())) {
-			fileService.deleteFile(donationBoardImgLocation + "/" + deleteDonationBoardImg.getImgName());
-		}
+//		if(!StringUtils.isEmpty(deleteDonationBoardImg.getImgName())) {
+			//fileService.deleteFile(donationBoardImgLocation + "/" + deleteDonationBoardImg.getImgName());
+//		}
+			
+			for (int i = 0; i < deleteDonationBoardImgList.size(); i++) {
+				DonationBoardImg deleteDonationBoardImg = deleteDonationBoardImgList.get(i); 
+				fileService.deleteFile(donationBoardImgLocation + "/" + deleteDonationBoardImg.getImgName());
+			}
 		
 		
-		donationBoardImgRepository.delete(deleteDonationBoardImg);
+		donationBoardImgRepository.deleteAll(deleteDonationBoardImgList);
 	}
 }

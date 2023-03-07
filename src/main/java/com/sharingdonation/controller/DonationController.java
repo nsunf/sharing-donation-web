@@ -1,8 +1,10 @@
 package com.sharingdonation.controller;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import javax.validation.Valid;
 
@@ -11,22 +13,38 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sharingdonation.dto.DonationAdminFormDto;
 import com.sharingdonation.dto.DonationDto;
 import com.sharingdonation.dto.DonationFormDto;
-import com.sharingdonation.dto.DonationSearchDto;
+import com.sharingdonation.dto.SearchDto;
+import com.sharingdonation.dto.SharingDto;
+import com.sharingdonation.entity.Member;
+import com.sharingdonation.repository.MemberRepository;
+import com.sharingdonation.repository.PointRepository;
 import com.sharingdonation.dto.ListDonationDto;
+import com.sharingdonation.dto.MyPageMainDto;
+import com.sharingdonation.dto.PointDto;
+import com.sharingdonation.service.DonationHeartService;
 import com.sharingdonation.service.DonationService;
+import com.sharingdonation.service.MyPageService;
+import com.sharingdonation.service.PointService;
+import com.sharingdonation.service.SharingHeartService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,10 +54,16 @@ public class DonationController {
 	
 	private final DonationService donationService;
 	
+	private final DonationHeartService donationHeartService;
+	private final MemberRepository memberRepository;
+	private final PointRepository pointRepository;
+	private final PointService pointService;
+	private final MyPageService myPageService;
+	
 	
 	//list페이
 	@GetMapping(value = "/donation")
-	public String donationList(DonationSearchDto donationSearchDto, Optional<Integer> page, Model model) {
+	public String donationList(SearchDto donationSearchDto, Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 6);
 		Page<ListDonationDto> donationList = donationService.getListDonationPage(donationSearchDto, pageable);
 		
@@ -87,10 +111,33 @@ public class DonationController {
 	}
 	
 	@GetMapping(value = "/donation/{donationId}")
-	public String donationDtl(@PathVariable("donationId") Long DonationId, Model model) {
+	public String donationDtl(@PathVariable("donationId") Long donationId, Principal principal, Model model) {
 		try {
-			DonationFormDto donationFormDto = donationService.getDonationDtl(DonationId);
+			String email = principal.getName();
+			Member member = memberRepository.findByEmail(email);
+			
+			DonationFormDto donationFormDto = donationService.getDonationDtl(donationId);
 			model.addAttribute(donationFormDto);
+			model.addAttribute("nickName", member.getNickName());
+			model.addAttribute("sharingHeartDto", donationHeartService.getDonationHeartDto(member.getId(), donationId));
+			model.addAttribute("sharingHeartCount", donationHeartService.getDonationHeartCount(donationId));
+			
+		} catch (Exception e) {
+			model.addAttribute("errorMessage", "존재하지 않는 상품입니다.");
+			model.addAttribute("donationFormDto", new DonationFormDto());
+			return "redirect:/donation";
+		}
+		return "donation/donationDetail";
+	}
+	
+	
+	@GetMapping(value = "/donation/edit/{donationId}")
+	public String donationEditDtl(@PathVariable("donationId") Long donationId, Model model) {
+		try {
+			DonationFormDto donationFormDto = donationService.getDonationDtl(donationId);
+			
+			donationFormDto.getDonationImgDtoList();
+			model.addAttribute("donationFormDto", donationFormDto);
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "존재하지 않는 상품입니다.");
 			model.addAttribute("donationFormDto", new DonationFormDto());
@@ -99,9 +146,123 @@ public class DonationController {
 		return "donation/editDonation";
 	}
 	
+	@PostMapping("/donation/edit/{id}")
+	public String donationUpdate(@Valid DonationFormDto donationFormDto, BindingResult bindingResult, 
+			Model model
+//			, @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate
+//			, @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+			, @RequestParam("donationImgFile") List<MultipartFile> donationImgFileList) {
+//	donationAdminFormDto.setStartDate(startDate);
+//	donationAdminFormDto.setEndDate(endDate);
+	
+//	DonationAdminFormDto donationAdminFormDto1 = LocalDate.parse(donationAdminFormDto1.getEndDate());
+		if(bindingResult.hasErrors()) {
+			return "donation/editDonation";
+		}
+
+		//첫번째 이미지가 있는지 검사(첫번째 이미지는 필수 입력값이기 때문에)
+		if(donationImgFileList.get(0).isEmpty() && donationFormDto.getId() == null) {
+			model.addAttribute("errorMessage", "첫번째 이미지는 필수 입력 값 입니다.");
+			return "donation/editDonation";
+		}
+		
+		try {
+			donationService.updateDonation(donationFormDto, donationImgFileList);
+		} catch (Exception e) {
+//			System.out.println(" controller adminDonationUpdate exception");
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "기부 수정 중 에러가 발생하였습니다.");
+			return "donation/editDonation";
+		}
+		
+		return "redirect:/mypage/donation";
+	}
+	
+	// 나눔 좋아요
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+	@GetMapping("donation/heart/{id}")
+	public @ResponseBody ResponseEntity<?> toggleHeart(@PathVariable Long id, Principal principal) {
+//			Member member = getTmpMember(Role.USER);
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		donationHeartService.toggleDonationHeart(member.getId(), id);
+		Long heartCount = donationHeartService.getDonationHeartCount(id);
+		return new ResponseEntity<Long>(heartCount, HttpStatus.OK);
+	}
+	
+	// 보유포인트조회
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+	@GetMapping("pointSearch")
+	public @ResponseBody ResponseEntity<?> pointSearch(Principal principal) {
+		
+		Long points;
+		try {
+			String email = principal.getName();
+			Member member = memberRepository.findByEmail(email);
+			points = pointRepository.pointSearch(member.getId());
+		} catch(Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+		
+//		System.out.println("points ::: " + points);
+		return new ResponseEntity<Long>(points, HttpStatus.OK);
+	}
+	
+	// 포인트 사용
+	@PostMapping(value = "/pointDonation")
+    public @ResponseBody ResponseEntity pointDonation(
+    		@RequestBody @Valid PointDto pointDto, BindingResult bindingResult
+    		, Principal principal){
+
+		Long pointId;
+        try {
+            pointId = donationService.pointDonation(pointDto, principal);
+        } catch(Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<Long>(pointId, HttpStatus.OK);
+    }
+	
+	
+	
+	///////////////////////////////////////////////////
+	//////////////////// mypage ///////////////////////
+	///////////////////////////////////////////////////
+	
+	
+	
+	
+	// 마이페이지 나눔 받은 내역
+		@PreAuthorize("hasRole('ROLE_USER')")
+		@GetMapping(value = {"mypage/donation", "mypage/donation/{page}"})
+		public String mypageAdoptedSharingList(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
+//			Member member = getTmpMember(Role.USER);
+//			Member member = memberRepo.findById(10L).orElseThrow(EntityNotFoundException::new);
+			
+			String email = principal.getName();
+			Member member = memberRepository.findByEmail(email);
+			MyPageMainDto myPageDto = myPageService.getMyPageMain(member.getId());
+			Pageable pageable = PageRequest.of(page.orElse(0), 6);
+			
+			Page<DonationDto> donationDtoList = donationService.getDonationDtoListByMemberId(member.getId(), pageable);
+				
+			model.addAttribute("mypage", myPageDto);
+			model.addAttribute("donationDtoList", donationDtoList);
+			model.addAttribute("page", pageable.getPageNumber());
+			model.addAttribute("maxPage", 5);
+			
+			return "mypage/donationReqList";
+//			return "mypage/registeredShareList";
+		}
+	
+	
+	
+	///////////////// admin //////////////////
+	
 	//list페이
 	@GetMapping(value = "/admin/donation")
-	public String adminDonationList(DonationSearchDto donationSearchDto, Optional<Integer> page, Model model) {
+	public String adminDonationList(SearchDto donationSearchDto, Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 10);
 		Page<DonationDto> donationList = donationService.getAdminListDonationPage(donationSearchDto, pageable);
 		
@@ -112,6 +273,8 @@ public class DonationController {
 //		}
 //		System.out.println(donationList.getTotalElements() +":: " +  page.get());
 		
+		
+//		donationList.
 		
 		int nowPage = (page.isPresent()) ? page.get() : 1;
 		System.out.println("pages:" + nowPage);
@@ -127,6 +290,8 @@ public class DonationController {
 	
 	@GetMapping("/admin/donation/edit/{id}")
 	public String adminDonationEdit(@PathVariable Long id, Model model) {
+//		DonationAdminFormDto dto = donationService.getAdminDonationDtl(id);
+//		dto.getDonationImgDtoList();
 //		model.addAttribute("title", "나눔 상품 승인 관리");
 		model.addAttribute("donationAdminFormDto", donationService.getAdminDonationDtl(id));
 //		model.addAttribute("areaDtoList", donationService.getAreaList());
@@ -145,22 +310,22 @@ public class DonationController {
 			, @RequestParam("donationImgFile") List<MultipartFile> donationImgFileList) {
 //	System.out.println(" controller adminDonationUpdate");
 //	System.out.println(donationAdminFormDto.getId());
-	System.out.println(donationAdminFormDto.getEndDate());
+//	System.out.println(donationAdminFormDto.getEndDate());
 //	
 //	donationAdminFormDto.setStartDate(startDate);
 //	donationAdminFormDto.setEndDate(endDate);
 	
 //	DonationAdminFormDto donationAdminFormDto1 = LocalDate.parse(donationAdminFormDto1.getEndDate());
 		if(bindingResult.hasErrors()) {
-			System.out.println(bindingResult.getAllErrors());
-			System.out.println(" controller adminDonationUpdate hasErrors");
+//			System.out.println(bindingResult.getAllErrors());
+//			System.out.println(" controller adminDonationUpdate hasErrors");
 			return "admin/editDonation";
 		}
 		
 		
 		//첫번째 이미지가 있는지 검사(첫번째 이미지는 필수 입력값이기 때문에)
 		if(donationImgFileList.get(0).isEmpty() && donationAdminFormDto.getId() == null) {
-			System.out.println(" controller adminDonationUpdate nullcheck");
+//			System.out.println(" controller adminDonationUpdate nullcheck");
 			model.addAttribute("errorMessage", "첫번째 이미지는 필수 입력 값 입니다.");
 			return "admin/editDonation";
 		}
@@ -168,7 +333,7 @@ public class DonationController {
 		try {
 			donationService.updateAdminDonation(donationAdminFormDto, donationImgFileList);
 		} catch (Exception e) {
-			System.out.println(" controller adminDonationUpdate exception");
+//			System.out.println(" controller adminDonationUpdate exception");
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "기부 수정 중 에러가 발생하였습니다.");
 			return "admin/editDonation";

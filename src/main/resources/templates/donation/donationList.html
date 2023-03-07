@@ -34,7 +34,7 @@
   <section class="causes-one causes-page pt-5 pb-3 vstack">
     <div class="m-5">
       <form th:action="@{/donation}" class="input-group mb-3 w-25 mx-auto">
-        <input type="text" class="form-control" placeholder="검색" th:field="${donationSearchDto.searchQuery}" />
+        <input type="text" class="form-control" placeholder="검색" th:field="${searchDto.searchQuery}" />
         <button
           class="btn"
           type="submit"
@@ -58,8 +58,8 @@
           <div class="causes-one__single">
             <div class="causes-one__img">
               <div class="causes-one__img-box">
-                <img src="/images/longsiru/mong1.jpg" alt="" style="width: 280px; height: 250px;"/>
-                <a href="causes-details.html">
+                <img th:src="@{${donation.imgUrl}}" alt="" style="width: 280px; height: 250px;"/>
+                <a th:href="'/donation/' + ${donation.id}">
                   <i class="fa fa-plus"></i>
                 </a>
               </div>
@@ -67,7 +67,7 @@
             <div class="causes-one__content">
               <div class="hstack">
                 <span class="causes-one__title mb-0">
-                  <a class="" href="causes-details.html">[[${donation.subject}]]</a>
+                  <a class=""th:href="'/donation/' + ${donation.id}">[[${donation.subject}]]</a>
                 </span>
               </div>
               <p class="causes-one__text mt-2">[[${donation.nickName}]]</p>
