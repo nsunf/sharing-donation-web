@@ -24,11 +24,11 @@
 	}
 	
 	
-	function storyContentUpdate() {
+	function storyUpdate() {
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
 
-        var url = "/mypage/story/detail/" + [[${detail.id}]];
+        var url = "/mypage/story/detail/update/" + [[${detail.id}]];
         var paramData = {
         	content : $("#storyContent").val()
         };
@@ -54,6 +54,46 @@
                 */
                 
                 $("#storyContent").val() = result.content;
+            },
+            error : function(jqXHR, status, error){
+                if(jqXHR.status == '401'){
+                    alert('로그인 후 이용해주세요');
+                    location.href='/';
+                } else{
+                    alert(jqXHR.responseText);
+                }
+            }
+        });
+	}	
+	
+	
+	
+	function storyDelete() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        var url = "/mypage/story/detail/delete/" + [[${detail.id}]];
+        var paramData = {
+         
+        };
+
+        var param = JSON.stringify(paramData);
+
+        $.ajax({
+            url      : url,
+            type     : "POST",
+            contentType : "application/json",
+            data     : param,
+            beforeSend : function(xhr){
+                /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                xhr.setRequestHeader(header, token);
+            },
+            dataType : "json",
+            cache   : false,
+            success  : function(result, status){
+ 
+                alert("사연이 삭제 완료 되었습니다.");
+                location.href="/mypage/story";
             },
             error : function(jqXHR, status, error){
                 if(jqXHR.status == '401'){
@@ -142,13 +182,11 @@
 										th:value="${detail.content}" readonly="readonly"> <label
 										for="storyContent">나눔 신청 사연</label>
 								</div>
-
 							<div
 								style="display: flex; justify-content: space-around; margin-top: 70px;">
-								<button type="button" id="delete" class="btn btn-primary btn-3">삭제</button>
+								<button type="button" id="delete" class="btn btn-primary btn-3" onclick="storyDelete()">삭제</button>
 								<button type="button" id="setUpdate" onclick="removeReadOnly()"  class="btn btn-primary btn-2" style="">수정</button>
-								<button type="button" id="updateComplete" onclick="addReadOnly(); storyContentUpdate();" class="btn btn-primary btn-2" style="display: none;">수정완료</button>
-								
+								<button type="button" id="updateComplete" onclick="addReadOnly(); storyUpdate();" class="btn btn-primary btn-2" style="display: none;">수정완료</button>
 							</div>
 						</div>
 

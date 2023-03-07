@@ -12,10 +12,12 @@ import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.querydsl.jpa.impl.JPAUpdateClause;
+ 
 import com.sharingdonation.constant.MoveType;
 import com.sharingdonation.dto.MyPageEnterPricePrivacyDto;
 import com.sharingdonation.dto.MyPageMainDto;
@@ -30,7 +32,7 @@ import com.sharingdonation.entity.QSharing;
 import com.sharingdonation.entity.QSharingImg;
 import com.sharingdonation.entity.QStory;
 
-import groovy.time.BaseDuration.From;
+
 
 
 public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
@@ -51,30 +53,6 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 		
 		
 		 MyPageMainDto result = queryFactory
-//				 .select(Projections.fields(MyPageMainDto.class,
-//						 member.id,
-//						 member.point,
-//						 ExpressionUtils.as(JPAExpressions.select(sharing.id.count())
-//								 .from(sharing)
-//								 .where(sharing.member.id.eq(memberId).and(sharing.delYn.eq("N")))
-//								 ,"share_reg"),
-//						 ExpressionUtils.as(JPAExpressions.select(story.id.count())
-//								 .from(story)
-//								 .where(story.member.id.eq(memberId).and(story.chooseYn.eq("Y")))
-//								 ,"share_take"),
-//						 ExpressionUtils.as(JPAExpressions.select(point.id.count())
-//								 .from(point)
-//								 .where(point.member.id.eq(memberId).and(point.moveType.eq(MoveType.PLUS)))
-//								 ,"share_apply"),
-//						 ExpressionUtils.as(JPAExpressions.select(story.id.count())
-//								 .from(story)
-//								 .where(story.member.id.eq(memberId))
-//								 , "share_story"),
-//						 member.name,
-//						 member.regTime	,	
-//						 member.nickName,
-//						 member.role
-//						 ))
 				 .select(new QMyPageMainDto(
 						 member.id,
 						 member.point,
@@ -95,7 +73,7 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 								 .where(story.member.id.eq(memberId))
 								 , "share_story"),
 						 member.name,
-						 member.regTime	,	
+						 member.regTime,	
 						 member.nickName,
 						 member.role
 						 ))
@@ -104,6 +82,9 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 				 .fetchOne();
 		 
 		return result;
+		
+		
+		
 		
 		
 	}
@@ -216,7 +197,7 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 						 story.content
 						 ))
 				 .from(story)
-				 .where(story.member.id.eq(memberId))
+				 .where(story.member.id.eq(memberId).and(story.delYn.eq("N")))
 				 .orderBy(story.id.asc())
 	             .offset(pageable.getOffset())
 	             .limit(pageable.getPageSize())
@@ -254,7 +235,6 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 			 .where(story.id.eq(storyId).and(story.id.eq(story.sharing.id)
 					 .and(story.sharing.delYn.eq("N").and(story.delYn.eq("N")))))
 			 .fetchOne();
-
 		return content;
 	}
 
@@ -270,14 +250,18 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 		return update;
 	
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
-	
+	@Override
+	public Long deleteMyPageStoryDetail(Long memberId, Long storyId) {
+		QStory story = QStory.story;
+		
+		long update = queryFactory
+				.update(story)
+				.set(story.delYn, "Y")
+				.where(story.id.eq(storyId).and(story.member.id.eq(memberId)))
+				.execute();
+		
+		return update;
+	}
+ 
 }

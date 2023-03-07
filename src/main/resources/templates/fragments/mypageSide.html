@@ -19,6 +19,7 @@
       
       <hr class="d-none d-lg-block"/>
       <div class="col list-group px-3 px-md-5" style="list-style: none;">
+ 
         <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/privacy') ? 'nav__item--selected' : ''}" th:href="@{/mypage/privacy}">개인정보수정</a>
         <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/sharing') ? 'nav__item--selected' : ''}" th:href="@{/mypage/sharing}">나눔등록내역</a>
         <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/shared') ? 'nav__item--selected' : ''}" th:href="@{/mypage/shared}" href="">나눔받은내역</a>

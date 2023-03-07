@@ -47,6 +47,7 @@ public class MyPageService {
 		String email = principal.getName();
 		Member member = memberRepository.findByEmail(email);
 		return myPageRepository.updateMyPrivacy(myPagePrivacyDto, member.getId());
+ 
 	}
 	
 	@Transactional(readOnly = true)
@@ -84,6 +85,13 @@ public class MyPageService {
 		String email = principal.getName();
 		Member member = memberRepository.findByEmail(email);
 		return myPageRepository.updateMyPageStoryDetail(myPageStoryDetailDto, member.getId(), storyId);
+	}
+	
+	@Transactional
+	public Long mypageStoryDetailDelete(Principal principal, Long storyId) {
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		return myPageRepository.deleteMyPageStoryDetail(member.getId(), storyId);
 	}
 	
 	
