@@ -42,7 +42,7 @@ public class MyPageController {
 	private final MyPageService myPageService;
 	
 	/*마이페이지 메인 화면, 로그인된 memberId를 넘겨 받음*/
-	@GetMapping("/mypage/{memberId}")
+	@GetMapping("/mypage")
 	public String myPageMain(Principal principal, Model model) {
 		
 		//진짜 코드
@@ -56,10 +56,10 @@ public class MyPageController {
 		return "/myPage/mypageMain";
 	}
 	
-	@GetMapping("/mypage/privacy/{memberId}")
-	public String myprivacy(@PathVariable("memberId") Long memberId, Model model) {
+	@GetMapping("/mypage/privacy")
+	public String myprivacy(Principal principal, Model model) {
 		//진짜코드
-		MyPagePrivacyDto myPagePrivacyDto = myPageService.getMyPagePrivacy(memberId);
+		MyPagePrivacyDto myPagePrivacyDto = myPageService.getMyPagePrivacy(principal);
 		
 		//가짜코드
 		//MyPagePrivacyDto myPagePrivacyDto =  new MyPagePrivacyDto(memberId, "김김김", "adf@adf.com",null, "닉눼임", "12-12", "서울시", "서울시랜다", null);
@@ -70,8 +70,8 @@ public class MyPageController {
 	
 	
 	
-	@PostMapping("/mypage/privacy/{memberId}")
-	public @ResponseBody ResponseEntity myprivacyUpdate(@RequestBody  @Valid MyPagePrivacyDto myPagePrivacyDto,BindingResult bindingResult, @PathVariable("memberId") Long memberId ) {
+	@PostMapping("/mypage/privacy")
+	public @ResponseBody ResponseEntity myprivacyUpdate(@RequestBody  @Valid MyPagePrivacyDto myPagePrivacyDto,BindingResult bindingResult, Principal principal ) {
 
 		  if(bindingResult.hasErrors()){
 	            StringBuilder sb = new StringBuilder();
@@ -82,26 +82,27 @@ public class MyPageController {
 	            }
 	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 	        }
+		  Long result;
 		  try {
 			  
-			  Long result = myPageService.myPrivacyUpdate(myPagePrivacyDto,memberId);
+			  result = myPageService.myPrivacyUpdate(myPagePrivacyDto,principal);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		 return new ResponseEntity<Long>(memberId, HttpStatus.OK);
+		 return new ResponseEntity<Long>(result, HttpStatus.OK);
 	}
 	
 	
 	
-	@GetMapping("/mypage/enterpriceprivacy/{memberId}")
-	public String myEnterpricePrivacy(@PathVariable("memberId") Long memberId, Model model){
-		MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto = myPageService.getMyPageEnterPricePrivacyDto(memberId);
+	@GetMapping("/mypage/enterpriceprivacy")
+	public String myEnterpricePrivacy(Principal principal, Model model){
+		MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto = myPageService.getMyPageEnterPricePrivacyDto(principal);
 		model.addAttribute("mypage",myPageEnterPricePrivacyDto);
 		return "/myPage/mypage-Enterprice-privacy";
 	}
 	
-	@PostMapping("/mypage/enterpriceprivacy/{memberId}")
-	public @ResponseBody ResponseEntity myEnterpricePrivacyUpdate(@RequestBody  @Valid MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto,BindingResult bindingResult, @PathVariable("memberId") Long memberId ) {
+	@PostMapping("/mypage/enterpriceprivacy")
+	public @ResponseBody ResponseEntity myEnterpricePrivacyUpdate(@RequestBody  @Valid MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto,BindingResult bindingResult, Principal principal ) {
 
 		  if(bindingResult.hasErrors()){
 	            StringBuilder sb = new StringBuilder();
@@ -112,14 +113,15 @@ public class MyPageController {
 	            }
 	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 	        }
+		  Long result ;
 		  try {
 			 
-			  Long result = myPageService.myEnterpricePrivacyUpdate(myPageEnterPricePrivacyDto,memberId);
+			   result = myPageService.myEnterpricePrivacyUpdate(myPageEnterPricePrivacyDto,principal);
 			  
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		 return new ResponseEntity<Long>(memberId, HttpStatus.OK);
+		 return new ResponseEntity<Long>(result, HttpStatus.OK);
 	}
 	
 	
