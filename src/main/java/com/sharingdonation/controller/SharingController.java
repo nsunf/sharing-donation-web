@@ -212,13 +212,11 @@ public class SharingController {
 	public String mypageSharingList(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
 		// 임시 멤버
 //		Member member = getTmpMember(Role.USER);
-		String email = principal.getName();
-		Member member = memberRepo.findByEmail(email);
-		MyPageMainDto myPageDto = myPageService.getMyPageMain(member.getId());
+		MyPageMainDto myPageDto = myPageService.getMyPageMain(principal);
 
 		Pageable pageable = PageRequest.of(page.orElse(0), 6);
 		
-		Page<SharingDto> sharingDtoList = sharingService.getSharingDtoListById(member.getId(), pageable);
+		Page<SharingDto> sharingDtoList = sharingService.getSharingDtoListById(principal, pageable);
 
 		model.addAttribute("mypage", myPageDto);
 		model.addAttribute("sharingDtoList", sharingDtoList);
@@ -235,12 +233,10 @@ public class SharingController {
 //		Member member = getTmpMember(Role.USER);
 //		Member member = memberRepo.findById(10L).orElseThrow(EntityNotFoundException::new);
 		
-		String email = principal.getName();
-		Member member = memberRepo.findByEmail(email);
-		MyPageMainDto myPageDto = myPageService.getMyPageMain(member.getId());
+		MyPageMainDto myPageDto = myPageService.getMyPageMain(principal);
 		Pageable pageable = PageRequest.of(page.orElse(0), 6);
 		
-		Page<SharingDto> sharingDtoList = sharingService.getAdoptedSharingDtoListById(member.getId(), pageable);
+		Page<SharingDto> sharingDtoList = sharingService.getAdoptedSharingDtoListById(principal, pageable);
 
 		model.addAttribute("mypage", myPageDto);
 		model.addAttribute("sharingDtoList", sharingDtoList);

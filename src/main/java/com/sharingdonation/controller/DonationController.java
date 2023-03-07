@@ -240,12 +240,10 @@ public class DonationController {
 //			Member member = getTmpMember(Role.USER);
 //			Member member = memberRepo.findById(10L).orElseThrow(EntityNotFoundException::new);
 			
-			String email = principal.getName();
-			Member member = memberRepository.findByEmail(email);
-			MyPageMainDto myPageDto = myPageService.getMyPageMain(member.getId());
+			MyPageMainDto myPageDto = myPageService.getMyPageMain(principal);
 			Pageable pageable = PageRequest.of(page.orElse(0), 6);
 			
-			Page<DonationDto> donationDtoList = donationService.getDonationDtoListByMemberId(member.getId(), pageable);
+			Page<DonationDto> donationDtoList = donationService.getDonationDtoListByMemberId(principal, pageable);
 				
 			model.addAttribute("mypage", myPageDto);
 			model.addAttribute("donationDtoList", donationDtoList);
