@@ -45,23 +45,14 @@ public class MyPageController {
 	/*마이페이지 메인 화면, 로그인된 memberId를 넘겨 받음*/
 	@GetMapping("/mypage")
 	public String myPageMain(Principal principal, Model model) {
-		
-		
-		
 		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(principal);
-		
 		model.addAttribute("mypage",myPageMainDto);
 		return "/myPage/mypageMain";
 	}
 	
 	@GetMapping("/mypage/privacy")
-	public String myprivacy(Principal principal, Model model) {
-		//진짜코드
+	public String myprivacy(Principal principal,Model model) {
 		MyPagePrivacyDto myPagePrivacyDto = myPageService.getMyPagePrivacy(principal);
-		
-		//가짜코드
-		//MyPagePrivacyDto myPagePrivacyDto =  new MyPagePrivacyDto(memberId, "김김김", "adf@adf.com",null, "닉눼임", "12-12", "서울시", "서울시랜다", null);
-		
 		model.addAttribute("mypage",myPagePrivacyDto);
 		return "/myPage/mypage-privacy";
 	}
@@ -69,25 +60,23 @@ public class MyPageController {
 	
 	
 	@PostMapping("/mypage/privacy")
+ 
 	public @ResponseBody ResponseEntity myprivacyUpdate(@RequestBody  @Valid MyPagePrivacyDto myPagePrivacyDto,BindingResult bindingResult, Principal principal ) {
-
 		  if(bindingResult.hasErrors()){
 	            StringBuilder sb = new StringBuilder();
 	            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-
 	            for (FieldError fieldError : fieldErrors) {
 	                sb.append(fieldError.getDefaultMessage());
 	            }
 	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 	        }
-		  Long result;
+	 
 		  try {
-			  
-			  result = myPageService.myPrivacyUpdate(myPagePrivacyDto,principal);
+			  Long result = myPageService.myPrivacyUpdate(myPagePrivacyDto,principal);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		 return new ResponseEntity<Long>(result, HttpStatus.OK);
+		 return new ResponseEntity<String>("Success",HttpStatus.OK);
 	}
 	
 	
@@ -111,18 +100,14 @@ public class MyPageController {
 	            }
 	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 	        }
-		  Long result ;
+		 
 		  try {
-			 
-			   result = myPageService.myEnterpricePrivacyUpdate(myPageEnterPricePrivacyDto,principal);
-			  
+			  Long result = myPageService.myEnterpricePrivacyUpdate(myPageEnterPricePrivacyDto,principal);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		 return new ResponseEntity<Long>(result, HttpStatus.OK);
+		 return new ResponseEntity<String>("Success", HttpStatus.OK);
 	}
-	
-	
 	
 	
 	
@@ -154,7 +139,7 @@ public class MyPageController {
 		return "/mypage/mypage-story-detail";
 	}
 	
-	@PostMapping("/mypage/story/detail/{storyId}")
+	@PostMapping("/mypage/story/detail/update/{storyId}")
 	public @ResponseBody ResponseEntity myPageStoryDetailUpdate(@RequestBody  @Valid MyPageStoryDetailDto myPageStoryDetailDto ,BindingResult bindingResult, @PathVariable("storyId") Long storyId, Principal principal ) {
 		  if(bindingResult.hasErrors()){
 	            StringBuilder sb = new StringBuilder();
@@ -165,14 +150,35 @@ public class MyPageController {
 	            }
 	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 	        }
-		  Long result;
 		  try {
-			  
-			  result = myPageService.myPageStoryDetailUpdate(myPageStoryDetailDto, principal,storyId);
+			  Long result = myPageService.myPageStoryDetailUpdate(myPageStoryDetailDto, principal,storyId);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		 return new ResponseEntity<Long>(result, HttpStatus.OK);
+		 return new ResponseEntity<String>("Success", HttpStatus.OK);
+	}
+	
+	@PostMapping("/mypage/story/detail/delete/{storyId}")
+	public @ResponseBody ResponseEntity myPageStoryDetailDelete(@RequestBody  @Valid MyPageStoryDetailDto myPageStoryDetailDto ,BindingResult bindingResult, @PathVariable("storyId") Long storyId, Principal principal ) {
+
+		 
+		  if(bindingResult.hasErrors()){
+	            StringBuilder sb = new StringBuilder();
+	            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+
+	            for (FieldError fieldError : fieldErrors) {
+	                sb.append(fieldError.getDefaultMessage());
+	            }
+	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
+	        }
+		 
+		  try {
+			  
+			   Long result = myPageService.mypageStoryDetailDelete(principal,storyId);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		 return new ResponseEntity<String>("Delete Success", HttpStatus.OK);
 	}
 	
 	

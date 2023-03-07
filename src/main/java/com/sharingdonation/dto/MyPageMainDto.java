@@ -1,12 +1,11 @@
 package com.sharingdonation.dto;
 
-import java.sql.Date;
+ 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.querydsl.core.annotations.QueryProjection;
+ 
+ 
 import com.sharingdonation.constant.Role;
 
 import lombok.Getter;
@@ -54,11 +53,8 @@ public class MyPageMainDto {
 		this.regTime = regTime;
 		this.nickName = nickName;
 		this.role = role;
+ 
 		this.regTimeStr = regTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
 	}
- 
-	
-		
- 
 }

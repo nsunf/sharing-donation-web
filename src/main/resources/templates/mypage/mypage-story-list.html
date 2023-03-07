@@ -26,10 +26,18 @@ function page(page) {
 					<div></div>
 					<div class="mb-3 row"
 						style="display: flex;">
-						<!-- each -->
+						
 
-						<th:block
-							th:each="item, status: ${myPageStoryListDto.getContent()}">
+						<!-- story list 빈값일 떄 출력 -->
+						<div class="col-12" th:if="${#lists.isEmpty(myPageStoryListDto.getContent())}">
+								<div class="mb-3 form-check"
+									style="height: 200px; width: 100%; border-radius: 10px; margin: 0; padding: 0; display: flex; justify-content: center;">
+									<strong>등록 된 사연이 없습니다.</strong>
+								</div>
+							</div>
+						
+						<!-- each -->
+						<th:block	th:each="item, status: ${myPageStoryListDto.getContent()}">
 						 <a th:href="@{|/mypage/story/detail/${item.id}|}">
 							<div class="col-12" >
 
@@ -67,7 +75,7 @@ function page(page) {
 						</th:block>
 
 
-						<nav>
+						<nav style="position: fixed; top: 600px; left: 250px;">
 							<div class="archive-pages"
 								th:with="start=${(myPageStoryListDto.number/maxPage) * maxPage + 1}
       , end=(${(myPageStoryListDto.totalPages== 0) ? 1 : (start + (maxPage - 1) < myPageStoryListDto.totalPages ? start + (maxPage -1) : myPageStoryListDto.totalPages)})">
