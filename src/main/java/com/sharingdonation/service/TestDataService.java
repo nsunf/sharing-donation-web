@@ -104,57 +104,31 @@ public class TestDataService {
 			Category c = categoryList.get(random.nextInt(categoryList.size()));
 			Member m = userList.get(random.nextInt(userList.size()));
 			Area a = areaList.get(random.nextInt(areaList.size()));
-			addSharing(c, m, a, i < 80);
-		});
-		List<Sharing> sharingList = sharingRepo.findAll();
-		
-		// 나눔 이미지
-		for (int i = 0; i < sharingList.size(); i ++) {
+			Sharing sharing = addSharing(c, m, a, i < 80);
+			// 이미지
 			for (int j = 0; j < 2; j++) {
-				addSharingImg((j + 1) + (i * 2), sharingList.get(i), j == 0);
+				addSharingImg((j + 1) + (i * 2), sharing, j == 0);
 			}
-		}
-		
-		// 나눔 좋아요
-		for (Member member: memberList) {
-			int count = 0;
-			while (count < 20) {
-				Sharing sharing = sharingList.get(random.nextInt(sharingList.size()));
-				boolean isLiked = sharingHeartRepo.findAll().stream().filter(heart -> heart.getSharing().getId() == sharing.getId() && heart.getMember().getId() == member.getId()).count() > 0;
-				if (sharing.getMember().getId() != member.getId() || !isLiked) {
-					addSharingHeart(member, sharing);
-					count++;
-				}
-			}
-		}
-
-		// 사연
-		
-		sharingList.stream()
-			.filter(sharing -> sharing.getConfirmYn().equals("Y"))
-			.forEach(sharing -> {
-				for (int i = 0; i < 3; i++) {
-					List<Story> storyList = storyRepo.findAll().stream().filter(story -> story.getSharing().getId() == sharing.getId()).toList();
-					Member member = null;
+			// 사연
+			if (sharing.getConfirmYn().equals("Y")) {
+				int storyCount = 0;
+				while (storyCount < 3) {
+					Member member = userList.get(random.nextInt(userList.size()));
+					Story findStory = storyRepo.findBySharingIdAndMemberId(sharing.getId(), member.getId());
+					if (findStory != null) continue;
 					
-					while (member == null) {
-						Member tmp = userList.get(random.nextInt(userList.size()));
-
-						boolean registered = storyList.stream().filter(story -> story.getMember().getId() == tmp.getId()).count() > 0;
-						if (!registered) member = tmp;
-					}
-					
-					boolean isAdopted = random.nextInt(10) > 8;
-					addStory(sharing, member, isAdopted);
-					if (isAdopted) {
+					Story adoptedStory = storyRepo.findBySharingIdAndChooseYn(sharing.getId(), "Y");
+					if (adoptedStory != null) break;
+					Story story = addStory(sharing, member, random.nextInt(10) > 8);
+					storyCount++;
+					if (story.getChooseYn().equals("Y")) {
 						sharing.setDone("Y");
 						sharing.setUpDateTime(LocalDateTime.now());
-						break;
 					}
+				}
 			}
-		});;
-		
-		List<Story> storyList = storyRepo.findAll();
+		});
+		List<Sharing> sharingList = sharingRepo.findAll();
 		
 		// 나눔 완료
 		sharingList.stream()
@@ -164,52 +138,67 @@ public class TestDataService {
 					addSharedBoard(sharing);
 			});;
 		List<SharingBoard> sharingBoardList = sharingBoardRepo.findAll();
-
-		// 나눔 완료 좋아요
-		for (int i = 0; i < memberList.size(); i++) {
-			Member member = memberList.get(i);
-			
-			int count = 0;
-			while (count < 5) {
-				SharingBoard sharingBoard = sharingBoardList.get(random.nextInt(sharingBoardList.size()));
-				boolean isLiked = sharingBoardHeartRepo.findAll().stream().filter(heart -> heart.getSharingBoard().getId() == sharingBoard.getId() && heart.getMember().getId() == member.getId()).count() > 0;
-				if (!isLiked) {
-					addSharingBoardHeart(member, sharingBoard);
-					count++;
-				}
-			}
-		}
-			
+		
 		// 나눔 완료 이미지
 		for (int i = 0; i < sharingBoardList.size(); i ++) {
 			for (int j = 0; j < 2; j++) {
 				addSharingBoardImg((j + 1) + (i * 2), sharingBoardList.get(i), j == 0);
 			}
 		}
-		// 나눔 완료 댓글
-		for (Member member: memberList) {
-			for (int i = 0; i < 2; i++) {
+		
+		// 회원 반복
+		for (int i = 0; i < memberList.size(); i++) {
+			Member member = memberList.get(i);
+			// 나눔 좋아요
+			int sharingHeartCount = 0;
+			while (sharingHeartCount < 20) {
+				Sharing sharing = sharingList.get(random.nextInt(sharingList.size()));
+				boolean isLiked = sharingHeartRepo.findAll().stream().filter(heart -> heart.getSharing().getId() == sharing.getId() && heart.getMember().getId() == member.getId()).count() > 0;
+				if (sharing.getMember().getId() != member.getId() || !isLiked) {
+					addSharingHeart(member, sharing);
+					sharingHeartCount++;
+				}
+			}
+			// 나눔 완료 좋아요
+			
+			int sharingBoardHeartCount = 0;
+			while (sharingBoardHeartCount < 5) {
+				SharingBoard sharingBoard = sharingBoardList.get(random.nextInt(sharingBoardList.size()));
+				boolean isLiked = sharingBoardHeartRepo.findAll().stream().filter(heart -> heart.getSharingBoard().getId() == sharingBoard.getId() && heart.getMember().getId() == member.getId()).count() > 0;
+				if (!isLiked) {
+					addSharingBoardHeart(member, sharingBoard);
+					sharingBoardHeartCount++;
+				}
+			}
+			// 나눔 완료 댓글
+			int sharingBoardCommentCount = 0;
+			while (sharingBoardCommentCount < 2) {
 				SharingBoard sharingBoard = sharingBoardList.get(random.nextInt(sharingBoardList.size()));
 				addSharingBoardComment(sharingBoard, member);
+				sharingBoardCommentCount++;
 			}
 		}
 		
 		// 기부
 		IntStream.range(0, 100).forEach(i -> {
 			Member m = memberList.get(random.nextInt(memberList.size()));
-			addDonation(m);
+			Donation donation = addDonation(m, i < 80);
+			// 이미지
+			for (int j = 0; j < 2; j++) {
+				addDonationImg((j + 1) + (i * 2), donation, j == 0);
+			}
 		});
 		List<Donation> donationList = donationRepo.findAll();
 		
 		// 기부 이미지
-		for (int i = 0; i < donationList.size(); i ++) {
-			addDonationImg(i + 1, donationList.get(i), i == 0);
-		}
-		for (int i = 0; i < donationList.size(); i ++) {
-			for (int j = 0; j < 2; j++) {
-				addDonationImg((j + 1) + (i * 2), donationList.get(i), j == 0);
-			}
-		}
+//		for (int i = 0; i < donationList.size(); i ++) {
+//			addDonationImg(i + 1, donationList.get(i), i == 0);
+//		}
+//		for (int i = 0; i < donationList.size(); i ++) {
+//			for (int j = 0; j < 2; j++) {
+//				addDonationImg((j + 1) + (i * 2), donationList.get(i), j == 0);
+//			}
+//		}
 		
 		// 기부 좋아요
 		for (Member member: memberList) {
@@ -223,6 +212,7 @@ public class TestDataService {
 				}
 			}
 		}
+		
 		
 		// 기부 완료
 		
@@ -288,7 +278,7 @@ public class TestDataService {
 		memberRepo.save(member);
 	}
 //		나눔
-	public void addSharing(Category category, Member member, Area area, boolean isConfirmed) {
+	public Sharing addSharing(Category category, Member member, Area area, boolean isConfirmed) {
 		Sharing sharing = new Sharing();
 		sharing.setCategory(category);
 		sharing.setMember(member);
@@ -313,6 +303,7 @@ public class TestDataService {
 		}
 		
 		sharingRepo.save(sharing);
+		return sharing;
 	}
 //		나눔 이미지
 	public void addSharingImg(int i, Sharing sharing, boolean isRepImg) {
@@ -336,7 +327,7 @@ public class TestDataService {
 		sharingHeartRepo.save(sharingHeart);
 	}
 //		나눔 완료
-	public void addSharedBoard(Sharing sharing) {
+	public SharingBoard addSharedBoard(Sharing sharing) {
 		SharingBoard sharingBoard = new SharingBoard();
 		
 		sharingBoard.setSharing(sharing);
@@ -345,6 +336,8 @@ public class TestDataService {
 		sharingBoard.setRegTime(LocalDateTime.now());
 		
 		sharingBoardRepo.save(sharingBoard);
+		
+		return sharingBoard;
 	}
 //		나눔 완료 좋아요
 	public void addSharingBoardHeart(Member member, SharingBoard sharingBoard) {
@@ -378,7 +371,7 @@ public class TestDataService {
 		sharingBoardCommentRepo.save(comment);
 	}
 //		기부
-	public void addDonation(Member member) {
+	public Donation addDonation(Member member, boolean isConfirmed) {
 		Donation donation = new Donation();
 		donation.setMember(member);
 		donation.setDonationName(randomString(10));
@@ -386,16 +379,25 @@ public class TestDataService {
 		donation.setDonationTel(randomPhone());
 		donation.setSubject(randomString(5));
 		donation.setDetail(randomString(50));
-		donation.setPrice(10_000_000);
+		donation.setPrice(random.nextInt(99_000_000) + 1_000_000);
 		donation.setZipCode((random.nextInt(90000) + 10000) + "");
 		donation.setAddress(randomString(20));
 		donation.setAddressDetail(randomString(100));
 		donation.setGoalPoint(random.nextInt(500_000) + 1_500_000);
-		donation.setConfirmYn("N");
 		donation.setDone("N");
 		donation.setDelYn("N");
 		
+		if (isConfirmed) {
+			donation.setConfirmYn("Y");
+			donation.setStartDate(LocalDate.now());
+			donation.setEndDate(LocalDate.now().plusMonths(1));
+		} else {
+			donation.setConfirmYn("N");
+		}
+		
 		donationRepo.save(donation);
+		
+		return donation;
 	}
 //		기부 이미지
 	public void addDonationImg(int i, Donation donation, boolean isRepImg) {
@@ -460,7 +462,7 @@ public class TestDataService {
 		donationBoardCommentRepo.save(comment);
 	}
 //		사연
-	public void addStory(Sharing sharing, Member member, boolean choosen) {
+	public Story addStory(Sharing sharing, Member member, boolean choosen) {
 		Story story = new Story();
 		story.setSharing(sharing);
 		story.setMember(member);
@@ -470,6 +472,8 @@ public class TestDataService {
 		story.setDelYn("N");
 		
 		storyRepo.save(story);
+		
+		return story;
 	}
 
 	public String randomString(int length) {

@@ -176,10 +176,9 @@ public class SharingService {
 			} else if (filter.equals("content")) {
 				sharingList = sharingRepo.findByDetailContainsAndDelYnOrderByRegTimeDesc(search, "N", pageable);
 			} else if (filter.equals("author")) {
-//				List<Member> member = memberRepo.findAllByNickNameContains(String nickName);
-//				sharingList = sharingRepo.findByMemberIdIn(member.stream().map(Memeber::getId).toList());
+				List<Member> member = memberRepo.findAllByEmailContainsOrNickNameContains(search, search);
+				sharingList = sharingRepo.findByMemberIdInAndDelYnOrderByRegTimeDesc(member.stream().map(Member::getId).toList(), "N", pageable);
 			}
-			
 		} else {
 			sharingList = sharingRepo.findAllByDelYnOrderByRegTimeDesc("N", pageable);
 		}

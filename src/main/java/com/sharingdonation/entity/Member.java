@@ -75,8 +75,8 @@ public class Member extends BaseEntity {
 	@Column(nullable = false, columnDefinition = "varchar(5)")
 	private Role role;
 	
-	@Column(nullable = false)
-	private LocalDateTime regTime;
+//	@Column(nullable = false)
+//	private LocalDateTime regTime;
 	
 	@Column(nullable = false, columnDefinition = "char(1) default 'N'")
 	private String delYn;

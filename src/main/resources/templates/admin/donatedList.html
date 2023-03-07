@@ -8,6 +8,7 @@
     <meta charset="UTF-8" />
     <title>Insert title here</title>
     <link rel="stylesheet" href="/css/sol/admin_donation_complete_board.css" />
+    <link rel="stylesheet" href="/css/longsiru/adminDonationBoardList.css" />
   </head>
   <body>
     <th:block layout:fragment="layout-content">
@@ -17,7 +18,7 @@
         </div>
         <!-- 검색창 -->
         <div class="container">
-          <div class="w-25 my-auto ms-auto me-3">
+          <div class="col-lg-3 col-md-4 col-sm-4 my-auto ms-auto me-3 pb-5">
             <form class="input-group">
               <input
                 type="text"
@@ -35,50 +36,70 @@
             </form>
           </div>
 
-          <div class="mx-auto my-5 p-3">
-            <div class="row hstack">
-              <div class="col-2 mb-5 ms-auto">
-                <a
-                  class="btn"
-                  href="/admin/donatedBoard/edit"
-                  style="background: var(--thm-primary); color: white"
-                  >기부 완료 게시판 등록</a
-                >
+          <div class="row hstack">
+            <div
+              class="col-2 col-lx-2 col-lg-2 ms-auto w-100"
+              style="padding-right: 30px"
+            >
+              <a
+                class="btn"
+                href="/admin/donatedBoard/edit"
+                style="
+                  background: var(--thm-primary);
+                  color: white;
+                  float: right;
+                "
+                >기부 완료 게시판 등록</a
+              >
+            </div>
+          </div>
+
+          <div class="container">
+            <div class="row g-5">
+              <div class="p-3">
+                <table class="table" style="text-align: center">
+                  <thead>
+                    <tr class="border-top">
+                      <th class="d-table-cell">글번호</th>
+                      <th class="d-table-cell">글제목</th>
+                      <th class="d-none d-md-table-cell">
+                        기부 기관 / 개인 명
+                      </th>
+                      <th class="d-none d-lg-table-cell">기부 기간</th>
+                      <th class="d-table-cell">작성일자</th>
+                    </tr>
+                  </thead>
+                  <th:block
+                    th:each="donationBoard, status: ${donationBoards.getContent()}"
+                  >
+                    <tbody>
+                      <tr>
+                        <td
+                          class="d-table-cell"
+                          th:text="${donationBoards.getTotalElements-(((pages)-1) * rowPerPage) - status.index}"
+                        ></td>
+                        <td class="d-table-cell">
+                          <a th:href="'/donatedBoard/' +${donationBoard.id}"
+                            >[[${donationBoard.subject}]]</a
+                          >
+                        </td>
+                        <td
+                          class="d-none d-md-table-cell"
+                          th:text="${donationBoard.donationPerson}"
+                        ></td>
+                        <td class="d-none d-lg-table-cell">
+                          [[${donationBoard.startDate}]] ~
+                          [[${donationBoard.endDate}]]
+                        </td>
+                        <td class="d-table-cell">
+                          [[${donationBoard.regTime}]]
+                        </td>
+                      </tr>
+                    </tbody>
+                  </th:block>
+                </table>
               </div>
             </div>
-            <table class="table" style="text-align: center">
-              <thead>
-                <tr class="border-top">
-                  <th>글번호</th>
-                  <th>글제목</th>
-                  <th>기부 기관 / 개인 명</th>
-                  <th>기부 기간</th>
-                  <th>작성일자</th>
-                </tr>
-              </thead>
-              <th:block
-                th:each="donationBoard, status: ${donationBoards.getContent()}"
-              >
-                <tbody>
-                  <tr>
-                    <td
-                      th:text="${donationBoards.getTotalElements-(((pages)-1) * rowPerPage) - status.index}"
-                    ></td>
-                    <td>
-                      <a th:href="'/donatedBoard/' +${donationBoard.id}"
-                        >[[${donationBoard.subject}]]</a
-                      >
-                    </td>
-                    <td th:text="${donationBoard.donationPerson}"></td>
-                    <td>
-                      [[${donationBoard.startDate}]] ~
-                      [[${donationBoard.endDate}]]
-                    </td>
-                    <td>[[${donationBoard.regTime}]]</td>
-                  </tr>
-                </tbody>
-              </th:block>
-            </table>
           </div>
 
           <div
