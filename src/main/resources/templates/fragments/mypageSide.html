@@ -19,11 +19,11 @@
       
       <hr class="d-none d-lg-block"/>
       <div class="col list-group px-3 px-md-5" style="list-style: none;">
-        <a class="nav__item"  th:href="@{privacy/}">개인정보수정</a>
-        <a class="nav__item" href="">나눔등록내역</a>
-        <a class="nav__item" href="">나눔받은내역</a>
-        <a class="nav__item" href="">사연내역</a>
-        <a class="nav__item nav__item--selected" href="">기부신청내역</a>
+        <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/privacy') ? 'nav__item--selected' : ''}" th:href="@{/mypage/privacy}">개인정보수정</a>
+        <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/sharing') ? 'nav__item--selected' : ''}" th:href="@{/mypage/sharing}">나눔등록내역</a>
+        <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/shared') ? 'nav__item--selected' : ''}" th:href="@{/mypage/shared}" href="">나눔받은내역</a>
+        <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/story') ? 'nav__item--selected' : ''}" th:href="@{/mypage/story}">사연내역</a>
+        <a class="nav__item" th:classappend="${#strings.startsWith(#httpServletRequest.getRequestURI(), '/mypage/donation') ? 'nav__item--selected' : ''}" th:href="@{/mypage/donation}">기부신청내역</a>
       </div>
     </div>
   

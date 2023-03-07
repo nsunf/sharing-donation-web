@@ -54,7 +54,6 @@
         
         <th:block th:switch=${mypage.role}>
 						<div th:if="${#strings.equals(mypage.role, T(com.sharingdonation.constant.Role).USER)}">
-        [[${mypage.retTime}]]
 							<th:block th:replace="fragments/mypageSide::mypageSide(${mypage.name},${mypage.regTimeStr},${mypage.nickName})"></th:block> 
 						</div>
 						<div th:if="${#strings.equals(mypage.role, T(com.sharingdonation.constant.Role).COM)}">
