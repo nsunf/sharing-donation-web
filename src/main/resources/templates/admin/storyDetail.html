@@ -22,11 +22,11 @@
 	<section class="mb-5 auto-min-height">
 		<div class="section container" style="width: margin: 0 auto;">
 		<!-- stick 쓰고 싶은데 안됨 -->
-	<div>
+	<div class="row">
 		<div style="margin-top: 70px;">
 			<h1 style="border-bottom: 5px solid #15C8A0; padding-bottom: 5px; margin: 0;">사연 관리</h1>
 		</div>
-		<div
+<!-- 		<div
 			style="width: 754px; height: 71px; background-color: #F0F5F4; margin: 0 auto; line-height: 71px; display: flex; justify-content: space-between; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
 			<div
 				style="width: 80px; height: 71px; background-color: #15C8A0; color: white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; text-align: center;">[[${sharingDto.status}]]</div>
@@ -37,7 +37,33 @@
 				<span>[[${sharingDto.areaName}]]</span>
 			</div>
 		</div>
-		</div>
+ -->		
+ 			<div class="col-8 mx-auto">
+				 <div class="hstack rounded-4 rounded-top-0 overflow-hidden" style="background: #F0F5F4;">
+					<div class="d-flex justify-content-center align-items-center float-start text-white"  style="width: 64px; aspect-ratio: 1/1; background: var(--thm-primary); aspect-ratio: 1/1;">
+						[[${sharingDto.status}]]
+					</div>
+					 <div class="mx-auto link-hover"><a th:href="@{/sharing/{id}(id=${sharingDto.id})}">제목 : [[${sharingDto.name}]]</a></div>
+					 <div class="float-right me-3">
+						 <div class="text-end">[[${sharingDto.authorName}]]</div>
+						 <div class="text-end">[[${sharingDto.areaName}]]</div>
+					 </div>
+				 </div>
+ 			</div>
+ 			
+ 			<div class="col-8 mt-4 mx-auto">
+ 				<div class="hstack w-100">
+					<button class="ms-auto btn btn-custom btn-custom-regist" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+						내용 더보기
+					</button>
+				</div>
+				<div class="collapse mt-4" id="collapseExample">
+					<div class="card card-body">
+						Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+					</div>
+				</div>
+			</div>
+ 		</div>
 
 		<div style="padding-top: 70px;">
 		<p>등록된 사연수 : [[${storyDtoList.size}]]</p>

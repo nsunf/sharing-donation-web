@@ -12,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +29,7 @@ import com.sharingdonation.dto.StoryFormDto;
 import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.Story;
 import com.sharingdonation.repository.MemberRepository;
+import com.sharingdonation.service.PointService;
 import com.sharingdonation.service.SharingService;
 import com.sharingdonation.service.StoryService;
 
@@ -43,6 +42,7 @@ public class StoryController {
 	private final MemberRepository memberRepo;
 	private final StoryService storyService;
 	private final SharingService sharingService;
+	private final PointService pointService;
 	ObjectMapper mapper = new ObjectMapper();
 
 	// 사연 등록
@@ -97,7 +97,13 @@ public class StoryController {
 	@PostMapping("/story/adopt/{storyId}")
 	public @ResponseBody ResponseEntity<?> adoptStory(@PathVariable Long storyId) {
 		Story story = storyService.adoptStory(storyId);
-		return new ResponseEntity<Integer>(story == null ? 0 : 1, HttpStatus.OK);
+		boolean storyAdopted = story != null;
+		
+		if (storyAdopted) {
+			pointService.saveSharingPoint(story);
+		}
+		
+		return new ResponseEntity<Integer>(storyAdopted ? 1 : 0, HttpStatus.OK);
 	}
 	
 	// 사연 삭제

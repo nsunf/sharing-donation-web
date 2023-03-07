@@ -42,20 +42,23 @@ public class SharingService {
 	private final AreaRepository areaRepo;
 	private final StoryRepository storyRepo;
 	
+	// 총 나눔 완료 수
 	public Long getNumOfShared() {
 		return sharingRepo.countByDone("Y");
 	}
-	
+	// 현재 진행중인 나눔 수
 	public Long getCurrentSharingCount() {
 		return sharingRepo.countByConfirmYnAndDone("Y", "N");
 	}
-
+	
+	// 나눔 정보 가져오기
 	public SharingDto getSharingDto(Long sharingId) {
 		Sharing sharing = sharingRepo.findById(sharingId).orElseThrow(EntityNotFoundException::new);
 		
 		return SharingDto.valueOf(sharing);
 	}
-
+	
+	// 지역, 카테고리, 검색어 별 현재 진행중인 나눔 리스트
 	public Page<SharingDto> getSharingDtoList(String search, String areaName, String catName, Pageable pageable) {
 		Page<Sharing> sharingList = null;
 		String _search = search == null ? "" : search;
@@ -77,6 +80,7 @@ public class SharingService {
 		return sharingDtoList;
 	}
 	
+	// 나눔 등록
 	public Sharing saveSharing(SharingFormDto sharingFormDto, Long memberId, List<MultipartFile> sharingImgFileList) throws Exception {
 		Category category = categoryRepo.findById(sharingFormDto.getCategoryId()).orElseThrow(EntityNotFoundException::new);
 		Area area = areaRepo.findById(sharingFormDto.getAreaId()).orElseThrow(EntityNotFoundException::new);
@@ -99,6 +103,7 @@ public class SharingService {
 		return sharing;
 	}
 	
+	// 나눔 수정
 	public Sharing updateSharing(SharingFormDto sharingFormDto, List<MultipartFile> sharingImgFileList) throws Exception {
 		Sharing sharing = sharingRepo.findById(sharingFormDto.getId()).orElseThrow(EntityNotFoundException::new);
 		
@@ -126,16 +131,19 @@ public class SharingService {
 		return sharing;
 	}
 	
+	// 나눔 삭제
 	public void deleteSharing(Long sharingId) {
 		Sharing sharing = sharingRepo.findById(sharingId).orElseThrow(EntityNotFoundException::new);
 		sharing.setDelYn("Y");
 	}
 	
+	// 나눔 수정시 나눔 폼 데이터 가져오기
 	public SharingFormDto getSharingFormDto(Long sharingId) {
 		Sharing sharing = sharingRepo.findById(sharingId).orElseThrow(EntityNotFoundException::new);
 		return new SharingFormDto(sharing);
 	}
-
+	
+	// 로그인 된 회원 나눔 등록 리스트
 	public Page<SharingDto> getSharingDtoListById(Principal principal, Pageable pageable) {
 		String email = principal.getName();
 		Member member = memberRepo.findByEmail(email);
@@ -150,6 +158,7 @@ public class SharingService {
 		return sharingDtoList;
 	}
 
+	// 로그인 된 회원 나눔 받은 리스트
 	public Page<SharingDto> getAdoptedSharingDtoListById(Principal principal, Pageable pageable) {
 //		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDoneAndDelYnOrderByRegTimeDesc(memberId, "Y", "N", pageable);
 //		
@@ -167,6 +176,7 @@ public class SharingService {
 		return sharingDtoList;
 	}
 	
+	// 관리자 페이지 나눔 목록
 	public Page<SharingDto> getAdminSharingDtoList(Pageable pageable, String filter, String search) {
 		Page<Sharing> sharingList = null;
 		
@@ -188,6 +198,7 @@ public class SharingService {
 		return sharingDtoList;
 	}
 	
+	// 다중 나눔 승인
 	public void approveSharings(List<Long> sharingIdList) {
 		List<Sharing> sharingList = sharingRepo.findAllByIdIn(sharingIdList);
 		sharingList.forEach(s -> {
@@ -198,7 +209,7 @@ public class SharingService {
 				s.setConfirmYn("Y");
 		});
 	}
-
+	// 단일 나눔 승인
 	public void approveSharing(Long sharingId, int point) {
 		Sharing sharing = sharingRepo.findById(sharingId).orElseThrow(EntityNotFoundException::new);
 		sharing.setPoint(point);
@@ -208,7 +219,7 @@ public class SharingService {
 		if (sharing.getConfirmYn().equals("N") && sharing.getDone().equals("N"))
 			sharing.setConfirmYn("Y");
 	}
-	
+	// 다중 나눔 삭제
 	public void deleteSharings(List<Long> sharingIdList) {
 		List<Sharing> sharingList = sharingRepo.findAllByIdIn(sharingIdList);
 		sharingList.forEach(s -> {
