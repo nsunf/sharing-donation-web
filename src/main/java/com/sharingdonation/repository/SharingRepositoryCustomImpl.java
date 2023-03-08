@@ -109,6 +109,7 @@ public class SharingRepositoryCustomImpl implements SharingRepositoryCustom {
 				.select(new QSharingDto(sharing))
 				.from(sharing)
 				.where(searchOption(searchDto))
+				.orderBy(sharing.regTime.desc())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
 				.fetch();
