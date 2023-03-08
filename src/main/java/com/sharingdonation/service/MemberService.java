@@ -54,12 +54,12 @@ public class MemberService implements UserDetailsService {
         }
     }
     
-    private String changePassword(String email, String name, String cellphone) {
+    public int memberEquals(String email, String name, String cellphone) {
     	Member findMember = memberRepository.findByEmailAndNameAndCellphone(email, name, cellphone);
-    	
-    	return null;
+    	int result = 1;
+    	if(findMember.getEmail() == null) {
+    		result = 0;
+    	}
+    	return result;
     }
-    
-     
-    
 }
