@@ -63,7 +63,8 @@ public class SharingBoardService {
 			Long commentCount = sharingBoardCommentRepository.countBySharingBoardId(sharingBoard.getId());
 			sharingBoardDto.setCommentCount(commentCount);
 			
-			
+			String sharedName = sharingBoard.getSharing().getName();
+			sharingBoardDto.setShared_name(sharedName);
 			
 			return sharingBoardDto;
 		});
@@ -99,6 +100,10 @@ public class SharingBoardService {
 
 		SharingBoard sharingBoard = sharingBoardRepository.findById(sharingBoardId).orElseThrow(EntityNotFoundException::new);
 		SharingBoardDto sharingBoardDto = SharingBoardDto.of(sharingBoard);
+		SharingBoardFormDto sharingBoardFormDto = SharingBoardFormDto.of(sharingBoard);
+
+		String sharedName = sharingBoard.getSharing().getName();
+		sharingBoardDto.setShared_name(sharedName);
 		
 		String sharedPostNickname = sharingBoard.getSharing().getMember().getNickName();
 		sharingBoardDto.setSharing_member(sharedPostNickname);
@@ -122,6 +127,9 @@ public class SharingBoardService {
 			String sharedWriteCommentMember = sharingBoardComment.getMember().getNickName();
 			sharingBoardCommentDto.setComment_member(sharedWriteCommentMember);
 
+			String sharedWriterEmail = sharingBoardComment.getMember().getEmail();
+			sharingBoardCommentDto.setComment_email(sharedWriterEmail);
+			
 			sharingBoardCommentDtoList.add(sharingBoardCommentDto);
 
 		}
@@ -251,8 +259,5 @@ public class SharingBoardService {
 		
 		sharingBoardRepository.delete(sharingBoard);
 	}
-
-	
-	
 	
 }
