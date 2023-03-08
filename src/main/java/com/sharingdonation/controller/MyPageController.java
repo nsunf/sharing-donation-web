@@ -118,7 +118,7 @@ public class MyPageController {
 		Page<MyPageStoryListDto> myPageStoryListDto = myPageService.getMyPageStoryList(principal, pageable);
 		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(principal);
 		
-		System.out.println(myPageStoryListDto);
+	
 		model.addAttribute("page", pageable.getPageNumber()); //현재 페이지
 		model.addAttribute("mypage",myPageMainDto);
 		model.addAttribute("myPageStoryListDto",myPageStoryListDto);

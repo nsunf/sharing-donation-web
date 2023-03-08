@@ -33,4 +33,7 @@ public interface MyPageRepositoryCustom {
  
  Long deleteMyPageStoryDetail(Long memeberId, Long storyId); 
  
+ 
+ 
+ 
 }
