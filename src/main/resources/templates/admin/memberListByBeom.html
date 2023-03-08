@@ -5,10 +5,13 @@
 <head>
 <meta charset="UTF-8" />
 	<script th:inline="javascript">
- 
-function page(page) {
 
-	location.href = "/admin/memberList/" +page;
+function page(page) {
+	if( [[${searchDto.searchQuery}]] === ''){
+		location.href = "/admin/memberList/" + page;
+		}else{
+			location.href = "/admin/memberList/" + page  + "?searchQuery=" +  [[${searchDto.searchQuery}]];
+		}
 }
 	</script>
 	</th:block>
@@ -25,9 +28,9 @@ function page(page) {
 			<!-- 검색창 -->
 			<div class="container">
 				<div class="w-25 my-auto ms-auto me-3">
-					<form class="input-group" method="get" th:action="@{/admin/memberList}">
+					<form class="input-group" method="get" th:action="@{/admin/memberList/{page}(page=${page})}">
 						<div th:object="${searchDto}" style="">
-							<input type="text" class="form-control" placeholder="검색" th:field="*{searchQuery}" />
+							<input type="text" class="form-control" placeholder="검색" th:field="*{searchQuery}" id="search" name="search"/>
 							<button class="btn" type="submit" style="background-color: #15C8A0; color: #fff">검색</button>
 						</div>
 					</form>

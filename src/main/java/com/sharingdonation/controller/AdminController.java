@@ -108,7 +108,7 @@ public class AdminController {
 	 
 	
 	
-	@GetMapping({"/admin/memberList", "/admin/memberList/{page}"})
+	@GetMapping({"/admin/memberList", "/admin/memberList/{page}", "/admin/memberList/{page}?searchQuery={searchQuery}"})
 	public String adminMemberList(SearchDto searchDto, @PathVariable("page") Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()  : 0,5);
 		Page<MemberAllDto> members = adminService.getAdminMemberList(searchDto, pageable);
