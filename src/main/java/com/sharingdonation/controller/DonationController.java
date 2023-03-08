@@ -85,7 +85,7 @@ public class DonationController {
 	}
 	
 	@PostMapping(value = "/donation/new")
-	public String donationNew(@Valid DonationFormDto donationFormDto, BindingResult bindingResult, Model model
+	public String donationNew(@Valid DonationFormDto donationFormDto, BindingResult bindingResult, Principal principal,  Model model
 			, @RequestParam("donationImgFile") List<MultipartFile> donationImgFileList) {
 		
 		if(bindingResult.hasErrors()) {
@@ -100,7 +100,7 @@ public class DonationController {
 		}
 		
 		try {
-			donationService.saveDonation(donationFormDto, donationImgFileList);
+			donationService.saveDonation(donationFormDto, donationImgFileList, principal);
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "기부 등록 중 에러가 발생했습니다.");
 			System.out.println("exception");
@@ -136,7 +136,8 @@ public class DonationController {
 		try {
 			DonationFormDto donationFormDto = donationService.getDonationDtl(donationId);
 			
-			donationFormDto.getDonationImgDtoList();
+//			donationFormDto.getDonationImgDtoList();
+//			donationFormDto.getMember().
 			model.addAttribute("donationFormDto", donationFormDto);
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "존재하지 않는 상품입니다.");
@@ -148,7 +149,7 @@ public class DonationController {
 	
 	@PostMapping("/donation/edit/{id}")
 	public String donationUpdate(@Valid DonationFormDto donationFormDto, BindingResult bindingResult, 
-			Model model
+			Principal principal, Model model
 //			, @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate
 //			, @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
 			, @RequestParam("donationImgFile") List<MultipartFile> donationImgFileList) {
@@ -167,7 +168,7 @@ public class DonationController {
 		}
 		
 		try {
-			donationService.updateDonation(donationFormDto, donationImgFileList);
+			donationService.updateDonation(donationFormDto, donationImgFileList, principal);
 		} catch (Exception e) {
 //			System.out.println(" controller adminDonationUpdate exception");
 			e.printStackTrace();

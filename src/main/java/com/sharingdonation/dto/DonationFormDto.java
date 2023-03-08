@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import org.modelmapper.ModelMapper;
 
 import com.sharingdonation.entity.Donation;
+import com.sharingdonation.entity.Member;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -43,7 +44,9 @@ public class DonationFormDto {
 	
 	private int pointPer;
 	
-	private int memberId;
+	private Long memberId;
+	
+	private Member member;
 	
 	private String startDate;
 	
