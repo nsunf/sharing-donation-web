@@ -6,6 +6,8 @@
 >
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
 <title>Insert title here</title>
 <link
 	rel="stylesheet"
@@ -176,8 +178,10 @@
 
           <div class="row mt-4">
             <div class="col-8 mx-auto hstack">
-              <button class="custom-btn custom-btn-del ms-auto">삭제</button
-              ><!-- 관리자만-->
+              <th:block th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} or *{userAble eq 'Y'}">
+              <input type="hidden" th:field="*{id}">
+              <button type="button" class="custom-btn custom-btn-del ms-auto" onclick="deleteDonation();">삭제</button><!-- 관리자만-->
+              </th:block>
               <th:block th:if="${not #strings.isEmpty(donationFormDto.id)}">
               <button class="custom-btn ms-3" th:formaction="@{'/donation/edit/' + ${donationFormDto.id} }">수정</button>
               </th:block>
@@ -252,6 +256,42 @@
 						} */
 					}
 				}).open();
+			}
+			
+			function deleteDonation() {
+		    	const deleteConf = confirm("삭제하시겠습니까?");
+		    	
+		    	if(!deleteConf) return; //취소 버튼을 누를때
+		    	
+		        let token = $("meta[name='_csrf']").attr("content");
+		        let header = $("meta[name='_csrf_header']").attr("content");
+		        let donationId = $("#id").val();
+		        let url = "/donation/delete/" + donationId;
+
+		        $.ajax({
+		            url      : url,
+		            type     : "DELETE",
+		            contentType : "application/json",
+		            beforeSend : function(xhr){
+		                /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+		                xhr.setRequestHeader(header, token);
+		            },
+		            dataType : "json",
+		            cache   : false,
+		            success  : function(result, status){
+		                alert("삭제 되었습니다.");
+		                location.href='/mypage/donation';
+		            },
+		            error : function(jqXHR, status, error){
+		                if(jqXHR.status == '401'){
+		                    alert('로그인 후 이용해주세요');
+		                    location.href='/auth/login';
+		                } else{
+		                	//alert("401외 에");
+		                    alert(jqXHR.responseText + ":" + jqXHR.status + ":" + error);
+		                }
+		            }
+		        });
 			}
 		</script>
 	</th:block>
