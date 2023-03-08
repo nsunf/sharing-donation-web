@@ -63,7 +63,6 @@ public class SharingBoardController {
 	}
 
 	// 좋아요 체크
-	// @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	@GetMapping(value = "/sharing_board/heart/{id}")
 	public @ResponseBody ResponseEntity<?> toggleSharedHeart(@PathVariable Long id, Principal principal) {
 		String email = principal.getName();
@@ -75,12 +74,16 @@ public class SharingBoardController {
 
 	// 게시글 보기, 댓글 보여줌
 	@GetMapping(value = "/sharing_board/view/{shared_post_id}")
-	public String viewSharedPost(Model model, @PathVariable("shared_post_id") Long id) {
+	public String viewSharedPost(Model model, @PathVariable("shared_post_id") Long id, Principal principal) {
 
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		
 		SharingBoardDto sharingBoardDto = sharingBoardService.getCompletePost(id);
 		List<SharingBoardImgDto> sharingBoardImgDtoList = sharingBoardImgService.getSharingBoardImgs(id);
 		List<SharingBoardCommentDto> sharingBoardCommentDtoList = sharingBoardService.getBoardCommentList(id);
 
+		model.addAttribute("sharingBoardHeartDto",sharingHeartService.getSharingBoardHeartDto(member.getId(), id));
 		model.addAttribute("sharingBoardDto", sharingBoardDto);
 		model.addAttribute("sharingBoardImgDtoList", sharingBoardImgDtoList);
 		model.addAttribute("sharingBoardCommentDtoList", sharingBoardCommentDtoList);
@@ -137,7 +140,6 @@ public class SharingBoardController {
 	//관리자 페이지 게시글 삭제
 	@DeleteMapping(value="/admin/sharedList/{shared_post_id}/delete")
 	public @ResponseBody ResponseEntity deleteAdminSharingBoard(@PathVariable("shared_post_id") Long sharingBoardId) {
-		System.out.println("삭제 확인");
 		try {
 			sharingBoardImgService.deleteImgsBySharingBoardId(sharingBoardId);
 			sharingHeartService.deleteSharingBoardHeart(sharingBoardId);

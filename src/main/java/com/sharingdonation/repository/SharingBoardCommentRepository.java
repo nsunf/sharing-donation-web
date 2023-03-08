@@ -14,4 +14,6 @@ public interface SharingBoardCommentRepository extends JpaRepository<SharingBoar
 	Long countBySharingBoardId(Long id);
 	
 	Optional<SharingBoardComment> findById(Long id);
+	
+	//SharingBoardComment findByMemberIdAndRoleAdmin(Long adminId);
 }
