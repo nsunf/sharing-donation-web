@@ -93,6 +93,10 @@ public class TestDataService {
 			Area area = areaRepository.findByGugun(a);
 			if (area == null) addArea(a);
 		});
+		
+		IntStream.range(1, 11).forEach(i -> addMember(Role.USER, i));
+		IntStream.range(1, 11).forEach(i -> addMember(Role.COM, i));
+		addMember(Role.ADMIN, 1);
 	}
 	
 	public void generateTestData() {
