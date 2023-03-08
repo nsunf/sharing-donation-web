@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -116,7 +117,8 @@ public class DonationController {
 			String email = principal.getName();
 			Member member = memberRepository.findByEmail(email);
 			
-			DonationFormDto donationFormDto = donationService.getDonationDtl(donationId);
+			DonationFormDto donationFormDto = donationService.getDonationDtl(donationId, principal);
+			System.out.println("controller donationFormDto.getUserAble() ::"+donationFormDto.getUserAble());
 			model.addAttribute(donationFormDto);
 			model.addAttribute("nickName", member.getNickName());
 			model.addAttribute("sharingHeartDto", donationHeartService.getDonationHeartDto(member.getId(), donationId));
@@ -132,9 +134,9 @@ public class DonationController {
 	
 	
 	@GetMapping(value = "/donation/edit/{donationId}")
-	public String donationEditDtl(@PathVariable("donationId") Long donationId, Model model) {
+	public String donationEditDtl(@PathVariable("donationId") Long donationId, Principal principal, Model model) {
 		try {
-			DonationFormDto donationFormDto = donationService.getDonationDtl(donationId);
+			DonationFormDto donationFormDto = donationService.getDonationDtl(donationId, principal);
 			
 //			donationFormDto.getDonationImgDtoList();
 //			donationFormDto.getMember().
@@ -178,6 +180,23 @@ public class DonationController {
 		
 		return "redirect:/mypage/donation";
 	}
+	
+	@DeleteMapping("/donation/delete/{donationId}")
+	public @ResponseBody ResponseEntity<?> donationDelete(@PathVariable("donationId") Long donationId
+			, Principal principal, Model model) {
+		
+		try {
+			donationService.deleteDonation(donationId, principal);
+		} catch (Exception e) {
+//			System.out.println(" controller adminDonationUpdate exception");
+			e.printStackTrace();
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<Long>(donationId, HttpStatus.OK);
+	}
+	
+	
 	
 	// 나눔 좋아요
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
