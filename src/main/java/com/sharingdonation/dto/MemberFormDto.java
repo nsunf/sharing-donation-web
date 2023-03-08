@@ -7,6 +7,8 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.sharingdonation.entity.Member;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,4 +45,5 @@ public class MemberFormDto {
 	
 	private String birth;
 
+	
 }
