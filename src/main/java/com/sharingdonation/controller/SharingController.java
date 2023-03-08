@@ -36,6 +36,7 @@ import com.sharingdonation.dto.SharingFormDto;
 import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.Sharing;
 import com.sharingdonation.repository.MemberRepository;
+import com.sharingdonation.repository.SharingBoardRepository;
 import com.sharingdonation.service.AreaService;
 import com.sharingdonation.service.CategoryService;
 import com.sharingdonation.service.MyPageService;
@@ -58,6 +59,7 @@ public class SharingController {
 	private final StoryService storyService;
 	private final MemberRepository memberRepo;
 	private final MyPageService myPageService;
+	private final SharingBoardRepository sharingBoardRepository;
 	
 	private static Member user = null;
 	private static Member com = null;
@@ -304,6 +306,7 @@ public class SharingController {
 		model.addAttribute("areaDtoList", areaService.getAreaList());
 		model.addAttribute("categoryDtoList", categoryService.getCategoryDtoLIst());
 		model.addAttribute("sharingImgDtoList", sharingImgService.getSharingImgDtoList(id));
+		model.addAttribute("sharingBoard",sharingBoardRepository.findBySharingId(id));
 
 		return "sharing/editSharing";
 	}

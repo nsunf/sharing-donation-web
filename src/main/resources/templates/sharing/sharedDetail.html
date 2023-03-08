@@ -7,9 +7,9 @@
 <meta name="_csrf" th:content="${_csrf.token}" />
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 <title>나눔 완료 상세</title>
-<link rel="stylesheet" href="/css/longsiru/donated-board-detail.css" />
+<link rel="stylesheet" href="/css/sol/shared-board-detail.css" />
 <link rel="stylesheet"
-	href="/css/longsiru/admin-donation-request-detail.css" />
+	href="/css/sol/admin-shared-request-detail.css" />
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
@@ -21,8 +21,11 @@
 							<div class="col-12 mx-auto">
 								<div class="swiper mySwiper position-relative overflow-hidden">
 									<div class="swiper-wrapper">
-										<div class="swiper-slide ratio ratio-16x9" th:each="sharingBoardImgDto : ${sharingBoardImgDtoList}">
-											<img class="object-fit-contain" th:src="${sharingBoardImgDto.imgUrl}" th:alt="${sharingBoardImgDto.id}" />
+										<div class="swiper-slide ratio ratio-16x9"
+											th:each="sharingBoardImgDto : ${sharingBoardImgDtoList}">
+											<img class="object-fit-contain"
+												th:src="${sharingBoardImgDto.imgUrl}"
+												th:alt="${sharingBoardImgDto.id}" />
 										</div>
 									</div>
 									<div class="swiper-button-next">&gt;&gt;</div>
@@ -40,7 +43,8 @@
 													th:classappend="${sharingHeartDto == null} ? 'like-false' : 'like-true'"
 													th:onclick="'toggleHeart(' + ${sharingBoardDto.id} + ');'"></div>
 												<span class="like-count px-1"
-													style="font-size: 12px; color: var(- -thm-primary);"></span>
+													style="font-size: 12px; color: var(--thm-primary);"
+													th:text="${sharedHeartCount}"></span>
 											</button>
 										</div>
 									</div>
@@ -52,10 +56,14 @@
 										<!-- <li>담당자명</li> -->
 									</div>
 								</div>
-								<h3 class="news-details__title"
-									th:text="${sharingBoardDto.subject}"></h3>
-								<p class="news-details__text-one"
-									th:text="${sharingBoardDto.content}"></p>
+								<div>
+									<h3 class="news-details__title"
+										th:text="${sharingBoardDto.subject}"></h3>
+									<span>나눔 상품 : <span
+										th:text="${sharingBoardDto.shared_name}"></span></span>
+									<p class="news-details__text-one"
+										th:text="${sharingBoardDto.content}"></p>
+								</div>
 								<div class="comment-one">
 									<h3 class="comment-one__title">댓글 보기</h3>
 									<ul id="comments-list" class="comments-list">
@@ -72,8 +80,14 @@
 														</div>
 														<div th:text="${sharedComment.comment}"
 															class="comment-content"></div>
-														<div class="comment-down">
+														<div class="comment-down" sec:authorize="hasAnyRole('ROLE_ADMIN')">
 															<button class="comment-bnt" type="button"
+																th:value="${sharedComment.id}"
+																onclick="deleteComment(this.value)">삭제</button>
+														</div>
+														<div class="comment-down" sec:authorize="hasAnyRole('ROLE_USER')">
+															<button class="comment-bnt" type="button"
+															th:if="${#authentication.principal.username == sharedComment.comment_email}"
 																th:value="${sharedComment.id}"
 																onclick="deleteComment(this.value)">삭제</button>
 														</div>
@@ -87,37 +101,40 @@
 								</div>
 								<div class="comment-form">
 									<h3 class="comment-form__title">댓글 작성</h3>
-									<form
-										class="overflow-hidden"
+									<form class="overflow-hidden"
 										th:action="'/sharing_board/view/'+${sharingBoardDto.id}+'/comment'"
 										method="post">
 										<div class="comment-form__input-box"
 											style="line-height: initial;">
 											<textarea name="comment" placeholder="create your comments"></textarea>
 										</div>
-										<button type="submit" class="thm-btn comment-form__btn p-2">
-											댓글등록<i class="fas fa-arrow-circle-right ps-2"></i>
+										<div class="hstack">
+										<button type="submit" class="thm-btn rounded-2 mt-3 py-1 px-3 ms-auto">
+											댓글등록
 										</button>
+										</div>
 									</form>
 								</div>
 								<div class="hstack">
-										<button id="submit" class="thm-btn rounded-1 ms-auto mt-3 py-1 px-3" type="submit">
-											<!-- sec:authorize="hasAnyAuthority('ROLE_ADMIN')" -->
+									<div class="ms-auto">
+										<button id="submit" class="thm-btn rounded-2 mt-3 py-1 px-3"
+											type="submit" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
 											<a th:href="'/sharing_board/update/' + ${sharingBoardDto.id}">수
 												정</a>
 										</button>
-										<button class="thm-btn comment-form__btn mt-3 py-1 px-3"
-										style="margin-left: 5px;" type="button"
-										sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
-										th:value="${sharingBoardDto.id}"
-										onclick="deleteSharingBoard(this.value)">삭 제</button>
+										<button class="thm-btn rounded-2 mt-3 py-1 px-3"
+											style="margin-left: 5px;" type="button"
+											sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
+											th:value="${sharingBoardDto.id}"
+											onclick="deleteSharingBoard(this.value)">삭 제</button>
+									</div>
 								</div>
 							</div>
-						</div>
 
+						</div>
 					</div>
 				</div>
-			</div>
+				</div>
 		</section>
 	</th:block>
 	<th:block layout:fragment="script-bottom">
@@ -128,52 +145,35 @@
 					prevEl : ".swiper-button-prev",
 				},
 			});
-			
-			function deleteComment(id) {
-				const deleteConf = confirm("삭제하시겠습니까?");
 
-				if (!deleteConf)
-					return;
-
-				let boardId = document.getElementById('id').value;
+			function toggleHeart(id) {
 				var token = $("meta[name='_csrf']").attr("content");
 				var header = $("meta[name='_csrf_header']").attr("content");
-
-				var url = "/sharing_board/view/" + id + "/comment/delete";
-
-				var paramData = {
-					itemId : $("#id").val()
-				};
-
-				var param = JSON.stringify(paramData);
-
-				$.ajax({
-					url : url,
-					type : "DELETE",
-					contentType : "application/json",
-					data : param,
-					beforeSend : function(xhr) {
-						/* 데이터 전송 전에 header에 csrf 값을 설정 */
-						xhr.setRequestHeader(header, token);
-					},
-					dataType : "json",
-					cache : false,
-					success : function(result, status) {
-						alert("댓글이 삭제 되었습니다.");
-						location.href = '/sharing_board/view/' + boardId;
-					},
-					error : function(jqXHR, status, error) { //에러 3가지를 받을 수 있음
-						if (jqXHR.status == '401') {
-							alert('로그인 후 이용하시오.');
-							location.href = '';
-						} else {
-							alert(jqXHR.responseText);
-						}
+				
+				const likeEl = document.querySelector(".like");
+				const likeCount = document.querySelector(".like-count");
+				
+				fetch("/sharing_board/heart/" + id, {
+					method: "GET",
+					headers: {
+							'header': header,
+							'X-Requested-With': "XMLHttpRequest",
+							"Content-Type": "application/json",
+							'X-CSRF-Token': token
 					}
+				}).then(res => res.text())
+				.then(data => {
+					if (likeEl.classList.contains("like-false")) {
+						likeEl.classList.remove("like-false");
+						likeEl.classList.add("like-true");
+					} else {
+						likeEl.classList.remove("like-true");
+						likeEl.classList.add("like-false");
+					}
+					likeCount.innerText = data;
 				});
-
 			}
-			
+
 			function deleteSharingBoard(sharingBoardId) {
 				let deleteConf = confirm("삭제하시겠습니까?");
 
@@ -184,7 +184,7 @@
 				var header = $("meta[name='_csrf_header']").attr("content");
 
 				var url = "/sharing_board/view/" + sharingBoardId + "/delete";
-	console.log(url);
+				console.log(url);
 				$.ajax({
 					url : url,
 					type : "DELETE",

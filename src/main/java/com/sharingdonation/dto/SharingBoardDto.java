@@ -18,6 +18,8 @@ public class SharingBoardDto {
 	
 	private String regTime; //글 등록 날짜
 	
+	private String shared_name; //나눔완료 상품
+	
 	private String sharing_member; //나눔상품 등록한 사람
 	
 	private String story_member; //사연채택 된 사람
