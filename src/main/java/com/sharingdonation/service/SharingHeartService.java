@@ -56,8 +56,7 @@ public class SharingHeartService {
 		}
 	}
 	
-	public SharingBoardHeartDto getSharingBoardHeartDto(Long sharingBoard_id) {
-		Long member_id = 1L;
+	public SharingBoardHeartDto getSharingBoardHeartDto(Long member_id, Long sharingBoard_id) {
 		SharingBoardHeart sharingBoardHeart = sharingBoardHeartRepository.findBySharingBoardIdAndMemberId(sharingBoard_id, member_id).orElse(null);
 		if (sharingBoardHeart == null)
 			return null;

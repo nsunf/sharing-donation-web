@@ -16,6 +16,9 @@ public interface DonationRepository extends JpaRepository<Donation, Long>
 
 	List<Donation> findAllByIdIn(List<Long> donatinIdList);
 	
+	Donation findAllByIdAndMemberId(Long donatinId, Long memberId);
+	
+	
 	Page<Donation> findByMemberIdAndDelYnOrderByRegTimeDesc(Long memberId, String delYn, Pageable pageable);
 	
 	List<Donation> findByDone(String done);

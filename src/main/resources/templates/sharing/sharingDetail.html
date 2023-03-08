@@ -71,8 +71,24 @@
         <div class="ms-auto">
 <!--           <a class="causes-details__share-btn thm-btn py-2 px-4">수정</a>
  -->          
- 							<button th:if="${storyFormDto.registeredYn == 'Y'}" class="causes-details__share-btn thm-gray border-0 rounded-4 py-2 px-3 ms-3" disabled>사연 등록됨</button>
-           		<button th:unless="${storyFormDto.registeredYn == 'Y'}" id="registStoryBtn" class="causes-details__share-btn thm-btn py-2 px-3 ms-3" data-bs-toggle="modal" data-bs-target="#registModal" sec:authorize="!hasRole('COM')">사연 등록</button>
+ 							<button 
+ 								th:if="${storyFormDto.registeredYn == 'Y'}" 
+ 								class="causes-details__share-btn thm-gray border-0 rounded-4 py-2 px-3 ms-3" 
+ 								disabled
+ 							>
+ 								사연 등록됨
+ 							</button>
+           		<button 
+           			th:unless="${storyFormDto.registeredYn == 'Y'}" 
+           			id="registStoryBtn" 
+           			class="causes-details__share-btn thm-btn py-2 px-3 ms-3" 
+           			data-bs-toggle="modal" 
+           			data-bs-target="#registModal" 
+           			th:if="${#authentication.principal.username != sharingDto.authorEmail}"
+           			sec:authorize="!hasRole('COM')"
+           		>
+           			사연 등록
+           		</button>
         </div>
       </div>
     </div>

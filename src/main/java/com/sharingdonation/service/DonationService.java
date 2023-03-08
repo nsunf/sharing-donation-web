@@ -3,12 +3,17 @@ package com.sharingdonation.service;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 //import javax.transaction.Transactional;
 
@@ -25,9 +30,14 @@ import com.sharingdonation.dto.SearchDto;
 import com.sharingdonation.dto.ListDonationDto;
 import com.sharingdonation.dto.PointDto;
 import com.sharingdonation.entity.Donation;
+import com.sharingdonation.entity.DonationBoard;
+import com.sharingdonation.entity.DonationBoardComment;
+import com.sharingdonation.entity.DonationBoardHeart;
+import com.sharingdonation.entity.DonationHeart;
 import com.sharingdonation.entity.DonationImg;
 import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.Point;
+import com.sharingdonation.repository.DonationHeartRepository;
 import com.sharingdonation.repository.DonationImgRepository;
 import com.sharingdonation.repository.DonationRepository;
 import com.sharingdonation.repository.MemberRepository;
@@ -42,11 +52,18 @@ public class DonationService {
 	private final DonationRepository donationRepository;
 	private final DonationImgService donationImgService;
 	private final DonationImgRepository donationImgRepository;
+	private final DonationHeartRepository donationHeartRepository;
 	private final PointRepository pointRepository;
 	private final MemberRepository memberRepository;
 	
-	public Long saveDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList) throws Exception {
+	public Long saveDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList, Principal principal) throws Exception {
+		String email = principal.getName();
+		
+		System.out.println(principal.getName());
+		Member member = memberRepository.findByEmail(email);
+		donationFormDto.setMemberId(member.getId());
 		Donation donation = donationFormDto.createDonation();
+
 		donationRepository.save(donation);
 		
 		for(int i = 0; i < donationImgFileList.size(); i++) {
@@ -61,13 +78,13 @@ public class DonationService {
 	}
 	
 	@Transactional(readOnly = true)
-	public DonationFormDto getDonationDtl(Long donationId) {
+	public DonationFormDto getDonationDtl(Long donationId, Principal principal) {
 		List<DonationImg> donationImgList = donationImgRepository.findByDonationIdOrderByIdAsc(donationId);
 		List<DonationImgDto> donationImgDtoList = new ArrayList<>();
 		
 		for(DonationImg donationImg : donationImgList) {
 			DonationImgDto donationImgDto = DonationImgDto.of(donationImg);
-			System.out.println("DonationFormDto getDonationDtls :::" +  donationImgDto.getImgUrl());
+//			System.out.println("DonationFormDto getDonationDtls :::" +  donationImgDto.getImgUrl());
 			donationImgDtoList.add(donationImgDto);
 		}
 		
@@ -76,9 +93,15 @@ public class DonationService {
 
 		
 		DonationFormDto donationFormDto = DonationFormDto.of(donation);
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
 		
+		System.out.println("donationFormDto.getMemberId() == member.getId() :: " + donationFormDto.getMemberId() +"::"+ member.getId());
+		String userAble = (donationFormDto.getMemberId() == member.getId()) ? "Y" : "N";
+		donationFormDto.setUserAble(userAble);
+		System.out.println("service getDonationDtl donationFormDto.getUserAble()" + donationFormDto.getUserAble());
 		int pointSum = (int)pointRepository.selectTotalPoint(donationId);
-		System.out.println(pointSum);
+//		System.out.println(pointSum);
 		double pointPer = 0;
 		
 		if (pointSum > 0) {
@@ -94,7 +117,7 @@ public class DonationService {
 	
 	
 	
-	public Long updateDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList) throws Exception {
+	public Long updateDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList, Principal principal) throws Exception {
 		Donation donation = donationRepository.findById(donationFormDto.getId())
 				.orElseThrow(EntityNotFoundException::new);
 				
@@ -118,6 +141,42 @@ public class DonationService {
 		}
 		
 		return donation.getId();
+	}
+	
+	
+	@Transactional
+	public void deleteDonation(Long donationId, Principal principal) {
+//		Donation donation = donationRepository.findById(donationId)
+//				.orElse(null);
+//				.orElseThrow(EntityNotFoundException::new);
+		
+		Optional<Donation>  donation = donationRepository.findById(donationId);
+		if(! donation.isPresent()) {
+			throw new IllegalStateException("존재하지 않습니다.");
+		}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		boolean isAdmin = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+		String email = principal.getName();
+		Member member = memberRepository.findByEmail(email);
+		
+		System.out.println("member.getId() != donation.getMember().getId() || !isAdmin :: " + member.getId() + ":" + donation.get().getMember().getId() +":"+ isAdmin);
+		if(member.getId() != donation.get().getMember().getId() && !isAdmin) {
+			
+			throw new IllegalStateException("삭제 권한이 없습니다.");
+		}
+		
+		donationHeartRepository.deleteAllByDonationId(donationId);
+		System.out.println("donationHeartRepository");
+		donationImgRepository.deleteAllByDonationId(donationId);
+		System.out.println("donationImgRepository");
+		donationRepository.deleteById(donationId);
+		System.out.println("donation");
+		
+		
+//		DonationHeart donationHeart = donationHeartRepository.findByDonationId(donationId)
+//				.orElseThrow(EntityNotFoundException::new);
+		
 	}
 	
 	@Transactional(readOnly = true)
@@ -169,12 +228,24 @@ public class DonationService {
 //		sharingService.approveSharing(member.getId(), donationId, point);
 		Long points = pointRepository.pointSearch(member.getId());
 		
-		if (points <= 0) {
-			System.out.println("service pointDonation pointspoints : " + points);
-			throw new IllegalStateException("사용 포인트가 없습니다.");
+		Long usePoint = pointDto.getPoint();
+		
+		if (usePoint <= 0) {
+			System.out.println("service pointDonation usePoint : " + usePoint);
+			throw new IllegalStateException("사용할 포인트를 입력해주세요.");
 		}
 		
+		if (points <= 0) {
+			System.out.println("service pointDonation points : " + points);
+			throw new IllegalStateException("사용 포인트가 없습니다.");
+		}
+		//Member member = memberRepository.findById(pointDto.getMemberId());
 //		List<OrderItem> orderItemList = new ArrayList<>(); 
+		
+		Integer memberPoint = (int) (member.getPoint() - usePoint);
+		member.setPoint(memberPoint);
+		memberRepository.save(member);
+		
 		System.out.println("service pointdonation pointDto.getDonationId() : " + pointDto.getDonationId());
 		pointDto.setMemberId(member.getId());
 		pointDto.setRegTime(LocalDateTime.now());

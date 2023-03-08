@@ -6,8 +6,11 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -102,6 +105,9 @@ public class SharingBoardService {
 		SharingBoardDto sharingBoardDto = SharingBoardDto.of(sharingBoard);
 		SharingBoardFormDto sharingBoardFormDto = SharingBoardFormDto.of(sharingBoard);
 
+		Long boardHeartCount = sharingBoardHeartRepository.countBySharingBoardId(sharingBoardDto.getId());
+		sharingBoardDto.setBoardHeartCount(boardHeartCount);
+		
 		String sharedName = sharingBoard.getSharing().getName();
 		sharingBoardDto.setShared_name(sharedName);
 		
@@ -166,8 +172,9 @@ public class SharingBoardService {
 		Member curMember = memberRepository.findByEmail(email);
 		SharingBoardComment sharingBoardComment = sharingBoardCommentRepository.findById(comment_id).orElseThrow(EntityNotFoundException::new);
 		Member savedMember = sharingBoardComment.getMember();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		if(!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())) {
+		if(!StringUtils.equals(curMember.getEmail(), savedMember.getEmail()) && (auth != null && !auth.getAuthorities().stream().anyMatch(a->a.getAuthority().equals("ROLE_ADMIN")))) {
 			return false;
 		}
 		return true;
