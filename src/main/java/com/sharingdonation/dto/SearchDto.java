@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DonationSearchDto {
+public class SearchDto {
 	private String searchBy;
 	private String searchQuery = "";
 }

@@ -44,6 +44,8 @@ public class MemberFormDto {
 	private String nickName;
 	
 	private String birth;
+	
+	
 
 	
 }

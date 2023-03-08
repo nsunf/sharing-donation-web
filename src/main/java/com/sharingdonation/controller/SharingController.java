@@ -30,11 +30,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sharingdonation.constant.Role;
 import com.sharingdonation.dto.MyPageMainDto;
+import com.sharingdonation.dto.SharingAdminSearchDto;
 import com.sharingdonation.dto.SharingDto;
 import com.sharingdonation.dto.SharingFormDto;
 import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.Sharing;
 import com.sharingdonation.repository.MemberRepository;
+import com.sharingdonation.repository.SharingBoardRepository;
 import com.sharingdonation.service.AreaService;
 import com.sharingdonation.service.CategoryService;
 import com.sharingdonation.service.MyPageService;
@@ -57,6 +59,7 @@ public class SharingController {
 	private final StoryService storyService;
 	private final MemberRepository memberRepo;
 	private final MyPageService myPageService;
+	private final SharingBoardRepository sharingBoardRepository;
 	
 	private static Member user = null;
 	private static Member com = null;
@@ -212,13 +215,11 @@ public class SharingController {
 	public String mypageSharingList(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
 		// 임시 멤버
 //		Member member = getTmpMember(Role.USER);
-		String email = principal.getName();
-		Member member = memberRepo.findByEmail(email);
-		MyPageMainDto myPageDto = myPageService.getMyPageMain(member.getId());
+		MyPageMainDto myPageDto = myPageService.getMyPageMain(principal);
 
 		Pageable pageable = PageRequest.of(page.orElse(0), 6);
 		
-		Page<SharingDto> sharingDtoList = sharingService.getSharingDtoListById(member.getId(), pageable);
+		Page<SharingDto> sharingDtoList = sharingService.getSharingDtoListById(principal, pageable);
 
 		model.addAttribute("mypage", myPageDto);
 		model.addAttribute("sharingDtoList", sharingDtoList);
@@ -235,12 +236,10 @@ public class SharingController {
 //		Member member = getTmpMember(Role.USER);
 //		Member member = memberRepo.findById(10L).orElseThrow(EntityNotFoundException::new);
 		
-		String email = principal.getName();
-		Member member = memberRepo.findByEmail(email);
-		MyPageMainDto myPageDto = myPageService.getMyPageMain(member.getId());
+		MyPageMainDto myPageDto = myPageService.getMyPageMain(principal);
 		Pageable pageable = PageRequest.of(page.orElse(0), 6);
 		
-		Page<SharingDto> sharingDtoList = sharingService.getAdoptedSharingDtoListById(member.getId(), pageable);
+		Page<SharingDto> sharingDtoList = sharingService.getAdoptedSharingDtoListById(principal, pageable);
 
 		model.addAttribute("mypage", myPageDto);
 		model.addAttribute("sharingDtoList", sharingDtoList);
@@ -255,12 +254,13 @@ public class SharingController {
 	// 관리자 나눔 리스트
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/admin/sharing")
-	public String adminSharing(@RequestParam Optional<Integer> page, @RequestParam Optional<String> filter, @RequestParam Optional<String> search, Model model) {
+	public String adminSharing(SharingAdminSearchDto searchDto, @RequestParam Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.orElse(0), 10);
 		
-		model.addAttribute("sharingDtoList", sharingService.getAdminSharingDtoList(pageable, filter.orElse(null), search.orElse(null)));
-		model.addAttribute("filter", filter.orElse("title"));
-		model.addAttribute("search", search.orElse(""));
+		SharingAdminSearchDto _searchDto = searchDto == null ? new SharingAdminSearchDto() : searchDto;
+		
+		model.addAttribute("sharingDtoList", sharingService.getAdminSharingDtoList(searchDto, pageable));
+		model.addAttribute("searchDto", _searchDto);
 		model.addAttribute("page", pageable.getPageNumber());
 		model.addAttribute("maxPage", 5);
 
@@ -306,6 +306,7 @@ public class SharingController {
 		model.addAttribute("areaDtoList", areaService.getAreaList());
 		model.addAttribute("categoryDtoList", categoryService.getCategoryDtoLIst());
 		model.addAttribute("sharingImgDtoList", sharingImgService.getSharingImgDtoList(id));
+		model.addAttribute("sharingBoard",sharingBoardRepository.findBySharingId(id));
 
 		return "sharing/editSharing";
 	}

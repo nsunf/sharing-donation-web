@@ -2,6 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
     layout:decorate="~{layouts/layout1}"
 >
 <head>
@@ -80,10 +81,10 @@
 <!--  							<button th:if="${title == '나눔 상품 승인 관리' && sharingFormDto.confirmYn == 'N'}" class="custom-btn ms-3" type="button" th:onclick="'approveSharing(' + ${sharingFormDto.id} + ')'">승인</button>
  --> 							<button th:if="${title == '나눔 상품 승인 관리' && sharingFormDto.confirmYn == 'N'}" class="custom-btn ms-3" type="button" data-bs-toggle="modal" data-bs-target="#approveModal">승인</button>
  						</div>
-  					<div class="col-2 my-auto hstack mt-5" th:if="${title != '나눔 상품 등록' && sharingFormDto.done == 'Y' && sharingFormDto.memberId == member.id}">
+  					<div class="col-2 my-auto hstack mt-5" th:if="${title != '나눔 상품 등록' && sharingFormDto.done == 'Y' && sharingBoard == null}" sec:authorize="hasRole('ROLE_ADMIN')">
 							<a 
 								class="btn ms-auto" 
-								th:href="'/admin/sharing_board/edit/'+${sharingFormDto.id}"
+								th:href="'/admin/sharing_board/create/'+${sharingFormDto.id}"
 								style="background: var(--thm-primary); 
 								color: white;"
 							>

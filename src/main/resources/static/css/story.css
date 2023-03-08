@@ -1,115 +1,106 @@
 @charset "UTF-8";
 
-
 /* 페이징 hover 백그라운드 색상, 글씨 색상 변경 */
-.pagination li:hover, .pagination a:hover{
-	color: #fff;
+.pagination li:hover,
+.pagination a:hover {
+  color: #fff;
 }
-.pagination a:hover{
-	background-color: #20C097;
+.pagination a:hover {
+  background-color: #20c097;
 }
 
-
-.btn-1{
-	background-color: #fff;
-	color:black;
-	width: 140px;
-	 height: 50px;
-	 border-color: #000000;
+.btn-1 {
+  background-color: #fff;
+  color: black;
+  width: 140px;
+  height: 50px;
+  border-color: #000000;
 }
 .btn-2 {
-	background-color: #fff;
-	color:black;
-		width: 140px;
-	 height: 50px;
-	 border-color: #000000;
+  background-color: #fff;
+  color: black;
+  width: 140px;
+  height: 50px;
+  border-color: #000000;
 }
 .btn-3 {
-	background-color: #fff;
-	color:black;
-		width: 140px;
-	 height: 50px;
-	 border-color: #000000;
+  background-color: #fff;
+  color: black;
+  width: 140px;
+  height: 50px;
+  border-color: #000000;
 }
-
 
 .btn-1:hover {
-	background-color: #4169E1;
-	border-color: #fff;
+  background-color: #4169e1;
+  border-color: #fff;
 }
 .btn-2:hover {
-	background-color: #15C8A0;
-	border-color: #fff;
+  background-color: #15c8a0;
+  border-color: #fff;
 }
 .btn-3:hover {
-	background-color: #FE6262;
-	border-color: #fff;
+  background-color: #fe6262;
+  border-color: #fff;
 }
 
-.privacy-tbl td{
-	width: 200px;
-	height: 70px;
-	
+.privacy-tbl td {
+  width: 200px;
+  height: 70px;
 }
 
 .text-field {
-    font-size: 14px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    width: 100%;
+  font-size: 14px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
 }
 
 .ad-field {
-    font-size: 14px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    width: 49%;
+  font-size: 14px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 49%;
 }
-
 
 .ad-btn {
-    font-size: 14px;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    width: 175px;
-    
+  font-size: 14px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 175px;
 }
 
-.privacyinput{
-	background-color: #F0F5F4;
+.privacyinput {
+  background-color: #f0f5f4;
 }
-
 
 .submit-btn {
-    font-size: 18px;
-    font-weight: 700;
-    background-color: #15c8a0;
-    color: #eeeff1;
-    margin-bottom: 30px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    width: 280px;
-    
+  font-size: 18px;
+  font-weight: 700;
+  background-color: #15c8a0;
+  color: #eeeff1;
+  margin-bottom: 30px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  width: 280px;
 }
 
-
-
 .archive-pages li a:hover {
-  color: #000;
+  color: #15c8a0;
 }
 .archive-pages li.selected {
   color: white;
 }
 .archive-pages a,
 .archive-pages a:visited {
-  color: #555;
+  color: #747474;
 }
 .archive-pages li.selected {
   text-align: center;
@@ -127,34 +118,34 @@
   background: -moz-linear-gradient(
     top,
     rgba(255, 255, 255, 0) 0%,
-    rgba(196, 196, 196, 1) 100%
+    rgb(224, 238, 232) 100%
   );
   background: -webkit-gradient(
     linear,
     left top,
     left bottom,
     color-stop(0%, rgba(255, 255, 255, 0)),
-    color-stop(100%, rgba(196, 196, 196, 1))
+    color-stop(100%, rgb(224, 238, 232) 100%)
   );
   background: -webkit-linear-gradient(
     top,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(196, 196, 196, 1) 100%
+    rgba(225, 251, 245, 0) 0%,
+    rgb(224, 238, 232) 100%
   );
   background: -o-linear-gradient(
     top,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(196, 196, 196, 1) 100%
+    rgba(225, 251, 245, 0) 0%,
+    rgb(224, 238, 232) 100%
   );
   background: -ms-linear-gradient(
     top,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(196, 196, 196, 1) 100%
+    rgba(225, 251, 245, 0) 0%,
+    rgb(224, 238, 232) 100%
   );
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(196, 196, 196, 1) 100%
+    rgba(225, 251, 245, 0) 0%,
+    rgb(224, 238, 232) 100%
   );
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#c4c4c4',GradientType=0 );
 }
@@ -234,4 +225,3 @@
   text-indent: -154px;
   letter-spacing: 10px;
 }
-

@@ -25,7 +25,7 @@ outlineEls.forEach((outline, i) => {
   })
 
   textEl.addEventListener("click", () => {
-	  location.href="/sharing/area/" + textEl.textContent;
+	  location.href="/sharing/area/" + textEl.dataset.gu;
   })
 });
 

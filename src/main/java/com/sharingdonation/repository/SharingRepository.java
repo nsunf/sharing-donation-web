@@ -31,6 +31,8 @@ public interface SharingRepository extends JpaRepository<Sharing, Long>, Sharing
 	Page<Sharing> findByMemberIdOrderByRegTimeDesc(Long memberId, Pageable pageable);
 	// member.id, delYn | orderBy regTime desc
 	Page<Sharing> findByMemberIdAndDelYnOrderByRegTimeDesc(Long memberId, String delYn, Pageable pageable);
+	// member.id in, delYn | orderBy regTime desc
+	Page<Sharing> findByMemberIdInAndDelYnOrderByRegTimeDesc(List<Long> memberIdList, String delYn, Pageable pageable);
 
 	Long countByDone(String done);
 	Long countByConfirmYnAndDone(String confirmYn, String done);

@@ -2,15 +2,20 @@ package com.sharingdonation.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.sharingdonation.entity.Member;
+import com.sharingdonation.entity.Donation;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 public class DonationDto {
 	
 //	public DonationDto(Member member) {
@@ -40,7 +45,11 @@ public class DonationDto {
 	
 	private LocalDate endDate;
 	
+	private String zipCode;
+	
 	private String address;
+	
+	private String addressDetail;
 	
 	private int goalPoint;
 	
@@ -59,6 +68,11 @@ public class DonationDto {
 	private Integer pointSum;
 	
 	private Integer pointPer;
+	
+	private String status;
+	
+	private LocalDateTime updateTime;
+	
 	
 	@QueryProjection
 	public DonationDto(Long id, String subject
@@ -92,6 +106,55 @@ public class DonationDto {
 		this.heartCount = heartCount;
 		this.pointSum = pointSum;
 //		this.pointPer = pointPer;
+	}
+
+	public static DonationDto valueOf(Donation donation, String imgUrl) {
+		String _status = donation.getDone().equals("Y") ? "완료" : (donation.getConfirmYn().equals("Y") ? "진행중": "승인대기");
+
+		return DonationDto.builder()
+				.id(donation.getId())
+				.subject(donation.getSubject())
+//				.categoryName(donation.getCategory().getCategoryName())
+//				.regTime(donation.getRegTime().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")))
+				.regTime(donation.getRegTime())
+				.confirmYn(donation.getConfirmYn())
+				.done(donation.getDone())
+				.imgUrl(imgUrl)
+				.status(_status)
+//				.point(donation.getPoint())
+				.build();
+	}
+	public static DonationDto valueOf(Donation donation) {
+		String _status = donation.getDone().equals("Y") ? "완료" : (donation.getConfirmYn().equals("Y") ? "진행중": "승인대기");
+		String _startDate = null;
+		String _endDate = null;
+		if (donation.getStartDate() != null) _startDate = donation.getStartDate().format(DateTimeFormatter.ofPattern("YYYY-MM-dd"));
+		if (donation.getEndDate() != null) _endDate = donation.getEndDate().format(DateTimeFormatter.ofPattern("YYYY-MM-dd"));
+
+		return DonationDto.builder()
+				.id(donation.getId())
+				.donationName(donation.getDonationName())
+				
+				.address(donation.getAddress())
+				.addressDetail(donation.getAddressDetail())
+				.confirmYn(donation.getConfirmYn())
+				.delYn(donation.getDelYn())
+				.donationPerson(donation.getDonationPerson())
+				.donationTel(donation.getDonationTel())
+				.done(donation.getDone())
+				.goalPoint(donation.getGoalPoint())
+				.nickName(donation.getMember().getNickName())
+				.price(donation.getPrice())
+				.subject(donation.getSubject())
+				.updateTime(donation.getUpdateTime())
+				.zipCode(donation.getZipCode())
+				
+				.regTime(donation.getRegTime())
+				.status(_status)
+				.startDate(donation.getStartDate())
+				.endDate(donation.getEndDate())
+				//.startDate(_startDate)
+				.build();
 	}
 	
 }

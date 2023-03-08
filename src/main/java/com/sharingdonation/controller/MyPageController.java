@@ -1,7 +1,8 @@
 package com.sharingdonation.controller;
  
 
-import java.io.Console;
+ 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,8 +11,10 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,66 +44,55 @@ public class MyPageController {
 	private final MyPageService myPageService;
 	
 	/*마이페이지 메인 화면, 로그인된 memberId를 넘겨 받음*/
-	@GetMapping("/mypage/{memberId}")
-	public String myPageMain(@PathVariable("memberId") Long memberId, Model model) {
-		
-		//진짜 코드
-		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(memberId);
-		
-		
-		
-		//실험용 코드
-		//MyPageMainDto myPageMainDto = new MyPageMainDto(memberId, 0, memberId, memberId, memberId, memberId, "김김김", null);
+	@GetMapping("/mypage")
+	public String myPageMain(Principal principal, Model model) {
+		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(principal);
 		model.addAttribute("mypage",myPageMainDto);
 		return "/myPage/mypageMain";
 	}
 	
-	@GetMapping("/mypage/privacy/{memberId}")
-	public String myprivacy(@PathVariable("memberId") Long memberId, Model model) {
-		//진짜코드
-		MyPagePrivacyDto myPagePrivacyDto = myPageService.getMyPagePrivacy(memberId);
-		
-		//가짜코드
-		//MyPagePrivacyDto myPagePrivacyDto =  new MyPagePrivacyDto(memberId, "김김김", "adf@adf.com",null, "닉눼임", "12-12", "서울시", "서울시랜다", null);
-		
+	
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@GetMapping("/mypage/privacy")
+	public String myprivacy(Principal principal,Model model) {
+		MyPagePrivacyDto myPagePrivacyDto = myPageService.getMyPagePrivacy(principal);
 		model.addAttribute("mypage",myPagePrivacyDto);
 		return "/myPage/mypage-privacy";
 	}
 	
 	
-	
-	@PostMapping("/mypage/privacy/{memberId}")
-	public @ResponseBody ResponseEntity myprivacyUpdate(@RequestBody  @Valid MyPagePrivacyDto myPagePrivacyDto,BindingResult bindingResult, @PathVariable("memberId") Long memberId ) {
-
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@PostMapping("/mypage/privacy")
+	public @ResponseBody ResponseEntity myprivacyUpdate(@RequestBody  @Valid MyPagePrivacyDto myPagePrivacyDto,BindingResult bindingResult, Principal principal ) {
 		  if(bindingResult.hasErrors()){
 	            StringBuilder sb = new StringBuilder();
 	            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-
 	            for (FieldError fieldError : fieldErrors) {
 	                sb.append(fieldError.getDefaultMessage());
 	            }
 	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 	        }
+	 
 		  try {
-			  
-			  Long result = myPageService.myPrivacyUpdate(myPagePrivacyDto,memberId);
+			  Long result = myPageService.myPrivacyUpdate(myPagePrivacyDto,principal);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		 return new ResponseEntity<Long>(memberId, HttpStatus.OK);
+		 return new ResponseEntity<String>("Success",HttpStatus.OK);
 	}
 	
 	
-	
-	@GetMapping("/mypage/enterpriceprivacy/{memberId}")
-	public String myEnterpricePrivacy(@PathVariable("memberId") Long memberId, Model model){
-		MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto = myPageService.getMyPageEnterPricePrivacyDto(memberId);
+	@PreAuthorize("hasRole('ROLE_COM')")
+	@GetMapping("/mypage/enterpriceprivacy")
+	public String myEnterpricePrivacy(Principal principal, Model model){
+		MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto = myPageService.getMyPageEnterPricePrivacyDto(principal);
 		model.addAttribute("mypage",myPageEnterPricePrivacyDto);
 		return "/myPage/mypage-Enterprice-privacy";
 	}
 	
-	@PostMapping("/mypage/enterpriceprivacy/{memberId}")
-	public @ResponseBody ResponseEntity myEnterpricePrivacyUpdate(@RequestBody  @Valid MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto,BindingResult bindingResult, @PathVariable("memberId") Long memberId ) {
+	@PreAuthorize("hasRole('ROLE_COM')")
+	@PostMapping("/mypage/enterpriceprivacy")
+	public @ResponseBody ResponseEntity myEnterpricePrivacyUpdate(@RequestBody  @Valid MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto,BindingResult bindingResult, Principal principal ) {
 
 		  if(bindingResult.hasErrors()){
 	            StringBuilder sb = new StringBuilder();
@@ -111,28 +103,25 @@ public class MyPageController {
 	            }
 	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 	        }
+		 
 		  try {
-			 
-			  Long result = myPageService.myEnterpricePrivacyUpdate(myPageEnterPricePrivacyDto,memberId);
-			  
+			  Long result = myPageService.myEnterpricePrivacyUpdate(myPageEnterPricePrivacyDto,principal);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		 return new ResponseEntity<Long>(memberId, HttpStatus.OK);
+		 return new ResponseEntity<String>("Success", HttpStatus.OK);
 	}
 	
 	
-	
-	
-	
-	@GetMapping({"/mypage/story/{memberId}", "/mypage/story/{memberId}/{page}"})
-	public String myPageStory(@PathVariable("memberId") Long memberId, @PathVariable("page") Optional<Integer> page, Model model) {
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@GetMapping({"/mypage/story", "/mypage/story/{page}"})
+	public String myPageStory(Principal principal, @PathVariable("page") Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
 		
-		Page<MyPageStoryListDto> myPageStoryListDto = myPageService.getMyPageStoryList(memberId, pageable);
-		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(memberId);
+		Page<MyPageStoryListDto> myPageStoryListDto = myPageService.getMyPageStoryList(principal, pageable);
+		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(principal);
 		
-		System.out.println(myPageStoryListDto);
+	
 		model.addAttribute("page", pageable.getPageNumber()); //현재 페이지
 		model.addAttribute("mypage",myPageMainDto);
 		model.addAttribute("myPageStoryListDto",myPageStoryListDto);
@@ -142,19 +131,40 @@ public class MyPageController {
 	}
 	
 
-	
-	@GetMapping("/mypage/story/detail/{memberId}/{storyId}")
-	public String myPageStoryDetail(@PathVariable("memberId") Long memberId, @PathVariable("storyId") Long storyId, Model model) {
-		MyPageStoryDetailDto myPageStoryDetailDto = myPageService.getMyPageStoryDetail(memberId, storyId);
-		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(memberId);
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@GetMapping("/mypage/story/detail/{storyId}")
+	public String myPageStoryDetail( @PathVariable("storyId") Long storyId, Principal principal, Model model) {
+		MyPageStoryDetailDto myPageStoryDetailDto = myPageService.getMyPageStoryDetail(principal, storyId);
+		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(principal);
 		model.addAttribute("detail",myPageStoryDetailDto);
 		model.addAttribute("mypage",myPageMainDto);
 		
 		return "/mypage/mypage-story-detail";
 	}
 	
-	@PostMapping("/mypage/story/detail/{memberId}/{storyId}")
-	public @ResponseBody ResponseEntity myPageStoryDetailUpdate(@RequestBody  @Valid MyPageStoryDetailDto myPageStoryDetailDto ,BindingResult bindingResult, @PathVariable("memberId") Long memberId,@PathVariable("storyId") Long storyId ) {
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@PostMapping("/mypage/story/detail/update/{storyId}")
+	public @ResponseBody ResponseEntity myPageStoryDetailUpdate(@RequestBody  @Valid MyPageStoryDetailDto myPageStoryDetailDto ,BindingResult bindingResult, @PathVariable("storyId") Long storyId, Principal principal ) {
+		  if(bindingResult.hasErrors()){
+	            StringBuilder sb = new StringBuilder();
+	            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+
+	            for (FieldError fieldError : fieldErrors) {
+	                sb.append(fieldError.getDefaultMessage());
+	            }
+	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
+	        }
+		  try {
+			  Long result = myPageService.myPageStoryDetailUpdate(myPageStoryDetailDto, principal,storyId);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		 return new ResponseEntity<String>("Success", HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@PostMapping("/mypage/story/detail/delete/{storyId}")
+	public @ResponseBody ResponseEntity myPageStoryDetailDelete(@RequestBody  @Valid MyPageStoryDetailDto myPageStoryDetailDto ,BindingResult bindingResult, @PathVariable("storyId") Long storyId, Principal principal ) {
 
 		 
 		  if(bindingResult.hasErrors()){
@@ -166,13 +176,14 @@ public class MyPageController {
 	            }
 	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 	        }
+		 
 		  try {
 			  
-			  Long result = myPageService.myPageStoryDetailUpdate(myPageStoryDetailDto,memberId,storyId);
+			   Long result = myPageService.mypageStoryDetailDelete(principal,storyId);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		 return new ResponseEntity<Long>(memberId, HttpStatus.OK);
+		 return new ResponseEntity<String>("Delete Success", HttpStatus.OK);
 	}
 	
 	

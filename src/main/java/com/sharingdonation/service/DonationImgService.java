@@ -1,6 +1,8 @@
 package com.sharingdonation.service;
 
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sharingdonation.dto.DonationImgDto;
+import com.sharingdonation.dto.SharingImgDto;
 import com.sharingdonation.entity.DonationImg;
 import com.sharingdonation.repository.DonationImgRepository;
 
@@ -62,5 +66,15 @@ public class DonationImgService {
 	}
 	public void deleteImgsByDonationId(Long donationId) {
 		donationImgRepository.deleteAllByDonationId(donationId);
+		donationImgRepository.flush();
+	}
+	
+	public DonationImgDto getDonationImgDto(Long donationId) {
+		List<DonationImgDto> donationImgDtoList = donationImgRepository.findByDonationId(donationId).stream().map(DonationImgDto::of).toList();
+		List<DonationImgDto> filteredDtoList  = donationImgDtoList.stream().filter(s -> s.getRepimgYn().equals("Y")).toList();
+		if (filteredDtoList.size() == 0)
+			return null;
+		else 
+			return filteredDtoList.get(0);
 	}
 }

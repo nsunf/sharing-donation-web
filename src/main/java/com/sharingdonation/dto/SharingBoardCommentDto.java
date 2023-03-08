@@ -18,6 +18,8 @@ public class SharingBoardCommentDto {
 	
 	private String comment_member; //댓글 작성한 사람
 	
+	private String comment_email;
+	
 	private String regTime; //댓글 등록 날짜
 	
 	private String comment; //댓글 내용

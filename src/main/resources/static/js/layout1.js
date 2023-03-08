@@ -15,3 +15,5 @@ function setLayout() {
 
 	content.style.minHeight = window.innerHeight - (headerHeight + footerHeight) + "px";
 }
+
+

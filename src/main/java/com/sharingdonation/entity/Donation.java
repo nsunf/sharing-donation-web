@@ -113,15 +113,25 @@ public class Donation extends BaseTimeEntity{
 	
 	//모든엔티티가노출되면 보안상안좋아서 관리자와 일반을 나눔
 	public void updateAdminDonation(DonationAdminFormDto donationAdminFormDto) {
+		
+//		System.out.println("donation entity updateAdminDonation");
+//		System.out.println(donationAdminFormDto.getStartDate() +":"+ donationAdminFormDto.getEndDate());
+//		System.out.println();
+		
 		this.donationName = donationAdminFormDto.getDonationName();
 		this.donationPerson = donationAdminFormDto.getDonationPerson();
 		this.donationTel = donationAdminFormDto.getDonationTel();
 		this.subject = donationAdminFormDto.getSubject();
 		this.detail = donationAdminFormDto.getDetail();
 		this.price = donationAdminFormDto.getPrice();
-		LocalDate startDate = LocalDate.parse(donationAdminFormDto.getStartDate(), DateTimeFormatter.ISO_DATE);
+//		System.out.println("before");
+		LocalDate startDate = (donationAdminFormDto.getStartDate() != null && !donationAdminFormDto.getStartDate().isEmpty()) ? LocalDate.parse(donationAdminFormDto.getStartDate(), DateTimeFormatter.ISO_DATE) : null ;// LocalDate.parse("0000-00-00", DateTimeFormatter.ISO_DATE);
+//		String startDate = (donationAdminFormDto.getStartDate() != null && !donationAdminFormDto.getStartDate().isEmpty()) ? "not null" : null ;
+//		System.out.println(" startDate : " +startDate);
 		this.startDate = startDate;
-		LocalDate endDate = LocalDate.parse(donationAdminFormDto.getEndDate(), DateTimeFormatter.ISO_DATE);
+		LocalDate endDate = (donationAdminFormDto.getEndDate() != null && !donationAdminFormDto.getEndDate().isEmpty()) ? LocalDate.parse(donationAdminFormDto.getEndDate(), DateTimeFormatter.ISO_DATE) : null;//LocalDate.parse("0000-00-00", DateTimeFormatter.ISO_DATE);
+//		String endDate = (donationAdminFormDto.getEndDate() != null && !donationAdminFormDto.getEndDate().isEmpty()) ? "not null" : null;//LocalDate.parse("0000-00-00", DateTimeFormatter.ISO_DATE);
+//		System.out.println(" endDate : " +endDate);
 		this.endDate = endDate;
 //		this.startDate = (LocalDate) donationAdminFormDto.getStartDate();
 //		this.endDate = (LocalDate) donationAdminFormDto.getEndDate();

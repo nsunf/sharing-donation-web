@@ -41,7 +41,13 @@ public class DonationFormDto {
 	
 	private int price;
 	
+	private int pointPer;
 	
+	private int memberId;
+	
+	private String startDate;
+	
+	private String endDate;
 	
 	@NotNull(message = "목표포인트는 필수 입력 값입니다.")
 	private int goalPoint;

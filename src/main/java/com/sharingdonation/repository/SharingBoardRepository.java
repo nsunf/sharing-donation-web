@@ -12,4 +12,5 @@ public interface SharingBoardRepository extends JpaRepository <SharingBoard, Lon
 	
 	Page<SharingBoard> findBySharingNameContainsOrSubjectContainsOrderByRegTimeDesc (String name, String subject, Pageable pageable);
 	
+	SharingBoard findBySharingId(Long sharingId);
 }
