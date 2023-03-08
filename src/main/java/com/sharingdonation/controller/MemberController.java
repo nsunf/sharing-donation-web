@@ -84,7 +84,8 @@ public class MemberController {
 	} 
 	
     @GetMapping(value = "/login")
-    public String loginMember(HttpServletResponse response, HttpSession session){
+    public String loginMember(HttpServletResponse response, HttpSession session, Model model){
+    	model.addAttribute("memberFormDto", new MemberFormDto());
     	return "auth/login";
     }
 

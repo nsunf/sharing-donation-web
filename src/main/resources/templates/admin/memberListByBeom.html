@@ -72,13 +72,11 @@ function page(page) {
 								th:classappend="${members.first}? 'disabled'"><a
 								href="#" title="previous page"
 								th:onclick="'javascript:page(' + ${members.number - 1} + ')'"></a></li>
-
 							<li th:each="page: ${#numbers.sequence(start, end)}"
 								th:classappend="${members.number eq page-1}?'active':''"><a
 								class="page-link" th:inline="text"
 								th:onclick="'javascript:page(' + ${page - 1}+ ')'">[[${page}]]</a>
 							</li>
-
 							<li class="next"
 								th:classappend="${members.last}? 'disabled'"><a
 								href="#" title="next page"

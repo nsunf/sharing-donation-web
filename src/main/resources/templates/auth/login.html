@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+ 
 <script type="text/javascript" th:src="@{/js/cookie.js}"></script>
 <th:block layout:fragment="script">
 <script th:inline="javascript">
@@ -34,6 +34,8 @@ $(document).ready(function() {
         }
     });
 });
+
+ 
 </script>
 </th:block>
 
@@ -63,7 +65,62 @@ $(document).ready(function() {
         </form>
 
         <div class="links">
-            <a href="#">비밀번호를 잊어버리셨나요?</a>
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel">비밀번호 변경</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="" th:object="${memberFormDto}">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">이메일</label>
+            <input type="email" class="form-control" id="recipient-name" th:field="${memberFormDto.email}">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">이름</label>
+            <input type="text" class="form-control" id="recipient-name" th:field="${memberFormDto.name}">
+          </div>
+            <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">연락처</label>
+            <input type="text" class="form-control" id="recipient-name" th:field="${memberFormDto.cellphone}">
+          </div>	
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">다음</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">비밀번호 변경</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="" th:object="${memberFormDto}">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">새 비밀번호</label>
+            <input type="text" class="form-control" id="recipient-name" th:field="${memberFormDto.password}">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">새 비밀번호 확인</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">변경</button>
+      </div>
+    </div>
+  </div>
+</div>
+<a  data-bs-toggle="modal" href="#exampleModalToggle" role="button">비밀번호를 잊어버리셨나요?</a>
+           
         </div>
     </div>
   </section>
