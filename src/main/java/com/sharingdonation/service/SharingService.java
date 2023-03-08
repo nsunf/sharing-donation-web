@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sharingdonation.dto.SharingAdminSearchDto;
 import com.sharingdonation.dto.SharingDto;
 import com.sharingdonation.dto.SharingFormDto;
 import com.sharingdonation.dto.SharingImgDto;
@@ -54,8 +55,12 @@ public class SharingService {
 	// 나눔 정보 가져오기
 	public SharingDto getSharingDto(Long sharingId) {
 		Sharing sharing = sharingRepo.findById(sharingId).orElseThrow(EntityNotFoundException::new);
+		SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(sharingId);
 		
-		return SharingDto.valueOf(sharing);
+		SharingDto sharingDto = SharingDto.valueOf(sharing);
+		if (sharingImgDto != null)
+			sharingDto.setImgUrl(sharingImgDto.getImgUrl());
+		return sharingDto; 
 	}
 	
 	// 지역, 카테고리, 검색어 별 현재 진행중인 나눔 리스트
@@ -160,13 +165,6 @@ public class SharingService {
 
 	// 로그인 된 회원 나눔 받은 리스트
 	public Page<SharingDto> getAdoptedSharingDtoListById(Principal principal, Pageable pageable) {
-//		Page<Sharing> sharingList = sharingRepo.findByMemberIdAndDoneAndDelYnOrderByRegTimeDesc(memberId, "Y", "N", pageable);
-//		
-//		Page<SharingDto> sharingDtoList = sharingList.map(s -> {
-//			SharingImgDto sharingImgDto = sharingImgService.getSharingImgDto(s.getId());
-//			SharingDto sharingDto = SharingDto.valueOf(s, sharingImgDto.getImgUrl());
-//			return sharingDto;
-//		});
 		String email = principal.getName();
 		Member member = memberRepo.findByEmail(email);
 		
@@ -177,25 +175,8 @@ public class SharingService {
 	}
 	
 	// 관리자 페이지 나눔 목록
-	public Page<SharingDto> getAdminSharingDtoList(Pageable pageable, String filter, String search) {
-		Page<Sharing> sharingList = null;
-		
-		if (filter != null && search != null) {
-			if (filter.equals("title")) {
-				sharingList = sharingRepo.findByNameContainsAndDelYnOrderByRegTimeDesc(search, "N", pageable);
-			} else if (filter.equals("content")) {
-				sharingList = sharingRepo.findByDetailContainsAndDelYnOrderByRegTimeDesc(search, "N", pageable);
-			} else if (filter.equals("author")) {
-				List<Member> member = memberRepo.findAllByEmailContainsOrNickNameContains(search, search);
-				sharingList = sharingRepo.findByMemberIdInAndDelYnOrderByRegTimeDesc(member.stream().map(Member::getId).toList(), "N", pageable);
-			}
-		} else {
-			sharingList = sharingRepo.findAllByDelYnOrderByRegTimeDesc("N", pageable);
-		}
-
-		Page<SharingDto> sharingDtoList = sharingList.map(SharingDto::valueOf);
-		
-		return sharingDtoList;
+	public Page<SharingDto> getAdminSharingDtoList(SharingAdminSearchDto searchDto, Pageable pageable) {
+		return sharingRepo.getAdminSharingDtoList(searchDto, pageable);
 	}
 	
 	// 다중 나눔 승인

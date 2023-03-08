@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sharingdonation.dto.SharingStoryDto;
+import com.sharingdonation.dto.StoryAdminSearchDto;
 import com.sharingdonation.dto.StoryDto;
 import com.sharingdonation.dto.StoryFormDto;
 import com.sharingdonation.entity.Member;
@@ -49,6 +50,11 @@ public class StoryService {
 		Member member = memberRepo.findByEmail(email);
 		Story story = storyRepo.findBySharingIdAndMemberId(sharingId, member.getId());
 		return new StoryFormDto(story);
+	}
+	
+	public Story getAdoptedStory(Long sharingId) {
+		Story story = storyRepo.findBySharingIdAndChooseYn(sharingId, "Y");
+		return story;
 	}
 
 	// 사연 등록
@@ -97,8 +103,8 @@ public class StoryService {
 		return count;
 	}
 	// 관리자 사연 리스트
-	public Page<SharingStoryDto> getAdminSharingStoryPage(String search, Pageable pageable) {
-		return storyRepo.getAdminStoryPage(search, pageable);
+	public Page<SharingStoryDto> getAdminSharingStoryPage(StoryAdminSearchDto searchDto, Pageable pageable) {
+		return storyRepo.getAdminStoryPage(searchDto, pageable);
 	}
 	
 	// 관리자 사연 상세

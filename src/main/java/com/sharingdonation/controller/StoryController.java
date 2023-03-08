@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingdonation.dto.SharingDto;
 import com.sharingdonation.dto.SharingStoryDto;
+import com.sharingdonation.dto.StoryAdminSearchDto;
 import com.sharingdonation.dto.StoryDto;
 import com.sharingdonation.dto.StoryFormDto;
 import com.sharingdonation.entity.Member;
@@ -126,13 +129,14 @@ public class StoryController {
 	
 	// 관리자 스토리 관리 페이지
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping(value = {"/admin/story", "/admin/story/{search}"})
-	public String storyMngPage(@PathVariable Optional<String> search, @RequestParam Optional<Integer> page, Model model) {
+	@GetMapping("/admin/story")
+	public String storyMngPage(StoryAdminSearchDto searchDto, @RequestParam Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.orElse(0), 10);
-		Page<SharingStoryDto> sharingStoryDtoList =storyService.getAdminSharingStoryPage(search.orElse(""), pageable); 
 		
-		model.addAttribute("searchTerm", search.orElse(""));
-		model.addAttribute("sharingStoryDtoList", sharingStoryDtoList);
+		StoryAdminSearchDto _searchDto = searchDto == null ? new StoryAdminSearchDto() : searchDto;
+		
+		model.addAttribute("sharingStoryDtoList", storyService.getAdminSharingStoryPage(_searchDto, pageable));
+		model.addAttribute("searchDto", searchDto);
 		model.addAttribute("page", pageable.getPageNumber());
 		model.addAttribute("maxPage", 5);
 		return "admin/storyList";
@@ -149,5 +153,24 @@ public class StoryController {
 		model.addAttribute("storyDtoList", storyDtoList);
 
 		return "admin/storyDetail";
+	}
+	
+	// redirect to mypage story detail
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@GetMapping("/story/sharing-id/{sharingId}")
+	public String redirectMypageStory(@PathVariable Long sharingId, HttpServletRequest request, Principal principal) {
+		Story adoptedStory = storyService.getAdoptedStory(sharingId);
+		String email = principal.getName();
+		
+		System.err.println("++++++++");
+		System.out.println(adoptedStory.getMember().getEmail());
+		System.out.println(email);
+		System.err.println("++++++++");
+		
+		if (adoptedStory.getMember().getEmail().equals(email))
+			return "redirect:/mypage/story/detail/" + adoptedStory.getId();
+		else 
+			return "redirect:" + request.getHeader("Referer");
+			
 	}
 }
