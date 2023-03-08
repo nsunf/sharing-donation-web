@@ -31,6 +31,8 @@ public class SharingDto {
 	
 	private String areaName;
 	
+	private String authorEmail;
+
 	private String authorName;
 	
 	private String regTime;
@@ -59,6 +61,7 @@ public class SharingDto {
 		this.content = sharing.getDetail();
 		this.categoryName = sharing.getCategory().getCategoryName();
 		this.areaName = sharing.getArea().getGugun();
+		this.authorEmail = sharing.getMember().getEmail();
 		this.authorName = sharing.getMember().getName();
 		this.regTime = sharing.getRegTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		this.confirmYn = sharing.getConfirmYn();
@@ -76,6 +79,7 @@ public class SharingDto {
 		this.content = sharing.getDetail();
 		this.categoryName = sharing.getCategory().getCategoryName();
 		this.areaName = sharing.getArea().getGugun();
+		this.authorEmail = sharing.getMember().getEmail();
 		this.authorName = sharing.getMember().getName();
 		this.regTime = sharing.getRegTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		this.confirmYn = sharing.getConfirmYn();
@@ -116,6 +120,7 @@ public class SharingDto {
 				.content(sharing.getDetail())
 				.categoryName(sharing.getCategory().getCategoryName())
 				.areaName(sharing.getArea().getGugun())
+				.authorEmail(sharing.getMember().getEmail())
 				.authorName(sharing.getMember().getName())
 				.regTime(sharing.getRegTime().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")))
 				.confirmYn(sharing.getConfirmYn())

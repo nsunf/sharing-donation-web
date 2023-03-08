@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingdonation.dto.SharingDto;
-import com.sharingdonation.dto.SharingStoryDto;
 import com.sharingdonation.dto.StoryAdminSearchDto;
 import com.sharingdonation.dto.StoryDto;
 import com.sharingdonation.dto.StoryFormDto;
@@ -51,12 +49,17 @@ public class StoryController {
 	// 사연 등록
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	@PostMapping("/story/new")
-	public @ResponseBody ResponseEntity<?> addStory(@RequestBody Map<String, Object> map) {
+	public @ResponseBody ResponseEntity<?> addStory(@RequestBody Map<String, Object> map, Principal principal) {
 		
 		StoryFormDto storyFormDto = mapper.convertValue(map, StoryFormDto.class);
+		System.out.println(storyFormDto);
 		Long storyId = storyService.addStory(storyFormDto);
 		
-		return new ResponseEntity<Long>(storyId, HttpStatus.OK);
+		
+		if (storyId == null)
+			return new ResponseEntity<Long>(storyId, HttpStatus.BAD_REQUEST);
+		else
+			return new ResponseEntity<Long>(storyId, HttpStatus.OK);
 	}
 
 	// 사연 수정 모달
@@ -161,11 +164,6 @@ public class StoryController {
 	public String redirectMypageStory(@PathVariable Long sharingId, HttpServletRequest request, Principal principal) {
 		Story adoptedStory = storyService.getAdoptedStory(sharingId);
 		String email = principal.getName();
-		
-		System.err.println("++++++++");
-		System.out.println(adoptedStory.getMember().getEmail());
-		System.out.println(email);
-		System.err.println("++++++++");
 		
 		if (adoptedStory.getMember().getEmail().equals(email))
 			return "redirect:/mypage/story/detail/" + adoptedStory.getId();
