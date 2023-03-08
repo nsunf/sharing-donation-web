@@ -29,7 +29,7 @@
               <ul class="main-menu__list">
 								<th:block sec:authorize="isAuthenticated()" th:if="${#strings.startsWith(#httpServletRequest.servletPath, '/admin')}">
 									<!-- 관리자 -->
-									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/member')} ? 'current' : null"><a th:href="@{/admin/member}">회원관리</a></li>
+									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/member')} ? 'current' : null"><a th:href="@{/admin/memberList}">회원관리</a></li>
 									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/sharing')} ? 'current' : null"><a th:href="@{/admin/sharing}">나눔상품관리</a></li>
 									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/story')} ? 'current' : null"><a th:href="@{/admin/story}">사연관리</a></li>
 									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/donation')} ? 'current' : null"><a th:href="@{/admin/donation}">기부관리</a></li>
@@ -64,7 +64,7 @@
                 </th>
                 <th sec:authorize="isAuthenticated()" >
                 <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/sharing}">[[${#authentication.principal.username}]]</a>
-                <a sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/mypage/sharing}">[[${#authentication.principal.username}]]</a>
+                <a sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/mypage}">[[${#authentication.principal.username}]]</a>
                 <a href="/auth/logout" class="logout-btn py-1 px-2" >로그아웃</a>
                 </th>
               </div>

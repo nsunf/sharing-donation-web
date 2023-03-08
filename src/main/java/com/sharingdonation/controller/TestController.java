@@ -22,6 +22,7 @@ public class TestController {
 
 	@GetMapping("")
 	public String test() {
+		testDataService.initData();
 		return "main";
 	}
 	

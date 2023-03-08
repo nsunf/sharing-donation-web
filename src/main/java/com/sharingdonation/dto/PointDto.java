@@ -19,8 +19,8 @@ public class PointDto {
 	
 	private MoveType moveType;
 	
-	@NotBlank(message = "포인트는 필수 입력 값입니다.")
-	private String point;
+//	@NotBlank(message = "포인트는 필수 입력 값입니다.")
+	private Long point;
 	
 	private Long donationId;
 	

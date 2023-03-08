@@ -45,8 +45,14 @@ public class DonationService {
 	private final PointRepository pointRepository;
 	private final MemberRepository memberRepository;
 	
-	public Long saveDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList) throws Exception {
+	public Long saveDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList, Principal principal) throws Exception {
+		String email = principal.getName();
+		
+		System.out.println(principal.getName());
+		Member member = memberRepository.findByEmail(email);
+		donationFormDto.setMemberId(member.getId());
 		Donation donation = donationFormDto.createDonation();
+
 		donationRepository.save(donation);
 		
 		for(int i = 0; i < donationImgFileList.size(); i++) {
@@ -94,7 +100,7 @@ public class DonationService {
 	
 	
 	
-	public Long updateDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList) throws Exception {
+	public Long updateDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList, Principal principal) throws Exception {
 		Donation donation = donationRepository.findById(donationFormDto.getId())
 				.orElseThrow(EntityNotFoundException::new);
 				
@@ -169,12 +175,24 @@ public class DonationService {
 //		sharingService.approveSharing(member.getId(), donationId, point);
 		Long points = pointRepository.pointSearch(member.getId());
 		
-		if (points <= 0) {
-			System.out.println("service pointDonation pointspoints : " + points);
-			throw new IllegalStateException("사용 포인트가 없습니다.");
+		Long usePoint = pointDto.getPoint();
+		
+		if (usePoint <= 0) {
+			System.out.println("service pointDonation usePoint : " + usePoint);
+			throw new IllegalStateException("사용할 포인트를 입력해주세요.");
 		}
 		
+		if (points <= 0) {
+			System.out.println("service pointDonation points : " + points);
+			throw new IllegalStateException("사용 포인트가 없습니다.");
+		}
+		//Member member = memberRepository.findById(pointDto.getMemberId());
 //		List<OrderItem> orderItemList = new ArrayList<>(); 
+		
+		Integer memberPoint = (int) (member.getPoint() - usePoint);
+		member.setPoint(memberPoint);
+		memberRepository.save(member);
+		
 		System.out.println("service pointdonation pointDto.getDonationId() : " + pointDto.getDonationId());
 		pointDto.setMemberId(member.getId());
 		pointDto.setRegTime(LocalDateTime.now());
