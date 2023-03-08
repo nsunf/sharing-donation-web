@@ -14,12 +14,12 @@
 
 		<section class="auto-min-height">
 			<div class="my-5">
-			<h1 class="text-center">나눔 완료 게시판 관리</h1>
+				<h1 class="text-center">나눔 완료 게시판 관리</h1>
 			</div>
 			<!-- 검색창 -->
-			<div class="container vstack">
-				<div class="row">
-					<div class="col-3 my-auto me-auto">
+			<div class="container">
+				<div class="row hstack">
+					<div class="col-lx-2 col-lg-3 col-sm-5 ms-auto my-auto py-3">
 						<form class="input-group" action="/admin/sharedList/"
 							th:object="${sharingBoardFormDto}">
 							<input id="searchName" type="text" name="searchName"
@@ -28,31 +28,41 @@
 								style="background-color: #15C8A0; color: #fff;">검색</button>
 						</form>
 					</div>
-					<div class="col-2 my-auto hstack">
+				</div>
+
+				<div class="row">
+					<div class="col-lx-2 col-lg-4 ms-auto my-3 hstack">
 						<a class="btn ms-auto" href="/admin/sharing/"
-							style="background: var(--thm-primary); color: white;">게시글 등록</a>
+							style="background: var(--thm-primary); color: white; width: 200px;">나눔완료
+							게시글 등록</a>
 					</div>
 				</div>
-				<div class="row">
-					<div class="mx-auto my-5 p-3 col-12">
+			</div>
+			<div class="container">
+				<div class="row g-5">
+					<div class="mx-auto mb-5 p-3 col-12">
 						<table class="table">
 							<thead>
 								<tr class="border-top text-center">
-									<th>글번호</th>
-									<th>글제목</th>
-									<th>상품명</th>
-									<th>완료일자</th>
-									<th>삭제</th>
+									<th class="d-table-cell">글번호</th>
+									<th class="d-table-cell">글제목</th>
+									<th class="d-none d-md-table-cell">상품명</th>
+									<th class="d-none d-md-table-cell">완료일자</th>
+									<th class="d-table-cell">삭제</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="sharedTable, status: ${sharingBoardPageList}"
 									class="text-center">
-									<th th:text="${status.index+1}"></th>
-									<td><a th:href="'/sharing_board/view/'+${sharedTable.id}" th:text="${sharedTable.subject}"></</a></td>
-									<td th:text="${sharedTable.shared_name}"></td>
-									<td th:text="${sharedTable.regTime}"></td>
-									<td><button
+									<th th:text="${status.index+1}" class="d-table-cell"></th>
+									<td class="d-table-cell"><a
+										th:href="'/sharing_board/view/'+${sharedTable.id}"
+										th:text="${sharedTable.subject}"></a></td>
+									<td th:text="${sharedTable.shared_name}"
+										class="d-none d-md-table-cell"></td>
+									<td th:text="${sharedTable.regTime}"
+										class="d-none d-md-table-cell"></td>
+									<td class="d-table-cell"><button
 											class="thm-btn comment-form__btn py-1 px-3 m-0 rounded-2"
 											style="margin-left: 5px;" type="button"
 											sec:authorize="hasAnyAuthority('ROLE_ADMIN')"
@@ -63,28 +73,28 @@
 						</table>
 					</div>
 				</div>
-				<div class="archive-pages"
-					th:with="start=${(sharingBoardPageList.number/maxPage) * maxPage + 1}
+			</div>
+			<div class="archive-pages"
+				th:with="start=${(sharingBoardPageList.number/maxPage) * maxPage + 1}
       , end=(${(sharingBoardPageList.totalPages== 0) ? 1 : (start + (maxPage - 1) < sharingBoardPageList.totalPages ? start + (maxPage -1) : sharingBoardPageList.totalPages)})">
-					<ul>
-						<li class="previous"
-							th:classappend="${sharingBoardPageList.first}? 'disabled'"><a
-							title="previous page"
-							th:onclick="'javascript:page(' + ${sharingBoardPageList.number - 1} + ')'"></a></li>
+				<ul>
+					<li class="previous"
+						th:classappend="${sharingBoardPageList.first}? 'disabled'"><a
+						title="previous page"
+						th:onclick="'javascript:page(' + ${sharingBoardPageList.number - 1} + ')'"></a></li>
 
 
-						<li th:each="page: ${#numbers.sequence(start, end)}"
-							th:classappend="${sharingBoardPageList.number eq page-1} ? 'active':''">
-							<a th:inline="text"
-							th:onclick="'javascript:page(' + ${page - 1} + ')'">[[${page}]]</a>
-						</li>
+					<li th:each="page: ${#numbers.sequence(start, end)}"
+						th:classappend="${sharingBoardPageList.number eq page-1} ? 'active':''">
+						<a th:inline="text"
+						th:onclick="'javascript:page(' + ${page - 1} + ')'">[[${page}]]</a>
+					</li>
 
-						<li class="next"
-							th:classappend="${sharingBoardPageList.last}? 'disabled'"><a
-							title="next page"
-							th:onclick="'javascript:page(' + ${sharingBoardPageList.number + 1} + ')'"></a></li>
-					</ul>
-				</div>
+					<li class="next"
+						th:classappend="${sharingBoardPageList.last}? 'disabled'"><a
+						title="next page"
+						th:onclick="'javascript:page(' + ${sharingBoardPageList.number + 1} + ')'"></a></li>
+				</ul>
 			</div>
 		</section>
 	</th:block>
@@ -98,13 +108,13 @@
 					page(0);
 				});
 			});
-			
+
 			function page(page) {
 				var searchName = $("#searchName").val();
 				location.href = "/admin/sharedList/" + page + "?searchName="
 						+ searchName;
 			}
-			
+
 			function deleteSharingBoard(sharingBoardId) {
 				let deleteConf = confirm("삭제하시겠습니까?");
 
