@@ -37,7 +37,7 @@
 								<div class="news-two__img-box">
 									<div class="news-two__img">
 										<img th:src="${sharedPost.imgUrl}" style="width:100%; aspect-ratio: 1/1; object-fit: cover;" alt="사진" /> <a
-											href="news-details.html"> <i class="fa fa-plus"></i>
+											th:href="'/sharing_board/view/'+${sharedPost.id}"> <i class="fa fa-plus"></i>
 										</a>
 									</div>
 									<div class="news-two__date">
@@ -85,7 +85,7 @@
 
 				<li class="next"
 					th:classappend="${sharingBoardList.last}? 'disabled'"><a
-					href="#" title="next page"
+					title="next page"
 					th:onclick="'javascript:page(' + ${sharingBoardList.number + 1} + ')'"></a></li>
 			</ul>
 		</div>

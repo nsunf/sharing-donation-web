@@ -52,12 +52,13 @@ public class SharingBoardController {
 	// 게시판 화면 띄워줌
 	@GetMapping(value = { "/sharing_board", "/sharing_board/{page}" })
 	public String sharingBoard(@PathVariable("page") Optional<Integer> page, @RequestParam Optional<String> searchName,
-			Model model) {
+			Long id ,Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
 		Page<SharingBoardDto> sharingBoardPage = sharingBoardService
 				.getCompletePostPage(searchName.isPresent() ? searchName.get() : "", pageable);
 		model.addAttribute("maxPage", 5);
 		model.addAttribute("sharingBoardList", sharingBoardPage);
+		model.addAttribute("sharedHeartCount",sharingHeartService.getSharingBoardHeartCount(id));
 		return "sharing/sharedBoard";
 	}
 
@@ -74,7 +75,7 @@ public class SharingBoardController {
 
 	// 게시글 보기, 댓글 보여줌
 	@GetMapping(value = "/sharing_board/view/{shared_post_id}")
-	public String ViewSharedPost(Model model, @PathVariable("shared_post_id") Long id) {
+	public String viewSharedPost(Model model, @PathVariable("shared_post_id") Long id) {
 
 		SharingBoardDto sharingBoardDto = sharingBoardService.getCompletePost(id);
 		List<SharingBoardImgDto> sharingBoardImgDtoList = sharingBoardImgService.getSharingBoardImgs(id);
@@ -133,7 +134,19 @@ public class SharingBoardController {
 		}
 		return new ResponseEntity<Long>(sharingBoardId, HttpStatus.OK);
 	}
-
+	//관리자 페이지 게시글 삭제
+	@DeleteMapping(value="/admin/sharedList/{shared_post_id}/delete")
+	public @ResponseBody ResponseEntity deleteAdminSharingBoard(@PathVariable("shared_post_id") Long sharingBoardId) {
+		System.out.println("삭제 확인");
+		try {
+			sharingBoardImgService.deleteImgsBySharingBoardId(sharingBoardId);
+			sharingHeartService.deleteSharingBoardHeart(sharingBoardId);
+			sharingBoardService.deleteSharingBoard(sharingBoardId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Long>(sharingBoardId, HttpStatus.OK);
+	}
 	// 댓글 등록
 	@PostMapping(value = "/sharing_board/view/{shared_post_id}/comment")
 	public String insertComment(@PathVariable("shared_post_id") Long id, @RequestParam String comment, Model model,
@@ -176,7 +189,7 @@ public class SharingBoardController {
 			List<MultipartFile> sharingBoardImgFileList, Principal principal) {
 		String email = principal.getName();
 		Member member = memberRepository.findByEmail(email);
-
+		
 		SharingDto sharingDto = sharingService.getSharingDto(id);
 		model.addAttribute("sharingDto", sharingDto);
 
@@ -201,14 +214,30 @@ public class SharingBoardController {
 
 	///////////////////////////////////////////////////
 	// admin 나눔완료 게시글 관리 게시판 페이지 보여줌
-		@GetMapping(value = { "admin/sharedList", "admin/sharedList/{page}" })
-		public String adminSharedPostBoard(@PathVariable("page") Optional<Integer> page,
-				@RequestParam Optional<String> searchWord, Model model) {
-			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
-			Page<SharingBoardDto> sharingBoardPage = sharingBoardService
-					.getCompletePostPage(searchWord.isPresent() ? searchWord.get() : "", pageable);
-			model.addAttribute("maxPage", 5);
-			model.addAttribute("sharingBoardPageList",sharingBoardPage);
-			return "admin/sharedList";
-		}
+	@GetMapping(value = { "admin/sharedList", "admin/sharedList/{page}" })
+	public String adminSharedPostBoard(@PathVariable("page") Optional<Integer> page,
+			@RequestParam Optional<String> searchName, Model model) {
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+		Page<SharingBoardDto> sharingBoardPages = sharingBoardService
+				.getCompletePostPage(searchName.isPresent() ? searchName.get() : "", pageable);
+		
+		model.addAttribute("maxPage", 5);
+		model.addAttribute("sharingBoardPageList", sharingBoardPages);
+		//model.addAttribute("sharingBoradDtos",sharingBoardDto);
+		return "admin/sharedList";
+	}
+
+	// admin 나눔완료 게시글 관리 게시판 데이터 보여줌
+	@GetMapping(value = "admin/sharedList/view/{sharedPostId}")
+	public String adminViewSharedPost(Model model, @PathVariable("sharedPostId") Long id) {
+		SharingBoardDto sharingBoardDto = sharingBoardService.getCompletePost(id);
+		List<SharingBoardImgDto> sharingBoardImgDtoList = sharingBoardImgService.getSharingBoardImgs(id);
+		List<SharingBoardCommentDto> sharingBoardCommentDtoList = sharingBoardService.getBoardCommentList(id);
+
+		model.addAttribute("sharingBoardDto", sharingBoardDto);
+		model.addAttribute("sharingBoardImgDtoList", sharingBoardImgDtoList);
+		model.addAttribute("sharingBoardCommentDtoList", sharingBoardCommentDtoList);
+
+		return "admin/sharedList";
+	}
 }
