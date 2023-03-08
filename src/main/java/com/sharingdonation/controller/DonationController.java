@@ -136,7 +136,8 @@ public class DonationController {
 		try {
 			DonationFormDto donationFormDto = donationService.getDonationDtl(donationId);
 			
-			donationFormDto.getDonationImgDtoList();
+//			donationFormDto.getDonationImgDtoList();
+//			donationFormDto.getMember().
 			model.addAttribute("donationFormDto", donationFormDto);
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "존재하지 않는 상품입니다.");
