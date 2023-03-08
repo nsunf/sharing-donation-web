@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/layout-admin}">
+	layout:decorate="~{layouts/layout1}">
 <head>
 <meta charset="UTF-8">
 <meta name="_csrf" th:content="${_csrf.token}" />
@@ -161,14 +161,13 @@
 	<th:block layout:fragment="layout-content">
 		<section>
 			<div class="section container" style="width: margin: 0 auto;">
-				<div style="display: flex; margin-top: 20px;">
+				<div style="display: flex; margin:100px 0;">
 					<div style="margin: 0 auto;">
 						<!-- 상세 내용 div -->
-						<input type="hidden" id="mypageId">
-						<div
-							style="width: 780px; height: 756px; margin: 0 auto; padding: 0;">
+						
+						<div style="width: 780px; height: 756px; margin: 0 auto; padding: 0;">
 							<table class="privacy-tbl"
-								style="width: 100%; height: 100%; margin: 0; border: 1px solid black;">
+								style="width: 100%; height: 100%; margin: 0; ">
 								<thead></thead>
 								<tbody>
 									<tr style="height: 80px;">
@@ -228,8 +227,8 @@
 										</td>
 
 									</tr>
-									<tr style="height: 80px;">
-										<td colspan="1" style="padding-left: 18px;">
+									<tr>
+										<td colspan="1" style="padding-left: 18px; height: 130px;">
 											<div>
 												<label for="nickName" style="color: #20C097;">닉네임</label>
 											</div>
@@ -246,7 +245,7 @@
 													style="color: #20C097;">주소</label>
 											</div> <input type="text" class="ad-field privacyinput"
 											id="sample4_postcode" placeholder="우편번호" th:value="${member.zipCode}"
-											style="width: 250px;" >
+											style="width: 193px;" >
 											<input type="button"
 											class="ad-btn privacyinput"
 											style="background-color: #8D9391;"

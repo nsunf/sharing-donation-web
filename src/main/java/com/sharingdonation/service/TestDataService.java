@@ -128,7 +128,7 @@ public class TestDataService {
 				while (storyCount < 3) {
 					Member member = userList.get(random.nextInt(userList.size()));
 					Story findStory = storyRepo.findBySharingIdAndMemberId(sharing.getId(), member.getId());
-					if (findStory != null) continue;
+					if (findStory != null || sharing.getMember().getId().equals(member.getId())) continue;
 					
 					Story adoptedStory = storyRepo.findBySharingIdAndChooseYn(sharing.getId(), "Y");
 					if (adoptedStory != null) break;
