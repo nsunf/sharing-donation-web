@@ -4,6 +4,7 @@
 	layout:decorate="~{layouts/layout1}">
 <head>
 <meta charset="UTF-8" />
+<th:block>
 	<script th:inline="javascript">
 
 function page(page) {
@@ -27,14 +28,14 @@ function page(page) {
 			</div>
 			<!-- 검색창 -->
 			<div class="container">
-				<div class="w-25 my-auto ms-auto me-3">
-					<form class="input-group" method="get" th:action="@{/admin/memberList/{page}(page=${page})}">
-						<div th:object="${searchDto}" style="">
-							<input type="text" class="form-control" placeholder="검색" th:field="*{searchQuery}" id="search" name="search"/>
-							<button class="btn" type="submit" style="background-color: #15C8A0; color: #fff">검색</button>
+			<form class="input-group" method="get" th:action="@{/admin/memberList/{page}(page=${page})}">
+				<div class="w-25 my-auto ms-auto me-3 input-group">
+						<div th:object="${searchDto}" class="input-group mb-3">
+							<input type="search" class="form-control adminInputSearch" placeholder="검색" th:field="*{searchQuery}" id="search" name="search" />
+							<button class="btn btn-outline-secondary" id="button-addon2" type="submit" style="background-color: #15C8A0; color: #fff">검색</button>
 						</div>
-					</form>
 				</div>
+				</form>
 				<div class="mx-auto my-5 p-3">
 					<table class="table" style="text-align: center">
 						<thead>
@@ -50,9 +51,10 @@ function page(page) {
 							<th:block th:each="member, status: ${members.getContent()}">
 								<tr>
 									<td>[[${member.name}]]</td>
-									<td><span>[[${member.nickName}]]</span> <!-- "${{#strings.equals(member.role, T(com.sharingdonation.constant.Role).USER)}" -->
+									<td><span th:if="${#strings.equals(member.role, T(com.sharingdonation.constant.Role).USER)}">[[${member.nickName}]]</span> 
+									<!-- "${{#strings.equals(member.role, T(com.sharingdonation.constant.Role).USER)}" -->
 									</td>
-									<td><span>[[${member.nickName}]]</span></td>
+									<td><span th:if="${#strings.equals(member.role, T(com.sharingdonation.constant.Role).COM)}">[[${member.nickName}]]</span></td>
 									<td>[[${member.regTime}]]</td>
 								</tr>
 							</th:block>
