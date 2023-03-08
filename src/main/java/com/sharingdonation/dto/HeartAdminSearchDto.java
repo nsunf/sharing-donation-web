@@ -1,16 +1,18 @@
 package com.sharingdonation.dto;
 
+import com.sharingdonation.constant.HeartType;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class StoryAdminSearchDto {
-	// title | content | author
+public class HeartAdminSearchDto {
+	// title | author
 	private String filter = "title";
-
-	// all | proceeding | complete
-	private String status = "all";
+	
+	private HeartType type = HeartType.SHARING;
 
 	private String search = "";
 }
+

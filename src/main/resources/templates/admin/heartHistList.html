@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/sol/admin_sharing_md_ctr.css" />
+<style>
+td {
+	font-size: 13px;
+	font-weight: normal;
+}
+</style>
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+
+		<section class="auto-min-height">
+			<div class="my-5">
+				<h1 class="text-center">좋아요 관리</h1>
+			</div>
+			<!-- 검색창 -->
+			<div class="container">
+				<form class="hstack mb-3" th:action="@{/admin/heart}"
+					th:object="${searchDto}">
+					<div class="hstack gap-1">
+						<select class="form-select admin_md_ctr_select"
+							th:field="*{filter}" aria-label="Default select example">
+							<option value="title">글제목</option>
+							<option value="author">작성자</option>
+						</select> <select class="form-select admin_md_ctr_select"
+							th:field="*{type}" aria-label="Default select example">
+							<option
+								th:value="${T(com.sharingdonation.constant.HeartType).SHARING}">나눔</option>
+							<option
+								th:value="${T(com.sharingdonation.constant.HeartType).SHARING_BOARD}">나눔
+								완료 게시물</option>
+							<option
+								th:value="${T(com.sharingdonation.constant.HeartType).DONATION}">기부</option>
+							<option
+								th:value="${T(com.sharingdonation.constant.HeartType).DONATION_BOARD}">기부
+								완료 게시물</option>
+						</select>
+					</div>
+					<div class="ms-auto my-auto">
+						<div class="input-group mx-auto">
+							<input type="text" class="form-control" th:field="*{search}"
+								placeholder="검색" />
+							<button class="btn" type="submit"
+								style="background-color: #15C8A0; color: #fff">검색</button>
+						</div>
+					</div>
+				</form>
+
+				<div class="row">
+					<div class="col-4 ms-auto hstack">
+						<button id="delete-btn" class="btn btn-outline-secondary ms-auto"
+							type="button">삭제</button>
+					</div>
+				</div>
+
+				<div class="mx-auto mb-5 p-3">
+					<table class="table">
+						<thead>
+							<tr class="border-top">
+								<!--/* <th><input class="select-all-btn" type="checkbox" /></th> */-->
+								<th class="text-center">번호</th>
+								<th class="text-center">작성자</th>
+								<th class="text-center">제목</th>
+								<th class="text-center">타입</th>
+								<th class="text-center">지역명</th>
+								<th class="text-center">등록일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="heartHistDto, status : ${heartHistDtoList}">
+								<!--/* <th><input type="checkbox" class="sharing" name="sharing" th:value="${heartHistDto.id}" /></th> */-->
+								<td class="text-center">[[${heartHistDtoList.totalElements
+									- status.index - (heartHistDtoList.size * page)}]]</td>
+								<td class="text-center">[[${heartHistDto.memberNickname}]]</td>
+								<td class="text-center"><a
+									th:href="@{/sharing/{id}(id=${heartHistDto.targetId})}">[[${heartHistDto.title}]]</a></td>
+								<td class="text-center">[[${searchDto.type}]]</td>
+								<td class="text-center">[[${heartHistDto.comment}]]</td>
+								<td class="text-center">[[${heartHistDto.regTime}]]</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div>
+					<nav aria-label="Page navigation example" class="hstack mt-5"
+						th:with="start=${(heartHistDtoList.number/maxPage)*maxPage + 1}, end=(${(heartHistDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < heartHistDtoList.totalPages ? start + (maxPage - 1) : heartHistDtoList.totalPages)})">
+						<ul class="pagination mx-auto">
+							<li class="page-item"><a class="page-link page-prev"
+								th:onclick="'paging(' + ${heartHistDtoList.number-1} + ')'"
+								aria-label="Previous"
+								th:classappend="${heartHistDtoList.number eq 0}?'disabled':''">
+									<span aria-hidden="true">&laquo;</span>
+							</a></li>
+							<li class="page-item"
+								th:each="page: ${#numbers.sequence(start, end)}"
+								th:classappend="${heartHistDtoList.number eq page-1}?'active':''">
+								<a class="page-link page-num" th:inline="text"
+								th:onclick="'paging(' + ${page-1} + ')'">[[${page}]]</a>
+							</li>
+							<li class="page-item"><a class="page-link page-next"
+								th:onclick="'paging(' + ${heartHistDtoList.number+1} + ')'"
+								aria-label="Next"
+								th:classappend="${heartHistDtoList.number+1 ge heartHistDtoList.totalPages}?'disabled':''">
+									<span aria-hidden="true">&raquo;</span>
+							</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</section>
+
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+		<script src="/js/setAutoHeight.js"></script>
+		<script src="/js/pagination.js"></script>
+		<script src="/js/nsunf/adminSharingList.js"></script>
+	</th:block>
+</body>
+</html>
