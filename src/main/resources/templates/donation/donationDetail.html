@@ -128,7 +128,7 @@
               	onclick="pointModal();"
                 >에너지 기부</button
               >
-              <a th:href="@{'/donation/edit/' + *{id}}"
+              <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} or *{userAble eq 'Y'}" th:href="@{'/donation/edit/' + *{id}}"
                 class="causes-details__share-btn thm-btn py-2 px-3 ms-3"
                 
               >
