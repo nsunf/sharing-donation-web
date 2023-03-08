@@ -1,11 +1,11 @@
 package com.sharingdonation.dto;
 
 import java.time.LocalDate;
-
+import java.time.LocalDateTime;
 
 import org.modelmapper.ModelMapper;
 
- 
+import com.querydsl.core.annotations.QueryProjection;
 import com.sharingdonation.constant.Role;
 import com.sharingdonation.entity.Member;
 
@@ -43,9 +43,20 @@ public class MemberAllDto {
 	
 	private String delYn;
 	
+	private LocalDateTime regTime;
+	
 	private static ModelMapper modelMapper = new ModelMapper();
 	
 	public static MemberAllDto of(Member member) {
 		return modelMapper.map(member, MemberAllDto.class);
 	}
+	
+//	@QueryProjection
+//	public MemberAllDto(Long id, String name,  String nickName, LocalDateTime regTime, Role role) {
+//		this.id = id;
+//		this.name = name;
+//		this.nickName = nickName;
+//		this.regTime = regTime;
+//		this.role = role;
+//	}
 }

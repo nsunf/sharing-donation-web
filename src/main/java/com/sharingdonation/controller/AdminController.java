@@ -1,9 +1,13 @@
 package com.sharingdonation.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.sharingdonation.constant.Role;
 import com.sharingdonation.dto.MemberAllDto;
+import com.sharingdonation.dto.SearchDto;
 import com.sharingdonation.service.AdminService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,9 +40,9 @@ public class AdminController {
 			 model.addAttribute("member",memberAllDto);
  
 			 if (memberAllDto.getRole().equals(Role.USER)) {
-				 return "/admin/MemberManagement";
+				 return "/admin/memberManagement";
 			}if(memberAllDto.getRole().equals(Role.COM)) {
-				return "/admin/EnterpriceManagement";
+				return "/admin/enterpriceManagement";
 			}
 			  
 			return "/";
@@ -100,8 +105,21 @@ public class AdminController {
 		Long result = adminService.adminEnterpriceDelete(memberId);
 		return new ResponseEntity<Long>(memberId, HttpStatus.OK);
 	}
-	  
+	 
 	
+	
+	@GetMapping({"/admin/memberList", "/admin/memberList/{page}", "/admin/memberList/{page}?searchQuery={searchQuery}"})
+	public String adminMemberList(SearchDto searchDto, @PathVariable("page") Optional<Integer> page, Model model) {
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()  : 0,5);
+		Page<MemberAllDto> members = adminService.getAdminMemberList(searchDto, pageable);
+		
+		model.addAttribute("page", pageable.getPageNumber());
+		model.addAttribute("members",members);
+		model.addAttribute("searchDto",searchDto);
+		model.addAttribute("maxPage",5);
+		
+		return "/admin/memberListByBeom";
+	}
 
 	
 }

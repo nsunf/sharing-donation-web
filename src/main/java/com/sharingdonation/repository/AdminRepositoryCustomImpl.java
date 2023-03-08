@@ -1,10 +1,27 @@
 package com.sharingdonation.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.thymeleaf.util.StringUtils;
+
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharingdonation.dto.MemberAllDto;
+ 
+import com.sharingdonation.dto.SearchDto;
 import com.sharingdonation.entity.QMember;
+
+import lombok.val;
+ 
+
+ 
  
 
 public class AdminRepositoryCustomImpl implements AdminRepositoryCustom{
@@ -74,6 +91,63 @@ public AdminRepositoryCustomImpl(EntityManager em) {
 				.execute();
 		
 		return update;
+	}
+
+	
+	  private BooleanExpression nameLike(String searchQuery){
+	        return StringUtils.isEmpty(searchQuery) ? QMember.member.name.like("%" +searchQuery + "%") :null  ;
+	    }
+	  
+	  private BooleanExpression nickNameLike(String searchQuery){
+	        return StringUtils.isEmpty(searchQuery) ? QMember.member.nickName.like("%" +searchQuery + "%") :null ;
+	    }
+	  
+	   
+	  
+	@Override
+	public Page<MemberAllDto> getAdminMemberList(SearchDto searchDto, Pageable pageable) {
+		 QMember member = QMember.member;
+		// val containsName = member.name.contains(searchDto.getSearchQuery());//%SearchQuery%
+		// val containsNickName = member.nickName.contains(searchDto.getSearchQuery());//%SearchQuery%
+		 List<MemberAllDto> content = queryFactory
+				 .select(Projections.fields(MemberAllDto.class,
+						 member.id,
+						 member.name,
+						 member.nickName,
+						 member.regTime,
+						 member.role))
+				 .from(member)
+				 //.where(member.delYn.eq("N").or(nameLike(searchDto.getSearchQuery())).or(nickNameLike(searchDto.getSearchQuery())))
+				 .where(member.delYn.eq("N"))
+				 .where(member.name.contains(searchDto.getSearchQuery()).or(member.nickName.contains(searchDto.getSearchQuery())))
+				 .orderBy(member.id.desc())
+	             .offset(pageable.getOffset())
+	             .limit(pageable.getPageSize())
+	             .fetch();	
+				 
+//		long total = queryFactory
+//				.select(Wildcard.count)
+//				.from(member)
+//				.where(member.delYn.eq("N"))
+//				.fetchOne();
+		
+		long total = queryFactory
+				.select(Projections.fields(MemberAllDto.class,
+						 member.id,
+						 member.name,
+						 member.nickName,
+						 member.regTime,
+						 member.role))
+				 .from(member)
+				 //.where(member.delYn.eq("N").or(nameLike(searchDto.getSearchQuery())).or(nickNameLike(searchDto.getSearchQuery())))
+				 .where(member.delYn.eq("N"))
+				 .where(member.name.contains(searchDto.getSearchQuery()).or(member.nickName.contains(searchDto.getSearchQuery())))
+				 .orderBy(member.id.desc())
+	             .offset(pageable.getOffset())
+	             .limit(pageable.getPageSize())
+	             .fetchCount();
+
+				 return new PageImpl<>(content, pageable, total);
 	}
 	
 	
