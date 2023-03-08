@@ -27,7 +27,7 @@
               </a>
 
               <ul class="main-menu__list">
-								<th:block th:if="${#strings.startsWith(#httpServletRequest.servletPath, '/admin')}">
+								<th:block sec:authorize="isAuthenticated()" th:if="${#strings.startsWith(#httpServletRequest.servletPath, '/admin')}">
 									<!-- 관리자 -->
 									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/member')} ? 'current' : null"><a th:href="@{/admin/member}">회원관리</a></li>
 									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/sharing')} ? 'current' : null"><a th:href="@{/admin/sharing}">나눔상품관리</a></li>
@@ -39,7 +39,7 @@
 									<li class="text-center"><a href="#">기부<br/>포인트</a></li> -->
 								</th:block>
 
-								<th:block th:unless="${#strings.startsWith(#httpServletRequest.servletPath, '/admin')}">
+								<th:block sec:authorize="isAuthenticated()" th:unless="${#strings.startsWith(#httpServletRequest.servletPath, '/admin')}">
 									<!-- 일반 -->
 									<li class="dropdown" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing')} ? 'current' : null">
 										<a th:href="@{/sharing}">나눔</a>

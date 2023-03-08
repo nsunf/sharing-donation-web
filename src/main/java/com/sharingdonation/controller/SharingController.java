@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sharingdonation.constant.Role;
 import com.sharingdonation.dto.MyPageMainDto;
+import com.sharingdonation.dto.SharingAdminSearchDto;
 import com.sharingdonation.dto.SharingDto;
 import com.sharingdonation.dto.SharingFormDto;
 import com.sharingdonation.entity.Member;
@@ -253,12 +254,13 @@ public class SharingController {
 	// 관리자 나눔 리스트
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/admin/sharing")
-	public String adminSharing(@RequestParam Optional<Integer> page, @RequestParam Optional<String> filter, @RequestParam Optional<String> search, Model model) {
+	public String adminSharing(SharingAdminSearchDto searchDto, @RequestParam Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.orElse(0), 10);
 		
-		model.addAttribute("sharingDtoList", sharingService.getAdminSharingDtoList(pageable, filter.orElse(null), search.orElse(null)));
-		model.addAttribute("filter", filter.orElse("title"));
-		model.addAttribute("search", search.orElse(""));
+		SharingAdminSearchDto _searchDto = searchDto == null ? new SharingAdminSearchDto() : searchDto;
+		
+		model.addAttribute("sharingDtoList", sharingService.getAdminSharingDtoList(searchDto, pageable));
+		model.addAttribute("searchDto", _searchDto);
 		model.addAttribute("page", pageable.getPageNumber());
 		model.addAttribute("maxPage", 5);
 
