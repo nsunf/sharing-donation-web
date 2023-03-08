@@ -43,7 +43,7 @@ public class DonationFormDto {
 	
 	private int pointPer;
 	
-	private int memberId;
+	private Long memberId;
 	
 	private String startDate;
 	
