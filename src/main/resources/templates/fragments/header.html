@@ -33,9 +33,9 @@
 									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/sharing')} ? 'current' : null"><a th:href="@{/admin/sharing}">나눔상품관리</a></li>
 									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/story')} ? 'current' : null"><a th:href="@{/admin/story}">사연관리</a></li>
 									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/donation')} ? 'current' : null"><a th:href="@{/admin/donation}">기부관리</a></li>
+									<li class="text-center"  th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/heart')} ? 'current' : null"><a th:href="@{/admin/heart}">좋아요관리</a></li>
 									<!-- <li class="text-center"><a href="#">카테고리<br/>관리</a></li>
 									<li class="text-center"><a href="#">지역<br/>관리</a></li>
-									<li class="text-center"><a href="#">좋아요<br/>관리</a></li>
 									<li class="text-center"><a href="#">기부<br/>포인트</a></li> -->
 								</th:block>
 

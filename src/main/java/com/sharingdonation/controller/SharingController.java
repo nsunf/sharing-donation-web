@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sharingdonation.constant.Role;
+import com.sharingdonation.dto.HeartAdminSearchDto;
 import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.SharingAdminSearchDto;
 import com.sharingdonation.dto.SharingDto;
@@ -39,6 +40,7 @@ import com.sharingdonation.repository.MemberRepository;
 import com.sharingdonation.repository.SharingBoardRepository;
 import com.sharingdonation.service.AreaService;
 import com.sharingdonation.service.CategoryService;
+import com.sharingdonation.service.HeartHistService;
 import com.sharingdonation.service.MyPageService;
 import com.sharingdonation.service.SharingHeartService;
 import com.sharingdonation.service.SharingImgService;
@@ -60,6 +62,7 @@ public class SharingController {
 	private final MemberRepository memberRepo;
 	private final MyPageService myPageService;
 	private final SharingBoardRepository sharingBoardRepository;
+	private final HeartHistService heartHistService;
 	
 	private static Member user = null;
 	private static Member com = null;
@@ -321,5 +324,19 @@ public class SharingController {
 		sharingHeartService.toggleSharingHeart(member.getId(), id);
 		Long heartCount = sharingHeartService.getSharingHeartCount(id);
 		return new ResponseEntity<Long>(heartCount, HttpStatus.OK);
+	}
+
+	// admin controller 이동
+	@GetMapping("/admin/heart")
+	public String heartList(HeartAdminSearchDto searchDto, @RequestParam Optional<Integer> page, Model model) {
+		Pageable pageable = PageRequest.of(page.orElse(0), 50);
+		HeartAdminSearchDto _searchDto = searchDto == null ? new HeartAdminSearchDto() : searchDto;
+		
+		model.addAttribute("heartHistDtoList", heartHistService.getHeartDtoList(_searchDto, pageable));
+		model.addAttribute("searchDto", _searchDto);
+		model.addAttribute("page", pageable.getPageNumber());
+		model.addAttribute("maxPage", 5);
+		
+		return "/admin/heartHistList";
 	}
 }
