@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +26,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingdonation.dto.SharingDto;
 import com.sharingdonation.dto.SharingStoryDto;
+import com.sharingdonation.dto.StoryAdminSearchDto;
 import com.sharingdonation.dto.StoryDto;
 import com.sharingdonation.dto.StoryFormDto;
 import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.Story;
 import com.sharingdonation.repository.MemberRepository;
+import com.sharingdonation.service.PointService;
 import com.sharingdonation.service.SharingService;
 import com.sharingdonation.service.StoryService;
 
@@ -43,6 +45,7 @@ public class StoryController {
 	private final MemberRepository memberRepo;
 	private final StoryService storyService;
 	private final SharingService sharingService;
+	private final PointService pointService;
 	ObjectMapper mapper = new ObjectMapper();
 
 	// 사연 등록
@@ -97,7 +100,13 @@ public class StoryController {
 	@PostMapping("/story/adopt/{storyId}")
 	public @ResponseBody ResponseEntity<?> adoptStory(@PathVariable Long storyId) {
 		Story story = storyService.adoptStory(storyId);
-		return new ResponseEntity<Integer>(story == null ? 0 : 1, HttpStatus.OK);
+		boolean storyAdopted = story != null;
+		
+		if (storyAdopted) {
+			pointService.saveSharingPoint(story);
+		}
+		
+		return new ResponseEntity<Integer>(storyAdopted ? 1 : 0, HttpStatus.OK);
 	}
 	
 	// 사연 삭제
@@ -120,13 +129,14 @@ public class StoryController {
 	
 	// 관리자 스토리 관리 페이지
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping(value = {"/admin/story", "/admin/story/{search}"})
-	public String storyMngPage(@PathVariable Optional<String> search, @RequestParam Optional<Integer> page, Model model) {
+	@GetMapping("/admin/story")
+	public String storyMngPage(StoryAdminSearchDto searchDto, @RequestParam Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.orElse(0), 10);
-		Page<SharingStoryDto> sharingStoryDtoList =storyService.getAdminSharingStoryPage(search.orElse(""), pageable); 
 		
-		model.addAttribute("searchTerm", search.orElse(""));
-		model.addAttribute("sharingStoryDtoList", sharingStoryDtoList);
+		StoryAdminSearchDto _searchDto = searchDto == null ? new StoryAdminSearchDto() : searchDto;
+		
+		model.addAttribute("sharingStoryDtoList", storyService.getAdminSharingStoryPage(_searchDto, pageable));
+		model.addAttribute("searchDto", searchDto);
 		model.addAttribute("page", pageable.getPageNumber());
 		model.addAttribute("maxPage", 5);
 		return "admin/storyList";
@@ -143,5 +153,24 @@ public class StoryController {
 		model.addAttribute("storyDtoList", storyDtoList);
 
 		return "admin/storyDetail";
+	}
+	
+	// redirect to mypage story detail
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@GetMapping("/story/sharing-id/{sharingId}")
+	public String redirectMypageStory(@PathVariable Long sharingId, HttpServletRequest request, Principal principal) {
+		Story adoptedStory = storyService.getAdoptedStory(sharingId);
+		String email = principal.getName();
+		
+		System.err.println("++++++++");
+		System.out.println(adoptedStory.getMember().getEmail());
+		System.out.println(email);
+		System.err.println("++++++++");
+		
+		if (adoptedStory.getMember().getEmail().equals(email))
+			return "redirect:/mypage/story/detail/" + adoptedStory.getId();
+		else 
+			return "redirect:" + request.getHeader("Referer");
+			
 	}
 }

@@ -69,6 +69,24 @@ public class SharingDto {
 		this.endDate = sharing.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 	
+	@QueryProjection
+	public SharingDto(Sharing sharing) {
+		this.id = sharing.getId();
+		this.name = sharing.getName();
+		this.content = sharing.getDetail();
+		this.categoryName = sharing.getCategory().getCategoryName();
+		this.areaName = sharing.getArea().getGugun();
+		this.authorName = sharing.getMember().getName();
+		this.regTime = sharing.getRegTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		this.confirmYn = sharing.getConfirmYn();
+		this.done = sharing.getDone();
+		this.status = sharing.getDone().equals("Y") ? "완료" : (sharing.getConfirmYn().equals("Y") ? "진행중": "승인대기");
+		if (sharing.getStartDate() != null)
+			this.startDate = sharing.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		if (sharing.getEndDate() != null)
+			this.endDate = sharing.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	}
+	
 	public static SharingDto valueOf(Sharing sharing, String imgUrl) {
 		String _status = sharing.getDone().equals("Y") ? "완료" : (sharing.getConfirmYn().equals("Y") ? "진행중": "승인대기");
 

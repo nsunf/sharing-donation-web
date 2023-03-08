@@ -105,9 +105,9 @@ public class TestDataService {
 		List<Area> areaList = areaRepository.findAll();
 		
 		//회원
-		IntStream.range(0, 10).forEach(i -> addMember(Role.USER, i));
-		IntStream.range(0, 10).forEach(i -> addMember(Role.COM, i));
-		addMember(Role.ADMIN, 0);
+		IntStream.range(1, 11).forEach(i -> addMember(Role.USER, i));
+		IntStream.range(1, 11).forEach(i -> addMember(Role.COM, i));
+		addMember(Role.ADMIN, 1);
 		List<Member> memberList = memberRepo.findAll();
 		List<Member> userList = memberList.stream().filter(member -> member.getRole() == Role.USER).toList();
 		List<Member> comList = memberList.stream().filter(member -> member.getRole() == Role.COM).toList();
@@ -128,7 +128,7 @@ public class TestDataService {
 				while (storyCount < 3) {
 					Member member = userList.get(random.nextInt(userList.size()));
 					Story findStory = storyRepo.findBySharingIdAndMemberId(sharing.getId(), member.getId());
-					if (findStory != null) continue;
+					if (findStory != null || sharing.getMember().getId().equals(member.getId())) continue;
 					
 					Story adoptedStory = storyRepo.findBySharingIdAndChooseYn(sharing.getId(), "Y");
 					if (adoptedStory != null) break;

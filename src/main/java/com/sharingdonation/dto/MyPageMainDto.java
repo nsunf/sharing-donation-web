@@ -4,8 +4,7 @@ package com.sharingdonation.dto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
- 
- 
+import com.querydsl.core.annotations.QueryProjection;
 import com.sharingdonation.constant.Role;
 
 import lombok.Getter;
@@ -43,6 +42,23 @@ public class MyPageMainDto {
 	public MyPageMainDto() {}
 
 	public MyPageMainDto(Long id,String nickName,int point, Long share_reg, Long share_take, Long share_apply, Long share_story, String name, LocalDateTime regTime, Role role) {
+		this.id = id;
+		this.point = point;
+		this.share_reg = share_reg;
+		this.share_take = share_take;
+		this.share_apply = share_apply;
+		this.share_story = share_story;
+		this.name = name;
+		this.regTime = regTime;
+		this.nickName = nickName;
+		this.role = role;
+ 
+		this.regTimeStr = regTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+	}
+
+	@QueryProjection
+	public MyPageMainDto(Long id, int point, Long share_reg, Long share_take, Long share_apply, Long share_story, String name, LocalDateTime regTime, String nickname, Role role) {
 		this.id = id;
 		this.point = point;
 		this.share_reg = share_reg;

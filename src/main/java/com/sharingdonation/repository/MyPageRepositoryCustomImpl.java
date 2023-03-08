@@ -24,7 +24,8 @@ import com.sharingdonation.dto.MyPageMainDto;
 import com.sharingdonation.dto.MyPagePrivacyDto;
 import com.sharingdonation.dto.MyPageStoryDetailDto;
 import com.sharingdonation.dto.MyPageStoryListDto;
- 
+import com.sharingdonation.dto.QMyPageMainDto;
+import com.sharingdonation.entity.Member;
 import com.sharingdonation.entity.QMember;
 import com.sharingdonation.entity.QPoint;
 import com.sharingdonation.entity.QSharing;
@@ -52,7 +53,7 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 		
 		
 		 MyPageMainDto result = queryFactory
-				 .select(Projections.fields(MyPageMainDto.class,
+				 .select(new QMyPageMainDto(
 						 member.id,
 						 member.point,
 						 ExpressionUtils.as(JPAExpressions.select(sharing.id.count())
