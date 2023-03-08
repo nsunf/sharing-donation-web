@@ -9,6 +9,7 @@ import javax.persistence.EntityNotFoundException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -91,8 +92,10 @@ public class SharingService {
 		Area area = areaRepo.findById(sharingFormDto.getAreaId()).orElseThrow(EntityNotFoundException::new);
 
 		Sharing sharing = sharingFormDto.createSharing(category, area);
+		Member member = memberRepo.findById(memberId).get();
 		
-		sharing.setMember(memberRepo.findById(memberId).get());
+		sharing.setMember(member);
+		sharing.setCreateBy(member.getEmail());
 		
 
 		sharingRepo.save(sharing);
@@ -115,12 +118,16 @@ public class SharingService {
 		Category category = categoryRepo.findById(sharingFormDto.getCategoryId()).orElseThrow(EntityNotFoundException::new);
 		Area area = areaRepo.findById(sharingFormDto.getAreaId()).orElseThrow(EntityNotFoundException::new);
 		
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		Member member = memberRepo.findByEmail(email);
+		
 		sharing.setCategory(category);
 		sharing.setArea(area);
 		
 		sharing.setName(sharingFormDto.getName());
 		sharing.setDetail(sharingFormDto.getContent());
 		sharing.setUpDateTime(LocalDateTime.now());
+		sharing.setModifyBy(member.getEmail());
 		
 		if (sharingImgFileList.size() >= 0 && !sharingImgFileList.get(0).isEmpty()) {
 			sharingImgService.deleteImgsBySharingId(sharingFormDto.getId());
@@ -139,7 +146,12 @@ public class SharingService {
 	// 나눔 삭제
 	public void deleteSharing(Long sharingId) {
 		Sharing sharing = sharingRepo.findById(sharingId).orElseThrow(EntityNotFoundException::new);
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		Member member = memberRepo.findByEmail(email);
+
 		sharing.setDelYn("Y");
+		sharing.setModifyBy(member.getEmail());
+		sharing.setUpDateTime(LocalDateTime.now());
 	}
 	
 	// 나눔 수정시 나눔 폼 데이터 가져오기
