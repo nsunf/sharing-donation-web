@@ -1,9 +1,11 @@
 package com.sharingdonation.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 //import com.myshop.controller.SessionManager;
 import com.sharingdonation.dto.MemberFormDto;
@@ -83,8 +87,11 @@ public class MemberController {
         return "redirect:/";
 	} 
 	
+	//////////////////////////////////////////////////////////////////
+	
     @GetMapping(value = "/login")
-    public String loginMember(HttpServletResponse response, HttpSession session){
+    public String loginMember(HttpServletResponse response, HttpSession session, Model model){
+    	model.addAttribute("memberFormDto", new MemberFormDto());
     	return "auth/login";
     }
 
@@ -96,6 +103,22 @@ public class MemberController {
         return "auth/login";
     }
 	
+    
+    @PostMapping(value = "/login2")
+    public String loginMember2(HttpServletResponse response, HttpSession session, @RequestParam String email){
+    	
+    	session.setAttribute("userSessionId", email);
+    	sessionManager.createSession("sessionPerson2", response);
+    	    	 
+    	return "/auth/login";
+    }
+    //////////////////////////////////////////////////////////////////////
+
+
+    
+    
+    
+    
 //	@GetMapping(value = "/member/{memberId}")
 //	public String donationDtl(Model model, @PathVariable("donationId") Long DonationId) {
 //		return "auth/memberDtl";
