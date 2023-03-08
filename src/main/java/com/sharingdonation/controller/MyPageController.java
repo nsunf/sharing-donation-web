@@ -1,7 +1,7 @@
 package com.sharingdonation.controller;
  
 
-import java.io.Console;
+ 
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -50,6 +51,8 @@ public class MyPageController {
 		return "/myPage/mypageMain";
 	}
 	
+	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/mypage/privacy")
 	public String myprivacy(Principal principal,Model model) {
 		MyPagePrivacyDto myPagePrivacyDto = myPageService.getMyPagePrivacy(principal);
@@ -58,9 +61,8 @@ public class MyPageController {
 	}
 	
 	
-	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/mypage/privacy")
- 
 	public @ResponseBody ResponseEntity myprivacyUpdate(@RequestBody  @Valid MyPagePrivacyDto myPagePrivacyDto,BindingResult bindingResult, Principal principal ) {
 		  if(bindingResult.hasErrors()){
 	            StringBuilder sb = new StringBuilder();
@@ -80,7 +82,7 @@ public class MyPageController {
 	}
 	
 	
-	
+	@PreAuthorize("hasRole('ROLE_COM')")
 	@GetMapping("/mypage/enterpriceprivacy")
 	public String myEnterpricePrivacy(Principal principal, Model model){
 		MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto = myPageService.getMyPageEnterPricePrivacyDto(principal);
@@ -88,6 +90,7 @@ public class MyPageController {
 		return "/myPage/mypage-Enterprice-privacy";
 	}
 	
+	@PreAuthorize("hasRole('ROLE_COM')")
 	@PostMapping("/mypage/enterpriceprivacy")
 	public @ResponseBody ResponseEntity myEnterpricePrivacyUpdate(@RequestBody  @Valid MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto,BindingResult bindingResult, Principal principal ) {
 
@@ -110,7 +113,7 @@ public class MyPageController {
 	}
 	
 	
-	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping({"/mypage/story", "/mypage/story/{page}"})
 	public String myPageStory(Principal principal, @PathVariable("page") Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
@@ -118,7 +121,7 @@ public class MyPageController {
 		Page<MyPageStoryListDto> myPageStoryListDto = myPageService.getMyPageStoryList(principal, pageable);
 		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(principal);
 		
-		System.out.println(myPageStoryListDto);
+	
 		model.addAttribute("page", pageable.getPageNumber()); //현재 페이지
 		model.addAttribute("mypage",myPageMainDto);
 		model.addAttribute("myPageStoryListDto",myPageStoryListDto);
@@ -128,7 +131,7 @@ public class MyPageController {
 	}
 	
 
-	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/mypage/story/detail/{storyId}")
 	public String myPageStoryDetail( @PathVariable("storyId") Long storyId, Principal principal, Model model) {
 		MyPageStoryDetailDto myPageStoryDetailDto = myPageService.getMyPageStoryDetail(principal, storyId);
@@ -139,6 +142,7 @@ public class MyPageController {
 		return "/mypage/mypage-story-detail";
 	}
 	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/mypage/story/detail/update/{storyId}")
 	public @ResponseBody ResponseEntity myPageStoryDetailUpdate(@RequestBody  @Valid MyPageStoryDetailDto myPageStoryDetailDto ,BindingResult bindingResult, @PathVariable("storyId") Long storyId, Principal principal ) {
 		  if(bindingResult.hasErrors()){
@@ -158,6 +162,7 @@ public class MyPageController {
 		 return new ResponseEntity<String>("Success", HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/mypage/story/detail/delete/{storyId}")
 	public @ResponseBody ResponseEntity myPageStoryDetailDelete(@RequestBody  @Valid MyPageStoryDetailDto myPageStoryDetailDto ,BindingResult bindingResult, @PathVariable("storyId") Long storyId, Principal principal ) {
 

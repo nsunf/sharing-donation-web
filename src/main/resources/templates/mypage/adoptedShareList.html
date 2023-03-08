@@ -25,7 +25,7 @@
 		<div class="row row-cols-1 row-cols-lg-2">
 			<!-- grid -->
 			<div class="col" th:each="sharingDto: ${sharingDtoList.getContent()}">
-				<div class="card mb-3" href="#" style="max-width: 540px; background: #F0F5F4; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#storyModal" th:onclick="'getStoryDto(' + ${sharingDto.id} + ')'">
+				<div class="card mb-3" href="#" style="max-width: 540px; background: #F0F5F4; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#sharingModal" th:onclick="'setModalLinks(' + ${sharingDto.id} + ')'">
 					<div class="row g-0">
 						<div class="col-md-4 p-0">
 							<img th:src="${sharingDto.imgUrl}" class="img-fluid w-100 h-100 rounded-start object-fit-cover" alt="sharing-img" style="aspect-ratio: 3/4;">
@@ -65,48 +65,20 @@
 		</div>
 		
 		<!--modal -->
-		<div class="modal fade" id="storyModal" tabindex="-1" aria-labelledby="storyModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
+		<div class="modal fade" id="sharingModal" tabindex="-1" aria-labelledby="sharingModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title fs-5" id="storyModalLabel">등록한 사연</h5>
-						<span id="storyRegTime" class="ms-auto"></span>
+						<h5 class="modal-title fs-5" id="sharingModalLabel">상세 정보</h5>
 						<button type="button" class="btn-close ms-1" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-          	<textarea class="form-control" id="storyModalContent" rows="10" readonly disabled></textarea>
-					</div>
-					<div class="modal-footer">
-						<a class="sharing-link align-middle me-auto">나눔 바로가기</a>
-						<button type="button" class="btn btn-custom btn-custom-close" data-bs-dismiss="modal">닫기</button>
-						<button type="button" id="editStoryBtn" class="btn btn-custom btn-custom-regist" data-bs-target="#storyFormModal" data-bs-toggle="modal">수정</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="modal fade" id="storyFormModal" tabindex="-1" aria-labelledby="storyFormModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
-				<form class="modal-content" name="storyFrm" th:action="@{/mypage/story/edit}" method="post">
-					<input type="hidden" id="storyId" name="id" />
-					<input type="hidden" id="memberId" name="memberId" />
-					<div class="modal-header">
-						<h5 class="modal-title fs-5" id="storyFormModalLabel">등록한 사연</h5>
-						<span id="storyFormRegTime" class="ms-auto"></span>
-						<button type="button" class="btn-close ms-1" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-          	<textarea class="form-control" id="storyFormModalContent" name="content" rows="10"></textarea>
-						<div class="hstack">
-							<span id="textLength" class="ms-auto">0/300</span>
+						<div class="vstack gap-4">
+							<a id="sharingDetailLink" class="w-100"><button class="btn btn-custom btn-custom-regist rounded-1 w-100 py-3">나눔 상세</button></a>
+							<a id="storyDetailLink" class="w-100"><button class="btn btn-custom btn-custom-regist rounded-1 w-100 py-3">사연 상세</button></a>
 						</div>
 					</div>
-					<div class="modal-footer">
-						<a class="sharing-link align-middle me-auto">나눔 바로가기</a>
-						<button type="button" class="btn btn-custom btn-custom-close" data-bs-dismiss="modal">닫기</button>
-						<button type="submit" id="updateStoryBtn" class="btn btn-custom btn-custom-regist">제출</button>
-					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 		

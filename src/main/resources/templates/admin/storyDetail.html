@@ -52,14 +52,26 @@
  			</div>
  			
  			<div class="col-8 mt-4 mx-auto">
- 				<div class="hstack w-100">
+ 				<p class="hstack w-100">
 					<button class="ms-auto btn btn-custom btn-custom-regist" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 						내용 더보기
 					</button>
-				</div>
-				<div class="collapse mt-4" id="collapseExample">
+				</p>
+				<div class="collapse" id="collapseExample">
 					<div class="card card-body">
-						Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+						<div class="w-100 hstack">
+							<div class="w-50">
+								<a class="d-block ratio ratio-1x1" th:href="@{/sharing/{id}(id=${sharingDto.id})}">
+									<img class="w-100 h-100 object-fit-cover rounded-2" style="cursor: pointer; transition: 150ms;" th:src="${sharingDto.imgUrl}" onMouseOver="this.style.transform = 'scale(1.02)';" onMouseOut="this.style.transform = 'scale(1)';"/>
+								</a>
+							</div>
+							<div class="w-50 p-4">
+								<p class="fw-normal">카테고리  <span class="fw-bold text-black">[[${sharingDto.categoryName}]]</span></p>
+								<p class="fw-normal">기간 <span class="fw-bold text-black">[[${sharingDto.startDate}]]~[[${sharingDto.endDate}]]</span></p>
+								<span class="fw-normal">나눔 내용</span>
+								<p class="text-black">[[${sharingDto.content}]]</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

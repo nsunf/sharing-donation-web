@@ -33,16 +33,14 @@
             <table class="table" style="text-align: center">
               <thead>
                 <tr class="border-top">
-                  <th>NickName</th>
                   <th>성명</th>
+                  <th>닉네임</th>
+                  <th>기업명</th>
                   <th>가입일자</th>
-                  <th>수정/삭제</th>
                 </tr>
               </thead>
-              <th:block
-                th:each="donationBoard, status: ${donationBoards.getContent()}"
-              >
                 <tbody>
+                <!-- each start -->
                   <tr>
                     <td></td>
                     <td></td>
@@ -54,8 +52,8 @@
                       </ul>
                     </td>
                   </tr>
+                  <!-- each end -->
                 </tbody>
-              </th:block>
             </table>
           </div>
           <!-- <div

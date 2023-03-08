@@ -264,7 +264,15 @@
         var header = $("meta[name='_csrf_header']").attr("content");
 
         var url = "/pointDonation";
- 
+ 		let point = $("#usePoint").val();
+ 		
+ 		if (point <=0 ) {
+ 			alert("사용할포인트는 0 이상입력해주세요");
+ 			return;
+ 		}
+        let cf = confirm(point + "를 기부 하시겠습니까?");
+        if(!cf) {return};
+        
         var paramData = {
         		donationId : $("#id").val(),
                 point : $("#usePoint").val()
