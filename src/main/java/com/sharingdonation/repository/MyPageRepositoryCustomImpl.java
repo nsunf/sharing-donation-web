@@ -233,8 +233,7 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 					 story.content
 					 ))
 			 .from(story)
-			 .where(story.id.eq(storyId).and(story.id.eq(story.sharing.id)
-					 .and(story.sharing.delYn.eq("N").and(story.delYn.eq("N")))))
+			 .where(story.id.eq(storyId).and(story.sharing.delYn.eq("N").and(story.delYn.eq("N"))))
 			 .fetchOne();
 		return content;
 	}

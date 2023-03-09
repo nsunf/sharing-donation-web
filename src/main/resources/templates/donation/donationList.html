@@ -111,7 +111,7 @@
 			<!-- class="previous" --> 
 			<li class="page-item " th:classappend="${donationList.first}? 'disabled'">
 				<!-- <a th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${donationList.number-1}}" title="previous page"></a> -->
-				<a class="page-link page-prev" th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${start}}" title="previous page">
+				<a class="page-link page-prev" th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${donationList.number}}" title="previous page">
 				<span aria-hidden="true">&laquo;</span>
 				</a>
 			</li>
@@ -125,7 +125,7 @@
 			<!-- class="next" -->
 			<li  class="page-item" th:classappend="${donationList.last}?'disabled'">
 				<!-- <a th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${donationList.number+1}}" title="next page"></a> -->
-				<a class="page-link page-next" th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${end}}" title="next page">
+				<a class="page-link page-next" th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${donationList.number + 2}}" title="next page">
 				<span aria-hidden="true">&raquo;</span>
 				</a>
 			</li>

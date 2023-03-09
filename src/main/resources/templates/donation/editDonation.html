@@ -169,7 +169,7 @@
           <div class="row mt-5">
 			<div class="col-8 mx-auto">미리보기
 				<div class="img-preview-list row row-cols-4 g-4">
-					<div class="col" th:each="imgDto, status : ${donationImgDtoList}">
+					<div class="col" th:each="imgDto, status : ${donationFormDto.donationImgDtoList}">
 						<img class="preview-img" th:src="@{${imgDto.imgUrl}}" th:alt="${'img-' + status.index}">
 					</div>
 				</div>
