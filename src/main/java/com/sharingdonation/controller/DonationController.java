@@ -164,10 +164,10 @@ public class DonationController {
 		}
 
 		//첫번째 이미지가 있는지 검사(첫번째 이미지는 필수 입력값이기 때문에)
-		if(donationImgFileList.get(0).isEmpty() && donationFormDto.getId() == null) {
-			model.addAttribute("errorMessage", "첫번째 이미지는 필수 입력 값 입니다.");
-			return "donation/editDonation";
-		}
+//		if(donationImgFileList.get(0).isEmpty() && donationFormDto.getId() == null) {
+//			model.addAttribute("errorMessage", "첫번째 이미지는 필수 입력 값 입니다.");
+//			return "donation/editDonation";
+//		}
 		
 		try {
 			donationService.updateDonation(donationFormDto, donationImgFileList, principal);
@@ -189,7 +189,7 @@ public class DonationController {
 			donationService.deleteDonation(donationId, principal);
 		} catch (Exception e) {
 //			System.out.println(" controller adminDonationUpdate exception");
-			e.printStackTrace();
+//			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		

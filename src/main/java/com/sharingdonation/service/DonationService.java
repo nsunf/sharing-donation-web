@@ -115,6 +115,38 @@ public class DonationService {
 		return donationFormDto;
 	}
 	
+	@Transactional(readOnly = true)
+	public DonationFormDto getDonationMain() {
+		
+		Donation donation = donationRepository.findMainDonation();
+//				.orElseThrow(EntityNotFoundException::new);
+		
+		List<DonationImg> donationImgList = donationImgRepository.findByDonationIdOrderByIdAsc(donation.getId());
+		List<DonationImgDto> donationImgDtoList = new ArrayList<>();
+		
+		for(DonationImg donationImg : donationImgList) {
+			DonationImgDto donationImgDto = DonationImgDto.of(donationImg);
+//			System.out.println("DonationFormDto getDonationDtls :::" +  donationImgDto.getImgUrl());
+			donationImgDtoList.add(donationImgDto);
+		}
+		
+		DonationFormDto donationFormDto = DonationFormDto.of(donation);
+
+		int pointSum = (int)pointRepository.selectTotalPoint(donation.getId());
+		System.out.println(pointSum);
+		double pointPer = 0;
+		
+		if (pointSum > 0) {
+			pointPer = (double)((double)pointSum / (double)donation.getGoalPoint()) * 100; //double 로 계산해야 정상적으로 계산이 된다.
+		}
+		
+		donationFormDto.setPointPer((int) pointPer);
+		
+		donationFormDto.setDonationImgDtoList(donationImgDtoList);
+		
+		return donationFormDto;
+	}
+	
 	
 	
 	public Long updateDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList, Principal principal) throws Exception {
@@ -154,24 +186,25 @@ public class DonationService {
 		if(! donation.isPresent()) {
 			throw new IllegalStateException("존재하지 않습니다.");
 		}
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+//		boolean isAdmin = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		boolean isAdmin = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+		boolean isAdmin = authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
 		String email = principal.getName();
 		Member member = memberRepository.findByEmail(email);
 		
-		System.out.println("member.getId() != donation.getMember().getId() || !isAdmin :: " + member.getId() + ":" + donation.get().getMember().getId() +":"+ isAdmin);
+//		System.out.println("member.getId() != donation.getMember().getId() || !isAdmin :: " + member.getId() + ":" + donation.get().getMember().getId() +":"+ isAdmin);
 		if(member.getId() != donation.get().getMember().getId() && !isAdmin) {
-			
 			throw new IllegalStateException("삭제 권한이 없습니다.");
 		}
 		
 		donationHeartRepository.deleteAllByDonationId(donationId);
-		System.out.println("donationHeartRepository");
+//		System.out.println("donationHeartRepository");
 		donationImgRepository.deleteAllByDonationId(donationId);
-		System.out.println("donationImgRepository");
+//		System.out.println("donationImgRepository");
 		donationRepository.deleteById(donationId);
-		System.out.println("donation");
+//		System.out.println("donation");
 		
 		
 //		DonationHeart donationHeart = donationHeartRepository.findByDonationId(donationId)

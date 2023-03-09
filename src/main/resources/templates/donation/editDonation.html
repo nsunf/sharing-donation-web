@@ -42,9 +42,7 @@
               </label>
               <p th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}" class="fieldError text-danger fw-normal">Incorrect Data</p>
 
-              <ul class="request-institution">
-                <li>
-                  <label class="input-label w-100" for="">
+				<label class="input-label w-100" for="">
                     <span class="d-block ms-2 mb-1">기부처 기관명</span>
                     <input
                       class="input-box w-100 p-3"
@@ -54,8 +52,9 @@
                     />
                     <p th:if="${#fields.hasErrors('donationName')}" th:errors="*{donationName}" class="fieldError text-danger fw-normal">Incorrect Data</p>
                   </label>
-                </li>
-                <li class="request-institution reright">
+                  
+              <ul class="request-institution">
+                <li>
                   <label class="input-label w-100" for="">
                     <span class="d-block ms-2 mb-1">기부처 담당자명</span>
                     <input
@@ -67,10 +66,7 @@
                     <p th:if="${#fields.hasErrors('donationPerson')}" th:errors="*{donationPerson}" class="fieldError text-danger fw-normal">Incorrect Data</p>
                   </label>
                 </li>
-              </ul>
-
- 			<ul class="request-institution">
-                <li>
+                <li class="request-institution reright">
                   <label class="input-label w-100" for="">
                     <span class="d-block ms-2 mb-1">기부처 전화번호</span>
                     <input
@@ -80,6 +76,20 @@
                       th:field="*{donationTel}"
                     />
                     <p th:if="${#fields.hasErrors('donationTel')}" th:errors="*{donationTel}" class="fieldError text-danger fw-normal">Incorrect Data</p>
+                  </label>
+                </li>
+              </ul>
+
+ 			<ul class="request-institution">
+                <li>
+                  <label class="input-label w-100" for="">
+                    <span class="d-block ms-2 mb-1">기부 금액</span>
+                    <input
+                      class="input-box w-100 p-3"
+                      type="text"
+                      placeholder="기부 금액"
+                      th:field="*{price}"
+                    />
                   </label>
                 </li>
                 <li class="request-institution reright">
@@ -156,13 +166,6 @@
                 <input class="img-input w-100" type="file" accept="image/*" id="donationImgFile" name="donationImgFile" multiple/>
               </label>
               
-             <!--  <th:block th:if="${not #lists.isEmpty(donationFormDto.donationImgDtoList)}">
-              <label class="input-label w-100"  th:each="num: ${#numbers.sequence(1,10)}">
-                <span class="d-block ms-2 mb-1">이미지 등록</span>
-                <input type="hidden" name="donationImgIds"  th:value="${donationImgDto.id}">
-                <input class="img-input w-100" type="file" accept="image/*" id="donationImgFile" name="donationImgFile" multiple/>
-              </label>
-              </th:block> -->
             </div>
           </div>
 
