@@ -40,7 +40,9 @@ function page(page) {
 						<th:block	th:each="item, status: ${myPageStoryListDto.getContent()}">
 						 <a th:href="@{|/mypage/story/detail/${item.id}|}">
 							<div class="col-12" >
-
+								<script type="text/javascript">
+								console.log("[[${item.id}]]");
+								</script>
 								<div class="mb-3 form-check"
 									style="background-color: #F0F5F4; height: 200px; width: 100%; border-radius: 10px; margin: 0; padding: 0; display: flex;">
 
