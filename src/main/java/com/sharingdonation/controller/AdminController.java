@@ -39,16 +39,11 @@ public class AdminController {
 		MemberAllDto memberAllDto = adminService.findByMemberId(memberId);
 			 model.addAttribute("member",memberAllDto);
  
-			 if (memberAllDto.getRole().equals(Role.USER)) {
-				 return "/admin/memberManagement";
-			}if(memberAllDto.getRole().equals(Role.COM)) {
+			
+			  if(memberAllDto.getRole().equals(Role.COM)) {
 				return "/admin/enterpriceManagement";
 			}
-			  
-			return "/";
-			 
-		 
- 
+			  return "/admin/memberManagement";
 	}
 	
 	@PostMapping("/admin/management/update/{memberId}")
