@@ -105,7 +105,6 @@ public class AdminController {
 		Long result = adminService.adminEnterpriceDelete(memberId);
 		return new ResponseEntity<Long>(memberId, HttpStatus.OK);
 	}
-	 
 	
 	
 	@GetMapping({"/admin/memberList", "/admin/memberList/{page}", "/admin/memberList/{page}?searchQuery={searchQuery}"})

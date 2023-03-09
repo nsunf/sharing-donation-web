@@ -1,5 +1,7 @@
 package com.sharingdonation.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,12 +56,27 @@ public class MemberService implements UserDetailsService {
         }
     }
     
-    private String changePassword(String email, String name, String cellphone) {
+    public int memberEquals(String email, String name, String cellphone) {
     	Member findMember = memberRepository.findByEmailAndNameAndCellphone(email, name, cellphone);
-    	
-    	return null;
+    	int result = 1;
+    	if(findMember.getEmail() == null) {
+    		result = 0;
+    	}
+    	return result;
     }
     
-     
     
+    
+    
+    public int memberChange(String email,String password, PasswordEncoder passwordEncoder) {
+    	Member findMember = memberRepository.findByEmail(email);
+    	
+    	findMember.setPassword(passwordEncoder.encode(password));
+
+    	int result = 1;
+    	if(findMember.getEmail() == null) {
+    		result = 0;
+    	}
+    	return result;
+    }
 }

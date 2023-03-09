@@ -6,11 +6,104 @@
 >
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>Insert title here</title>
- 
+
 <script type="text/javascript" th:src="@{/js/cookie.js}"></script>
+<script type="text/javascript">
+function memberEquals() {
+var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    var url = "/auth/login/equals";
+    var paramData = {
+    		email : $("#email2").val(),
+    		name : $("#name").val(),
+    		cellphone : $("#cellphone").val()
+    };
+
+    var param = JSON.stringify(paramData);
+
+    $.ajax({
+        url      : url,
+        type     : "POST",
+        contentType : "application/json",
+        data     : param,
+        beforeSend : function(xhr){
+            /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+            xhr.setRequestHeader(header, token);
+        },
+        dataType : "json",
+        cache   : false,
+        success  : function(result) {
+        	modalShow();
+        },
+        error : function(jqXHR, status, error){
+            if(jqXHR.status == '401'){
+                alert('로그인 후 이용해주세요');
+                location.href='/';
+            } else{
+                alert(jqXHR.responseText);
+            }
+        }
+    });
+    
+    
+}	
+
+function modalShow(){
+	$("#exampleModalToggle2").modal("show");
+}
+
+
+function pwsChange() {
+	var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content");
+
+	    var url = "/auth/login/change";
+	    var paramData = {
+	    		email : $("#email2").val(),
+	    		password : $("#password2").val()
+	    };
+
+	    var param = JSON.stringify(paramData);
+
+	    $.ajax({
+	        url      : url,
+	        type     : "POST",
+	        contentType : "application/json",
+	        data     : param,
+	        beforeSend : function(xhr){
+	            /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+	            xhr.setRequestHeader(header, token);
+	        },
+	        dataType : "json",
+	        cache   : false,
+	        success  : function(result) {
+	        	modalHide();
+	        },
+	        error : function(jqXHR, status, error){
+	            if(jqXHR.status == '401'){
+	                alert('로그인 후 이용해주세요');
+	                location.href='/';
+	            } else{
+	                alert(jqXHR.responseText);
+	            }
+	        }
+	    });
+	    
+	    
+	}	
+	
+function modalHide(){
+	$("#exampleModalToggle2").modal("hide");
+}
+
+</script>
 <th:block layout:fragment="script">
 <script th:inline="javascript">
+
 $(document).ready(function() {
     var userInputId = getCookie("userInputId");
     var setCookieYN = getCookie("setCookieYN");
@@ -34,6 +127,9 @@ $(document).ready(function() {
         }
     });
 });
+ 
+
+ 
 </script>
 </th:block>
 
@@ -71,24 +167,25 @@ $(document).ready(function() {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          <form action="" th:object="${memberFormDto}">
+         
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">이메일</label>
-            <input type="email" class="form-control" id="recipient-name" th:field="${memberFormDto.email}">
+            <input type="text" class="form-control" id="email2">
           </div>
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">이름</label>
-            <input type="text" class="form-control" id="recipient-name" th:field="${memberFormDto.name}">
+            <input type="text" class="form-control" id="name" >
           </div>
             <div class="mb-3">
             <label for="recipient-name" class="col-form-label">연락처</label>
-            <input type="text" class="form-control" id="recipient-name" th:field="${memberFormDto.cellphone}">
+            <input type="text" class="form-control" id="cellphone">
           </div>	
-        </form>
+        <div class="modal-footer">
+        <button class="btn btn-primary"  id="next" data-bs-toggle="modal" onclick="memberEquals();">다음</button>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">다음</button>
+      
       </div>
+      
     </div>
   </div>
 </div>
@@ -100,19 +197,19 @@ $(document).ready(function() {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          <form action="" th:object="${memberFormDto}">
+          
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">새 비밀번호</label>
-            <input type="text" class="form-control" id="recipient-name" th:field="${memberFormDto.password}">
+            <input type="password" class="form-control" id="password2">
           </div>
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">새 비밀번호 확인</label>
-            <input type="text" class="form-control" id="recipient-name">
+            <input type="password" class="form-control" id="recipient-name">
           </div>
-        </form>
+        
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">변경</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" onclick="pwsChange();">변경</button>
       </div>
     </div>
   </div>
@@ -128,5 +225,6 @@ $(document).ready(function() {
 	<th:block layout:fragment="script-bottom">
 		<script src="/js/setAutoHeight.js"></script>
 	</th:block>
+	 
 </body>
 </html>

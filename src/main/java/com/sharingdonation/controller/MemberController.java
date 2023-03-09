@@ -1,26 +1,31 @@
 package com.sharingdonation.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 //import com.myshop.controller.SessionManager;
 import com.sharingdonation.dto.MemberFormDto;
 import com.sharingdonation.dto.CorpFormDto;
+import com.sharingdonation.dto.MemberChangePwsDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -87,14 +92,58 @@ public class MemberController {
         return "redirect:/";
 	} 
 	
-	//////////////////////////////////////////////////////////////////
-	
     @GetMapping(value = "/login")
-    public String loginMember(HttpServletResponse response, HttpSession session, Model model){
-    	model.addAttribute("memberFormDto", new MemberFormDto());
+    public String loginMember(HttpServletResponse response, HttpSession session){
     	return "auth/login";
     }
-
+    
+    @PostMapping("/login/equals")
+    public @ResponseBody ResponseEntity memberEquals(@RequestBody @Valid MemberChangePwsDto memberFormDto, BindingResult bindingResult) {
+    	int result = 0;
+    	if(bindingResult.hasErrors()){
+            StringBuilder sb = new StringBuilder();
+            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+            for (FieldError fieldError : fieldErrors) {
+                sb.append(fieldError.getDefaultMessage());
+            }
+            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
+        }
+	  try {
+		  result = memberService.memberEquals(memberFormDto.getEmail(), memberFormDto.getName(), memberFormDto.getCellphone());
+	} catch (Exception e) {
+		return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	  if(result == 0) {
+		  return new ResponseEntity<String>("인증 실패", HttpStatus.BAD_REQUEST);
+	  }
+	  return new ResponseEntity<Integer>(result, HttpStatus.OK);
+    }
+    
+    
+    @PostMapping("/login/change")
+    public @ResponseBody ResponseEntity memberChange(@RequestBody @Valid MemberChangePwsDto memberFormDto, BindingResult bindingResult) {
+    	int result = 0;
+    	if(bindingResult.hasErrors()){
+            StringBuilder sb = new StringBuilder();
+            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+            for (FieldError fieldError : fieldErrors) {
+                sb.append(fieldError.getDefaultMessage());
+            }
+            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
+        }
+	  try {
+		  result = memberService.memberChange(memberFormDto.getEmail(), memberFormDto.getPassword(), passwordEncoder );
+	} catch (Exception e) {
+		return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	  if(result == 0) {
+		  return new ResponseEntity<String>("비밀번호 변경 완료 되었습니다.", HttpStatus.BAD_REQUEST);
+	  }
+	  return new ResponseEntity<String>("비밀번호 변경 완료 되었습니다.", HttpStatus.OK);
+    }
+    
+    
+    
     private final SessionManager sessionManager;
     
     @GetMapping(value = "/login/error")
@@ -103,22 +152,6 @@ public class MemberController {
         return "auth/login";
     }
 	
-    
-    @PostMapping(value = "/login2")
-    public String loginMember2(HttpServletResponse response, HttpSession session, @RequestParam String email){
-    	
-    	session.setAttribute("userSessionId", email);
-    	sessionManager.createSession("sessionPerson2", response);
-    	    	 
-    	return "/auth/login";
-    }
-    //////////////////////////////////////////////////////////////////////
-
-
-    
-    
-    
-    
 //	@GetMapping(value = "/member/{memberId}")
 //	public String donationDtl(Model model, @PathVariable("donationId") Long DonationId) {
 //		return "auth/memberDtl";
