@@ -20,24 +20,23 @@ function page(page) {
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
-		<section>
-			<div class="section container" style="margin: 0 auto;">
-				<div style="display: flex;">
-					<div></div>
-					<div class="mb-3 row"
-						style="display: flex;">
+		<section class="section container">
+			<!-- <div class="section container" style="margin: 0 auto;"> -->
+				<!-- <div style="display: flex;"> -->
+					<div class="mb-3 row">
 						
 
 						<!-- story list 빈값일 떄 출력 -->
 						<div class="col-12" th:if="${#lists.isEmpty(myPageStoryListDto.getContent())}">
-								<div class="mb-3 form-check"
-									style="height: 200px; width: 100%; border-radius: 10px; margin: 0; padding: 0; display: flex; justify-content: center;">
-									<strong>등록 된 사연이 없습니다.</strong>
-								</div>
+							<div class="d-flex justify-content-center mb-3 form-check m-0 p-0 w-100" style="height: 200px; border-radius: 10px;">
+								<strong>등록 된 사연이 없습니다.</strong>
 							</div>
+						</div>
 						
 						<!-- each -->
 						<th:block	th:each="item, status: ${myPageStoryListDto.getContent()}">
+						<!-- 
+<<<<<<< HEAD
 						 <a th:href="@{|/mypage/story/detail/${item.id}|}">
 							<div class="col-12" >
 								<script type="text/javascript">
@@ -58,26 +57,38 @@ function page(page) {
 										</div>
 										<div>
 											<span>등록일 : [[${item.regTime}]]</span>
+=======
+ -->
+							<a class="card mb-3" th:href="@{/mypage/story/detail/{id}(id=${item.id})}" style="max-width: 100%; height: 200px; background: #F0F5F4;">
+								<div class="row g-0 h-100">
+									<div class="col-md-4 px-0 h-100">
+										<img th:src="${item.imgUrl}" class="img-fluid rounded-start object-fit-cover h-100 w-100" alt="...">
+									</div>
+									<div class="col-md-8">
+										<div class="card-body h-100 px-0 hstack">
+											<div class="vstack w-50">
+												<h5 class="card-title mb-auto">[[${item.name}]]</h5>
+												<p class="card-text"><small class="text-muted">등록일 : [[${item.regTime}]]</small></p>
+											</div>
+											<div class="form-floating h-100">
+												<textarea id="floatingTextArea2" class="form-control h-100" style="resize: none;" readonly>
+													[[${item.content}]]
+												</textarea>
+												<label for="floatingTextarea2">사연</label>
+											</div>
+
 										</div>
 									</div>
-
-									<div class="form-floating align-self-center"
-										style="padding: 0 5px;">
-										<textarea class="form-control"
-											placeholder="Leave a comment here" id="floatingTextarea2"
-											style="height: 149px; width: 370px;" readonly>[[${item.content}]]</textarea>
-										<label for="floatingTextarea2">사연</label>
-									</div>	
-									<!-- <div id="emailHelp" class="form-text">좋은 채택을 해주세요. </div> -->
 								</div>
+							</a>							
 
-							</div>
-							<!-- each -->
-							</a>
 						</th:block>
+						<!-- each -->
 
+<!--  /*
+							*/ -->
 
-						<nav style="position: fixed; top: 600px; left: 250px;">
+						<nav>
 							<div class="archive-pages"
 								th:with="start=${(myPageStoryListDto.number/maxPage) * maxPage + 1}
       , end=(${(myPageStoryListDto.totalPages== 0) ? 1 : (start + (maxPage - 1) < myPageStoryListDto.totalPages ? start + (maxPage -1) : myPageStoryListDto.totalPages)})">
@@ -105,10 +116,10 @@ function page(page) {
 						</nav>
 					</div>
 
-				</div>
+				<!-- </div> -->
 
 
-			</div>
+			<!-- </div> -->
 
 		</section>
 	</th:block>

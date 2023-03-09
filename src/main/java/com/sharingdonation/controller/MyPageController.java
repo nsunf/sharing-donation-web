@@ -113,7 +113,6 @@ public class MyPageController {
 	}
 	
 	
-	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping({"/mypage/story", "/mypage/story/{page}"})
 	public String myPageStory(Principal principal, @PathVariable("page") Optional<Integer> page, Model model) {
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
@@ -131,7 +130,6 @@ public class MyPageController {
 	}
 	
 
-	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/mypage/story/detail/{storyId}")
 	public String myPageStoryDetail( @PathVariable("storyId") Long storyId, Principal principal, Model model) {
 		MyPageStoryDetailDto myPageStoryDetailDto = myPageService.getMyPageStoryDetail(principal, storyId);
