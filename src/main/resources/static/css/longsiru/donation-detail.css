@@ -59,23 +59,23 @@
 }
 
 .battery-0 {
-  background-image: url("../../images/nsunf/charge=0.png");
+  background-image: url("../../img/nsunf/charge=0.png");
 }
 
 .battery-25 {
-  background-image: url("../../images/nsunf/charge=25.png");
+  background-image: url("../../img/nsunf/charge=25.png");
 }
 
 .battery-50 {
-  background-image: url("../../images/nsunf/charge=50.png");
+  background-image: url("../../img/nsunf/charge=50.png");
 }
 
 .battery-75 {
-  background-image: url("../../images/nsunf/charge=75.png");
+  background-image: url("../../img/nsunf/charge=75.png");
 }
 
 .battery-100 {
-  background-image: url("../../images/nsunf/charge=100.png");
+  background-image: url("../../img/nsunf/charge=100.png");
 }
 
 .like-btn {
@@ -101,19 +101,19 @@
 }
 
 .like-false {
-  background-image: url("../../images/nsunf/like-false.png");
+  background-image: url("../../img/nsunf/like-false.png");
 }
 
 .like-false:hover {
-  background-image: url("../../images/nsunf/like-true.png");
+  background-image: url("../../img/nsunf/like-true.png");
 }
 
 .like-true {
-  background-image: url("../../images/nsunf/like-true.png");
+  background-image: url("../../img/nsunf/like-true.png");
 }
 
 .like-true:hover {
-  background-image: url("../../images/nsunf/like-false.png");
+  background-image: url("../../img/nsunf/like-false.png");
 }
 
 .modal-title-custom {
