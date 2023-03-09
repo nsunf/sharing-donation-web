@@ -3,6 +3,7 @@ package com.sharingdonation.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.sharingdonation.constant.Role;
 
@@ -30,6 +31,8 @@ public class MyPagePrivacyDto {
 	private String addressDetail;
 	
 	private LocalDateTime regTime;
+
+	private String regTimeStr;
 	
 	private Role role;
 
@@ -46,6 +49,7 @@ public class MyPagePrivacyDto {
 		this.address = address;
 		this.addressDetail = addressDetail;
 		this.regTime = regTime;
+		this.regTimeStr = regTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		this.role = role;
 				
 	}

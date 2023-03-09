@@ -15,8 +15,8 @@
 			</div>
 			<!-- 검색창 -->
 			<div class="container">
-				<div class="row hstack">
-					<div class="w-25 my-auto ms-auto me-3">
+				
+					<div class="col-lg-3 col-md-4 col-sm-4 my-auto ms-auto me-3 pb-5">
 						<form class="input-group">
 							<input type="text" class="form-control"
 								th:field="${donationSearchDto}" placeholder="검색" />
@@ -25,41 +25,43 @@
 								th:action="@{/admin/donation}">검색</button>
 						</form>
 					</div>
-				</div>
-				<div class="mx-auto my-5 p-3">
-					<table class="table">
-						<thead>
-							<tr class="border-top">
-								<th><input type="checkbox" name="" value="" /></th>
-								<th>번호</th>
-								<th>작성자</th>
-								<th>글제목</th>
-								<th>상품명</th>
-								<th>신청일자</th>
-								<th>게시기간</th>
-								<th>진행상황</th>
-							</tr>
-						</thead>
-						<tbody>
-							<!--  th:with="pages=(${(page == 0 or page=='' or page== null) ? 1 : page}), rowNum=${(totalCount - (pages * rowPerPage))} " -->
-							<tr th:each="donationDto, status : ${donationDtoList}">
-								<th><input type="checkbox" name="donation"
-									th:value="${donationDto.id}" /></th>
-								<td
-									th:text="${donationDtoList.getTotalElements-(((pages)-1) * rowPerPage) - status.index}"></td>
-								<td>[[${donationDto.nickName}]]</td>
-								<td>[[${donationDto.subject}]]</td>
-								<td>[[${donationDto.donationName}]]</td>
-								<td
-									th:text="${#temporals.format(donationDto.regTime, 'yyyy-MM-dd')}"></td>
-								<td>[[${donationDto.startDate}]]~[[${donationDto.endDate}]]</td>
-								<td><a
-									th:href="@{/admin/donation/edit/{id}(id=${donationDto.id})}">
-										<button
-											th:classappend="${donationDto.status == '완료'} ? 'admin_approve_btn' : (${donationDto.status == '진행중'} ? 'admin_md_ctr_btn' : 'admin_standby_btn')">[[${donationDto.status}]]</button>
-								</a></td>
-							</tr>
-							<!-- <tr>
+				
+				<div class="container">
+					<div class="row g-5">
+						<div class="p-3">
+								<table class="table" style="text-align: center">
+									<thead>
+										<tr class="border-top">
+											<th class="d-none d-lg-table-cell"><input type="checkbox" name="" value="" /></th>
+											<th class="d-table-cell">번호</th>
+											<th class="d-none d-lg-table-cell">작성자</th>
+											<th class="d-table-cell">글제목</th>
+											<th class="d-none d-md-table-cell">상품명</th>
+											<th class="d-none d-lg-table-cell">신청일자</th>
+											<th class="d-none d-lg-table-cell">게시기간</th>
+											<th class="d-table-cell">진행상황</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!--  th:with="pages=(${(page == 0 or page=='' or page== null) ? 1 : page}), rowNum=${(totalCount - (pages * rowPerPage))} " -->
+										<tr th:each="donationDto, status : ${donationDtoList}">
+											<th><input type="checkbox" name="donation"
+												th:value="${donationDto.id}" /></th>
+											<td class="d-table-cell"
+												th:text="${donationDtoList.getTotalElements-(((pages)-1) * rowPerPage) - status.index}"></td>
+											<td class="d-none d-lg-table-cell">[[${donationDto.nickName}]]</td>
+											<td class="d-table-cell">[[${donationDto.subject}]]</td>
+											<td class="d-none d-md-table-cell">[[${donationDto.donationName}]]</td>
+											<td class="d-none d-lg-table-cell"
+												th:text="${#temporals.format(donationDto.regTime, 'yyyy-MM-dd')}"></td>
+											<td class="d-none d-lg-table-cell">[[${donationDto.startDate}]]~[[${donationDto.endDate}]]</td>
+											<td class="d-table-cell"><a
+												th:href="@{/admin/donation/edit/{id}(id=${donationDto.id})}">
+													<button
+														th:classappend="${donationDto.status == '완료'} ? 'admin_approve_btn' : (${donationDto.status == '진행중'} ? 'admin_md_ctr_btn' : 'admin_standby_btn')">[[${donationDto.status}]]</button>
+											</a></td>
+										</tr>
+										<!-- <tr>
 							<th><input type="checkbox" name="" value="" /></th>
 							<td>1</td>
 							<td>솔방울46</td>
@@ -79,10 +81,13 @@
 							<td>2023/02/20~2023/03/20</td>
 							<td><button class="admin_approve_btn">승인완료</button></td>
 						</tr> -->
-						</tbody>
-					</table>
+									</tbody>
+								</table>
+							
+						</div>
+					</div>
 				</div>
-				<div class="archive-pages">
+				<div class="">
 					<nav aria-label="Page navigation example" class="hstack mt-5"
 						th:with="start=${(donationDtoList.number/maxPage)*maxPage + 1}, end=(${(donationDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < donationDtoList.totalPages ? start + (maxPage - 1) : donationDtoList.totalPages)})">
 						<ul class="pagination mx-auto">

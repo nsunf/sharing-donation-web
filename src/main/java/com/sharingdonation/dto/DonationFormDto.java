@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import org.modelmapper.ModelMapper;
 
 import com.sharingdonation.entity.Donation;
+import com.sharingdonation.entity.Member;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -43,11 +44,13 @@ public class DonationFormDto {
 	
 	private int pointPer;
 	
-	private int memberId;
+	private Long memberId;
 	
 	private String startDate;
 	
 	private String endDate;
+	
+	private String userAble;
 	
 	@NotNull(message = "목표포인트는 필수 입력 값입니다.")
 	private int goalPoint;

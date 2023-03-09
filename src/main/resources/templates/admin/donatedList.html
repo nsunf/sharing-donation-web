@@ -102,28 +102,29 @@
             </div>
           </div>
 
-          <div
-            class="archive-pages"
+	
+		 <div class="">
+          <nav aria-label="Page navigation example" class="hstack mt-5" 
             th:with="start=${(donationBoards.number/maxPage) * maxPage + 1}
      						 , end=(${(donationBoards.totalPages == 0) ? 1 : (start + (maxPage) < donationBoards.totalPages ? start + (maxPage -1) : donationBoards.totalPages)})"
           >
-            <ul>
+            <ul class="pagination mx-auto">
               <li
-                class="previous"
+                class="page-item"
                 th:classappend="${donationBoards.first}? 'disabled'"
               >
-                <a
+                <a class="page-link page-prev" 
                   title="previous page"
                   th:href="@{'/admin/donatedBoards/' + ${start} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}"
-                >
+                ><span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
 
-              <li
+              <li class="page-item" 
                 th:each="page: ${#numbers.sequence(start, end)}"
                 th:classappend="${donationBoards.number eq page-1} ? 'active':''"
               >
-                <a
+                <a class="page-link page-num" 
                   th:inline="text"
                   th:href="@{'/admin/donatedBoards/' + ${page} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}"
                   >[[${page}]]</a
@@ -131,16 +132,18 @@
               </li>
 
               <li
-                class="next"
+                class="page-item"
                 th:classappend="${donationBoards.last}? 'disabled'"
               >
-                <a
+                <a class="page-link page-next" 
                   title="next page"
                   th:href="@{'/admin/donatedBoards/' + ${end} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}"
-                ></a>
+                ><span aria-hidden="true">&raquo;</span></a>
               </li>
             </ul>
+          </nav>
           </div>
+          
         </div>
       </section>
     </th:block>

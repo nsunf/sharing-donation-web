@@ -72,9 +72,7 @@ public class MemberService implements UserDetailsService {
     	Member findMember = memberRepository.findByEmail(email);
     	
     	findMember.setPassword(passwordEncoder.encode(password));
-    	
-    	
-    	
+
     	int result = 1;
     	if(findMember.getEmail() == null) {
     		result = 0;

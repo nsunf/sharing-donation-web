@@ -32,11 +32,13 @@
 						</div>
 						<div class="col-md-8 ps-0">
 							<div class="card-body vstack h-100">
-								<div class="hstack align-middle">
+								<div class="vstack align-middle">
 									<h5 class="card-title text-black fs-5">[[${sharingDto.name}]]</h5>
-									<p class="card-text text-black fs-6 fw-normal ms-auto">[[${sharingDto.regTime}]]</p>
+									<div class="hstack">
+										<p class="card-text text-black fs-6 fw-normal">[[${sharingDto.categoryName}]]</p>
+										<p class="card-text text-black fs-6 fw-normal ms-auto">[[${sharingDto.regTime}]]</p>
+									</div>
 								</div>
-								<p class="card-text text-black fs-6 fw-normal">[[${sharingDto.categoryName}]]</p>
 								<div class="vstack mt-auto">
 									<div class="status ms-auto mt-auto" th:classappend="${sharingDto.status == '완료'} ? 'status-gray' : (${sharingDto.status == '진행중'} ? 'status-green' : 'status-yellow')">[[${sharingDto.status}]]</div>
 								</div>

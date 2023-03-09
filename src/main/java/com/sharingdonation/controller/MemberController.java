@@ -116,7 +116,7 @@ public class MemberController {
 	  if(result == 0) {
 		  return new ResponseEntity<String>("인증 실패", HttpStatus.BAD_REQUEST);
 	  }
-	  return new ResponseEntity<String>("인증 성공", HttpStatus.OK);
+	  return new ResponseEntity<Integer>(result, HttpStatus.OK);
     }
     
     
@@ -132,7 +132,7 @@ public class MemberController {
             return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
 	  try {
-		  result = memberService.memberEquals(memberFormDto.getEmail(), memberFormDto.getName(), memberFormDto.getCellphone());
+		  result = memberService.memberChange(memberFormDto.getEmail(), memberFormDto.getPassword(), passwordEncoder );
 	} catch (Exception e) {
 		return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}

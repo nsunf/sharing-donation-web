@@ -62,6 +62,9 @@ public class StoryService {
 		Sharing sharing = sharingRepo.findById(formDto.getSharingId()).orElseThrow(EntityNotFoundException::new);
 		Member member = memberRepo.findById(formDto.getMemberId()).orElseThrow(EntityNotFoundException::new);
 		
+		if (sharing.getMember().getId().equals(member.getId()))
+			return null;
+		
 		Story findStory = storyRepo.findBySharingIdAndMemberId(sharing.getId(), member.getId());
 		if (findStory != null) return null;
 
@@ -71,6 +74,7 @@ public class StoryService {
 		story.setContent(formDto.getContent());
 		story.setRegTime(LocalDateTime.now());
 		story.setChooseYn("N");
+		story.setDelYn("N");
 		
 		storyRepo.save(story);
 		return story.getId();

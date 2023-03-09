@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,11 +30,11 @@ import com.sharingdonation.service.MemberService;
 @EnableWebSecurity
 public class SecurityConfig{
 	
-	 
 
 	@Autowired
     MemberService memberService;
 	
+	 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -49,7 +50,7 @@ public class SecurityConfig{
 						        response.setContentType("text/html; charset=UTF-8");
 						        PrintWriter out = response.getWriter();
 						        out.println("<script language='javascript'>");
-						        out.println("alert('exception :"+ exception.getMessage() + "')");
+						        out.println("alert('로그인에 실패하였습니다"+   "')");
 						        out.println("location.href =" +'"'+ "/auth/login" + '"');
 						        out.println("</script>");
 						        out.flush();

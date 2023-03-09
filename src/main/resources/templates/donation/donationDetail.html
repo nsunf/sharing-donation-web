@@ -13,6 +13,7 @@
 	rel="stylesheet"
 	href="/css/longsiru/donation-detail.css"
 />
+
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
@@ -23,7 +24,7 @@
           <div class="col-12 col-md-10 col-xl-8 mx-auto">
             <div class="swiper mySwiper position-relative overflow-hidden">
               <div class="swiper-wrapper">
-                <div class="swiper-slide" th:each="donationImgDto, status:*{donationImgDtoList} ">
+                <div class="swiper-slide ratio ratio-16x9" th:each="donationImgDto, status:*{donationImgDtoList} ">
                   <img th:src="${donationImgDto.imgUrl}" alt="" />
                 </div>
                 
@@ -105,7 +106,7 @@
               <div class="ms-auto mb-4">
                 <button class="like-btn d-flex justify-content-center align-items-center">
 	              <div class="like" th:classappend="${donationHeartDto == null} ? 'like-false' : 'like-true'" th:onclick="'toggleHeart(' + *{id} + ');'"></div>
-	              <span class="like-count px-1" style="font-size: 12px; color:var(--thm-primary);" th:text="${donationHeartCount}"></span>
+	              <span class="like-count px-1" style="font-size: 12px; color: var(--thm-primary);" th:text="${donationHeartCount}"></span>
 	            </button>
               </div>
             </div>
@@ -128,7 +129,7 @@
               	onclick="pointModal();"
                 >에너지 기부</button
               >
-              <a th:href="@{'/donation/edit/' + *{id}}"
+              <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} or *{userAble eq 'Y'}" th:href="@{'/donation/edit/' + *{id}}"
                 class="causes-details__share-btn thm-btn py-2 px-3 ms-3"
                 
               >
@@ -264,7 +265,15 @@
         var header = $("meta[name='_csrf_header']").attr("content");
 
         var url = "/pointDonation";
- 
+ 		let point = $("#usePoint").val();
+ 		
+ 		if (point <=0 ) {
+ 			alert("사용할포인트는 0 이상입력해주세요");
+ 			return;
+ 		}
+        let cf = confirm(point + "를 기부 하시겠습니까?");
+        if(!cf) {return};
+        
         var paramData = {
         		donationId : $("#id").val(),
                 point : $("#usePoint").val()

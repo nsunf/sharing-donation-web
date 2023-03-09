@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class SharingImgService {
 	@Value("${sharingImgLocation}")
+	//@Value("${imgLocation}")
 	private String sharingImgLocation;
 	
 	private final SharingImgRepository sharingImgRepo;
@@ -35,6 +36,7 @@ public class SharingImgService {
 		if (!StringUtils.isEmpty(oriImgName)) {
 			imgName = fileService.uploadFile(sharingImgLocation, oriImgName, sharingImgFile.getBytes());
 			imgUrl = "/images/sharing/" + imgName;
+			// imgUrl = "/images/" + imgName;
 		}
 		
 		sharingImg.setOriImgName(oriImgName);
@@ -54,6 +56,7 @@ public class SharingImgService {
 			String oriImgName = sharingImgFile.getOriginalFilename();
 			String imgName = fileService.uploadFile(sharingImgLocation, oriImgName, sharingImgFile.getBytes());
 			String imgUrl = "/images/sharing/" + imgName;
+			// String imgUrl = "/images/" + imgName;
 			
 			savedItemImg.setOriImgName(oriImgName);
 			savedItemImg.setImgName(imgName);

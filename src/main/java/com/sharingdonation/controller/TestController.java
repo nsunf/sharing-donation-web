@@ -1,14 +1,10 @@
 package com.sharingdonation.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.sharingdonation.entity.Category;
 import com.sharingdonation.service.TestDataService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +18,13 @@ public class TestController {
 
 	@GetMapping("")
 	public String test() {
-		return "main";
+		return "redirect:/intro";
+	}
+
+	@GetMapping("/init")
+	public String init() {
+		testDataService.initData();
+		return "redirect:/intro";
 	}
 	
 	@GetMapping("/dummyData")

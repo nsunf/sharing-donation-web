@@ -33,16 +33,16 @@ public class DonationImgService {
 		String oriImgName = donationImgFile.getOriginalFilename();
 		String imgName = "";
 		String imgUrl = "";
-//		System.out.println("saveDonationImg");
+		System.out.println("saveDonationImg");
 		if(!StringUtils.isEmpty(oriImgName)) {
-//			System.out.println("-oriImgName-");
+			System.out.println("-oriImgName-");
 			imgName = fileService.uploadFile(donationImgLocation, oriImgName, donationImgFile.getBytes());
-			imgUrl = "/imgs/donation/" + imgName;
-//			System.out.println("-updateFile-");
+			imgUrl = "/images/donatedBoard/" + imgName;
+			System.out.println("-updateFile-");
 		}
 		
 		donationImg.updateDonationImg(imgName, oriImgName, imgUrl);
-//		System.out.println("-updateDonationImg-");
+		System.out.println("-updateDonationImg-");
 		donationImgRepository.save(donationImg);
 	}
 	
@@ -59,7 +59,7 @@ public class DonationImgService {
 			
 			String oriImgName = donationImgFile.getOriginalFilename();
 			String imgName = fileService.uploadFile(donationImgLocation, oriImgName, donationImgFile.getBytes());
-			String imgUrl = "/images/item/" + imgName;
+			String imgUrl = "/images/donatedBoard/" + imgName;
 			
 			savedDonationImg.updateDonationImg(imgName, oriImgName, imgUrl);
 		}
