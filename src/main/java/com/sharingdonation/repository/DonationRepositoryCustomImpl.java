@@ -79,7 +79,6 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 //					.join(donation, donationImg.donation)
 					.join(donationImg).on(donation.donation.eq(donationImg.donation), donationImg.repimgYn.eq("Y"))
 					.join(member).on(donation.member.eq(member.member))
-//					.where(donationImg.repimgYn.eq("Y"))
 					.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
 					.orderBy(donation.id.desc())
 					.offset(pageable.getOffset())
@@ -122,6 +121,9 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 				.join(donationImg).on(donation.eq(donationImg.donation), donationImg.repimgYn.eq("Y"))
 				.join(member).on(donation.member.eq(member))
 				.where(donation.donationName.like("%" + donationSearchDto.getSearchQuery() + "%").or(donation.subject.like("%" + donationSearchDto.getSearchQuery() + "%")))
+				.where(donation.confirmYn.eq("Y")
+		                .and(donation.done.eq("N"))
+		                .and(donation.delYn.eq("N")))
 //				.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
 				.where(donation.endDate.gt(LocalDate.now()))
 				.orderBy(donation.id.desc())
@@ -174,6 +176,9 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 //				.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
 				.where(donation.donationName.like("%" + donationSearchDto.getSearchQuery() + "%")
 						, donation.subject.like("%" + donationSearchDto.getSearchQuery() + "%"))
+				.where(donation.confirmYn.eq("Y")
+		                .and(donation.done.eq("N"))
+		                .and(donation.delYn.eq("N")))
 				.where(donation.endDate.gt(LocalDate.now()))
 				.fetchOne();
 		
