@@ -24,7 +24,7 @@
           <div class="col-12 col-md-10 col-xl-8 mx-auto">
             <div class="swiper mySwiper position-relative overflow-hidden">
               <div class="swiper-wrapper">
-                <div class="swiper-slide" th:each="donationImgDto, status:*{donationImgDtoList} ">
+                <div class="swiper-slide ratio ratio-16x9" th:each="donationImgDto, status:*{donationImgDtoList} ">
                   <img th:src="${donationImgDto.imgUrl}" alt="" />
                 </div>
                 
