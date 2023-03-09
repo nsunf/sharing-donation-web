@@ -19,9 +19,9 @@
 						</div>
 						<div class="col-md-8 ps-0">
 							<div class="card-body vstack h-100">
-								<div class="hstack align-middle">
+								<div class="vstack align-middle">
 									<h5 class="card-title text-black fs-5">[[${donationDto.subject}]]</h5>
-									<p class="card-text text-black fs-6 fw-normal ms-auto">[[${donationDto.regTime}]]</p>
+									<p class="card-text text-black fs-6 fw-normal ms-auto" th:text="${#temporals.format(donationDto.regTime, 'yyyy-MM-dd')}">[[${donationDto.regTime}]]</p>
 								</div>
 								<p class="card-text text-black fs-6 fw-normal text-end">[[${donationDto.endDate}]]</p>
 								<div class="vstack mt-auto">
