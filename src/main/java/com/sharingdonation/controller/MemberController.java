@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 //import com.myshop.controller.SessionManager;
@@ -97,7 +98,7 @@ public class MemberController {
     }
     
     @PostMapping("/login/equals")
-    public @ResponseStatus ResponseEntity memberEquals(@RequestBody @Valid MemberChangePwsDto memberFormDto, BindingResult bindingResult) {
+    public @ResponseBody ResponseEntity memberEquals(@RequestBody @Valid MemberChangePwsDto memberFormDto, BindingResult bindingResult) {
     	int result = 0;
     	if(bindingResult.hasErrors()){
             StringBuilder sb = new StringBuilder();
@@ -116,6 +117,29 @@ public class MemberController {
 		  return new ResponseEntity<String>("인증 실패", HttpStatus.BAD_REQUEST);
 	  }
 	  return new ResponseEntity<String>("인증 성공", HttpStatus.OK);
+    }
+    
+    
+    @PostMapping("/login/change")
+    public @ResponseBody ResponseEntity memberChange(@RequestBody @Valid MemberChangePwsDto memberFormDto, BindingResult bindingResult) {
+    	int result = 0;
+    	if(bindingResult.hasErrors()){
+            StringBuilder sb = new StringBuilder();
+            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+            for (FieldError fieldError : fieldErrors) {
+                sb.append(fieldError.getDefaultMessage());
+            }
+            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
+        }
+	  try {
+		  result = memberService.memberEquals(memberFormDto.getEmail(), memberFormDto.getName(), memberFormDto.getCellphone());
+	} catch (Exception e) {
+		return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	  if(result == 0) {
+		  return new ResponseEntity<String>("비밀번호 변경 완료 되었습니다.", HttpStatus.BAD_REQUEST);
+	  }
+	  return new ResponseEntity<String>("비밀번호 변경 완료 되었습니다.", HttpStatus.OK);
     }
     
     
