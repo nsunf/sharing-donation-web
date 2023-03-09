@@ -43,6 +43,7 @@ public class SharingRepositoryCustomImpl implements SharingRepositoryCustom {
 				.where(story.member.id.eq(memberId).and(story.chooseYn.eq("Y")))
 				.where(sharingImg.repimgYn.eq("Y"))
 				.where(sharing.done.eq("Y"))
+				.orderBy(story.regTime.desc())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
 				.fetch();
