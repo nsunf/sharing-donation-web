@@ -121,8 +121,8 @@ public class DonationController {
 			System.out.println("controller donationFormDto.getUserAble() ::"+donationFormDto.getUserAble());
 			model.addAttribute(donationFormDto);
 			model.addAttribute("nickName", member.getNickName());
-			model.addAttribute("sharingHeartDto", donationHeartService.getDonationHeartDto(member.getId(), donationId));
-			model.addAttribute("sharingHeartCount", donationHeartService.getDonationHeartCount(donationId));
+			model.addAttribute("donationHeartDto", donationHeartService.getDonationHeartDto(member.getId(), donationId));
+			model.addAttribute("donationHeartCount", donationHeartService.getDonationHeartCount(donationId));
 			
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "존재하지 않는 상품입니다.");
@@ -199,7 +199,6 @@ public class DonationController {
 	
 	
 	// 나눔 좋아요
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	@GetMapping("donation/heart/{id}")
 	public @ResponseBody ResponseEntity<?> toggleHeart(@PathVariable Long id, Principal principal) {
 //			Member member = getTmpMember(Role.USER);
