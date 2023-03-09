@@ -163,8 +163,6 @@ public class MyPageController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/mypage/story/detail/delete/{storyId}")
 	public @ResponseBody ResponseEntity myPageStoryDetailDelete(@RequestBody  @Valid MyPageStoryDetailDto myPageStoryDetailDto ,BindingResult bindingResult, @PathVariable("storyId") Long storyId, Principal principal ) {
-
-		 
 		  if(bindingResult.hasErrors()){
 	            StringBuilder sb = new StringBuilder();
 	            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -174,9 +172,7 @@ public class MyPageController {
 	            }
 	            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
 	        }
-		 
 		  try {
-			  
 			   Long result = myPageService.mypageStoryDetailDelete(principal,storyId);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);

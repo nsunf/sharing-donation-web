@@ -58,7 +58,8 @@ function page(page) {
 								<tbody>
 									<!-- each start -->
 									<th:block th:each="member, status: ${members.getContent()}">
-										<tr>
+									
+										<tr style="cursor:pointer;color:#blue;" th:onClick="|location.href='/admin/management/${member.id}'|">
 											<td class="d-table-cell">[[${member.name}]]</td>
 											<td class="d-table-cell"><span
 												th:if="${#strings.equals(member.role, T(com.sharingdonation.constant.Role).USER)}">[[${member.nickName}]]</span>
@@ -68,6 +69,7 @@ function page(page) {
 												th:if="${#strings.equals(member.role, T(com.sharingdonation.constant.Role).COM)}">[[${member.nickName}]]</span></td>
 											<td class="d-none d-md-table-cell">[[${member.regTime}]]</td>
 										</tr>
+										
 									</th:block>
 									<!-- each end -->
 								</tbody>

@@ -3,6 +3,7 @@ package com.sharingdonation.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.sharingdonation.constant.Role;
 
@@ -35,6 +36,8 @@ public class MyPageEnterPricePrivacyDto {
 	
 	private LocalDateTime regTime;
 	
+	private String regTimeStr;
+	
 	private Role role;
 
 	//디폴트 생성자
@@ -52,6 +55,7 @@ public class MyPageEnterPricePrivacyDto {
 		this.address = address;
 		this.addressDetail = addressDetail;
 		this.regTime = regTime;
+		this.regTimeStr = regTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		this.role = role;
 				
 	}

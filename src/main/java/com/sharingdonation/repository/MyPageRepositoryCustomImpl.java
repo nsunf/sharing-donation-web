@@ -224,7 +224,7 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 					 story.id,
 					 ExpressionUtils.as(JPAExpressions.select(sharingImg.imgUrl)
 							 .from(sharingImg)
-							 .where(story.member.id.eq(memberId).and(sharingImg.sharing.id.eq(story.sharing.id)))
+							 .where(story.member.id.eq(memberId).and(sharingImg.sharing.id.eq(story.sharing.id).and(sharingImg.repimgYn.eq("Y"))))
 							 , "imgUrl"),
 					 story.sharing.name,
 					 story.sharing.area.gugun,

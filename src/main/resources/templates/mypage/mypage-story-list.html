@@ -35,6 +35,30 @@ function page(page) {
 						
 						<!-- each -->
 						<th:block	th:each="item, status: ${myPageStoryListDto.getContent()}">
+						<!-- 
+<<<<<<< HEAD
+						 <a th:href="@{|/mypage/story/detail/${item.id}|}">
+							<div class="col-12" >
+								<script type="text/javascript">
+								console.log("[[${item.id}]]");
+								</script>
+								<div class="mb-3 form-check"
+									style="background-color: #F0F5F4; height: 200px; width: 100%; border-radius: 10px; margin: 0; padding: 0; display: flex;">
+
+									<img th:src="${item.imgUrl}" class="img-thumbnail"
+										th:alt="${item.imgUrl}" style="width: 150px; height: 100%;">
+									<div
+										style="padding: 15px 0 0 10px; display: flex; flex-flow: column; justify-content: space-around;">
+										<div style="width: 280px;">
+											<span>[[${item.name}]] </span>
+										</div>
+										<div>
+											<span>상품명 :[[${item.name}]]</span>
+										</div>
+										<div>
+											<span>등록일 : [[${item.regTime}]]</span>
+=======
+ -->
 							<a class="card mb-3" th:href="@{/mypage/story/detail/{id}(id=${item.id})}" style="max-width: 100%; height: 200px; background: #F0F5F4;">
 								<div class="row g-0 h-100">
 									<div class="col-md-4 px-0 h-100">
@@ -52,6 +76,7 @@ function page(page) {
 												</textarea>
 												<label for="floatingTextarea2">사연</label>
 											</div>
+
 										</div>
 									</div>
 								</div>
