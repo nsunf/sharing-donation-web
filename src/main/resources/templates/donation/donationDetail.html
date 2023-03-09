@@ -13,6 +13,7 @@
 	rel="stylesheet"
 	href="/css/longsiru/donation-detail.css"
 />
+
 </head>
 <body>
 	<th:block layout:fragment="layout-content">
@@ -105,7 +106,7 @@
               <div class="ms-auto mb-4">
                 <button class="like-btn d-flex justify-content-center align-items-center">
 	              <div class="like" th:classappend="${donationHeartDto == null} ? 'like-false' : 'like-true'" th:onclick="'toggleHeart(' + *{id} + ');'"></div>
-	              <span class="like-count px-1" style="font-size: 12px; color:var(--thm-primary);" th:text="${donationHeartCount}"></span>
+	              <span class="like-count px-1" style="font-size: 12px; color: var(--thm-primary);" th:text="${donationHeartCount}"></span>
 	            </button>
               </div>
             </div>
