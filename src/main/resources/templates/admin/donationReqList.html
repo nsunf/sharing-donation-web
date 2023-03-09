@@ -57,7 +57,7 @@
 											<td class="d-none d-lg-table-cell">[[${donationDto.startDate}]]~[[${donationDto.endDate}]]</td>
 											<td class="d-table-cell"><a
 												th:href="@{/admin/donation/edit/{id}(id=${donationDto.id})}">
-													<button
+													<button class="status status-gray"
 														th:classappend="${donationDto.status == '완료'} ? 'admin_approve_btn' : (${donationDto.status == '진행중'} ? 'admin_md_ctr_btn' : 'admin_standby_btn')">[[${donationDto.status}]]</button>
 											</a></td>
 										</tr>
