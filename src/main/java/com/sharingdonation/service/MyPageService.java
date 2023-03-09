@@ -76,6 +76,7 @@ public class MyPageService {
 	public MyPageStoryDetailDto getMyPageStoryDetail(Principal principal, Long storyId){
 		String email = principal.getName();
 		Member member = memberRepository.findByEmail(email);
+		System.out.println(member.getId());
 		return myPageRepository.getMyPageStoryDetail(member.getId(),storyId);
 		
 	}
