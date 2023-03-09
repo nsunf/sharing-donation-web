@@ -75,7 +75,7 @@
                 <a href="/auth/login" class="logout-btn py-1 px-2" >로그인</a>
                 </th>
                 <th sec:authorize="isAuthenticated()" >
-                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/sharing}">[[${#authentication.principal.username}]]</a>
+                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/memberList}">[[${#authentication.principal.username}]]</a>
                 <a sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/mypage}">[[${#authentication.principal.username}]]</a>
                 <a href="/auth/logout" class="logout-btn py-1 px-2" >로그아웃</a>
                 </th>

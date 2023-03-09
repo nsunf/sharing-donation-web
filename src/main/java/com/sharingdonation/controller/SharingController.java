@@ -205,9 +205,17 @@ public class SharingController {
 	// 나눔 삭제
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	@GetMapping("sharing/delete/{id}")
-	public String deleteSharing(@PathVariable Long id) {
+	public String deleteSharing(@PathVariable Long id, Principal principal) {
 		sharingService.deleteSharing(id);
-		return "redirect:/mypage/sharing";
+		
+		String email = principal.getName();
+		Member member = memberRepo.findByEmail(email);		
+		
+		if (member.getRole() == Role.ADMIN)
+			return "redirect:/admin/sharing";
+		else 
+			return "redirect:/mypage/sharing";
+
 	}
 	
 	
