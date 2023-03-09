@@ -250,3 +250,22 @@
 .like-true:hover {
   background-image: url("../../img/nsunf/like-false.png");
 }
+
+
+.swiper-button-next,
+.swiper-button-prev {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--thm-primary);
+
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
+}
