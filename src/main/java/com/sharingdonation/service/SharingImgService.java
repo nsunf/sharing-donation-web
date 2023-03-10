@@ -1,6 +1,7 @@
 package com.sharingdonation.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -69,8 +70,8 @@ public class SharingImgService {
 	}
 	
 	public SharingImgDto getSharingImgDto(Long sharingId) {
-		List<SharingImgDto> sharingImgDtoList = sharingImgRepo.findBySharingId(sharingId).stream().map(SharingImgDto::of).toList();
-		List<SharingImgDto> filteredDtoList  = sharingImgDtoList.stream().filter(s -> s.getRepImgYn().equals("Y")).toList();
+		List<SharingImgDto> sharingImgDtoList = sharingImgRepo.findBySharingId(sharingId).stream().map(SharingImgDto::of).collect(Collectors.toList());
+		List<SharingImgDto> filteredDtoList  = sharingImgDtoList.stream().filter(s -> s.getRepImgYn().equals("Y")).collect(Collectors.toList());
 		if (filteredDtoList.size() == 0)
 			return null;
 		else 
@@ -78,7 +79,7 @@ public class SharingImgService {
 	}
 	
 	public List<SharingImgDto> getSharingImgDtoList(Long sharingId) {
-		List<SharingImgDto> sharingImgDtoList = sharingImgRepo.findBySharingId(sharingId).stream().map(SharingImgDto::of).toList();
+		List<SharingImgDto> sharingImgDtoList = sharingImgRepo.findBySharingId(sharingId).stream().map(SharingImgDto::of).collect(Collectors.toList());
 		System.out.println("---> " + sharingImgDtoList.size());
 		return sharingImgDtoList;
 	}

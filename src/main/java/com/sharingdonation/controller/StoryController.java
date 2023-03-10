@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -122,7 +123,7 @@ public class StoryController {
 		Long count = 0L;
 		if (obj instanceof List<?>) {
 			List<String> list = (List<String>) obj;
-			storyIdList = list.stream().mapToLong(Long::valueOf).boxed().toList();
+			storyIdList = list.stream().mapToLong(Long::valueOf).boxed().collect(Collectors.toList());
 			count = storyService.deleteStories(storyIdList);
 		}
 		

@@ -37,12 +37,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //        argumentResolvers.add(pageableArgumentResolver);
 //	}
 	
-	@Bean
-	public FilterRegistrationBean<?> filterBean() {
-		FilterRegistrationBean<?> registrationBean = new FilterRegistrationBean<LayoutFilter>(new LayoutFilter(categoryService));
-		
-		registrationBean.addUrlPatterns("/sharing/area/*");
-		
-		return registrationBean;
-	}
+//	@Bean
+//	public FilterRegistrationBean<?> filterBean() {
+//		FilterRegistrationBean<?> registrationBean = new FilterRegistrationBean<LayoutFilter>(new LayoutFilter(categoryService));
+//		
+//		registrationBean.addUrlPatterns("/sharing/area/*");
+//		
+//		return registrationBean;
+//	}
 }

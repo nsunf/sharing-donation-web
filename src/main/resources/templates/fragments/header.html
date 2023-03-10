@@ -57,7 +57,7 @@
 										<a th:href="@{/sharing}">나눔</a>
 										 <ul class="d-xl-none">
 											<li><a th:href="@{${#httpServletRequest.requestURL}(cat='전체')}">전체</a></li>
-											<li th:each="categoryDto : ${categoryDtoList}" th:classappend="${#strings.equals(param.cat, categoryDto.categoryName)} ? 'text-primary' : 'test'">
+											<li th:if="${categoryDtoList != null}" th:each="categoryDto : ${categoryDtoList}" th:classappend="${#strings.equals(param.cat, categoryDto.categoryName)} ? 'text-primary' : 'test'">
 												<a th:href="@{${#httpServletRequest.requestURL}(cat=${categoryDto.categoryName})}">[[${categoryDto.categoryName}]]</a>
 											</li>
 										</ul>
