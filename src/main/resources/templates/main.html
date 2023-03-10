@@ -142,7 +142,7 @@
 													<span class="section-title__tagline">자선 단체에 오신 것을 환영합니다</span>
 													<h2 class="section-title__title">서로 돕는 것이 세상을 더 좋게 만들 수 있습니다</h2>
 											</div>
-											<div class="welcome-one__our-mission-and-story">
+											<div th:if="${mainDonation.donationName != null}" class="welcome-one__our-mission-and-story">
 													<div class="welcome-one__mission-and-story-single">
 															<h3><i class="fas fa-arrow-circle-right"></i>[[*{donationName}]]</h3>
 															<p class="welcome-one__our-mission-and-story-text" th:text="*{startDate + '~' + endDate}"></p>
@@ -153,8 +153,11 @@
 													<div class="welcome-one__progress-single">
 															<!-- <h4 class="welcome-one__progress-title">Charity</h4> -->
 															<div class="bar">
-																	<div class="bar-inner count-bar" th:data-percent="*{pointPer + '%'}">
+																	<div th:if="${mainDonation.donationName != null}" class="bar-inner count-bar" th:data-percent="*{pointPer + '%'}">
 																			<div class="count-text" th:text="*{pointPer + '%'}"></div>
+																	</div>
+																	<div th:unless="${mainDonation.donationName != null}" class="bar-inner count-bar" data-percent="88%">
+																			<div class="count-text">88%</div>
 																	</div>
 															</div>
 													</div>
