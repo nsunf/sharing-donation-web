@@ -56,6 +56,10 @@ public class DonationService {
 	private final PointRepository pointRepository;
 	private final MemberRepository memberRepository;
 	
+	// 총 나눔 완료 수
+		public Long getNumOfDonated() {
+			return donationRepository.countByDone("Y");
+		}
 	public Long saveDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList, Principal principal) throws Exception {
 		String email = principal.getName();
 		
