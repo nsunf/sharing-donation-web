@@ -70,7 +70,7 @@
                 <div class="causes-one__content">
                   <div class="hstack">
                     <span class="causes-one__title mb-0">
-                      <a class="" href="causes-details.html"></a>
+                      <a th:href="@{/sharing/{id}(id=${sharingDto.id})}">[[${sharingDto.name}]]</a>
                     </span>
                     <span class="ms-auto">[[${sharingDto.areaName}]]</span>
                   </div>

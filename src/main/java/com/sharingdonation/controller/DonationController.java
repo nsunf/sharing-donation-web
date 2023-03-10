@@ -104,6 +104,7 @@ public class DonationController {
 			donationService.saveDonation(donationFormDto, donationImgFileList, principal);
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "기부 등록 중 에러가 발생했습니다.");
+			e.printStackTrace();
 			System.out.println("exception");
 			return "donation/editDonation";
 		}
@@ -121,8 +122,8 @@ public class DonationController {
 			System.out.println("controller donationFormDto.getUserAble() ::"+donationFormDto.getUserAble());
 			model.addAttribute(donationFormDto);
 			model.addAttribute("nickName", member.getNickName());
-			model.addAttribute("sharingHeartDto", donationHeartService.getDonationHeartDto(member.getId(), donationId));
-			model.addAttribute("sharingHeartCount", donationHeartService.getDonationHeartCount(donationId));
+			model.addAttribute("donationHeartDto", donationHeartService.getDonationHeartDto(member.getId(), donationId));
+			model.addAttribute("donationHeartCount", donationHeartService.getDonationHeartCount(donationId));
 			
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "존재하지 않는 상품입니다.");
@@ -141,6 +142,7 @@ public class DonationController {
 //			donationFormDto.getDonationImgDtoList();
 //			donationFormDto.getMember().
 			model.addAttribute("donationFormDto", donationFormDto);
+			// donationimgdtolist
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "존재하지 않는 상품입니다.");
 			model.addAttribute("donationFormDto", new DonationFormDto());
@@ -164,10 +166,10 @@ public class DonationController {
 		}
 
 		//첫번째 이미지가 있는지 검사(첫번째 이미지는 필수 입력값이기 때문에)
-		if(donationImgFileList.get(0).isEmpty() && donationFormDto.getId() == null) {
-			model.addAttribute("errorMessage", "첫번째 이미지는 필수 입력 값 입니다.");
-			return "donation/editDonation";
-		}
+//		if(donationImgFileList.get(0).isEmpty() && donationFormDto.getId() == null) {
+//			model.addAttribute("errorMessage", "첫번째 이미지는 필수 입력 값 입니다.");
+//			return "donation/editDonation";
+//		}
 		
 		try {
 			donationService.updateDonation(donationFormDto, donationImgFileList, principal);
@@ -189,7 +191,7 @@ public class DonationController {
 			donationService.deleteDonation(donationId, principal);
 		} catch (Exception e) {
 //			System.out.println(" controller adminDonationUpdate exception");
-			e.printStackTrace();
+//			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		
@@ -199,7 +201,6 @@ public class DonationController {
 	
 	
 	// 나눔 좋아요
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	@GetMapping("donation/heart/{id}")
 	public @ResponseBody ResponseEntity<?> toggleHeart(@PathVariable Long id, Principal principal) {
 //			Member member = getTmpMember(Role.USER);
@@ -211,7 +212,7 @@ public class DonationController {
 	}
 	
 	// 보유포인트조회
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+//	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_COM', 'ROLE_ADMIN')")
 	@GetMapping("pointSearch")
 	public @ResponseBody ResponseEntity<?> pointSearch(Principal principal) {
 		
@@ -254,7 +255,6 @@ public class DonationController {
 	
 	
 	// 마이페이지 나눔 받은 내역
-		@PreAuthorize("hasRole('ROLE_USER')")
 		@GetMapping(value = {"mypage/donation", "mypage/donation/{page}"})
 		public String mypageAdoptedSharingList(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
 //			Member member = getTmpMember(Role.USER);
@@ -281,7 +281,8 @@ public class DonationController {
 	//list페이
 	@GetMapping(value = "/admin/donation")
 	public String adminDonationList(SearchDto donationSearchDto, Optional<Integer> page, Model model) {
-		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 10);
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+//		Pageable pageable = PageRequest.of(page.orElse(0), 10);
 		Page<DonationDto> donationList = donationService.getAdminListDonationPage(donationSearchDto, pageable);
 		
 //		System.out.println(  donationList.pa);
@@ -294,14 +295,14 @@ public class DonationController {
 		
 //		donationList.
 		
-		int nowPage = (page.isPresent()) ? page.get() : 1;
-		System.out.println("pages:" + nowPage);
+//		int nowPage = (page.isPresent()) ? page.get() : 1;
+//		System.out.println("pages:" + nowPage);
 		model.addAttribute("donationDtoList", donationList);
 		model.addAttribute("donationSearchDto", donationSearchDto);
 		model.addAttribute("maxPage", 5);
-		model.addAttribute("rowPerPage", 10 );
-		model.addAttribute("totalCount", donationList.getSize());
-		model.addAttribute("pages", nowPage);
+//		model.addAttribute("rowPerPage", 10 );
+//		model.addAttribute("totalCount", donationList.getSize());
+		model.addAttribute("pages",  pageable.getPageNumber());
 //		System.out.println("donation_list_check");
 		return "admin/donationReqList";
 	}

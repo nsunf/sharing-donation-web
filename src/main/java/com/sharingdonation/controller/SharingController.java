@@ -323,7 +323,6 @@ public class SharingController {
 	}
 	
 	// 나눔 좋아요
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	@GetMapping("sharing/heart/{id}")
 	public @ResponseBody ResponseEntity<?> toggleHeart(@PathVariable Long id, Principal principal) {
 //		Member member = getTmpMember(Role.USER);

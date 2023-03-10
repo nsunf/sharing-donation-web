@@ -6,6 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SearchDto {
-	private String searchBy;
+	//subject | donationName |author
+	private String searchBy = "subject";
+	// all | outstanding | proceeding | complete
+	private String status = "all";
+		
 	private String searchQuery = "";
 }
