@@ -12,7 +12,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.thymeleaf.util.StringUtils;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 //import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
@@ -20,6 +22,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharingdonation.dto.DonationDto;
 import com.sharingdonation.dto.SearchDto;
+import com.sharingdonation.dto.SharingAdminSearchDto;
 import com.sharingdonation.dto.ListDonationDto;
 import com.sharingdonation.dto.QDonationDto;
 import com.sharingdonation.dto.QListDonationDto;
@@ -29,6 +32,7 @@ import com.sharingdonation.entity.QDonationHeart;
 import com.sharingdonation.entity.QDonationImg;
 import com.sharingdonation.entity.QMember;
 import com.sharingdonation.entity.QPoint;
+import com.sharingdonation.entity.QSharing;
 
 public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 
@@ -45,6 +49,42 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 			return QDonation.donation.subject.like("%" + searchQuery + "%");
 		}
 		return null;
+	}
+	
+	private Predicate searchOption(SearchDto donationSearchDto) {
+		QDonation donation = QDonation.donation;
+		String searchTerm = donationSearchDto.getSearchQuery();
+		BooleanBuilder builder = new BooleanBuilder();
+		
+		switch (donationSearchDto.getSearchBy()) {
+		case "subject":
+			builder.and(donation.subject.like("%" + searchTerm + "%"));
+			break;
+		case "donationName":
+			builder.and(donation.donationName.contains(searchTerm));
+			break;
+		case "author":
+			builder.and(donation.member.nickName.contains(searchTerm));
+			break;
+		}
+		
+		switch (donationSearchDto.getStatus()) {
+		case "outstanding":
+			builder.and(donation.done.eq("N")).and(donation.confirmYn.eq("N"));
+			break;
+		case "proceeding":
+			builder.and(donation.done.eq("N")).and(donation.confirmYn.eq("Y"));
+			break;
+		case "complete":
+			builder.and(donation.done.eq("Y"));
+			break;
+		default:
+			break;
+		}
+		
+		builder.and(donation.delYn.eq("N"));
+		
+		return builder;
 	}
 
 	@Override
@@ -77,9 +117,10 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 					)
 					.from(donation)
 //					.join(donation, donationImg.donation)
-					.join(donationImg).on(donation.donation.eq(donationImg.donation), donationImg.repimgYn.eq("Y"))
-					.join(member).on(donation.member.eq(member.member))
-					.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
+					.leftJoin(donationImg).on(donation.donation.eq(donationImg.donation), donationImg.repimgYn.eq("Y"))
+					.leftJoin(member).on(donation.member.eq(member.member))
+//					.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
+					.where(searchOption(donationSearchDto))
 					.orderBy(donation.id.desc())
 					.offset(pageable.getOffset())
 					.limit(pageable.getPageSize())
@@ -89,7 +130,8 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 					.from(donation)
 					.leftJoin(donationImg).on(donation.donation.eq(donationImg.donation), donationImg.repimgYn.eq("Y"))
 					.leftJoin(member).on(donation.member.eq(member.member))
-					.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
+//					.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
+					.where(searchOption(donationSearchDto))
 					.fetchOne();
 		return new PageImpl<>(content, pageable, total);
 	}
@@ -118,10 +160,11 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 						)
 				)
 				.from(donation)
-				.join(donationImg).on(donation.eq(donationImg.donation), donationImg.repimgYn.eq("Y"))
-				.join(member).on(donation.member.eq(member))
+				.leftJoin(donationImg).on(donation.eq(donationImg.donation), donationImg.repimgYn.eq("Y"))
+				.leftJoin(member).on(donation.member.eq(member))
 				.where(donation.donationName.like("%" + donationSearchDto.getSearchQuery() + "%")
-						, donation.subject.like("%" + donationSearchDto.getSearchQuery() + "%"))
+						.or(donation.subject.like("%" + donationSearchDto.getSearchQuery() + "%"))
+						.or(member.nickName.like("%" + donationSearchDto.getSearchQuery() + "%")))
 				.where(donation.confirmYn.eq("Y")
 		                .and(donation.done.eq("N"))
 		                .and(donation.delYn.eq("N")))
@@ -176,7 +219,8 @@ public class DonationRepositoryCustomImpl implements DonationRepositoryCustom{
 //				.where(donationImg.repimgYn.eq("Y"))
 //				.where(searchByLike(donationSearchDto.getSearchBy(), donationSearchDto.getSearchQuery()))
 				.where(donation.donationName.like("%" + donationSearchDto.getSearchQuery() + "%")
-						, donation.subject.like("%" + donationSearchDto.getSearchQuery() + "%"))
+						.or(donation.subject.like("%" + donationSearchDto.getSearchQuery() + "%"))
+						.or(member.nickName.like("%" + donationSearchDto.getSearchQuery() + "%")))
 				.where(donation.confirmYn.eq("Y")
 		                .and(donation.done.eq("N"))
 		                .and(donation.delYn.eq("N")))
