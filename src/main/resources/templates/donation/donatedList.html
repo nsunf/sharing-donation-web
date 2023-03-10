@@ -48,7 +48,7 @@
 								<div class="news-two__img-box">
 									<div class="news-two__img">
 										<img th:src="@{${donationBoard.imgUrl}}" th:alt="donated-img" />
-										<a href="#"> <i class="fa fa-plus"></i>
+										<a th:href="'/donatedBoard/' +${donationBoard.id}"> <i class="fa fa-plus"></i>
 										</a>
 									</div>
 									<div class="news-two__date">
