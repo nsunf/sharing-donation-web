@@ -199,7 +199,7 @@ public class DonationController {
 	
 	
 	// 나눔 좋아요
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+//	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_COM', 'ROLE_ADMIN')")
 	@GetMapping("donation/heart/{id}")
 	public @ResponseBody ResponseEntity<?> toggleHeart(@PathVariable Long id, Principal principal) {
 //			Member member = getTmpMember(Role.USER);
@@ -211,7 +211,7 @@ public class DonationController {
 	}
 	
 	// 보유포인트조회
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+//	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_COM', 'ROLE_ADMIN')")
 	@GetMapping("pointSearch")
 	public @ResponseBody ResponseEntity<?> pointSearch(Principal principal) {
 		
@@ -254,7 +254,7 @@ public class DonationController {
 	
 	
 	// 마이페이지 나눔 받은 내역
-		@PreAuthorize("hasRole('ROLE_USER')")
+//		@PreAuthorize("hasRole('ROLE_USER', 'ROLE_COM')")
 		@GetMapping(value = {"mypage/donation", "mypage/donation/{page}"})
 		public String mypageAdoptedSharingList(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
 //			Member member = getTmpMember(Role.USER);
