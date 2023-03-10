@@ -212,7 +212,7 @@ public class DonationController {
 	}
 	
 	// 보유포인트조회
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+//	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_COM', 'ROLE_ADMIN')")
 	@GetMapping("pointSearch")
 	public @ResponseBody ResponseEntity<?> pointSearch(Principal principal) {
 		
@@ -255,7 +255,6 @@ public class DonationController {
 	
 	
 	// 마이페이지 나눔 받은 내역
-		//@PreAuthorize("hasRole('ROLE_USER')")
 		@GetMapping(value = {"mypage/donation", "mypage/donation/{page}"})
 		public String mypageAdoptedSharingList(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
 //			Member member = getTmpMember(Role.USER);
@@ -282,7 +281,8 @@ public class DonationController {
 	//list페이
 	@GetMapping(value = "/admin/donation")
 	public String adminDonationList(SearchDto donationSearchDto, Optional<Integer> page, Model model) {
-		Pageable pageable = PageRequest.of(page.isPresent() ? page.get()-1 : 0, 10);
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+//		Pageable pageable = PageRequest.of(page.orElse(0), 10);
 		Page<DonationDto> donationList = donationService.getAdminListDonationPage(donationSearchDto, pageable);
 		
 //		System.out.println(  donationList.pa);
@@ -295,14 +295,14 @@ public class DonationController {
 		
 //		donationList.
 		
-		int nowPage = (page.isPresent()) ? page.get() : 1;
-		System.out.println("pages:" + nowPage);
+//		int nowPage = (page.isPresent()) ? page.get() : 1;
+//		System.out.println("pages:" + nowPage);
 		model.addAttribute("donationDtoList", donationList);
 		model.addAttribute("donationSearchDto", donationSearchDto);
 		model.addAttribute("maxPage", 5);
-		model.addAttribute("rowPerPage", 10 );
-		model.addAttribute("totalCount", donationList.getSize());
-		model.addAttribute("pages", nowPage);
+//		model.addAttribute("rowPerPage", 10 );
+//		model.addAttribute("totalCount", donationList.getSize());
+		model.addAttribute("pages",  pageable.getPageNumber());
 //		System.out.println("donation_list_check");
 		return "admin/donationReqList";
 	}
