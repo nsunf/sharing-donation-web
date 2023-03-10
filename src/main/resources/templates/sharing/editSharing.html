@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    layout:decorate="~{layouts/layout1}"
+>
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<title>나눔 상품 등록/수정</title>
+<link rel="stylesheet" href="/css/nsunf/editShare.css">
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+	
+		<section class="banner d-flex justify-content-center align-items-center">
+			<h2 class="banner__title">[[${title}]]</h2>
+		</section>
+
+		<section class="my-5">
+			<form class="container" th:action="@{/sharing/new}" method="post" th:object="${sharingFormDto}" enctype="multipart/form-data">
+ 				<input type="hidden" th:field="*{id}">
+				<div class="row">
+				 <div class="col-8 mx-auto">
+				 	<div class="hstack">
+				 		<div th:text="*{regTime}"></div>
+				 		<div class="status ms-auto" th:classappend="${sharingFormDto.status == '완료'} ? 'status-gray' : (${sharingFormDto.status == '진행중'} ? 'status-green' : 'status-yellow')" th:text="${sharingFormDto.status}"></div>
+				 	</div>
+
+				 <label class="input-label">나눔 지역</label>
+				 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" th:field="*{areaId}">
+						<option th:value="${null}" selected>지역을 선택해주세요.</option>
+						<option th:each="areaDto: ${areaDtoList}" th:value="${areaDto.id}">[[${areaDto.gugun}]]</option>
+					</select>
+					<p class="text-danger fw-normal" th:if="${#fields.hasErrors('areaId')}" th:errors="*{areaId}"></p>
+
+				 <label class="input-label">상품 카테고리</label>
+				 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" th:field="*{categoryId}">
+						<option th:value="${null}" selected>상품 카테고리를 선택해주세요.</option>
+						<option th:each="categoryDto: ${categoryDtoList}" th:value="${categoryDto.id}">[[${categoryDto.categoryName}]]</option>
+					</select>
+					<p class="text-danger fw-normal" th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></p>
+
+					<label class="input-label w-100" for="">
+						<span class="d-block ms-2 mb-1">나눔 물품명</span>
+						<input class="input-box w-100 p-3" type="text" th:field="*{name}" placeholder="나눔 물품명">
+						<p class="text-danger fw-normal" th:errors="*{name}"></p>
+					</label>
+
+					<label class="input-label w-100" for="">
+						<span class="d-block ms-2 mb-1">나눔 상세 설명</span>
+						<textarea class="input-box w-100 p-3" type="text" th:field="*{content}" placeholder="나눔 물품 상세 설명"></textarea>
+						<p class="text-danger fw-normal" th:errors="*{content}"></p>
+					</label>
+
+					<label class="input-label w-100">
+						<span class="d-block ms-2 mb-1">물품 사진 등록</span>
+						<input class="img-input w-100" type="file" name="sharingImgFileList" accept="image/*" multiple>
+					</label>
+				 </div>
+				</div>
+
+				<div class="row mt-5">
+					<div class="col-8 mx-auto">미리보기
+						<div class="img-preview-list row row-cols-4 g-4">
+						
+							<div class="col" th:each="imgDto, status : ${sharingImgDtoList}">
+								<img class="preview-img" th:src="@{${imgDto.imgUrl}}" th:alt="${'img-' + status.index}">
+							</div>
+ 						</div>
+					</div>
+				</div>
+
+				<div class="row mt-4">
+					<div class="col-8 mx-auto hstack">
+						<div class="mt-5 ms-auto">
+							<button th:if="${title == '나눔 상품 내역' || title == '나눔 상품 승인 관리'}" class="custom-btn custom-btn-del" type="button" th:onclick="'deleteSharing(' + ${sharingFormDto.id} + ');'">삭제</button>
+							<button th:if="${(title == '나눔 상품 내역' || title == '나눔 상품 승인 관리') && sharingFormDto.done == 'N'}" class="custom-btn ms-3" type="submit">수정</button>
+							<button th:if="${title == '나눔 상품 등록'}" class="custom-btn ms-3" type="submit">요청 제출</button>
+<!--  							<button th:if="${title == '나눔 상품 승인 관리' && sharingFormDto.confirmYn == 'N'}" class="custom-btn ms-3" type="button" th:onclick="'approveSharing(' + ${sharingFormDto.id} + ')'">승인</button>
+ --> 							<button th:if="${title == '나눔 상품 승인 관리' && sharingFormDto.confirmYn == 'N'}" class="custom-btn ms-3" type="button" data-bs-toggle="modal" data-bs-target="#approveModal">승인</button>
+ 						</div>
+  					<div class="col-2 my-auto hstack mt-5" th:if="${title != '나눔 상품 등록' && sharingFormDto.done == 'Y' && sharingBoard == null}" sec:authorize="hasRole('ROLE_ADMIN')">
+							<a 
+								class="btn ms-auto" 
+								th:href="'/admin/sharing_board/create/'+${sharingFormDto.id}"
+								style="background: var(--thm-primary); 
+								color: white;"
+							>
+								게시글 등록
+							</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</section>
+		
+		<div class="modal fade" tabindex="-1" id="approveModal">
+			<div class="modal-dialog modal-dialog-centered">
+				<form class="modal-content" th:action="@{/admin/sharing/approve}" method="post">
+					<div class="modal-header">
+						<h5 class="modal-title">나눔 상품 승인</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>나눔 상품 포인트</p>
+						<input type="hidden" name="id" th:value="${sharingFormDto.id}" />
+						<input class="form-control" type="number" name="point" placeholder="포인트를 입력해주세요." required/>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-custom btn-custom-close" data-bs-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-custom btn-custom-regist">승인</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+	<script src="/js/imgInputPreview.js"></script>
+	<script src="/js/nsunf/editSharing.js"></script>
+	</th:block>
+</body>
+</html>

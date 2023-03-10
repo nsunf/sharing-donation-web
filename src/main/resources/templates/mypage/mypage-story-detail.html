@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout2}">
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<link href="/css/story.css" rel="stylesheet" />
+
+	<script type="text/javascript">
+	
+	function addReadOnly(){
+		$("#storyContent").attr("readonly",true); 
+		$("#setUpdate").show();
+		$("#updateComplete").hide();
+		
+	}
+	function removeReadOnly(){
+		$("#storyContent").removeAttr("readonly"); 
+		$("#setUpdate").hide();
+		$("#updateComplete").show();
+		
+	}
+		
+	
+	function storyUpdate() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        var url = "/mypage/story/detail/update/" + [[${detail.id}]];
+        var paramData = {
+        	content : $("#storyContent").val()
+        };
+
+        var param = JSON.stringify(paramData);
+
+        $.ajax({
+            url      : url,
+            type     : "POST",
+            contentType : "application/json",
+            data     : param,
+            beforeSend : function(xhr){
+                /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                xhr.setRequestHeader(header, token);
+            },
+            dataType : "json",
+            cache   : false,
+            success  : function(result, status){
+ 
+                alert("사연이 수정 완료 되었습니다.");
+                /*
+                location.href="/mypage/privacy/";
+                */
+                
+                $("#storyContent").val() = result.content;
+            },
+            error : function(jqXHR, status, error){
+                if(jqXHR.status == '401'){
+                    alert('로그인 후 이용해주세요');
+                    location.href='/';
+                } else{
+                    alert(jqXHR.responseText);
+                }
+            }
+        });
+	}	
+	
+	
+	
+	function storyDelete() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        var url = "/mypage/story/detail/delete/" + [[${detail.id}]];
+        var paramData = {
+         
+        };
+
+        var param = JSON.stringify(paramData);
+
+        $.ajax({
+            url      : url,
+            type     : "POST",
+            contentType : "application/json",
+            data     : param,
+            beforeSend : function(xhr){
+                /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                xhr.setRequestHeader(header, token);
+            },
+            dataType : "json",
+            cache   : false,
+            success  : function(result, status){
+ 
+                alert("사연이 삭제 완료 되었습니다.");
+                location.href="/mypage/story";
+            },
+            error : function(jqXHR, status, error){
+                if(jqXHR.status == '401'){
+                    alert('로그인 후 이용해주세요');
+                    location.href='/';
+                } else{
+                    alert(jqXHR.responseText);
+                }
+            }
+        });
+	}	
+	</script>
+
+	
+<title>Insert title here</title>
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+		<section>
+			<div class="section container" style="margin: 0 auto;">
+				<div style="display: flex;">
+					<div></div>
+					<div class="mb-3 row"
+						style="display: flex;">
+				
+							
+					<!-- 상세 내용 div -->
+						<div
+							style="width: 780px; height: 800px; background-color: #F0F5F4; margin: 0 auto;">
+							<div style="display: flex;">
+								<img
+									th:src="${detail.imgUrl}"
+									class="img-thumbnail" th:alt="${detail.imgUrl}"
+									style="width: 350px; height: 300px; margin: 20px 0 0 20px;">
+								<!-- 제목 물품명 작성자 -->
+
+								<div class="row g-2"
+									style="display: flex; flex-flow: column; margin: 20px 0 0 20px; width: 370px;">
+									<div class="col-md">
+										<div class="form-floating">
+											<input type="text" class="form-control-plaintext"
+												id="floatingInputGrid" placeholder="name@example.com"
+												th:value="${detail.name}"
+												style="border-style: none; background-color: #F0F5F4;"
+												readonly><label for="floatingInputGrid">상품명</label>
+										</div>
+									</div>
+
+									<div class="col-md">
+										<div class="form-floating">
+											<input type="text" class="form-control-plaintext"
+												id="floatingInputGrid" placeholder="name@example.com"
+												th:value="${detail.gugun}"
+												style="border-style: none; background-color: #F0F5F4;"
+												readonly><label for="floatingInputGrid">지역</label>
+										</div>
+									</div>
+
+
+									<div class="col-md">
+										<div  class="form-floating">
+											<input type="text" class="form-control-plaintext"
+												id="floatingInputGrid" placeholder="name@example.com"
+												th:value="${detail.nickName}"
+												style="border-style: none; background-color: #F0F5F4;"
+												readonly><label for="floatingInputGrid">작성자</label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- 나눔 등록 사연 -->
+							<div>
+								<div class="form-floating mb-3" style="background-color: #fff; border-radius: 10px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25); width: 700px; height: 130px; margin: 0 auto; margin-top: 20px;">
+									<input type="text" readonly class="form-control-plaintext"
+										id="floatingPlaintextInput"
+										th:value="${detail.detail}"> <label
+										for="floatingPlaintextInput">나눔 등록 사연</label>
+								</div>
+								<div style="border: 1px solid rgba(0, 0, 0, 0.3); width: 741px; margin: 0 auto;"></div>
+							</div>
+
+								<div class="form-floating mb-3" style="background-color: #fff; border-radius: 10px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25); width: 700px; height: 130px; margin: 0 auto; margin-top: 20px;">
+									<input type="text" class="form-control-plaintext"
+										id="storyContent"  
+										th:value="${detail.content}" readonly="readonly"> <label
+										for="storyContent">나눔 신청 사연</label>
+								</div>
+							<div
+								style="display: flex; justify-content: space-around; margin-top: 70px;">
+								<button type="button" id="delete" class="btn btn-primary btn-3" onclick="storyDelete()">삭제</button>
+								<button type="button" id="setUpdate" onclick="removeReadOnly()"  class="btn btn-primary btn-2" style="">수정</button>
+								<button type="button" id="updateComplete" onclick="addReadOnly(); storyUpdate();" class="btn btn-primary btn-2" style="display: none;">수정완료</button>
+							</div>
+						</div>
+
+
+			
+					</div>
+
+				</div>
+
+
+			</div>
+
+		</section>
+	</th:block>
+
+
+</body>
+</html>

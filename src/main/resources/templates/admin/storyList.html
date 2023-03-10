@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="/css/story.css" rel="stylesheet" />
+<style>
+.story-link {
+	
+}
+
+.story-link:hover {
+	text-decoration: underline;
+}
+</style>
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+
+		<section class="auto-min-height">
+
+
+			<div class="section container" style="width: margin: 0 auto;">
+				
+				<div class="my-5">
+					<h1 class="text-center">나눔상품 목록</h1>
+				</div>
+
+				<div class="container">
+					<div class="row hstack">
+						<form name="searchFrm" class="hstack mb-4"
+							th:object="${searchDto}">
+							<div class="hstack gap-1 col-lg-3 col-md-4 col-sm-4 my-auto me-3 pb-5">
+								<select id="searchFilter"
+									class="form-select admin_md_ctr_select" th:field="*{filter}"
+									aria-label="Default select example">
+									<option value="title">글제목</option>
+									<option value="content">글내용</option>
+									<option value="author">작성자</option>
+								</select> <select class="form-select admin_md_ctr_select"
+									th:field="*{status}" aria-label="Default select example">
+									<option value="all">전체</option>
+									<option value="proceeding">진행중</option>
+									<option value="complete">완료</option>
+								</select>
+							</div>
+							<div class="col-lg-3 col-md-4 col-sm-4 my-auto ms-auto me-3 pb-5">
+								<div class="input-group mx-auto">
+									<input type="text" class="form-control" th:field="*{search}"
+										placeholder="검색" />
+									<button class="btn" type="submit"
+										style="background-color: #15C8A0; color: #fff">검색</button>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<div class="container">
+						<div class="row g-5">
+							<div class="">
+								<table class="table" style="text-align: center">
+									<thead>
+										<tr class="border-top">
+											<th class="d-table-cell" scope="col" style="width: 70px;">번호</th>
+											<th class="d-table-cell" scope="col" style="width: 350px;">상품명</th>
+											<th class="d-none d-md-table-cell" scope="col" style="width: 120px;">지역명</th>
+											<th class="d-none d-lg-table-cell" scope="col" style="width: 120px;">작성자</th>
+											<th class="d-none d-lg-table-cell" scope="col" style="width: 150px;">신청일자</th>
+											<th class="d-none d-md-table-cell" scope="col" style="width: 90px;">사연</th>
+											<th class="d-table-cell"scope="col" style="width: 110px;">진행사항</th>
+										</tr>
+									</thead>
+									<tbody style="line-height: 50px;">
+										<tr th:each="sharingStory, status : ${sharingStoryDtoList}">
+											<td class="d-table-cell" style="text-align: center;">[[${sharingStoryDtoList.totalElements
+												- status.index - (sharingStoryDtoList.size * page)}]]</td>
+											<td class="d-table-cell"><a class="story-link"
+												th:href="@{/admin/story/id/{id}(id=${sharingStory.sharingId})}">
+													<img th:src="${sharingStory.imgUrl}"
+													th:alt="${sharingStory.imgUrl}"
+													style="width: 50px; height: 50px; margin-right: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+													[[${sharingStory.sharingName}]]
+											</a></td>
+
+											<td class="d-none d-md-table-cell" style="text-align: center;"
+												th:text="${sharingStory.areaName}">핸드폰</td>
+											<td class="d-none d-lg-table-cell" style="text-align: center;"
+												th:text="${sharingStory.createdBy}">Writer</td>
+											<td class="d-none d-lg-table-cell" style="text-align: center;"
+												th:text="${sharingStory.regDate}">2023-02-17</td>
+											<td class="d-none d-md-table-cell" style="text-align: center;"
+												th:text="${sharingStory.numOfStory}">0</td>
+											<td class="d-table-cell" style="text-align: center;"><a
+												th:href="@{/admin/story/id/{id}(id=${sharingStory.sharingId})}">
+													<div class="status w-100"
+														th:classappend="${sharingStory.status == '완료'} ? 'status-gray' : (${sharingStory.status == '진행중'} ? 'status-green' : 'status-yellow')"
+														th:text="${sharingStory.status}">승인대기</div>
+											</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<nav aria-label="Page navigation example" class="hstack mt-5"
+						th:with="start=${(sharingStoryDtoList.number/maxPage)*maxPage + 1}, end=(${(sharingStoryDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < sharingStoryDtoList.totalPages ? start + (maxPage - 1) : sharingStoryDtoList.totalPages)})">
+						<ul class="pagination mx-auto">
+							<li class="page-item"><a class="page-link page-prev"
+								th:onclick="'paging(' + ${sharingStoryDtoList.number-1} + ')'"
+								aria-label="Previous"
+								th:classappend="${sharingStoryDtoList.number eq 0}?'disabled':''">
+									<span aria-hidden="true">&laquo;</span>
+							</a></li>
+							<li class="page-item"
+								th:each="page: ${#numbers.sequence(start, end)}"
+								th:classappend="${sharingStoryDtoList.number eq page-1}?'active':''">
+								<a class="page-link page-num"
+								th:onclick="'paging(' + ${page-1} + ')'" th:inline="text">[[${page}]]</a>
+							</li>
+							<li class="page-item"><a class="page-link page-next"
+								th:onclick="'paging(' + ${sharingStoryDtoList.number+1} + ')'"
+								aria-label="Next"
+								th:classappend="${sharingStoryDtoList.number+1 ge sharingStoryDtoList.totalPages}?'disabled':''">
+									<span aria-hidden="true">&raquo;</span>
+							</a></li>
+						</ul>
+					</nav>
+
+
+				</div>
+			</div>
+
+		</section>
+
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+		<script src="/js/setAutoHeight.js"></script>
+		<script src="/js/pagination.js"></script>
+		<!-- 
+		<script>
+			document.searchFrm.addEventListener("submit", e => {
+				e.preventDefault();
+				search();
+			});
+			function search() {
+				const searchTerm = document.getElementById("searchInput").value;
+				const searchFilter = document.getElementById("searchFilter").value;
+				location.href = "/admin/story/" + searchFilter + "/" + searchTerm;
+			}
+			
+		</script>
+		-->
+	</th:block>
+</body>
+</html>

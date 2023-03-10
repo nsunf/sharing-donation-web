@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/layout1}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Insert title here</title>
+    <link rel="stylesheet" href="/css/sol/admin_donation_complete_board.css" />
+    <link rel="stylesheet" href="/css/longsiru/adminDonationBoardList.css" />
+  </head>
+  <body>
+    <th:block layout:fragment="layout-content">
+      <section class="auto-min-height">
+        <div class="my-5">
+          <h1 class="text-center">기부 완료 게시판 관리</h1>
+        </div>
+        <!-- 검색창 -->
+        <div class="container">
+          <div class="col-lg-3 col-md-4 col-sm-4 my-auto ms-auto me-3 pb-5">
+            <form class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="검색"
+                th:field="${donationBoardSearchDto.searchQuery}"
+              />
+              <button
+                class="btn"
+                type="submit"
+                style="background-color: #15c8a0; color: #fff"
+              >
+                검색
+              </button>
+            </form>
+          </div>
+
+          <div class="row hstack">
+            <div
+              class="col-2 col-lx-2 col-lg-2 ms-auto w-100"
+              style="padding-right: 30px"
+            >
+              <a
+                class="btn"
+                href="/admin/donatedBoard/edit"
+                style="
+                  background: var(--thm-primary);
+                  color: white;
+                  float: right;
+                "
+                >기부 완료 게시판 등록</a
+              >
+            </div>
+          </div>
+
+          <div class="container">
+            <div class="row g-5">
+              <div class="p-3">
+                <table class="table" style="text-align: center">
+                  <thead>
+                    <tr class="border-top">
+                      <th class="d-table-cell">글번호</th>
+                      <th class="d-table-cell">글제목</th>
+                      <th class="d-none d-md-table-cell">
+                        기부 기관 / 개인 명
+                      </th>
+                      <th class="d-none d-lg-table-cell">기부 기간</th>
+                      <th class="d-table-cell">작성일자</th>
+                    </tr>
+                  </thead>
+                  <th:block
+                    th:each="donationBoard, status: ${donationBoards.getContent()}"
+                  >
+                    <tbody>
+                      <tr>
+                        <td
+                          class="d-table-cell"
+                          th:text="${donationBoards.getTotalElements-(((pages)-1) * rowPerPage) - status.index}"
+                        ></td>
+                        <td class="d-table-cell">
+                          <a th:href="'/donatedBoard/' +${donationBoard.id}"
+                            >[[${donationBoard.subject}]]</a
+                          >
+                        </td>
+                        <td
+                          class="d-none d-md-table-cell"
+                          th:text="${donationBoard.donationPerson}"
+                        ></td>
+                        <td class="d-none d-lg-table-cell">
+                          [[${donationBoard.startDate}]] ~
+                          [[${donationBoard.endDate}]]
+                        </td>
+                        <td class="d-table-cell">
+                          [[${donationBoard.regTime}]]
+                        </td>
+                      </tr>
+                    </tbody>
+                  </th:block>
+                </table>
+              </div>
+            </div>
+          </div>
+
+	
+		 <div class="">
+          <nav aria-label="Page navigation example" class="hstack mt-5" 
+            th:with="start=${(donationBoards.number/maxPage) * maxPage + 1}
+     						 , end=(${(donationBoards.totalPages == 0) ? 1 : (start + (maxPage) < donationBoards.totalPages ? start + (maxPage -1) : donationBoards.totalPages)})"
+          >
+            <ul class="pagination mx-auto">
+              <li
+                class="page-item"
+                th:classappend="${donationBoards.first}? 'disabled'"
+              >
+                <a class="page-link page-prev" 
+                  title="previous page"
+                  th:href="@{'/admin/donatedBoards/' + ${start} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}"
+                ><span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+
+              <li class="page-item" 
+                th:each="page: ${#numbers.sequence(start, end)}"
+                th:classappend="${donationBoards.number eq page-1} ? 'active':''"
+              >
+                <a class="page-link page-num" 
+                  th:inline="text"
+                  th:href="@{'/admin/donatedBoards/' + ${page} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}"
+                  >[[${page}]]</a
+                >
+              </li>
+
+              <li
+                class="page-item"
+                th:classappend="${donationBoards.last}? 'disabled'"
+              >
+                <a class="page-link page-next" 
+                  title="next page"
+                  th:href="@{'/admin/donatedBoards/' + ${end} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}"
+                ><span aria-hidden="true">&raquo;</span></a>
+              </li>
+            </ul>
+          </nav>
+          </div>
+          
+        </div>
+      </section>
+    </th:block>
+
+    <th:block layout:fragment="script-bottom">
+      <script src="/js/setAutoHeight.js"></script>
+    </th:block>
+  </body>
+</html>

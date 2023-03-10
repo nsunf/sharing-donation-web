@@ -1,0 +1,82 @@
+.banner {
+  background-image:url('https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'); 
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 33vh;
+  position: relative;
+}
+
+.banner::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.banner__title {
+  color: white;
+  border-bottom: 2px solid var(--thm-primary);
+z-index: 1;
+}
+
+.input-label {
+  color: black;
+  margin-top: 32px;
+}
+
+.input-box {
+  background: #F0F5F4;
+  color: var(--thm-gray);
+  border: none;
+}
+
+.img-input {
+  background: #F0F5F4;
+  color: var(--thm-gray);
+}
+
+.img-input::file-selector-button {
+  background: var(--thm-primary);
+  color: white;
+  border: none;
+  padding: 16px;
+  margin-right: 16px;
+}
+
+.preview-img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.custom-btn {
+  background: var(--thm-primary);
+  color: white;
+  border: none;
+  padding: 2px 16px;
+}
+
+.custom-btn-del {
+  background: var(--thm-gray);
+  color: white;
+}
+
+.custom-btn:hover {
+  background: rgba(var(--thm-primary-rgb), 0.8);
+}
+
+.custom-btn-del:hover {
+  background: rgba(var(--thm-gray-rgb), 0.8);
+}
+
+.custom-btn:active {
+  background: var(--thm-primary) !important;
+}
+
+.custom-btn-del:active {
+  background: var(--thm-gray) !important;
+}

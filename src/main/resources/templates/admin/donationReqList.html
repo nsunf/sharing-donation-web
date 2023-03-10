@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/sol/admin_request_donation_ctr.css" />
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+		<section class="auto-min-height">
+			<div class="my-5">
+				<h1 class="text-center">기부요청 리스트</h1>
+			</div>
+			<!-- 검색창 -->
+			<div class="container">
+				<form class="input-group" th:object="${searchDto}">
+					<div
+						class="hstack gap-1 col-lg-3 col-md-4 col-sm-4 my-auto me-3 pb-5">
+						<select class="form-select admin_md_ctr_select"
+							th:field="*{searchBy}" aria-label="Default select example">
+							<option value="subject">제목</option>
+							<option value="donationName">기부처</option>
+							<option value="author">작성자</option>
+						</select> 
+						<select class="form-select admin_md_ctr_select"
+							th:field="*{status}" aria-label="Default select example">
+							<option value="all">전체</option>
+							<option value="outstanding">승인대기</option>
+							<option value="proceeding">진행중</option>
+							<option value="complete">완료</option>
+						</select>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-4 my-auto ms-auto me-3 pb-5">
+						<div class="input-group mx-auto">
+							<input type="text" class="form-control"
+								th:field="${donationSearchDto.searchQuery}" placeholder="검색" />
+							<button class="btn" type="submit"
+								style="background-color: #15C8A0; color: #fff"
+								th:action="@{/admin/donation}">검색</button>
+						</div>
+					</div>
+				</form>
+				<div class="container">
+					<!-- <div class="row g-5"> -->
+						<div class="row g-5 pt-3">
+								<table class="table" style="text-align: center">
+									<thead>
+										<tr class="border-top">
+											<!-- <th class="d-none d-lg-table-cell"><input type="checkbox" name="" value="" /></th> -->
+											<th class="d-table-cell">번호</th>
+											<th class="d-none d-lg-table-cell">작성자</th>
+											<th class="d-table-cell">글제목</th>
+											<th class="d-none d-md-table-cell">상품명</th>
+											<th class="d-none d-lg-table-cell">신청일자</th>
+											<th class="d-none d-lg-table-cell">게시기간</th>
+											<th class="d-table-cell">진행상황</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!--  th:with="pages=(${(page == 0 or page=='' or page== null) ? 1 : page}), rowNum=${(totalCount - (pages * rowPerPage))} " -->
+										<tr th:each="donationDto, status : ${donationDtoList}">
+											<!-- <th><input type="checkbox" name="donation" th:value="${donationDto.id}" /></th> -->
+											<td class="d-table-cell"
+												th:text="${donationDtoList.totalElements - status.index -(pages * donationDtoList.size)}"></td>
+											<td class="d-none d-lg-table-cell">[[${donationDto.nickName}]]</td>
+											<td class="d-table-cell">[[${donationDto.subject}]]</td>
+											<td class="d-none d-md-table-cell">[[${donationDto.donationName}]]</td>
+											<td class="d-none d-lg-table-cell"
+												th:text="${#temporals.format(donationDto.regTime, 'yyyy-MM-dd')}"></td>
+											<td class="d-none d-lg-table-cell">[[${donationDto.startDate}]]~[[${donationDto.endDate}]]</td>
+											<td class="d-table-cell"><a
+												th:href="@{/admin/donation/edit/{id}(id=${donationDto.id})}">
+													<button class="status status-gray"
+														th:classappend="${donationDto.status == '완료'} ? 'admin_approve_btn' : (${donationDto.status == '진행중'} ? 'admin_md_ctr_btn' : 'admin_standby_btn')">[[${donationDto.status}]]</button>
+											</a></td>
+										</tr>
+										<!-- <tr>
+							<th><input type="checkbox" name="" value="" /></th>
+							<td>1</td>
+							<td>솔방울46</td>
+							<td>글제목</td>
+							<td>아이폰 xs</td>
+							<td>2023/02/20</td>
+							<td>2023/02/20~2023/03/20</td>
+							<td><button class="admin_standby_btn">승인대기</button></td>
+						</tr>
+						<tr>
+							<th><input type="checkbox" name="" value="" /></th>
+							<td>1</td>
+							<td>솔방울46</td>
+							<td>글제목</td>
+							<td>아이폰 xs</td>
+							<td>2023/02/20</td>
+							<td>2023/02/20~2023/03/20</td>
+							<td><button class="admin_approve_btn">승인완료</button></td>
+						</tr> -->
+									</tbody>
+								</table>
+							
+						</div>
+					<!-- </div> -->
+				</div>
+				<div class="">
+					<nav aria-label="Page navigation example" class="hstack mt-5"
+						th:with="start=${(donationDtoList.number/maxPage)*maxPage + 1}, end=(${(donationDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < donationDtoList.totalPages ? start + (maxPage - 1) : donationDtoList.totalPages)})">
+						<ul class="pagination mx-auto">
+							<li class="page-item"><a class="page-link page-prev"
+								th:onclick="'paging(' + ${donationDtoList.number} + ')'"
+								aria-label="Previous"
+								th:classappend="${donationDtoList.number eq 0}?'disabled':''">
+									<span aria-hidden="true">&laquo;</span>
+							</a></li>
+							<li class="page-item"
+								th:each="page: ${#numbers.sequence(start, end)}"
+								th:classappend="${donationDtoList.number eq page-1}?'active':''">
+								<a class="page-link page-num" th:inline="text"
+								th:onclick="'paging(' + ${page-1} + ')'">[[${page}]]</a>
+							</li>
+							<li class="page-item"><a class="page-link page-next"
+								th:onclick="'paging(' + ${donationDtoList.number+2} + ')'"
+								aria-label="Next"
+								th:classappend="${donationDtoList.number+1 ge donationDtoList.totalPages}?'disabled':''">
+									<span aria-hidden="true">&raquo;</span>
+							</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</section>
+
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+		<script src="/js/setAutoHeight.js"></script>
+		<script src="/js/pagination.js"></script>
+	</th:block>
+</body>
+</html>

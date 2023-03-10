@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<head>
+<meta charset="UTF-8" />
+<th:block>
+	<script th:inline="javascript">
+
+function page(page) {
+	if( [[${searchDto.searchQuery}]] === ''){
+		location.href = "/admin/memberList/" + page;
+		}else{
+			location.href = "/admin/memberList/" + page  + "?searchQuery=" +  [[${searchDto.searchQuery}]];
+		}
+}
+	</script>
+</th:block>
+
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/sol/admin_donation_complete_board.css" />
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+		<section class="auto-min-height">
+			<div class="my-5">
+				<h1 class="text-center">회원 관리</h1>
+			</div>
+			<!-- 검색창 -->
+			<div class="container">
+
+				<div class="col-lg-3 col-md-4 col-sm-4 my-auto ms-auto me-3 pb-5">
+					<form class="input-group" method="get"
+						th:action="@{/admin/memberList/{page}(page=${page})}">
+						
+							<div th:object="${searchDto}" class="input-group mb-3">
+								<input type="search" class="form-control adminInputSearch"
+									placeholder="검색" th:field="*{searchQuery}" id="search"
+									name="search" />
+								<button class="btn" id="button-addon2"
+									type="submit" style="background-color: #15C8A0; color: #fff">검색</button>
+							</div>
+						
+					</form>
+				</div>
+				<div class="container">
+					<div class="row g-5">
+						<div class="p-3">
+							<table class="table" style="text-align: center">
+								<thead>
+									<tr class="border-top">
+										<th class="d-table-cell">성명</th>
+										<th class="d-table-cell">닉네임</th>
+										<th class="d-none d-md-table-cell">기업명</th>
+										<th class="d-none d-md-table-cell">등급</th>
+										<th class="d-none d-md-table-cell" style="width: 400px;">가입일자</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- each start -->
+									<th:block th:each="member, status: ${members.getContent()}">
+									
+										<tr style="cursor:pointer;color:#blue;" th:onClick="|location.href='/admin/management/${member.id}'|">
+											<td class="d-table-cell">[[${member.name}]]</td>
+											<td class="d-table-cell"><span
+												th:if="${#strings.equals(member.role, T(com.sharingdonation.constant.Role).USER)}">[[${member.nickName}]]</span>
+												<!-- "${{#strings.equals(member.role, T(com.sharingdonation.constant.Role).USER)}" -->
+											</td>
+											<td class="d-none d-md-table-cell"><span
+												th:if="${#strings.equals(member.role, T(com.sharingdonation.constant.Role).COM)}">[[${member.nickName}]]</span></td>
+											<td class="d-none d-md-table-cell">
+											<span th:if="${#strings.equals(member.role, T(com.sharingdonation.constant.Role).USER)}">유저</span>
+											<span th:if="${#strings.equals(member.role, T(com.sharingdonation.constant.Role).COM)}">기업</span>
+											<span th:if="${#strings.equals(member.role, T(com.sharingdonation.constant.Role).ADMIN)}">관리자</span>
+											</td>
+											<td class="d-none d-md-table-cell">[[${member.regTime}]]</td>
+										</tr>
+										
+									</th:block>
+									<!-- each end -->
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+			<!-- pagenation -->
+			<div class="">
+				<nav aria-label="Page navigation example" class="hstack mt-5"
+					th:with="start=${(members.number/maxPage) * maxPage + 1}
+      , end=(${(members.totalPages== 0) ? 1 : (start + (maxPage - 1) < members.totalPages ? start + (maxPage -1) : members.totalPages)})">
+					<ul class="pagination mx-auto">
+						<li class="page-item"
+							th:classappend="${members.first}? 'disabled'"><a
+							class="page-link page-prev" href="#" title="previous page"
+							th:onclick="'javascript:page(' + ${members.number - 1} + ')'">
+								<span aria-hidden="true">&laquo;</span>
+						</a></li>
+
+						<li class="page-item"
+							th:each="page: ${#numbers.sequence(start, end)}"
+							th:classappend="${members.number eq page-1}?'active':''"><a
+							class="page-link page-num" th:inline="text"
+							th:onclick="'javascript:page(' + ${page - 1}+ ')'">[[${page}]]</a>
+						</li>
+
+						<li class="page-item" th:classappend="${members.last}? 'disabled'"><a
+							class="page-link page-next" href="#" title="next page"
+							th:onclick="'javascript:page(' + ${members.number + 1} + ')'">
+								<span aria-hidden="true">&raquo;</span>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+
+		</section>
+	</th:block>
+	<th:block layout:fragment="script-bottom">
+		<script src="/js/setAutoHeight.js"></script>
+	</th:block>
+</body>
+</html>

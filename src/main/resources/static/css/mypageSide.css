@@ -1,0 +1,31 @@
+.sidebar__nickname {
+  color: var(--thm-primary);
+}
+
+.sidebar__profile p {
+  margin: 0;
+}
+
+.profile__label {
+  color: var(--thm-primary);
+  font-size: 16px;
+}
+
+.profile__value {
+  padding-bottom: 16px;
+  font-size: 18px;
+}
+
+.nav__item {
+  padding: 0;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.nav__item--selected {
+  color: var(--thm-primary);
+}
+
+.nav__item:hover {
+  color: var(--thm-primary);
+}

@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+.logo-img {
+	object-fit: contain;
+	box-sizing: border-box;
+	padding: 8px 16px;
+}
+
+.main-menu__list > li {
+  padding: 0 !important;
+}
+
+.main-menu .main-menu__list>li+li {
+  margin-left: 32px !important;
+}
+
+.mobile-nav__container .dropdown > ul > li {
+  padding-left: 16px;
+}
+
+.logout-btn {
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 900;
+    background: var(--thm-gray);
+    display: inline-block;
+    padding: 7px 20px;
+    transition: all 500ms ease;
+    margin-left: 10px;
+}
+
+.logout-btn:hover {
+  background-color: var(--thm-primary);
+  color: #ffffff;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .main-menu-wrapper {
+    padding: 0;
+  }
+}

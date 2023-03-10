@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout1}"
+>
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<title>Insert title here</title>
+<link
+	rel="stylesheet"
+	href="/css/longsiru/donation-detail.css"
+/>
+
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+		
+		<section class="image-slider container my-5" th:object="${donationFormDto}">
+		<input type="hidden" th:field="*{id}">
+        <div class="row">
+          <div class="col-12 col-md-10 col-xl-8 mx-auto">
+            <div class="swiper mySwiper position-relative overflow-hidden">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide ratio ratio-16x9" th:each="donationImgDto, status:*{donationImgDtoList} ">
+                  <img th:src="${donationImgDto.imgUrl}" alt="" />
+                </div>
+                
+                <!-- <div class="swiper-slide">
+                  <img src="https://picsum.photos/id/104/1920/1080" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="https://picsum.photos/id/53/1920/1080" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="https://picsum.photos/id/840/1920/1080" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="https://picsum.photos/id/338/1920/1080" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="https://picsum.photos/id/18/1920/1080" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="https://picsum.photos/id/87/1920/1080" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="https://picsum.photos/id/77/1920/1080" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="https://picsum.photos/id/38/1920/1080" alt="" />
+                </div>
+                <div class="swiper-slide">
+                  <img src="https://picsum.photos/id/294/1920/1080" alt="" />
+                </div> -->
+              </div>
+              <div class="swiper-button-next">&gt;&gt;</div>
+              <div class="swiper-button-prev">&lt;&lt;</div>
+            </div>
+          </div>
+          <div class="col-12 col-md-10 col-xl-8 mx-auto">
+            <div class="hstack py-3 px-4" style="background: #eff5f4">
+              <div>
+                <h3 class="author-name">[[${nickName}]]---[[*{donationName}]]</h3>
+                <!-- <span class="sharing-area">지역</span> -->
+              </div>
+              <div class="ms-auto hstack">
+                <div class="ms-auto">
+                  <a
+                    class="causes-details__share-btn thm-btn py-2 px-4"
+                    onclick="pointModal();"
+                    >에너지 기부</a
+                  >
+                </div>
+                <!-- class 이름으로 아이콘 이미지 지정 -->
+                <div class="battery battery-75 ms-2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-10 col-md-8 col-xl-6 mx-auto">
+            <h3 style="font-size: 18px; font-weight: bold">[[*{donationName}]]</h3>
+            <div style="font-size: 13px">[[${nickName}]]</div>
+            <div class="hstack">
+              <div
+                class="vstack fw-lighter"
+                style="font-size: 12px; line-height: initial"
+              >
+                <span class="m-0">게시기간</span>
+                <span class="me-auto">[[*{startDate}]] ~ [[*{endDate}]]</span>
+              </div>
+              <div class="causes-one__progress">
+                <div class="bar">
+                  <div class="bar-inner count-bar" th:data-percent="*{pointPer} + '%'">
+                    <div class="count-text" th:text="*{pointPer} + '%'"></div>
+                  </div>
+                </div>
+                <div class="causes-one__goals">
+                  <p>0%</p>
+                  <p>100%</p>
+                </div>
+              </div>
+              <div class="ms-auto mb-4">
+                <button class="like-btn d-flex justify-content-center align-items-center">
+	              <div class="like" th:classappend="${donationHeartDto == null} ? 'like-false' : 'like-true'" th:onclick="'toggleHeart(' + *{id} + ');'"></div>
+	              <span class="like-count px-1" style="font-size: 12px; color: var(--thm-primary);" th:text="${donationHeartCount}"></span>
+	            </button>
+              </div>
+            </div>
+
+            <hr class="w-100" />
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div
+            class="col-10 col-md-8 col-xl-6 mx-auto"
+            style="font-size: 14px; line-height: 200%"
+          >
+            <pre>[[*{detail}]]</pre>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-12 col-md-10 col-xl-8 d-flex mx-auto">
+            <div class="ms-auto">
+              <button class="causes-details__share-btn thm-btn py-2 px-4"
+              	onclick="pointModal();"
+                >에너지 기부</button
+              >
+              <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} or *{userAble eq 'Y'}" th:href="@{'/donation/edit/' + *{id}}"
+                class="causes-details__share-btn thm-btn py-2 px-3 ms-3"
+                
+              >
+              <!-- data-bs-toggle="modal"
+                data-bs-target="#registModal" -->
+              <!-- 작성자및 관리자 로그인상태일때만 활성화 -->
+                수정
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+<!-- 모달창 시작 -->
+        <div
+          class="modal fade"
+          id="pointModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <div class="modal-title fs-5" id="exampleModalLabel">
+                  <span class="d_modal_font_color_font_xxlg">[[${nickName}]] </span>님의
+                  에너지
+                  <span class="d_modal_font_color_font_xlg ms-2 useablePointText"></span>
+                  <input type="hidden" id="useablePoint" name="useablePoint" value="useablePoint">
+                </div>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="ms-4">
+		             <div class="d_modal_font_color_font_lg my-2">
+		              <span><input type="text" id="usePoint" name="usePoint" value="0" onkeyup="return pointNumCheck(this);"></span>W의 에너지를 기부합니다.
+		            </div>
+		            <div class="d_modal_font_color_font_lg my-2">
+		              [[${nickName}]]님의 <span class="useablePointText"></span>에서 <span class="usePointText">0</span>를 <span>[[${donationFormDto.donationName}]]</span>으로 에너지를
+		              충전합니다.
+		            </div>
+		      </div>
+              <div class="modal-footer">
+                <button type="button" class="btn d_modal_back_color" onclick="pointDonation();">
+                  기부하기
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary border-0"
+                  data-bs-dismiss="modal"
+                >
+                  닫기
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+	<script>
+	let preObj;
+	function pointNumCheck(obj){
+        console.log(preObj);
+        if(preObj == undefined) {
+        	 preObj = 0;
+        } 
+        var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
+        var result = obj.value.replace(regex, "");
+        obj.value = result;
+        let pointValue = document.querySelector("#useablePoint");
+        console.log( "pointValue.value  : " + pointValue.value ,  "obj.value : "+obj.value);
+        if(parseInt( pointValue.value) < parseInt( obj.value)) {
+        	alert("보유포이트이상 사용하실수없습니다.");
+        	obj.value= preObj;
+        } else {
+	        let usePoint = document.querySelector(".usePointText");
+	        usePoint.innerText = result;
+	        preObj = result;
+        }
+        
+    }
+	
+	function pointModal() {
+		var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        var url = "/pointSearch";
+ 
+        $.ajax({
+            url      : url,
+            type     : "GET",
+            contentType : "application/json",
+            /* data     : param, */
+            beforeSend : function(xhr){
+                /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                xhr.setRequestHeader(header, token);
+            },
+            dataType : "json",
+            cache   : false,
+            success  : function(result, status){
+                if(result > 0) {
+                	let points = document.querySelectorAll(".useablePointText");
+                	let pointValue = document.querySelector("#useablePoint");
+                	points.forEach((point, index ) => {
+	                	point.innerText = result + 'W';
+	                });
+                 	/*point.innerText = result + 'W';*/
+                	pointValue.value = result;
+                	$("#pointModal").modal("show");
+                } else {
+                	alert("사용가능한 포인트가 없습니다.");
+                }
+            },
+            error : function(jqXHR, status, error){
+                if(jqXHR.status == '401'){
+                    alert('로그인 후 이용해주세요');
+                    location.href='/auth/login';
+                } else{
+                	/* alert("401외 에러?") */
+                    alert(jqXHR.responseText);
+                }
+            }
+        });
+	}
+	
+	function pointDonation() {
+		var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        var url = "/pointDonation";
+ 		let point = $("#usePoint").val();
+ 		
+ 		if (point <=0 ) {
+ 			alert("사용할포인트는 0 이상입력해주세요");
+ 			return;
+ 		}
+        let cf = confirm(point + "를 기부 하시겠습니까?");
+        if(!cf) {return};
+        
+        var paramData = {
+        		donationId : $("#id").val(),
+                point : $("#usePoint").val()
+            };
+        
+        var param = JSON.stringify(paramData);
+        
+        $.ajax({
+            url      : url,
+            type     : "POST",
+            contentType : "application/json",
+            data     : param, 
+            beforeSend : function(xhr){
+                /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                xhr.setRequestHeader(header, token);
+            },
+            dataType : "json",
+            cache : false,
+            success  : function(result, status){
+            	alert("포인트가 기부되었습니다.");
+                location.href='/donation';
+            },
+            error : function(jqXHR, status, error){
+                if(jqXHR.status == '401'){
+                    alert('로그인 후 이용해주세요');
+                    location.href='/auth/login';
+                } else{
+                	/* alert("401외 에러?") */
+                    alert(jqXHR.responseText);
+                }
+            }
+        });
+	}
+	
+	function toggleHeart(id) {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+		const likeEl = document.querySelector(".like");
+		const likeCount = document.querySelector(".like-count");
+		
+		fetch("/donation/heart/" + id, {
+			method: "GET",
+			headers: {
+					'header': header,
+					'X-Requested-With': "XMLHttpRequest",
+					"Content-Type": "application/json",
+					'X-CSRF-Token': token
+			}
+		}).then(res => res.text())
+		.then(data => {
+			if (likeEl.classList.contains("like-false")) {
+				likeEl.classList.remove("like-false");
+				likeEl.classList.add("like-true");
+			} else {
+				likeEl.classList.remove("like-true");
+				likeEl.classList.add("like-false");
+			}
+			likeCount.innerText = data;
+		});
+	}
+	
+	</script>
+    <!-- Initialize Swiper -->
+    <script>
+      var swiper = new Swiper(".mySwiper", {
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      });
+    </script>
+	</th:block>
+</body>
+</html>

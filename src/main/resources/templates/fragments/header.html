@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
+  <head>
+    <meta charset="UTF-8" />
+    <title>header</title>
+  </head>
+  <body>
+    <header
+      th:fragment="header"
+      class="main-header clearfix hstack"
+      style="height: 80px; z-index: 20;"
+    >
+      <div
+        class="main-header__logo p-0 h-100"
+      >
+        <a class="d-block h-100 w-100" th:href="@{/sharing}">
+          <img class="logo-img" src="/img/logo-1.png" alt="" style="" />
+        </a>
+      </div>
+
+      <div class="main-menu-wrapper h-100 vstack">
+        <div class="main-menu-wrapper__bottom my-auto">
+          <nav class="main-menu">
+            <div class="main-menu__inner">
+              <a href="#" class="mobile-nav__toggler">
+              	<i class="fa fa-bars"></i>
+              </a>
+
+              <ul class="main-menu__list">
+								<th:block sec:authorize="isAuthenticated()" th:if="${#strings.startsWith(#httpServletRequest.servletPath, '/admin')}">
+									<!-- 관리자 -->
+									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/member')} ? 'current' : null"><a th:href="@{/admin/memberList}">회원관리</a></li>
+									<li class="text-center dropdown">
+										<a style="cursor: default;">나눔 관리</a>
+										<ul>
+											<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/sharing')} ? 'current' : null"><a th:href="@{/admin/sharing}">나눔상품관리</a></li>
+											<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/sharedList')} ? 'current' : null"><a th:href="@{/admin/sharedList}">나눔완료게시판관리</a></li>
+										</ul>
+									</li>
+									<li class="text-center dropdown">
+										<a style="cursor: default;">기부 관리</a>
+										<ul>
+											<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/donation')} ? 'current' : null"><a th:href="@{/admin/donation}">기부관리</a></li>
+											<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/donatedBoards')} ? 'current' : null"><a th:href="@{/admin/donatedBoards}">기부완료게시판관리</a></li>
+										</ul>
+									</li>
+									<li class="text-center" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/story')} ? 'current' : null"><a th:href="@{/admin/story}">사연관리</a></li>
+									<li class="text-center"  th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/admin/heart')} ? 'current' : null"><a th:href="@{/admin/heart}">좋아요관리</a></li>
+									<!-- <li class="text-center"><a href="#">카테고리<br/>관리</a></li>
+									<li class="text-center"><a href="#">지역<br/>관리</a></li>
+									<li class="text-center"><a href="#">기부<br/>포인트</a></li> -->
+								</th:block>
+
+								<th:block sec:authorize="isAuthenticated()" th:unless="${#strings.startsWith(#httpServletRequest.servletPath, '/admin')}">
+									<!-- 일반 -->
+									<li class="dropdown" th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing') && not #strings.startsWith(#httpServletRequest.servletPath, '/sharing_board')} ? 'current' : null">
+										<a th:href="@{/sharing}">나눔</a>
+										 <ul class="d-xl-none">
+											<li><a th:href="@{${#httpServletRequest.requestURL}(cat='전체')}">전체</a></li>
+											<li th:if="${categoryDtoList != null}" th:each="categoryDto : ${categoryDtoList}" th:classappend="${#strings.equals(param.cat, categoryDto.categoryName)} ? 'text-primary' : 'test'">
+												<a th:href="@{${#httpServletRequest.requestURL}(cat=${categoryDto.categoryName})}">[[${categoryDto.categoryName}]]</a>
+											</li>
+										</ul>
+									</li>
+									<li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/donation')} ? 'current' : null"><a th:href="@{/donation}">기부</a></li>
+									<li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing_board')} ? 'current' : null"><a th:href="@{/sharing_board}">나눔 인증 게시판</a></li>
+									<li th:classappend="${#strings.startsWith(#httpServletRequest.servletPath, '/donatedBoard')} ? 'current' : null"><a th:href="@{/donatedBoards}">기부 완료 게시판</a></li>
+								</th:block>
+
+              </ul>
+
+              <div class="main-menu__right">
+                
+                <th sec:authorize="isAnonymous()" >
+                <a href="/auth/login" class="logout-btn py-1 px-2" >로그인</a>
+                </th>
+                <th sec:authorize="isAuthenticated()" >
+                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/memberList}">[[${#authentication.principal.username}]]</a>
+                <a sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/mypage}">[[${#authentication.principal.username}]]</a>
+                <a href="/auth/logout" class="logout-btn py-1 px-2" >로그아웃</a>
+                </th>
+              </div>
+            </div>
+          </nav>
+        </div>
+        
+        <div class="main-menu-wrapper__bottom my-auto" th:if="${#strings.startsWith(#httpServletRequest.servletPath, '/sharing/area/')}">
+          <nav class="main-menu">
+            <div class="main-menu__inner">
+              <ul class="main-menu__list">
+                <li th:classappend="${#strings.equals(param.cat, '전체') || param.cat == null} ? 'current' : null"><a th:href="@{${#httpServletRequest.requestURL}(cat='전체')}" class="fs-6 fw-normal">전체</a></li>
+                <li th:each="categoryDto : ${categoryDtoList}">
+                	<a 
+                		th:href="@{${#httpServletRequest.requestURL}(cat=${categoryDto.categoryName})}" 
+                		class="fs-6 fw-normal"
+                		th:classappend="${#strings.equals(param.cat, categoryDto.categoryName)} ? 'current' : null"
+                	>
+                		[[${categoryDto.categoryName}]]
+                	</a>
+                </li>
+              </ul>
+            </div>
+           </nav>
+        </div>
+        
+
+      </div>
+    </header>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+#map-svg {
+  width: 100%;
+}
+
+.OUTLINE {
+  fill: white;
+  stroke: var(--thm-gray);
+  stroke-width: 2px;
+  transition: 300ms;
+  cursor: pointer;
+}
+
+.OUTLINE--hover {
+  fill: var(--thm-primary);
+}
+
+.TEXT {
+  fill: black;
+  font-weight: 500;
+  user-select: none;
+  cursor: pointer;
+}
+
+.TEXT--hover {
+  fill: white;
+}
+
+@media  screen and (max-width: 767px) {
+  .banner {
+    margin-top: 64px;
+  }
+}

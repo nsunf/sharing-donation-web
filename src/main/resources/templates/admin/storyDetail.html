@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout1}"
+>
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<title>Insert title here</title>
+<link href="/css/story.css" rel="stylesheet" />
+<style>
+	.btn:disabled {
+		opacity: 0.2;
+	}
+</style>
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+ 	
+	<section class="mb-5 auto-min-height">
+		<div class="section container" style="width: margin: 0 auto;">
+		<!-- stick 쓰고 싶은데 안됨 -->
+	<div class="row">
+		<div style="margin-top: 70px;">
+			<h1 style="border-bottom: 5px solid #15C8A0; padding-bottom: 5px; margin: 0;">사연 관리</h1>
+		</div>
+<!-- 		<div
+			style="width: 754px; height: 71px; background-color: #F0F5F4; margin: 0 auto; line-height: 71px; display: flex; justify-content: space-between; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+			<div
+				style="width: 80px; height: 71px; background-color: #15C8A0; color: white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; text-align: center;">[[${sharingDto.status}]]</div>
+			<div>
+				<span>제목 : [[${sharingDto.name}]]</span>
+			</div>
+			<div style="margin-right: 50px;">
+				<span>[[${sharingDto.areaName}]]</span>
+			</div>
+		</div>
+ -->		
+ 			<div class="col-8 mx-auto">
+				 <div class="hstack rounded-4 rounded-top-0 overflow-hidden" style="background: #F0F5F4;">
+					<div class="d-flex justify-content-center align-items-center float-start text-white"  style="width: 64px; aspect-ratio: 1/1; background: var(--thm-primary); aspect-ratio: 1/1;">
+						[[${sharingDto.status}]]
+					</div>
+					 <div class="mx-auto link-hover"><a th:href="@{/sharing/{id}(id=${sharingDto.id})}">제목 : [[${sharingDto.name}]]</a></div>
+					 <div class="float-right me-3">
+						 <div class="text-end">[[${sharingDto.authorName}]]</div>
+						 <div class="text-end">[[${sharingDto.areaName}]]</div>
+					 </div>
+				 </div>
+ 			</div>
+ 			
+ 			<div class="col-8 mt-4 mx-auto">
+ 				<p class="hstack w-100">
+					<button class="ms-auto btn btn-custom btn-custom-regist" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+						내용 더보기
+					</button>
+				</p>
+				<div class="collapse" id="collapseExample">
+					<div class="card card-body">
+						<div class="w-100 hstack">
+							<div class="w-50">
+								<a class="d-block ratio ratio-1x1" th:href="@{/sharing/{id}(id=${sharingDto.id})}">
+									<img class="w-100 h-100 object-fit-cover rounded-2" style="cursor: pointer; transition: 150ms;" th:src="${sharingDto.imgUrl}" onMouseOver="this.style.transform = 'scale(1.02)';" onMouseOut="this.style.transform = 'scale(1)';"/>
+								</a>
+							</div>
+							<div class="w-50 p-4">
+								<p class="fw-normal">카테고리  <span class="fw-bold text-black">[[${sharingDto.categoryName}]]</span></p>
+								<p class="fw-normal">기간 <span class="fw-bold text-black">[[${sharingDto.startDate}]]~[[${sharingDto.endDate}]]</span></p>
+								<span class="fw-normal">나눔 내용</span>
+								<p class="text-black">[[${sharingDto.content}]]</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+ 		</div>
+
+		<div style="padding-top: 70px;">
+		<p>등록된 사연수 : [[${storyDtoList.size}]]</p>
+			<form name="frm">
+				<input type="hidden" id="sharingStatus" th:value="${sharingDto.status}" />
+				<div class="mb-3 row" style="display: flex; ">
+
+				<!-- each -->
+				<div class="col-12 hstack" th:each="storyDto : ${storyDtoList}">
+					<div class="d-flex justify-content-center" style="width: 100px;">
+						<input 
+							type="checkbox" 
+							name="storyCheckList" 
+							class="form-check-input" 
+							style="margin: 0;" 
+							th:checked="${storyDto.chooseYn == 'Y' ? 'checked' : null}" 
+							th:disabled="${sharingDto.done == 'Y' ? 'disabled' : null}"
+							onclick="onClickCheckBox()"
+							th:value="${storyDto.id}"
+						>
+					</div>
+					<div class="mb-3 form-check" style="background-color: #F0F5F4; height: 200px; width: 100%; border-radius: 10px; margin: 0; padding: 0;">
+
+						<div style="padding: 15px 0 0 10px;">
+							<label for="exampleInputEmail1" class="form-label">[[${storyDto.memberName}]]</label>
+						</div>
+
+						<div class="form-floating" style="padding: 0 5px;">
+							<textarea 
+								class="form-control" 
+								placeholder="Leave a comment here" 
+								id="floatingTextarea2" 
+								style="height: 149px; resize: none;" 
+								readonly
+								th:text="${storyDto.content}"
+							></textarea>
+							<label for="floatingTextarea2">사연</label>
+						</div>
+						<!-- <div id="emailHelp" class="form-text">좋은 채택을 해주세요. </div> -->
+						</div>
+					</div>
+					<!-- each -->
+					
+
+				</div>
+				<div style="display: flex; justify-content: space-around;">
+					<button id="editBtn" type="button" class="btn btn-primary btn-1" th:disabled="${sharingDto.done == 'Y' ? 'disabled' : null}" data-bs-toggle="modal" data-bs-target="#editStoryModal">수정</button>
+					<button id="chooseBtn" type="button" class="btn btn-primary btn-2" th:disabled="${sharingDto.done == 'Y' ? 'disabled' : null}" th:text="${sharingDto.done == 'Y' ? '채택 완료' : '채택'}">채택</button>
+					<button id="delBtn" type="button" class="btn btn-primary btn-3" th:disabled="${sharingDto.done == 'Y' ? 'disabled' : null}">삭제</button>
+				</div>
+			</form>
+		</div>
+
+
+
+	</div>
+
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="editStoryModal" tabindex="-1" aria-labelledby="editStoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" th:action="@{/story/edit}" name="editModal" method="post">
+    	<input type="hidden" id="storyId" name="id" />
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editStoryModalLabel">사연 수정</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+				<div class="mb-3">
+					<label for="authorName" class="col-form-label">작성자</label>
+					<input type="text" class="form-control" name="memberName" id="authorName" readonly>
+				</div>
+				<div class="mb-3">
+					<label for="storyContent" class="col-form-label">내용</label>
+					<textarea class="form-control" name="content" id="storyContent"></textarea>
+				</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-custom btn-custom-close" data-bs-dismiss="modal">닫기</button>
+        <button type="submit" class="btn btn-custom btn-custom-regist">수정</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+		<script src="/js/setAutoHeight.js"></script>
+		<script src="/js/nsunf/storyDetail.js"></script>
+	</th:block>
+</body>
+</html>

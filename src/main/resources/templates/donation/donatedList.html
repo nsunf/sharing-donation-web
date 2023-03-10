@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/longsiru/donated-board-list.css" />
+<link rel="stylesheet" href="/css/longsiru/donated-board-detail.css" />
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+		<section class="page-header">
+			<div class="page-header__bg"
+				style="background-image: url('https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?ixlib=rb-4.0.3&amp;amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=3270&amp;amp;q=80');"></div>
+			<!-- /.page-header__bg -->
+			<div class="container">
+				<h2 class="text-center sharing_board_title">기부 완료 게시판</h2>
+			</div>
+		</section>
+
+		<section class="news-page pt-5 pb-3 vstack">
+			<!--검색창-->
+			<div class="container">
+				<div class="row g-5 m-5">
+					<div class="col-xl-3 col-lg-3"></div>
+					<div class="col-xl-6 col-lg-6">
+						<form class="input-group mb-3 w-100 mx-auto my-4">
+							<input type="text" class="form-control" placeholder="검색"
+								th:field="${donationBoardSearchDto.searchQuery}" />
+							<button class="btn" type="submit"
+								style="background-color: #20c097; color: #fff">
+								검색</button>
+						</form>
+					</div>
+					<div class="col-xl-3 col-lg-3"></div>
+				</div>
+			</div>
+			<!--  -->
+
+			<!--기부 완요 게판 페이지 시각-->
+			<div class="container">
+				<div class="row g-5">
+					<th:block
+						th:each="donationBoard, status: ${donationBoards.getContent()}">
+						<div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="100ms">
+							<div class="news-two__single">
+								<div class="news-two__img-box">
+									<div class="news-two__img">
+										<img th:src="@{${donationBoard.imgUrl}}" th:alt="donated-img" />
+										<a th:href="'/donatedBoard/' +${donationBoard.id}"> <i class="fa fa-plus"></i>
+										</a>
+									</div>
+									<div class="news-two__date">
+										<p>[[${donationBoard.regTime}]]</p>
+									</div>
+								</div>
+								<div class="news-two__content">
+									<ul class="list-unstyled news-two__meta">
+									
+										<li><img src="/img/longsiru/like-icon.png" style="width:16px; height:16px;"><i th:text="${donationBoard.donationBoardheartCount}"></i></li>
+										<li><span>/</span></li>
+										<li><i th:text="${donationBoard.commentCount}"
+											class="far fa-comments"></i></li>
+									</ul>
+									<h3 class="read-more">
+										<a th:href="'/donatedBoard/' +${donationBoard.id}">[[${donationBoard.subject}]]</a>
+									</h3>
+									<p class="news-two__text read-more">
+										[[${donationBoard.content}]]</p>
+								</div>
+							</div>
+						</div>
+					</th:block>
+				</div>
+			</div>
+		</section>
+		<!-- pagenation -->
+		<div>
+		<nav aria-label="Page navigation example" class="hstack mt-5"
+			th:with="start=${(donationBoards.number/maxPage) * maxPage + 1}
+      , end=(${(donationBoards.totalPages == 0) ? 1 : (start + (maxPage) < donationBoards.totalPages ? start + (maxPage -1) : donationBoards.totalPages)})">
+			<ul class="pagination mx-auto">
+				<li class="page-item"
+					th:classappend="${donationBoards.first}? 'disabled'">
+					<a class="page-link page-prev" title="previous page"
+					th:href="@{'/donatedBoards/' + ${start} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+				</li>
+
+				<li  class="page-item" th:each="page: ${#numbers.sequence(start, end)}"
+					th:classappend="${donationBoards.number eq page-1} ? 'active':''">
+					<a class="page-link page-num" th:inline="text"
+					th:href="@{'/donatedBoards/' + ${page} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}">[[${page}]]</a>
+				</li>
+
+				<li class="page-item" th:classappend="${donationBoards.last}? 'disabled'">
+					<a class="page-link page-next" title="next page"
+					th:href="@{'/donatedBoards/' + ${end} + '?searchQuery=' + ${donationBoardSearchDto.searchQuery}}">
+					<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+		</div>
+		<!--기부 완료 게시판 페이지 끝-->
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+	<script src="/js/longsiru/donationBoardDetail.js"></script>
+	</th:block>
+</body>
+</html>

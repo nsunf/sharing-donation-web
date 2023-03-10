@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout2}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+		<div class="row row-cols-1 row-cols-lg-2">
+			<!-- grid -->
+
+			<div class="col"
+				th:each="sharingDto : ${sharingDtoList.getContent()}">
+				<a class="card mb-3 overflow-hidden" th:href="@{'/sharing/edit/' + ${sharingDto.id}}"
+					style="max-width: 540px; background: #F0F5F4;">
+					<div class="row g-0">
+						<div class="col-md-4 p-0">
+							<img th:src="@{${sharingDto.imgUrl}}"
+								class="img-fluid w-100 h-100 rounded-start object-fit-cover"
+								alt="..." style="aspect-ratio: 3/4;">
+						</div>
+						<div class="col-md-8 ps-0">
+							<div class="card-body vstack h-100">
+								<div class="vstack align-middle">
+									<h5 class="card-title text-black fs-5">[[${sharingDto.name}]]</h5>
+									<div class="hstack">
+										<p class="card-text text-black fs-6 fw-normal">[[${sharingDto.categoryName}]]</p>
+										<p class="card-text text-black fs-6 fw-normal ms-auto">[[${sharingDto.regTime}]]</p>
+									</div>
+								</div>
+								<div class="vstack mt-auto">
+									<div class="status ms-auto mt-auto" th:classappend="${sharingDto.status == '완료'} ? 'status-gray' : (${sharingDto.status == '진행중'} ? 'status-green' : 'status-yellow')">[[${sharingDto.status}]]</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+
+
+		</div>
+		<div class="row">
+			<!-- pagination -->
+			<nav aria-label="Page navigation example" class="hstack mt-5" th:with="start=${(sharingDtoList.number/maxPage)*maxPage + 1}, end=(${(sharingDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < sharingDtoList.totalPages ? start + (maxPage - 1) : sharingDtoList.totalPages)})">
+				<ul class="pagination mx-auto">
+					<li class="page-item">
+						<a class="page-link" th:href="@{'/mypage/sharing/' + ${sharingDtoList.number-1}}" aria-label="Previous" th:classappend="${sharingDtoList.number eq 0}?'disabled':''"> <span aria-hidden="true">&laquo;</span></a>
+					</li>
+					<li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${sharingDtoList.number eq page-1}?'active':''">
+						<a class="page-link" th:href="@{'/mypage/sharing/' + ${page-1}}" th:inline="text">[[${page}]]</a>
+					</li>
+					<li class="page-item"><a class="page-link" th:href="@{'/mypage/sharing/' + ${sharingDtoList.number+1}}"
+						aria-label="Next" th:classappend="${sharingDtoList.number+1 ge sharingDtoList.totalPages}?'disabled':''"> <span aria-hidden="true">&raquo;</span>
+					</a></li>
+				</ul>
+			</nav>
+		</div>
+
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+	</th:block>
+</body>
+</html>

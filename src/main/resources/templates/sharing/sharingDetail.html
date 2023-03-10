@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+  layout:decorate="~{layouts/layout1}"
+>
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<title>나눔 상품 상세</title>
+<link rel="stylesheet" href="/css/nsunf/shareDetail.css">
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+	
+		<section class="image-slider container mt-5 auto-min-height">
+    <div class="row">
+      <div class="col-12 col-md-10 col-xl-8 mx-auto">
+        <div class="swiper mySwiper position-relative overflow-hidden">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide ratio ratio-16x9" th:each="sharingImgDto : ${sharingImgDtoList}"><img class="object-fit-contain" th:src="@{${sharingImgDto.imgUrl}}" alt=""></div>
+          </div>
+          <div class="swiper-button-next">&gt;&gt;</div>
+          <div class="swiper-button-prev">&lt;&lt;</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-10 col-xl-8 mx-auto">
+        <div class="hstack py-3 px-4" style="background: #eff5f4;">
+          <div>
+            <h3 class="author-name">[[${sharingDto.authorName}]]</h3>
+            <span class="sharing-area">[[${sharingDto.areaName}]]</span>
+          </div>
+          <div class="ms-auto hstack">
+            <!-- class 이름으로 아이콘 이미지 지정 -->
+<!--             <div class="author-energy">에너지 <span>83%</span></div>
+            <div class="battery battery-75 ms-2"></div>
+ -->            <div class="author-energy">포인트 <span>[[${sharingDto.point}]]</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-10 col-md-8 col-xl-6 mx-auto">
+        <h3 style="font-size: 18px; font-weight: bold;">[[${sharingDto.name}]]</h3>
+        <div style="font-size: 13px;">[[${sharingDto.categoryName}]] | [[${sharingDto.regTime}]]</div>
+        <div class="hstack">
+          <div class="vstack fw-lighter" style="font-size: 12px; line-height: initial;">
+            <span class="m-0">게시기간</span>
+            <span class="me-auto" th:text="${sharingDto.startDate} + '~' + ${sharingDto.endDate}"></span>
+          </div>
+          <div class="ms-auto">
+            <button class="like-btn d-flex justify-content-center align-items-center">
+              <div class="like" th:classappend="${sharingHeartDto == null} ? 'like-false' : 'like-true'" th:onclick="'toggleHeart(' + ${sharingDto.id} + ');'"></div>
+              <span class="like-count px-1" style="font-size: 12px; color:var(--thm-primary);" th:text="${sharingHeartCount}"></span>
+            </button>
+          </div>
+        </div>
+
+        <hr class="w-100"/>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-10 col-md-8 col-xl-6 mx-auto" style="font-size: 14px; line-height: 200%;">
+      [[${sharingDto.content}]]
+      </div>
+    </div>
+    <div class="row my-5">
+      <div class="col-12 col-md-10 col-xl-8 d-flex mx-auto">
+        <div class="ms-auto">
+<!--           <a class="causes-details__share-btn thm-btn py-2 px-4">수정</a>
+ -->          
+ 							<button 
+ 								th:if="${storyFormDto.registeredYn == 'Y'}" 
+ 								class="causes-details__share-btn thm-gray border-0 rounded-4 py-2 px-3 ms-3" 
+ 								disabled
+ 							>
+ 								사연 등록됨
+ 							</button>
+           		<button 
+           			th:unless="${storyFormDto.registeredYn == 'Y'}" 
+           			id="registStoryBtn" 
+           			class="causes-details__share-btn thm-btn py-2 px-3 ms-3" 
+           			data-bs-toggle="modal" 
+           			data-bs-target="#registModal" 
+           			th:if="${#authentication.principal.username != sharingDto.authorEmail}"
+           			sec:authorize="!hasRole('COM')"
+           		>
+           			사연 등록
+           		</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="registModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form class="modal-content" th:action="@{/story/new}" method="post" th:object="${storyFormDto}">
+      	<input type="hidden" th:field="*{sharingId}" th:value="${sharingDto.id}">
+      	<input type="hidden" th:field="*{memberId}" th:value="*{memberId}">
+        <div class="modal-header">
+          <h1 class="modal-title modal-title-custom fs-5" id="exampleModalLabel">나눔 글제목</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div>나눔 상품 명</div>
+          <textarea th:field="*{content}" class="form-control" cols="30" rows="10"></textarea>
+          <div class="hstack">
+            <span id="textLength" class="ms-auto">0/300</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-custom btn-custom-close" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-custom btn-custom-regist" onclick="addStory();">제출</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+	</th:block>
+	<th:block layout:fragment="script-bottom">
+		<!-- Initialize Swiper -->
+		<script>
+			var swiper = new Swiper(".mySwiper", {
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+				},
+			});
+		</script>
+		<script src="/js/nsunf/sharingDetail.js"></script>
+		<script src="/js/setAutoHeight.js"></script>
+	</th:block>
+</body>
+</html>

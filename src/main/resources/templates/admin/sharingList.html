@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/sol/admin_sharing_md_ctr.css" />
+<style>
+td {
+	font-size: 13px;
+	font-weight: normal;
+}
+</style>
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+
+		<section class="auto-min-height">
+			<div class="my-5">
+				<h1 class="text-center">나눔 상품 관리</h1>
+			</div>
+			<!-- 검색창 -->
+			<div class="container">
+				<div class="row hstack">
+					<form class="hstack mb-4" th:action="@{/admin/sharing}"
+						th:object="${searchDto}">
+						<div
+							class="hstack gap-1 col-lg-3 col-md-4 col-sm-4 my-auto me-3 pb-5">
+							<select class="form-select admin_md_ctr_select"
+								th:field="*{filter}" aria-label="Default select example">
+								<option value="title">글제목</option>
+								<option value="content">글내용</option>
+								<option value="author">작성자</option>
+							</select> <select class="form-select admin_md_ctr_select"
+								th:field="*{status}" aria-label="Default select example">
+								<option value="all">전체</option>
+								<option value="outstanding">승인대기</option>
+								<option value="proceeding">진행중</option>
+								<option value="complete">완료</option>
+							</select>
+						</div>
+						<div class="col-lg-3 col-md-4 col-sm-4 my-auto ms-auto me-3 pb-5">
+							<div class="input-group mx-auto">
+								<input type="text" class="form-control" th:field="*{search}"
+									placeholder="검색" />
+								<button class="btn" type="submit"
+									style="background-color: #15C8A0; color: #fff">검색</button>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<!-- /* <div class="row ">
+					<div class="col-4 ms-auto hstack">
+						<button id="delete-btn" class="btn btn-outline-secondary ms-auto"
+							type="button">삭제</button>
+					</div>
+				</div> */ -->
+
+				<div class="container">
+					<div class="row g-5 pt-3">
+						<table class="table">
+							<thead>
+								<tr class="border-top">
+									<!-- /* <th class="d-none d-lg-table-cell"><input
+										class="select-all-btn" type="checkbox" /></th> */ -->
+									<th class="d-table-cell">번호</th>
+									<th class="d-none d-md-table-cell">작성자</th>
+									<th class="d-table-cell">상품명</th>
+									<th class="d-table-cell">카테고리</th>
+									<th class="d-none d-md-table-cell">지역명</th>
+									<th class="d-none d-lg-table-cell">신청일자</th>
+									<th class="d-none d-lg-table-cell">게시기간</th>
+									<th class="d-table-cell">진행상황</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="sharingDto, status : ${sharingDtoList}">
+									<!-- /*<th class="d-none d-lg-table-cell"><input type="checkbox"
+										class="sharing" name="sharing" th:value="${sharingDto.id}" /></th> */ -->
+									<td class="d-table-cell">[[${sharingDtoList.totalElements
+										- status.index - (sharingDtoList.size * page)}]]</td>
+									<td class="d-none d-md-table-cell">[[${sharingDto.authorName}]]</td>
+									<td class="d-table-cell">[[${sharingDto.name}]]</td>
+									<td class="d-table-cell">[[${sharingDto.categoryName}]]</td>
+									<td class="d-none d-md-table-cell">[[${sharingDto.areaName}]]</td>
+									<td class="d-none d-lg-table-cell">[[${sharingDto.regTime}]]</td>
+									<td class="d-none d-lg-table-cell"
+										th:if="${sharingDto.startDate != null}">[[${sharingDto.startDate
+										+ '~' + sharingDto.endDate}]]</td>
+									<td class="d-none d-lg-table-cell"
+										th:unless="${sharingDto.startDate != null}">---</td>
+									<td class="d-table-cell"><a
+										th:href="@{/admin/sharing/edit/{id}(id=${sharingDto.id})}">
+											<button class="text-white border-0 status ms-auto mt-auto"
+												th:classappend="${sharingDto.status == '완료'} ? 'status-gray' : (${sharingDto.status == '진행중'} ? 'status-green' : 'status-yellow')">[[${sharingDto.status}]]</button>
+									</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div>
+					<nav aria-label="Page navigation example" class="hstack mt-5"
+						th:with="start=${(sharingDtoList.number/maxPage)*maxPage + 1}, end=(${(sharingDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < sharingDtoList.totalPages ? start + (maxPage - 1) : sharingDtoList.totalPages)})">
+						<ul class="pagination mx-auto">
+							<li class="page-item"><a class="page-link page-prev"
+								th:onclick="'paging(' + ${sharingDtoList.number-1} + ')'"
+								aria-label="Previous"
+								th:classappend="${sharingDtoList.number eq 0}?'disabled':''">
+									<span aria-hidden="true">&laquo;</span>
+							</a></li>
+							<li class="page-item"
+								th:each="page: ${#numbers.sequence(start, end)}"
+								th:classappend="${sharingDtoList.number eq page-1}?'active':''">
+								<a class="page-link page-num" th:inline="text"
+								th:onclick="'paging(' + ${page-1} + ')'">[[${page}]]</a>
+							</li>
+							<li class="page-item"><a class="page-link page-next"
+								th:onclick="'paging(' + ${sharingDtoList.number+1} + ')'"
+								aria-label="Next"
+								th:classappend="${sharingDtoList.number+1 ge sharingDtoList.totalPages}?'disabled':''">
+									<span aria-hidden="true">&raquo;</span>
+							</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</section>
+
+	</th:block>
+
+	<th:block layout:fragment="script-bottom">
+		<script src="/js/setAutoHeight.js"></script>
+		<script src="/js/pagination.js"></script>
+		<script src="/js/nsunf/adminSharingList.js"></script>
+	</th:block>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout1}"
+>
+<head>
+<meta charset="UTF-8">
+<title>기부 리스트</title>
+<link rel="stylesheet" href="/css/longsiru/donated-board-list.css"/>
+<link rel="stylesheet" href="/css/longsiru/donation-list.css"/>
+</head>
+<body>
+	<th:block layout:fragment="layout-content">
+	
+	<!--Page Header Start-->
+  <section class="page-header">
+    <div
+      class="page-header__bg"
+      style="
+        background-image: url('https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3270&q=80');
+      "
+    ></div>
+    <!-- /.page-header__bg -->
+    <div class="container" >
+      <h2 class="text-center sharing_board_title">기부 리스트</h2>
+    </div>
+  </section>
+<!--Page Header End-->
+
+
+
+  <!-- 검색창 -->
+  <section class="causes-one causes-page pt-5 pb-3 vstack">
+    <div class="m-5">
+      <form th:action="@{/donation}" class="input-group mb-3 w-25 mx-auto">
+        <input type="text" class="form-control" placeholder="검색" th:field="${searchDto.searchQuery}" />
+        <button
+          class="btn"
+          type="submit"
+          style="background-color: #20c097; color: #fff"
+        >
+          검색
+        </button>
+      </form>
+    </div>
+    <!-- 기부 리스트 카드 -->
+    <div class="container pt-5">
+   		<div class="row hstack">
+        	<div class="col-2 mb-5 ms-auto">
+				<a class="btn" href="/donation/new" style="background: var(--thm-primary); color: white;">기부 등록</a>
+        	</div>
+        </div>
+      <div class="row g-5 row-cols-auto">
+      	<th:block th:each="donation, status: ${donationList.getContent()}">
+        <div class="col">
+          <!--Causes Page Single-->
+          <div class="causes-one__single">
+            <div class="causes-one__img">
+              <div class="causes-one__img-box">
+                <img th:src="@{${donation.imgUrl}}" alt="" style="width: 280px; height: 250px;"/>
+                <a th:href="'/donation/' + ${donation.id}">
+                  <i class="fa fa-plus"></i>
+                </a>
+              </div>
+            </div>
+            <div class="causes-one__content">
+              <div class="hstack">
+                <span class="causes-one__title mb-0">
+                  <a class=""th:href="'/donation/' + ${donation.id}">[[${donation.subject}]]</a>
+                </span>
+              </div>
+              <p class="causes-one__text mt-2">[[${donation.nickName}]]</p>
+            </div>
+            <div
+              class="causes-one__progress"
+              style="background-color: #fff; padding: 25px 25px 21px !important;"
+            >
+              <div class="causes-one__goals">
+                <p class="mb-2">[[${donation.startDate}]]~[[${donation.endDate}]]</p>
+              </div>
+              <div class="hstack">
+                <div><button type="button" class="btn pt-1 pb-1 thm-btn me-auto rounded-pill">진행중</button></div>
+                <div class="content-detail-like like-right ms-auto"><img src="/img/longsiru/like-icon.png" alt="" style="width: 30px; height: 30px;"> [[${donation.heartCount}]]</div>
+              </div>
+            </div>
+            <div class="causes-one__progress">
+                <div class="bar">
+                    <div class="bar-inner count-bar" th:data-percent="@{${donation.pointPer} +'%'}">
+                        <div class="count-text">[[${donation.pointPer}]]%</div>
+                    </div>
+                </div>
+                <div class="causes-one__goals">
+                    <p>0%</p>
+                    <p>100%</p>
+                </div>
+            </div>
+          </div>
+        </div>
+        </th:block>
+        
+        
+      </div>
+    </div>
+  </section>
+  <!-- pagenation -->
+  <div class="">
+	  <nav aria-label="Page navigation example" class="hstack mt-5" th:with="start=${(donationList.number/maxPage)*maxPage + 1}
+				,end=(${(donationList.totalPages == 0) ? 1 : (start + (maxPage - 1) < donationList.totalPages ? start + (maxPage - 1) : donationList.totalPages)})">
+		<ul class="pagination mx-auto" >	
+			<!-- class="previous" --> 
+			<li class="page-item " th:classappend="${donationList.first}? 'disabled'">
+				<!-- <a th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${donationList.number-1}}" title="previous page"></a> -->
+				<a class="page-link page-prev" th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${donationList.number}}" title="previous page">
+				<span aria-hidden="true">&laquo;</span>
+				</a>
+			</li>
+			<li  class="page-item"
+			th:each="page: ${#numbers.sequence(start, end)}"
+			th:classappend="${donationList.number+1 eq page}?'active':''">
+				<a class="page-link page-num" th:inline="text" th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${page}}">
+				[[${page}]]
+				</a>
+			</li>
+			<!-- class="next" -->
+			<li  class="page-item" th:classappend="${donationList.last}?'disabled'">
+				<!-- <a th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${donationList.number+1}}" title="next page"></a> -->
+				<a class="page-link page-next" th:href="@{'/donation' + '?searchQuery=' + ${donationSearchDto.searchQuery} + '&page=' + ${donationList.number + 2}}" title="next page">
+				<span aria-hidden="true">&raquo;</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+</div>
+</th:block>
+
+<th:block layout:fragment="script-bottom">
+</th:block>
+</body>
+</html>
