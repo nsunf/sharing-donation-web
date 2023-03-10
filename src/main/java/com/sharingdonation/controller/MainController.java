@@ -31,6 +31,7 @@ public class MainController {
 //		if (currentSharingCount == null) currentSharingCount = 0L;
 
 		model.addAttribute("sharedCount", sharingService.getNumOfShared());
+		model.addAttribute("donatedCount", donationService.getNumOfDonated());
 		model.addAttribute("currentSharingCount", currentSharingCount);
 		model.addAttribute("areaDtoList", areaService.getAreaList());
 		model.addAttribute("mainDonation", donationService.getDonationMain());
