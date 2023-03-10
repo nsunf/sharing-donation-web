@@ -90,12 +90,12 @@
 					<div class="hstack">
 						<label class="input-label w-100" for="">
 							<span class="d-block ms-2 mb-1">시작일</span>
-							<input class="input-box w-100 p-3" type="date" th:field="*{startDate}"><!--  th:pattern="'yyyy-MM-dd'" -->
+							<input class="input-box w-100 p-3" type="date" th:field="*{startDate}" required><!--  th:pattern="'yyyy-MM-dd'" -->
 						</label>
 
 						<label class="input-label w-100" for="">
 							<span class="d-block ms-2 mb-1">종료일</span>
-							<input class="input-box w-100 p-3" type="date"  th:field="*{endDate}"><!--  th:pattern="'yyyy-MM-dd'" -->
+							<input class="input-box w-100 p-3" type="date"  th:field="*{endDate}" required><!--  th:pattern="'yyyy-MM-dd'" -->
 						</label>
 				 	</div>
 
@@ -115,7 +115,7 @@
 				<div class="row mt-5">
 					<div class="col-8 mx-auto">미리보기
 						<div class="img-preview-list row row-cols-4 g-4">
-							<div class="col" th:each="imgDto, status : ${donationImgDtoList}">
+							<div class="col" th:each="imgDto, status : ${donationAdminFormDto.donationImgDtoList}">
 								<img class="preview-img" th:src="@{${imgDto.imgUrl}}" th:alt="${'img-' + status.index}">
 							</div>
  						</div>

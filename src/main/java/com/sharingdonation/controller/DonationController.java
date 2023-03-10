@@ -104,6 +104,7 @@ public class DonationController {
 			donationService.saveDonation(donationFormDto, donationImgFileList, principal);
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "기부 등록 중 에러가 발생했습니다.");
+			e.printStackTrace();
 			System.out.println("exception");
 			return "donation/editDonation";
 		}
@@ -121,8 +122,8 @@ public class DonationController {
 			System.out.println("controller donationFormDto.getUserAble() ::"+donationFormDto.getUserAble());
 			model.addAttribute(donationFormDto);
 			model.addAttribute("nickName", member.getNickName());
-			model.addAttribute("sharingHeartDto", donationHeartService.getDonationHeartDto(member.getId(), donationId));
-			model.addAttribute("sharingHeartCount", donationHeartService.getDonationHeartCount(donationId));
+			model.addAttribute("donationHeartDto", donationHeartService.getDonationHeartDto(member.getId(), donationId));
+			model.addAttribute("donationHeartCount", donationHeartService.getDonationHeartCount(donationId));
 			
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "존재하지 않는 상품입니다.");
@@ -141,6 +142,7 @@ public class DonationController {
 //			donationFormDto.getDonationImgDtoList();
 //			donationFormDto.getMember().
 			model.addAttribute("donationFormDto", donationFormDto);
+			// donationimgdtolist
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", "존재하지 않는 상품입니다.");
 			model.addAttribute("donationFormDto", new DonationFormDto());
@@ -199,7 +201,6 @@ public class DonationController {
 	
 	
 	// 나눔 좋아요
-//	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_COM', 'ROLE_ADMIN')")
 	@GetMapping("donation/heart/{id}")
 	public @ResponseBody ResponseEntity<?> toggleHeart(@PathVariable Long id, Principal principal) {
 //			Member member = getTmpMember(Role.USER);
@@ -254,7 +255,6 @@ public class DonationController {
 	
 	
 	// 마이페이지 나눔 받은 내역
-//		@PreAuthorize("hasRole('ROLE_USER', 'ROLE_COM')")
 		@GetMapping(value = {"mypage/donation", "mypage/donation/{page}"})
 		public String mypageAdoptedSharingList(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
 //			Member member = getTmpMember(Role.USER);

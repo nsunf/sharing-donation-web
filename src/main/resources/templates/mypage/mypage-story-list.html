@@ -68,7 +68,7 @@ function page(page) {
 										<div class="card-body h-100 px-0 hstack">
 											<div class="vstack w-50">
 												<h5 class="card-title mb-auto">[[${item.name}]]</h5>
-												<p class="card-text"><small class="text-muted">등록일 : [[${item.regTime}]]</small></p>
+												<p class="card-text"><small class="text-muted">등록일 : [[${#temporals.format(item.regTime, 'yyyy-MM-dd')}]]</small></p>
 											</div>
 											<div class="form-floating h-100">
 												<textarea id="floatingTextArea2" class="form-control h-100" style="resize: none;" readonly>
