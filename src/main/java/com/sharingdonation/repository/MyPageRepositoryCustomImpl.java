@@ -66,7 +66,7 @@ public class MyPageRepositoryCustomImpl implements MyPageRepositoryCustom {
 								 ,"share_take"),
 						 ExpressionUtils.as(JPAExpressions.select(point.id.count())
 								 .from(point)
-								 .where(point.member.id.eq(memberId).and(point.moveType.eq(MoveType.PLUS)))
+								 .where(point.member.id.eq(memberId).and(point.moveType.eq(MoveType.MINUS)))
 								 ,"share_apply"),
 						 ExpressionUtils.as(JPAExpressions.select(story.id.count())
 								 .from(story)
