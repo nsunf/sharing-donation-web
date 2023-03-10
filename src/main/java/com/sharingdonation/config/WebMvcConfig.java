@@ -30,12 +30,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.addResourceLocations(this.uploadPath);
 	}
 
-	@Override
-	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-		PageableHandlerMethodArgumentResolver pageableArgumentResolver = new PageableHandlerMethodArgumentResolver();
-        pageableArgumentResolver.setOneIndexedParameters(true);// 페이징시 0부터 시작이나 true 로 해주면 1부터 시작
-        argumentResolvers.add(pageableArgumentResolver);
-	}
+//	@Override
+//	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+//		PageableHandlerMethodArgumentResolver pageableArgumentResolver = new PageableHandlerMethodArgumentResolver();
+//        pageableArgumentResolver.setOneIndexedParameters(true);// 페이징시 0부터 시작이나 true 로 해주면 1부터 시작
+//        argumentResolvers.add(pageableArgumentResolver);
+//	}
 	
 	@Bean
 	public FilterRegistrationBean<?> filterBean() {
