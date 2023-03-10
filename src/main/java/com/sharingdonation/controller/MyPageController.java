@@ -48,7 +48,7 @@ public class MyPageController {
 	public String myPageMain(Principal principal, Model model) {
 		MyPageMainDto myPageMainDto = myPageService.getMyPageMain(principal);
 		model.addAttribute("mypage",myPageMainDto);
-		return "/myPage/mypageMain";
+		return "/mypage/mypageMain";
 	}
 	
 	
@@ -57,7 +57,7 @@ public class MyPageController {
 	public String myprivacy(Principal principal,Model model) {
 		MyPagePrivacyDto myPagePrivacyDto = myPageService.getMyPagePrivacy(principal);
 		model.addAttribute("mypage",myPagePrivacyDto);
-		return "/myPage/mypage-privacy";
+		return "/mypage/mypage-privacy";
 	}
 	
 	
@@ -87,7 +87,7 @@ public class MyPageController {
 	public String myEnterpricePrivacy(Principal principal, Model model){
 		MyPageEnterPricePrivacyDto myPageEnterPricePrivacyDto = myPageService.getMyPageEnterPricePrivacyDto(principal);
 		model.addAttribute("mypage",myPageEnterPricePrivacyDto);
-		return "/myPage/mypage-Enterprice-privacy";
+		return "/mypage/mypage-Enterprice-privacy";
 	}
 	
 	@PreAuthorize("hasRole('ROLE_COM')")

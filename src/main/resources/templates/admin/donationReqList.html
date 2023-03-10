@@ -107,7 +107,7 @@
 						th:with="start=${(donationDtoList.number/maxPage)*maxPage + 1}, end=(${(donationDtoList.totalPages == 0) ? 1 : (start + (maxPage - 1) < donationDtoList.totalPages ? start + (maxPage - 1) : donationDtoList.totalPages)})">
 						<ul class="pagination mx-auto">
 							<li class="page-item"><a class="page-link page-prev"
-								th:onclick="'paging(' + ${donationDtoList.number-1} + ')'"
+								th:onclick="'paging(' + ${donationDtoList.number} + ')'"
 								aria-label="Previous"
 								th:classappend="${donationDtoList.number eq 0}?'disabled':''">
 									<span aria-hidden="true">&laquo;</span>
@@ -119,7 +119,7 @@
 								th:onclick="'paging(' + ${page-1} + ')'">[[${page}]]</a>
 							</li>
 							<li class="page-item"><a class="page-link page-next"
-								th:onclick="'paging(' + ${donationDtoList.number+1} + ')'"
+								th:onclick="'paging(' + ${donationDtoList.number+2} + ')'"
 								aria-label="Next"
 								th:classappend="${donationDtoList.number+1 ge donationDtoList.totalPages}?'disabled':''">
 									<span aria-hidden="true">&raquo;</span>
