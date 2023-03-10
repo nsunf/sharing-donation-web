@@ -26,7 +26,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/img/**")
+		registry.addResourceHandler("/images/**")
 			.addResourceLocations(this.uploadPath);
 	}
 
@@ -37,12 +37,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //        argumentResolvers.add(pageableArgumentResolver);
 //	}
 	
-	@Bean
-	public FilterRegistrationBean<?> filterBean() {
-		FilterRegistrationBean<?> registrationBean = new FilterRegistrationBean<LayoutFilter>(new LayoutFilter(categoryService));
-		
-		registrationBean.addUrlPatterns("/sharing/area/*");
-		
-		return registrationBean;
-	}
+//	@Bean
+//	public FilterRegistrationBean<?> filterBean() {
+//		FilterRegistrationBean<?> registrationBean = new FilterRegistrationBean<LayoutFilter>(new LayoutFilter(categoryService));
+//		
+//		registrationBean.addUrlPatterns("/sharing/area/*");
+//		
+//		return registrationBean;
+//	}
 }

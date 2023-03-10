@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.transaction.Transactional;
@@ -113,8 +114,8 @@ public class TestDataService {
 		IntStream.range(1, 11).forEach(i -> addMember(Role.COM, i));
 		addMember(Role.ADMIN, 1);
 		List<Member> memberList = memberRepo.findAll();
-		List<Member> userList = memberList.stream().filter(member -> member.getRole() == Role.USER).toList();
-		List<Member> comList = memberList.stream().filter(member -> member.getRole() == Role.COM).toList();
+		List<Member> userList = memberList.stream().filter(member -> member.getRole() == Role.USER).collect(Collectors.toList());
+		List<Member> comList = memberList.stream().filter(member -> member.getRole() == Role.COM).collect(Collectors.toList());
 
 		// 나눔
 		IntStream.range(0, 100).forEach(i -> {

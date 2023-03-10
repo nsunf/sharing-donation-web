@@ -56,6 +56,10 @@ public class DonationService {
 	private final PointRepository pointRepository;
 	private final MemberRepository memberRepository;
 	
+	// 총 나눔 완료 수
+		public Long getNumOfDonated() {
+			return donationRepository.countByDone("Y");
+		}
 	public Long saveDonation(DonationFormDto donationFormDto, List<MultipartFile> donationImgFileList, Principal principal) throws Exception {
 		String email = principal.getName();
 		
@@ -121,6 +125,7 @@ public class DonationService {
 		Donation donation = donationRepository.findMainDonation();
 //				.orElseThrow(EntityNotFoundException::new);
 		
+		if (donation == null) return new DonationFormDto();
 		List<DonationImg> donationImgList = donationImgRepository.findByDonationIdOrderByIdAsc(donation.getId());
 		List<DonationImgDto> donationImgDtoList = new ArrayList<>();
 		
