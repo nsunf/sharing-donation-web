@@ -2,6 +2,7 @@ package com.sharingdonation.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,6 @@ public class CategoryService {
 	
 
 	public List<CategoryDto> getCategoryDtoLIst() {
-		return categoryRepo.findAll().stream().map(CategoryDto::of).toList();
+		return categoryRepo.findAll().stream().map(CategoryDto::of).collect(Collectors.toList());
 	}
 }

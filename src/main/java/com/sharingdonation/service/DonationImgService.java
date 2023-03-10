@@ -2,6 +2,7 @@ package com.sharingdonation.service;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -70,8 +71,8 @@ public class DonationImgService {
 	}
 	
 	public DonationImgDto getDonationImgDto(Long donationId) {
-		List<DonationImgDto> donationImgDtoList = donationImgRepository.findByDonationId(donationId).stream().map(DonationImgDto::of).toList();
-		List<DonationImgDto> filteredDtoList  = donationImgDtoList.stream().filter(s -> s.getRepimgYn().equals("Y")).toList();
+		List<DonationImgDto> donationImgDtoList = donationImgRepository.findByDonationId(donationId).stream().map(DonationImgDto::of).collect(Collectors.toList());
+		List<DonationImgDto> filteredDtoList  = donationImgDtoList.stream().filter(s -> s.getRepimgYn().equals("Y")).collect(Collectors.toList());
 		if (filteredDtoList.size() == 0)
 			return null;
 		else 

@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -69,7 +70,7 @@ public class SharingController {
 	
 	private Member getTmpMember(Role role) {
 		Member member = null;
-		List<Member> memberList = memberRepo.findAll().stream().filter(m -> m.getRole() == role).toList();
+		List<Member> memberList = memberRepo.findAll().stream().filter(m -> m.getRole() == role).collect(Collectors.toList());
 		if (memberList.size() > 0) member = memberList.get(0);
 
 		switch (role) {
@@ -106,6 +107,7 @@ public class SharingController {
 		String catName = (_cat != null && _cat.equals("전체")) ? null : cat.orElse(null);
 		
 		model.addAttribute("sharingDtoList", sharingService.getSharingDtoList(search.orElse(null), areaName, catName, pageable));
+		model.addAttribute("categoryDtoList", categoryService.getCategoryDtoLIst());
 		model.addAttribute("area", areaName);
 		model.addAttribute("search", search.orElse(null));
 		model.addAttribute("cat", cat.orElse(null));
@@ -299,7 +301,7 @@ public class SharingController {
 	@PostMapping("/admin/sharing/delete")
 	public @ResponseBody ResponseEntity<?> adminSharingDelete(@RequestBody Map<String, Object> map) {
 		List<String> tmp = (List<String>)map.get("sharingIdList");
-		sharingService.deleteSharings(tmp.stream().map(s -> Long.valueOf(s)).toList());
+		sharingService.deleteSharings(tmp.stream().map(s -> Long.valueOf(s)).collect(Collectors.toList()));
 		return new ResponseEntity<String>("approve", HttpStatus.OK);
 	}
 	

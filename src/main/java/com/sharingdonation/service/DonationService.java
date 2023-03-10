@@ -121,6 +121,7 @@ public class DonationService {
 		Donation donation = donationRepository.findMainDonation();
 //				.orElseThrow(EntityNotFoundException::new);
 		
+		if (donation == null) return new DonationFormDto();
 		List<DonationImg> donationImgList = donationImgRepository.findByDonationIdOrderByIdAsc(donation.getId());
 		List<DonationImgDto> donationImgDtoList = new ArrayList<>();
 		
